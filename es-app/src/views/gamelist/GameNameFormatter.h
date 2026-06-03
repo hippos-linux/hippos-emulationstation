@@ -1,0 +1,39 @@
+#pragma once
+
+#include <string>
+
+class SystemData;
+class FileData;
+
+class GameNameFormatter
+{
+public:
+	GameNameFormatter(SystemData* system);
+
+	std::string getDisplayName(FileData* fd, bool showFolderIcon = true, bool favoriteIcon = true, bool tagIcons = true);
+
+private:
+	unsigned int mSortId;
+	bool mShowCheevosIcon;
+	bool mShowFavoriteIcon;	
+
+	bool mShowSystemName;
+	bool mShowYear;
+	bool mShowSystemFirst;
+	bool mShowSystemAfterYear;
+	bool mShowGameTime;
+
+	bool mShowManualIcon;		
+	bool mShowSaveStates;
+
+	bool mShowGunIcon;
+  	bool mShowWheelIcon;
+    	bool mShowTrackballIcon;
+      	bool mShowSpinnerIcon;
+
+	int mShowFlags;
+	int mShowTags;
+
+public:
+	static std::string getLangFlag(const std::string& lang);
+};

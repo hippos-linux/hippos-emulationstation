@@ -1,0 +1,886 @@
+#include "GuiControllersSettings.h"
+
+#include "components/SwitchComponent.h"
+#include "components/OptionListComponent.h"
+
+#include "guis/GuiDetectDevice.h"
+#include "guis/GuiBluetoothPair.h"
+#include "ThreadedBluetooth.h"
+#include "guis/GuiBluetoothDevices.h"
+#include "guis/GuiPad2key.h"
+
+#include "guis/GuiMsgBox.h"
+#include "GuiLoading.h"
+#include "InputManager.h"
+#include "CustomFeatures.h"
+#include "SystemConf.h"
+
+#define gettext_controllers_settings				_("CONTROLLER SETTINGS")
+#define gettext_controllers_and_bluetooth_settings  _("CONTROLLER & BLUETOOTH SETTINGS")
+
+#define gettext_controllers_priority _("CONTROLLERS PRIORITY")
+#define gettext_controllers_player_assigments _("PLAYER ASSIGNMENTS")
+
+#define gettext_controllerid _("CONTROLLER #%i")
+#define gettext_playerid _("P%i'S CONTROLLER")
+
+// Windows build does not have bluetooth support, so affect the label for Windows
+#if WIN32
+#define controllers_settings_label		gettext_controllers_settings
+#define controllers_group_label		gettext_controllers_priority
+#else
+#define controllers_settings_label		gettext_controllers_and_bluetooth_settings
+#define controllers_group_label		gettext_controllers_player_assigments
+#endif
+
+struct hotkeyInputDefinition
+{
+	std::string code;
+	std::string name;
+};
+struct hotkeyTargetDefinition
+{
+	std::string code;
+	std::string name;
+};
+
+std::string GuiControllersSettings::getControllersSettingsLabel()
+{
+	return controllers_settings_label;
+}
+
+void GuiControllersSettings::openControllersSettings(Window* wnd, int autoSel)
+{
+	wnd->pushGui(new GuiControllersSettings(wnd, autoSel));
+}
+
+GuiControllersSettings::GuiControllersSettings(Window* wnd, int autoSel) : GuiSettings(wnd, controllers_settings_label.c_str())
+{
+	Window* window = mWindow;
+
+	addGroup(_("SETTINGS"));
+
+	// CONTROLLER CONFIGURATION
+	addEntry(_("CONTROLLER MAPPING"), false, [window, this]
+	{
+		window->pushGui(new GuiMsgBox(window,
+			_("YOU ARE GOING TO MAP A CONTROLLER. MAP BASED ON THE BUTTON'S POSITION, "
+				"NOT ITS PHYSICAL LABEL. IF YOU DO NOT HAVE A SPECIAL BUTTON FOR HOTKEY, "
+				"USE THE SELECT BUTTON. SKIP ALL BUTTONS/STICKS YOU DO NOT HAVE BY "
+				"HOLDING ANY BUTTON. PRESS THE SOUTH BUTTON TO CONFIRM WHEN DONE."),
+			_("OK"), [window, this] { window->pushGui(new GuiDetectDevice(window, false, [window, this] { Window* parent = window; setSave(false); delete this; openControllersSettings(parent); })); },
+			_("CANCEL"), nullptr,
+			GuiMsgBoxIcon::ICON_INFORMATION));
+	});
+
+	bool sindenguns_menu = false;
+	bool wiiguns_menu = false;
+	bool steamdeckguns_menu = false;
+
+	for (auto gun : InputManager::getInstance()->getGuns())
+	{
+		sindenguns_menu |= gun->needBorders();
+		wiiguns_menu |= gun->name() == "Wii Gun calibrated";
+		steamdeckguns_menu |= gun->name() == "Steam Gun";
+	}
+
+	for (auto joy : InputManager::getInstance()->getInputConfigs())
+		wiiguns_menu |= joy->getDeviceName() == "Nintendo Wii Remote";
+
+	for (auto mouse : InputManager::getInstance()->getMice()) // the Steam Mouse can be converted to a Steam Gun via options
+		steamdeckguns_menu |= mouse == "Steam Mouse";
+
+	if (sindenguns_menu)
+		addEntry(_("SINDEN GUN SETTINGS"), true, [this] { openControllersSpecificSettings_sindengun(); });
+
+	if (wiiguns_menu)
+		addEntry(_("WIIMOTE GUN SETTINGS"), true, [this] { openControllersSpecificSettings_wiigun(); });
+
+	if (steamdeckguns_menu)
+		addEntry(_("STEAMDECK MOUSE/GUN SETTINGS"), true, [this] { openControllersSpecificSettings_steamdeckgun(); });
+
+	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::BLUETOOTH))
+	{
+		addGroup(_("BLUETOOTH"));
+
+#if defined(HIPPOS)
+		// Bluetooth enable
+		bool baseBtEnabled = SystemConf::getInstance()->getBool("controllers.bluetooth.enabled");
+		auto enable_bt = std::make_shared<SwitchComponent>(mWindow);
+		enable_bt->setState(baseBtEnabled);
+		addWithLabel(_("ENABLE BLUETOOTH"), enable_bt, autoSel == 2);
+		enable_bt->setOnChangedCallback([this, window, enable_bt, baseBtEnabled]
+		{
+			bool btEnabled = enable_bt->getState();
+			if (btEnabled != baseBtEnabled)
+			{
+				SystemConf::getInstance()->setBool("controllers.bluetooth.enabled", btEnabled);
+				SystemConf::getInstance()->saveSystemConf();
+				if (btEnabled)
+					ApiSystem::getInstance()->enableBluetooth();
+				else
+					ApiSystem::getInstance()->disableBluetooth();
+
+				Window* parent = window;
+				delete this;
+				openControllersSettings(parent, 2);
+			}
+		});
+
+		addSaveFunc([enable_bt]
+		{
+			bool btEnabled = enable_bt->getState();
+			if (btEnabled != SystemConf::getInstance()->getBool("controllers.bluetooth.enabled"))
+			{
+				SystemConf::getInstance()->setBool("controllers.bluetooth.enabled", btEnabled);
+				SystemConf::getInstance()->saveSystemConf();
+				if (btEnabled)
+					ApiSystem::getInstance()->enableBluetooth();
+				else
+					ApiSystem::getInstance()->disableBluetooth();
+			}
+		});
+
+		if (baseBtEnabled)
+		{
+#endif
+
+		// PAIR A BLUETOOTH CONTROLLER
+		addEntry(_("PAIR BLUETOOTH PADS AUTOMATICALLY"), false, [window] { ThreadedBluetooth::start(window); });
+
+#if defined(HIPPOS) || defined(WIN32)
+		// PAIR A BLUETOOTH CONTROLLER OR BT AUDIO DEVICE
+		addEntry(_("PAIR A BLUETOOTH DEVICE MANUALLY"), false, [window]
+		{
+			if (ThreadedBluetooth::isRunning())
+				window->pushGui(new GuiMsgBox(window, _("BLUETOOTH SCAN IS ALREADY RUNNING.")));
+			else
+				window->pushGui(new GuiBluetoothPair(window));
+		});
+#endif
+		// FORGET BLUETOOTH CONTROLLERS OR BT AUDIO DEVICES
+		addEntry(_("BLUETOOTH DEVICE LIST"), false, [window] { window->pushGui(new GuiBluetoothDevices(window)); });
+
+#if defined(HIPPOS)
+		}
+#endif
+	}
+
+	addGroup(_("DISPLAY OPTIONS"));
+
+	// CONTROLLER NOTIFICATION
+	addSwitch(_("SHOW CONTROLLER NOTIFICATIONS"), "ShowControllerNotifications", true);
+
+	// CONTROLLER ACTIVITY
+	auto activity = std::make_shared<SwitchComponent>(mWindow);
+	activity->setState(Settings::getInstance()->getBool("ShowControllerActivity"));
+	addWithLabel(_("SHOW CONTROLLER ACTIVITY"), activity, autoSel == 1);
+	activity->setOnChangedCallback([this, window, activity]
+	{
+		if (Settings::getInstance()->setBool("ShowControllerActivity", activity->getState()))
+		{
+			Window* parent = window;
+			delete this;
+			openControllersSettings(parent, 1);
+		}
+	});
+
+	if (Settings::getInstance()->getBool("ShowControllerActivity"))
+		addSwitch(_("SHOW CONTROLLER BATTERY LEVEL"), "ShowControllerBattery", true);
+
+	addSwitch(_("SHOW GUN NOTIFICATIONS"), "ShowGunsNotifications", true);	
+	addSwitch(_("DRAW GUN CROSSHAIR"), "DrawGunCrosshair", true);
+
+#ifdef HIPPOS
+	addGroup(_("BEHAVIOR"));
+
+	addEntry(_("JOYSTICKS HOTKEYS"), true, [this] { openControllersHotkeys(); });
+
+	auto useGuns = std::make_shared<SwitchComponent>(window);
+	useGuns->setState(SystemConf::getInstance()->get("global.use_guns") != "0");
+	addWithLabel(_("USE LIGHT GUNS"), useGuns);
+	addSaveFunc([useGuns]
+	{
+		if (SystemConf::getInstance()->setBool("global.use_guns", useGuns->getState()))
+			SystemConf::getInstance()->saveSystemConf();
+	});
+
+	auto useWheels = std::make_shared<SwitchComponent>(window);
+	useWheels->setState(SystemConf::getInstance()->get("global.use_wheels") != "0");
+	addWithLabel(_("USE WHEELS"), useWheels);
+	addSaveFunc([useWheels]
+	{
+		if (SystemConf::getInstance()->setBool("global.use_wheels", useWheels->getState()))
+			SystemConf::getInstance()->saveSystemConf();
+	});
+
+	addEntry(_("WHEEL SETTINGS"), true, [this] { openControllersSpecificSettings_wheel(); });
+
+	auto restrictHotkeys = std::make_shared<SwitchComponent>(window);
+	restrictHotkeys->setState(SystemConf::getInstance()->getBool("global.exithotkeyonly"));
+	addWithLabel(_("RESTRICT JOYSTICKS HOTKEYS TO EXIT"), restrictHotkeys);
+	addSaveFunc([restrictHotkeys] { SystemConf::getInstance()->setBool("global.exithotkeyonly", restrictHotkeys->getState()); });
+
+	addEntry(_("GLOBAL HOTKEYS"), true, [this] { openGlobalHotkeys(); });
+	addEntry(_("PAD2KEY"), true, [this] { openPad2key(); });
+#endif
+
+	addGroup(controllers_group_label);
+
+	// Here we go; for each player
+	std::list<int> alreadyTaken = std::list<int>();
+
+	// clear the current loaded inputs
+	clearLoadedInput();
+
+	std::vector<std::shared_ptr<OptionListComponent<InputConfigInfo*>>> options;
+
+	auto configList = InputManager::getInstance()->getInputConfigs();
+
+#if WIN32
+	for (int player = 0; player < MAX_PLAYERS; player++)
+	{
+		std::string label = Utils::String::format(gettext_controllerid.c_str(), player + 1);
+
+		auto inputOptionList = std::make_shared<OptionListComponent<InputConfigInfo*> >(mWindow, label, false);
+		inputOptionList->add(_("default"), nullptr, false);
+		options.push_back(inputOptionList);
+
+		// Checking if a setting has been saved, else setting to default
+		std::string configuratedName = Settings::getInstance()->getString(Utils::String::format("INPUT P%iNAME", player + 1));
+		std::string configuratedGuid = Settings::getInstance()->getString(Utils::String::format("INPUT P%iGUID", player + 1));
+		std::string configuratedPath = Settings::getInstance()->getString(Utils::String::format("INPUT P%iPATH", player + 1));
+
+		bool found = false;
+
+		// Add configurated controller even if it's disconnected
+		InputConfigInfo* defaultInputConfig = nullptr;
+
+		if (!configuratedPath.empty())
+		{
+			InputConfigInfo* newInputConfig = new InputConfigInfo(configuratedName, configuratedGuid, configuratedPath);
+			mLoadedInput.push_back(newInputConfig);
+
+			auto it = std::find_if(configList.cbegin(), configList.cend(), [configuratedPath](InputConfig* x) { return x->getSortDevicePath() == configuratedPath; });
+			if (it != configList.cend())
+			{
+				if (std::find(alreadyTaken.begin(), alreadyTaken.end(), (*it)->getDeviceId()) == alreadyTaken.end())
+				{
+					inputOptionList->addEx(configuratedName, configuratedPath, newInputConfig, true, false, false);
+					alreadyTaken.push_back((*it)->getDeviceId());
+					defaultInputConfig = newInputConfig;
+				}
+			}
+			else
+				inputOptionList->addEx(configuratedName + " (" + _("NOT CONNECTED") + ")", configuratedPath, newInputConfig, true, false, false);
+
+			found = true;
+		}
+
+		// for each available and configured input
+		for (auto config : configList)
+		{
+			if (defaultInputConfig != nullptr && defaultInputConfig->name == config->getDeviceName() && defaultInputConfig->guid == config->getDeviceGUIDString() && defaultInputConfig->path == config->getSortDevicePath())
+				continue;
+
+			std::string displayName = config->getDeviceName();
+
+			bool foundFromConfig = !configuratedPath.empty() ? config->getSortDevicePath() == configuratedPath : configuratedName == config->getDeviceName() && configuratedGuid == config->getDeviceGUIDString();
+			int deviceID = config->getDeviceId();
+
+			InputConfigInfo* newInputConfig = new InputConfigInfo(config->getDeviceName(), config->getDeviceGUIDString(), config->getSortDevicePath());
+			mLoadedInput.push_back(newInputConfig);
+
+			if (foundFromConfig && std::find(alreadyTaken.begin(), alreadyTaken.end(), deviceID) == alreadyTaken.end() && !found)
+			{
+				found = true;
+				alreadyTaken.push_back(deviceID);
+
+				LOG(LogWarning) << "adding entry for player" << player << " (selected): " << config->getDeviceName() << "  " << config->getDeviceGUIDString() << "  " << config->getDevicePath();
+				inputOptionList->addEx(displayName, config->getDevicePath(), newInputConfig, true, false, false);
+			}
+			else
+			{
+				LOG(LogInfo) << "adding entry for player" << player << " (not selected): " << config->getDeviceName() << "  " << config->getDeviceGUIDString() << "  " << config->getDevicePath();
+				inputOptionList->addEx(displayName, config->getDevicePath(), newInputConfig, false, false, false);
+			}
+		}
+
+		if (!inputOptionList->hasSelection())
+			inputOptionList->selectFirstItem();
+
+		// Populate controllers list
+		addWithLabel(label, inputOptionList);
+	}
+#else
+	for (int player = 0; player < MAX_PLAYERS; player++)
+	{
+		std::string confName = Utils::String::format("INPUT P%iNAME", player + 1);
+		std::string confGuid = Utils::String::format("INPUT P%iGUID", player + 1);
+		std::string confPath = Utils::String::format("INPUT P%iPATH", player + 1);
+
+		std::string label = Utils::String::format(gettext_playerid.c_str(), player + 1);
+
+		auto inputOptionList = std::make_shared<OptionListComponent<InputConfigInfo*> >(mWindow, label, false);
+		inputOptionList->add(_("default"), nullptr, false);
+		options.push_back(inputOptionList);
+
+		// Checking if a setting has been saved, else setting to default
+		std::string configuratedName = Settings::getInstance()->getString(confName);
+		std::string configuratedGuid = Settings::getInstance()->getString(confGuid);
+		std::string configuratedPath = Settings::getInstance()->getString(confPath);
+
+		bool found = false;
+
+		// For each available and configured input
+		for (auto config : configList)
+		{
+			std::string displayName = "#" + std::to_string(config->getDeviceIndex()) + " " + config->getDeviceName();
+			bool foundFromConfig = !configuratedPath.empty() ? config->getSortDevicePath() == configuratedPath : configuratedName == config->getDeviceName() && configuratedGuid == config->getDeviceGUIDString();
+
+			int deviceID = config->getDeviceId();
+
+			InputConfigInfo* newInputConfig = new InputConfigInfo(config->getDeviceName(), config->getDeviceGUIDString(), config->getSortDevicePath());
+			mLoadedInput.push_back(newInputConfig);
+
+			if (foundFromConfig && std::find(alreadyTaken.begin(), alreadyTaken.end(), deviceID) == alreadyTaken.end() && !found)
+			{
+				found = true;
+				alreadyTaken.push_back(deviceID);
+
+				LOG(LogWarning) << "adding entry for player" << player << " (selected): " << config->getDeviceName() << "  " << config->getDeviceGUIDString() << "  " << config->getDevicePath();
+				inputOptionList->add(displayName, newInputConfig, true);
+			}
+			else
+			{
+				LOG(LogInfo) << "adding entry for player" << player << " (not selected): " << config->getDeviceName() << "  " << config->getDeviceGUIDString() << "  " << config->getDevicePath();
+				inputOptionList->add(displayName, newInputConfig, false);
+			}
+		}
+
+		if (!inputOptionList->hasSelection())
+			inputOptionList->selectFirstItem();
+
+		// Populate controllers list
+		addWithLabel(label, inputOptionList);
+	}
+#endif
+
+	addSaveFunc([this, options, window]
+	{
+		bool changed = false;
+
+		for (int player = 0; player < MAX_PLAYERS; player++)
+		{
+			std::string confName = Utils::String::format("INPUT P%iNAME", player + 1);
+			std::string confGuid = Utils::String::format("INPUT P%iGUID", player + 1);
+			std::string confPath = Utils::String::format("INPUT P%iPATH", player + 1);
+
+			auto input = options.at(player);
+
+			InputConfigInfo* selected = input->getSelected();
+			if (selected == nullptr)
+			{
+				changed |= Settings::getInstance()->setString(confName, "DEFAULT");
+				changed |= Settings::getInstance()->setString(confGuid, "");
+				changed |= Settings::getInstance()->setString(confPath, "");
+			}
+			else if (input->changed())
+			{
+				LOG(LogInfo) << "Found the selected controller : " << input->getSelectedName() << ", " << selected->guid << ", " << selected->path;
+
+				changed |= Settings::getInstance()->setString(confName, selected->name);
+				changed |= Settings::getInstance()->setString(confGuid, selected->guid);
+				changed |= Settings::getInstance()->setString(confPath, selected->path);
+			}
+		}
+
+		if (changed)
+			Settings::getInstance()->saveFile();
+
+		// this is dependant of this configuration, thus update it
+		InputManager::getInstance()->computeLastKnownPlayersDeviceIndexes();
+	});
+}
+
+void GuiControllersSettings::openControllersHotkeys()
+{
+	GuiSettings* s = new GuiSettings(mWindow, _("JOYSTICKS HOTKEYS"));
+
+	std::vector<hotkeyInputDefinition> keys_labels = 
+	{
+	  { "b",        _("SOUTH") },
+	  { "a",        _("EAST") },
+	  { "x",        _("NORTH") },
+	  { "y",        _("WEST") },
+	  { "start",    _("START") },
+	  { "select",   _("SELECT") },
+	  { "up",       _("D-PAD UP") },
+	  { "down",     _("D-PAD DOWN") },
+	  { "left",     _("D-PAD LEFT") },
+	  { "right",    _("D-PAD RIGHT") },
+	  { "pageup",   _("LEFT SHOULDER") },
+	  { "pagedown", _("RIGHT SHOULDER") },
+	  { "l2",       _("LEFT TRIGGER") },
+	  { "r2",       _("RIGHT TRIGGER") },
+	  { "l3",       _("LEFT STICK PRESS") },
+	  { "r3",       _("RIGHT STICK PRESS") }
+	};
+
+	std::vector<hotkeyTargetDefinition> targets_labels = 
+	{
+		{ "bezels",           _("OVERLAYS") },
+		{ "brightness-cycle", _("BRIGHTNESS CYCLE") },
+		{ "controlcenter",    _("CONTROL CENTER") },
+		{ "exit",             _("EXIT") },
+		{ "pause",            _("PAUSE") },
+		{ "menu",             _("MENU") },
+		{ "files",            _("FILES") },
+		{ "coin",             _("COIN") },
+		{ "fastforward",      _("FAST FORWARD") },
+		{ "next_disk",        _("NEXT DISK") },
+		{ "next_slot",        _("NEXT SLOT") },
+		{ "previous_slot",    _("PREVIOUS SLOT") },
+		{ "reset",            _("RESET") },
+		{ "save_state",       _("SAVE STATE") },
+		{ "restore_state",    _("RESTORE STATE") },
+		{ "rewind",           _("REWIND") },
+		{ "screen_layout",    _("SCREEN LAYOUT") },
+		{ "screenshot",       _("SCREENSHOT") },
+		{ "swap_screen",      _("SWAP SCREEN") },
+		{ "translation",      _("TRANSLATION") },
+		{ "volumedown",       _("VOLUME DOWN") },
+		{ "volumeup",         _("VOLUME UP") },
+		{ "volumemute",       _("VOLUME MUTE") },
+		{ "recording-start",  _("START RECORDING") },
+		{ "recording-stop",   _("STOP RECORDING") },
+		{ "onscreen-keyboard",_("KEYBOARD TOGGLE") },
+	};
+
+
+	std::vector<Hotkey> hotkeys = ApiSystem::getInstance()->getJoysticksHotkeys();
+	std::vector<std::string> hotkeys_values = ApiSystem::getInstance()->getJoysticksHotkeysValues();
+	std::vector<std::shared_ptr<OptionListComponent<std::string>>> btns_elts;
+
+	for (unsigned int i = 0; i < hotkeys.size(); i++) 
+	{
+		// find the label
+		std::string label = _("HOTKEY") + " + " + hotkeys[i].button;
+		for (unsigned int x = 0; x < keys_labels.size(); x++) 
+		{
+			if (keys_labels[x].code == hotkeys[i].button) 
+			{
+				label = _("HOTKEY") + " + " + keys_labels[x].name;
+				break;
+			}
+		}
+
+		auto btn = std::make_shared< OptionListComponent<std::string> >(mWindow, label, false);
+
+		// build the default label
+		std::string default_label = hotkeys[i].default_action;
+		for (unsigned int x = 0; x < targets_labels.size(); x++)
+		{
+			if (targets_labels[x].code == hotkeys[i].default_action)
+			{
+				default_label = targets_labels[x].name;
+				break;
+			}
+		}
+
+		if (hotkeys[i].default_action == "")
+			default_label = _("NONE");
+		
+		btn->add(_("DEFAULT") + " (" + default_label + ")", "default", hotkeys[i].default_action == hotkeys[i].action);
+		btn->add(_("NONE"), "none", hotkeys[i].default_action != "" && hotkeys[i].action == "");
+
+		// add known hotkeys
+		for (unsigned int v = 0; v < hotkeys_values.size(); v++) 
+		{
+			// find the label
+			std::string xlabel = hotkeys_values[v];
+			for (unsigned int x = 0; x < targets_labels.size(); x++)
+			{
+				if (targets_labels[x].code == hotkeys_values[v]) 
+				{
+					xlabel = targets_labels[x].name;
+					break;
+				}
+			}
+			btn->add(xlabel, hotkeys_values[v], hotkeys[i].action != "" && hotkeys[i].default_action != hotkeys[i].action && hotkeys[i].action == hotkeys_values[v]);
+		}
+
+		s->addWithLabel(label, btn);
+		btns_elts.push_back(btn);
+	}
+
+	s->addSaveFunc([hotkeys, btns_elts] 
+		{
+		std::vector<Hotkey> vals;
+		for (unsigned int h = 0; h < hotkeys.size(); h++) 
+		{
+			Hotkey k;
+			k.button = hotkeys[h].button;
+			k.action = btns_elts[h]->getSelected();
+			vals.push_back(k);
+		}
+		ApiSystem::getInstance()->setJoysticksHotkeys(vals);
+
+#ifdef HIPPOS
+		// change the control center key for es too
+		for (unsigned int h = 0; h < hotkeys.size(); h++) {
+			if (btns_elts[h]->getSelected() == "controlcenter") {
+				Settings::getInstance()->setString("HOTKEY_CONTROLCENTER", hotkeys[h].button);
+				Settings::getInstance()->saveFile();
+				break;
+			}
+		}
+		//
+#endif
+		});
+
+	mWindow->pushGui(s);
+}
+
+void GuiControllersSettings::openGlobalHotkeys()
+{
+	GuiSettings* s = new GuiSettings(mWindow, _("GLOBAL HOTKEYS"));
+	initializeGlobalHotkeys(mWindow, s);
+
+	mWindow->pushGui(s);
+}
+
+void GuiControllersSettings::openPad2key()
+{
+	GuiSettings* s = new GuiSettings(mWindow, _("PAD2KEY"), true);
+	Window* window = mWindow;
+
+	std::vector<Pad2key> pad2key = ApiSystem::getInstance()->getPad2keys();
+
+	if (pad2key.size() == 0)
+		s->addEntry(_("NO DEVICE FOUND (JAMMASD, IPAC, ...)"), false);
+	else
+	{
+		for (unsigned int i = 0; i < pad2key.size(); i++)
+			s->addEntry(pad2key[i].name, false, [this, pad2key, i] { mWindow->pushGui(new GuiPad2key(mWindow, pad2key[i])); });		
+	}
+
+	mWindow->pushGui(s);
+}
+
+void GuiControllersSettings::initializeGlobalHotkeys(Window* window, GuiSettings* s)
+{
+	std::vector<std::shared_ptr<OptionListComponent<std::string>>> elts;
+
+	std::vector<hotkeyTargetDefinition> targets_labels =
+	{
+		{ "bezels",           _("OVERLAYS") },
+		{ "brightness-cycle", _("BRIGHTNESS CYCLE") },
+		{ "controlcenter",    _("CONTROL CENTER") },
+		{ "exit",             _("EXIT") },
+		{ "pause",            _("PAUSE") },
+		{ "menu",             _("MENU") },
+		{ "files",            _("FILES") },
+		{ "coin",             _("COIN") },
+		{ "fastforward",      _("FAST FORWARD") },
+		{ "next_disk",        _("NEXT DISK") },
+		{ "next_slot",        _("NEXT SLOT") },
+		{ "previous_slot",    _("PREVIOUS SLOT") },
+		{ "reset",            _("RESET") },
+		{ "save_state",       _("SAVE STATE") },
+		{ "restore_state",    _("RESTORE STATE") },
+		{ "rewind",           _("REWIND") },
+		{ "screen_layout",    _("SCREEN LAYOUT") },
+		{ "screenshot",       _("SCREENSHOT") },
+		{ "swap_screen",      _("SWAP SCREEN") },
+		{ "translation",      _("TRANSLATION") },
+		{ "volumedown",       _("VOLUME DOWN") },
+		{ "volumeup",         _("VOLUME UP") },
+		{ "volumemute",       _("VOLUME MUTE") },
+		{ "recording-start",  _("START RECORDING") },
+		{ "recording-stop",   _("STOP RECORDING") },
+		{ "onscreen-keyboard",_("KEYBOARD TOGGLE") },
+	};
+
+	s->save(); // save the current step to avoid loosing information, will do nothing the first time while there is no save function
+	s->clear();
+	s->addEntry(_("DECLARE A NEW GLOBAL HOTKEY"), false, [this, window, s] { declareGlobalHotkey(window, s); });
+
+	std::vector<GlobalHotkey> hotkeys = ApiSystem::getInstance()->getGlobalHotkeys();
+	std::vector<std::string> global_hotkeys_values = ApiSystem::getInstance()->getGlobalHotkeysValues();
+	std::string current_device = "";
+
+	for (unsigned int i = 0; i < hotkeys.size(); i++) 
+	{
+		if (current_device != hotkeys[i].device_fancy_name) 
+		{
+			current_device = hotkeys[i].device_fancy_name;
+			s->addGroup(current_device);
+		}
+
+		auto elt = std::make_shared< OptionListComponent<std::string> >(mWindow, hotkeys[i].key, false);
+		s->addWithLabel(hotkeys[i].key, elt);
+		elts.push_back(elt);
+
+		elt->add(_("NONE"), "none", hotkeys[i].action == "");
+
+		// add known hotkeys
+		for (unsigned int v = 0; v < global_hotkeys_values.size(); v++) 
+		{
+			// find the label
+			std::string xlabel = global_hotkeys_values[v];
+			for (unsigned int x = 0; x < targets_labels.size(); x++) 
+			{
+				if (targets_labels[x].code == global_hotkeys_values[v]) 
+				{
+					xlabel = targets_labels[x].name;
+					break;
+				}
+			}
+			elt->add(xlabel, global_hotkeys_values[v], hotkeys[i].action == global_hotkeys_values[v]);
+		}
+	}
+
+	// reset the save function
+	s->clearSaveFuncs();
+	s->addSaveFunc([hotkeys, elts]
+		{
+			for (unsigned int h = 0; h < hotkeys.size(); h++)
+			{
+				if (elts[h]->getSelected() == "none") // save save time, we do cleaning of none values
+					ApiSystem::getInstance()->removeGlobalHotkey(hotkeys[h].device_config, hotkeys[h].key);
+				else if (elts[h]->changed())
+					ApiSystem::getInstance()->setGlobalHotkey(hotkeys[h].device_config, hotkeys[h].key, elts[h]->getSelected());
+			}
+		});
+}
+
+void GuiControllersSettings::declareGlobalHotkey(Window* window, GuiSettings* s)
+{
+	window->pushGui(new GuiLoading<int>(window, _("YOU'VE 4 SECONDS TO PRESS EXACTLY 2 TIMES THE GLOBAL HOTKEY"), [this, window](auto gui)
+		{
+			std::vector<GlobalHotkey> res = ApiSystem::getInstance()->detectGlobalHotkeys();
+			if (res.size() == 1)
+				ApiSystem::getInstance()->setGlobalHotkey(res[0].device_config, res[0].key, "none");
+			
+			return res.size();
+		}, [this, window, s](int ret)
+		{
+			if (ret == 1)
+				initializeGlobalHotkeys(window, s);			
+			else 
+			{
+				if (ret == 0)
+					window->pushGui(new GuiMsgBox(window, _("NO GLOBAL HOTKEY DETECTED")));								
+				else if (ret > 1)
+					window->pushGui(new GuiMsgBox(window, _("MORE THAN ONE GLOBAL HOTKEY DETECTED")));				
+			}
+		}));
+}
+
+void GuiControllersSettings::openControllersSpecificSettings_sindengun()
+{
+	GuiSettings* s = new GuiSettings(mWindow, controllers_settings_label.c_str());
+
+	std::string selectedBordersSize = SystemConf::getInstance()->get("controllers.guns.borderssize");
+	auto borderssize_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("BORDER SIZE"), false);
+	borderssize_set->add(_("AUTO"), "", "" == selectedBordersSize);
+	borderssize_set->add(_("THIN"), "THIN", "THIN" == selectedBordersSize);
+	borderssize_set->add(_("MEDIUM"), "MEDIUM", "MEDIUM" == selectedBordersSize);
+	borderssize_set->add(_("BIG"), "BIG", "BIG" == selectedBordersSize);
+	s->addOptionList(_("BORDER SIZE"), { { _("AUTO"), "auto" },{ _("THIN") , "thin" },{ _("MEDIUM"), "medium" },{ _("BIG"), "big" } }, "controllers.guns.borderssize", false);
+
+	std::string selectedBordersMode = SystemConf::getInstance()->get("controllers.guns.bordersmode");
+	auto bordersmode_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("BORDER MODE"), false);
+	bordersmode_set->add(_("AUTO"), "", "" == selectedBordersMode);
+	bordersmode_set->add(_("NORMAL"), "NORMAL", "NORMAL" == selectedBordersMode);
+	bordersmode_set->add(_("IN GAME ONLY"), "INGAMEONLY", "INGAMEONLY" == selectedBordersMode);
+	bordersmode_set->add(_("HIDDEN"), "HIDDEN", "HIDDEN" == selectedBordersMode);
+	if (!CustomFeatures::GlobalFeatures.hasGlobalFeature("bordersmode"))
+		s->addOptionList(_("BORDER MODE"), { { _("AUTO"), "auto" },{ _("NORMAL") , "normal" },{ _("IN GAME ONLY"), "gameonly" },{ _("HIDDEN"), "hidden" } }, "controllers.guns.bordersmode", false);
+
+	std::string selectedBordersColor = SystemConf::getInstance()->get("controllers.guns.borderscolor");
+	auto borderscolor_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("BORDER COLOR"), false);
+	borderscolor_set->add(_("AUTO"), "", "" == selectedBordersColor);
+	borderscolor_set->add(_("WHITE"), "WHITE", "white" == selectedBordersColor);
+	borderscolor_set->add(_("RED"), "RED", "red" == selectedBordersColor);
+	borderscolor_set->add(_("GREEN"), "GREEN", "green" == selectedBordersColor);
+	borderscolor_set->add(_("BLUE"), "BLUE", "blue" == selectedBordersColor);
+	s->addOptionList(_("BORDER COLOR"), { { _("AUTO"), "auto" },{ _("WHITE") , "white" },{ _("RED") , "red" },{ _("GREEN"), "green" },{ _("BLUE"), "blue" } }, "controllers.guns.borderscolor", false);
+
+#if HIPPOS
+	std::string selectedBordersRatio = SystemConf::getInstance()->get("controllers.guns.bordersratio");
+	auto bordersratio_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("BORDER RATIO"), false);
+	bordersratio_set->add(_("AUTO"), "", "" == selectedBordersRatio);
+	bordersratio_set->add("4:3", "4:3", "4:3" == selectedBordersRatio);
+	s->addWithLabel(_("BORDER RATIO"), bordersratio_set);
+
+	std::string selectedCameraContrast = SystemConf::getInstance()->get("controllers.guns.sinden.contrast");
+	auto cameracontrast_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("CAMERA CONTRAST"), false);
+	cameracontrast_set->add(_("AUTO"), "", "" == selectedCameraContrast);
+	cameracontrast_set->add(_("Daytime/Bright Sunlight (40)"), "40", "40" == selectedCameraContrast);
+	cameracontrast_set->add(_("Default (50)"), "50", "50" == selectedCameraContrast);
+	cameracontrast_set->add(_("Dim Display/Evening (60)"), "60", "60" == selectedCameraContrast);
+	s->addWithLabel(_("CAMERA CONTRAST"), cameracontrast_set);
+
+	std::string selectedCameraBrightness = SystemConf::getInstance()->get("controllers.guns.sinden.brightness");
+	auto camerabrightness_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("CAMERA BRIGHTNESS"), false);
+	camerabrightness_set->add(_("AUTO"), "", "" == selectedCameraBrightness);
+	camerabrightness_set->add(_("Daytime/Bright Sunlight (80)"), "80", "80" == selectedCameraBrightness);
+	camerabrightness_set->add(_("Default (100)"), "100", "100" == selectedCameraBrightness);
+	camerabrightness_set->add(_("Dim Display/Evening (120)"), "120", "120" == selectedCameraBrightness);
+	s->addWithLabel(_("CAMERA BRIGHTNESS"), camerabrightness_set);
+
+	std::string selectedCameraExposure = SystemConf::getInstance()->get("controllers.guns.sinden.exposure");
+	auto cameraexposure_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("CAMERA EXPOSURE"), false);
+	cameraexposure_set->add(_("AUTO"), "", "" == selectedCameraExposure);
+	cameraexposure_set->add(_("Projector/CRT (-5)"), "-5", "-5" == selectedCameraExposure);
+	cameraexposure_set->add(_("Projector/CRT (-6)"), "-6", "-6" == selectedCameraExposure);
+	cameraexposure_set->add(_("Default (-7)"), "-7", "-7" == selectedCameraExposure);
+	cameraexposure_set->add(_("Other (-8)"), "-8", "-8" == selectedCameraExposure);
+	cameraexposure_set->add(_("Other (-9)"), "-9", "-9" == selectedCameraExposure);
+	s->addWithLabel(_("CAMERA EXPOSURE"), cameraexposure_set);
+
+	std::string baseMode = SystemConf::getInstance()->get("controllers.guns.recoil");
+	auto sindenmode_choices = std::make_shared<OptionListComponent<std::string> >(mWindow, _("RECOIL"), false);
+	sindenmode_choices->add(_("AUTO"), "auto", baseMode.empty() || baseMode == "auto");
+	sindenmode_choices->add(_("DISABLED"), "disabled", baseMode == "disabled");
+	sindenmode_choices->add(_("GUN"), "gun", baseMode == "gun");
+	sindenmode_choices->add(_("MACHINE GUN"), "machinegun", baseMode == "machinegun");
+	sindenmode_choices->add(_("QUIET GUN"), "gun-quiet", baseMode == "gun-quiet");
+	sindenmode_choices->add(_("QUIET MACHINE GUN"), "machinegun-quiet", baseMode == "machinegun-quiet");
+	s->addWithLabel(_("RECOIL"), sindenmode_choices);
+
+	s->addSaveFunc([sindenmode_choices, bordersratio_set, cameracontrast_set, camerabrightness_set, cameraexposure_set] {
+		if (sindenmode_choices->getSelected() != SystemConf::getInstance()->get("controllers.guns.recoil") ||
+		        bordersratio_set->getSelected() != SystemConf::getInstance()->get("controllers.guns.bordersratio") ||
+			cameracontrast_set->getSelected() != SystemConf::getInstance()->get("controllers.guns.sinden.contrast") ||
+			camerabrightness_set->getSelected() != SystemConf::getInstance()->get("controllers.guns.sinden.brightness") ||
+			cameraexposure_set->getSelected() != SystemConf::getInstance()->get("controllers.guns.sinden.exposure")
+			) {
+			SystemConf::getInstance()->set("controllers.guns.recoil", sindenmode_choices->getSelected());
+			SystemConf::getInstance()->set("controllers.guns.bordersratio", bordersratio_set->getSelected());
+			SystemConf::getInstance()->set("controllers.guns.sinden.contrast", cameracontrast_set->getSelected());
+			SystemConf::getInstance()->set("controllers.guns.sinden.brightness", camerabrightness_set->getSelected());
+			SystemConf::getInstance()->set("controllers.guns.sinden.exposure", cameraexposure_set->getSelected());
+			SystemConf::getInstance()->saveSystemConf();
+			ApiSystem::getInstance()->replugControllers_sindenguns();
+		}
+	});
+#endif
+
+	mWindow->pushGui(s);
+}
+
+void GuiControllersSettings::openControllersSpecificSettings_wheel()
+{
+	GuiSettings* s = new GuiSettings(mWindow, controllers_settings_label.c_str());
+
+	std::string selectedWheelRotation = SystemConf::getInstance()->get("wheel_rotation");
+	auto wheelrotation_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("WHEEL ROTATION"), false);
+	wheelrotation_set->add(_("AUTO"), "", selectedWheelRotation.empty());
+	wheelrotation_set->add("150", "150", selectedWheelRotation == "150");
+	wheelrotation_set->add("180", "180", selectedWheelRotation == "180");
+	wheelrotation_set->add("200", "200", selectedWheelRotation == "200");
+	wheelrotation_set->add("240", "240", selectedWheelRotation == "240");
+	wheelrotation_set->add("270", "270", selectedWheelRotation == "270");
+	wheelrotation_set->add("360", "360", selectedWheelRotation == "360");
+	wheelrotation_set->add("720", "720", selectedWheelRotation == "720");
+	wheelrotation_set->add("900", "900", selectedWheelRotation == "900");
+	wheelrotation_set->add("1080", "1080", selectedWheelRotation == "1080");
+	s->addWithLabel(_("WHEEL ROTATION"), wheelrotation_set);
+
+	std::string selectedWheelDeadzone = SystemConf::getInstance()->get("wheel_deadzone");
+	auto wheeldeadzone_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("WHEEL DEADZONE"), false);
+	wheeldeadzone_set->add(_("AUTO"), "", selectedWheelDeadzone.empty());
+	for (int value = 5; value <= 50; value += 5)
+		wheeldeadzone_set->add(std::to_string(value), std::to_string(value), selectedWheelDeadzone == std::to_string(value));
+	s->addWithLabel(_("WHEEL DEADZONE"), wheeldeadzone_set);
+
+	std::string selectedWheelMidzone = SystemConf::getInstance()->get("wheel_midzone");
+	auto wheelmidzone_set = std::make_shared<OptionListComponent<std::string> >(mWindow, _("WHEEL MIDZONE"), false);
+	wheelmidzone_set->add(_("AUTO"), "", selectedWheelMidzone.empty());
+	for (int value = 1; value <= 10; value += 1)
+		wheelmidzone_set->add(std::to_string(value), std::to_string(value), selectedWheelMidzone == std::to_string(value));
+	s->addWithLabel(_("WHEEL MIDZONE"), wheelmidzone_set);
+
+	s->addSaveFunc([wheelrotation_set, wheeldeadzone_set, wheelmidzone_set]
+	{
+		bool changed = false;
+		changed |= SystemConf::getInstance()->set("wheel_rotation", wheelrotation_set->getSelected());
+		changed |= SystemConf::getInstance()->set("wheel_deadzone", wheeldeadzone_set->getSelected());
+		changed |= SystemConf::getInstance()->set("wheel_midzone", wheelmidzone_set->getSelected());
+		if (changed)
+			SystemConf::getInstance()->saveSystemConf();
+	});
+
+	mWindow->pushGui(s);
+}
+
+void GuiControllersSettings::openControllersSpecificSettings_wiigun()
+{
+	GuiSettings* s = new GuiSettings(mWindow, controllers_settings_label.c_str());
+
+	std::string baseMode = SystemConf::getInstance()->get("controllers.wiimote.mode");
+	auto wiimode_choices = std::make_shared<OptionListComponent<std::string> >(mWindow, _("MODE"), false);
+	wiimode_choices->add(_("AUTO"), "auto", baseMode.empty() || baseMode == "auto");
+	wiimode_choices->add(_("GUN"), "gun", baseMode == "gun");
+	wiimode_choices->add(_("JOYSTICK"), "joystick", baseMode == "joystick");
+	s->addWithLabel(_("MODE"), wiimode_choices);
+	s->addSaveFunc([wiimode_choices] {
+		if (wiimode_choices->getSelected() != SystemConf::getInstance()->get("controllers.wiimote.mode")) {
+			SystemConf::getInstance()->set("controllers.wiimote.mode", wiimode_choices->getSelected());
+			SystemConf::getInstance()->saveSystemConf();
+			ApiSystem::getInstance()->replugControllers_wiimotes();
+		}
+	});
+	mWindow->pushGui(s);
+}
+
+void GuiControllersSettings::openControllersSpecificSettings_steamdeckgun()
+{
+	GuiSettings* s = new GuiSettings(mWindow, controllers_settings_label.c_str());
+
+	std::string baseMode = SystemConf::getInstance()->get("controllers.steamdeckmouse.gun");
+	auto mode_choices = std::make_shared<OptionListComponent<std::string> >(mWindow, _("MODE"), false);
+	mode_choices->add(_("AUTO"), "auto", baseMode.empty() || baseMode == "auto");
+	mode_choices->add(_("MOUSE ONLY"), "0", baseMode == "0");
+	mode_choices->add(_("GUN"), "1", baseMode == "1");
+	s->addWithLabel(_("MODE"), mode_choices);
+	s->addSaveFunc([mode_choices] {
+		if (mode_choices->getSelected() != SystemConf::getInstance()->get("controllers.steamdeckmouse.gun")) {
+			SystemConf::getInstance()->set("controllers.steamdeckmouse.gun", mode_choices->getSelected());
+			SystemConf::getInstance()->saveSystemConf();
+			ApiSystem::getInstance()->replugControllers_steamdeckguns();
+		}
+	});
+
+	std::string baseHand = SystemConf::getInstance()->get("controllers.steamdeckmouse.hand");
+	auto hand_choices = std::make_shared<OptionListComponent<std::string> >(mWindow, _("HAND"), false);
+	hand_choices->add(_("AUTO"), "auto", baseHand.empty() || baseHand == "auto");
+	hand_choices->add(_("LEFT"), "left", baseHand == "left");
+	hand_choices->add(_("RIGHT"), "right", baseHand == "right");
+	s->addWithLabel(_("HAND"), hand_choices);
+	s->addSaveFunc([hand_choices] {
+		if (hand_choices->getSelected() != SystemConf::getInstance()->get("controllers.steamdeckmouse.hand")) {
+			SystemConf::getInstance()->set("controllers.steamdeckmouse.hand", hand_choices->getSelected());
+			SystemConf::getInstance()->saveSystemConf();
+			ApiSystem::getInstance()->replugControllers_steamdeckguns();
+		}
+	});
+
+	mWindow->pushGui(s);
+}
+
+void GuiControllersSettings::clearLoadedInput() 
+{
+	for (int i = 0; i < mLoadedInput.size(); i++) 
+		delete mLoadedInput[i];
+
+	mLoadedInput.clear();
+}
+
+GuiControllersSettings::~GuiControllersSettings() 
+{
+	clearLoadedInput();
+}

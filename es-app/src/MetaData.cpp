@@ -1,0 +1,606 @@
+#include "MetaData.h"
+
+#include "utils/FileSystemUtil.h"
+#include "utils/StringUtil.h"
+#include "Log.h"
+#include <pugixml/src/pugixml.hpp>
+#include "SystemData.h"
+#include "LocaleES.h"
+#include "Settings.h"
+#include "FileData.h"
+#include "ImageIO.h"
+
+std::vector<MetaDataDecl> MetaDataList::mMetaDataDecls;
+
+static std::map<MetaDataId, int> mMetaDataIndexes;
+static std::string* mDefaultGameMap = nullptr;
+static MetaDataType* mGameTypeMap = nullptr;
+static std::map<std::string, MetaDataId> mGameIdMap;
+
+static std::map<std::string, int> KnowScrapersIds =
+{
+	{ "ScreenScraper", 0 },
+	{ "TheGamesDB", 1 },
+	{ "HfsDB", 2 },
+	{ "ArcadeDB", 3 }
+};
+
+void MetaDataList::initMetadata()
+{
+	MetaDataDecl gameDecls[] = 
+	{
+		// key,             type,                   default,            statistic,  name in GuiMetaDataEd,  prompt in GuiMetaDataEd
+		{ Name,             "name",        MD_STRING,              "",                 false,      _("Name"),                 _("this game's name"),			true },
+		{ Desc,             "desc",        MD_MULTILINE_STRING,    "",                 false,      _("Description"),          _("this game's description"),		true },
+
+		{ Genre,            "genre",       MD_STRING,              "",                 false,      _("Genre"),                _("enter game genre"),		false },
+
+		{ Tags,             "tags",        MD_STRING,              "",                 false,      _("Tags"),                 _("tags"),		true },
+		{ SortName,         "sortname",    MD_STRING,              "",                 false,      _("Sort name"),             _("enter game sort name"),	true },
+
+#if WIN32 && !_DEBUG
+		{ Emulator,         "emulator",    MD_LIST,				 "",                 false,       _("Emulator"),			 _("emulator"),					false },
+		{ Core,             "core",	      MD_LIST,				 "",                 false,       _("Core"),				 _("core"),						false },
+#else
+		// Windows & recalbox gamelist.xml compatiblity -> Set as statistic to hide it from metadata editor
+		{ Emulator,         "emulator",    MD_LIST,				 "",                 true,        _("Emulator"),			 _("emulator"),					false },
+		{ Core,             "core",	     MD_LIST,				 "",                 true,        _("Core"),				 _("core"),						false },
+#endif
+
+		{ Image,            "image",       MD_PATH,                "",                 false,      _("Image"),                _("enter path to image"),		 true },
+		{ Video,            "video",       MD_PATH,                "",                 false,      _("Video"),                _("enter path to video"),		 false },
+		{ Marquee,          "marquee",     MD_PATH,                "",                 false,      _("Logo"),                 _("enter path to logo"),	     true },
+		{ Thumbnail,        "thumbnail",   MD_PATH,                "",                 false,      _("Box"),				  _("enter path to box"),		 false },
+
+		{ FanArt,           "fanart",      MD_PATH,                "",                 false,      _("Fan art"),              _("enter path to fanart"),	 true },
+		{ TitleShot,        "titleshot",   MD_PATH,                "",                 false,      _("Title shot"),           _("enter path to title shot"), true },
+		{ Manual,			"manual",	   MD_PATH,                "",                 false,      _("Manual"),               _("enter path to manual"),     true },
+		{ Magazine,			"magazine",	   MD_PATH,                "",                 false,      _("Magazine"),             _("enter path to magazine"),     true },
+		{ Map,			    "map",	       MD_PATH,                "",                 false,      _("Map"),                  _("enter path to map"),		 true },
+		{ Bezel,            "bezel",       MD_PATH,                "",                 false,      _("Bezel (16:9)"),         _("enter path to bezel (16:9)"),	 true },
+
+		// Non scrappable /editable medias
+		{ Cartridge,        "cartridge",   MD_PATH,                "",                 true,       _("Cartridge"),            _("enter path to cartridge"),  true },
+		{ BoxArt,			"boxart",	   MD_PATH,                "",                 true,       _("Alt BoxArt"),		      _("enter path to alt boxart"), true },
+		{ BoxBack,			"boxback",	   MD_PATH,                "",                 false,      _("Box backside"),		  _("enter path to box background"), true },
+		{ Wheel,			"wheel",	   MD_PATH,                "",                 true,       _("Wheel"),		          _("enter path to wheel"),      true },
+		{ Mix,			    "mix",	       MD_PATH,                "",                 true,       _("Mix"),                  _("enter path to mix"),		 true },
+		
+		{ Rating,           "rating",      MD_RATING,              "0.000000",         false,      _("Rating"),               _("enter rating"),			false },
+		{ ReleaseDate,      "releasedate", MD_DATE,                "not-a-date-time",  false,      _("Release date"),         _("enter release date"),		false },
+		{ Developer,        "developer",   MD_STRING,              "",                 false,      _("Developer"),            _("this game's developer"),	false },
+		{ Publisher,        "publisher",   MD_STRING,              "",                 false,      _("Publisher"),            _("this game's publisher"),	false },
+
+		{ Family,           "family",      MD_STRING,              "",                 false,      _("Game family"),		  _("this game's game family"),		false },
+
+		// GenreIds is not serialized
+		{ GenreIds,         "genres",      MD_STRING,              "",                 false,      _("Genres"),				  _("enter game genres"),		false },
+
+		{ ArcadeSystemName, "arcadesystemname",  MD_STRING,        "",                 false,      _("Arcade system"),        _("this game's arcade system"), false },
+
+		{ Players,          "players",     MD_STRING,              "",                false,       _("Players"),              _("this game's number of players"),	false },
+		{ Favorite,         "favorite",    MD_BOOL,                "false",            false,      _("Favorite"),             _("enter favorite"),			false },
+		{ Hidden,           "hidden",      MD_BOOL,                "false",            false,      _("Hidden"),               _("enter hidden"),			true },
+		{ KidGame,          "kidgame",     MD_BOOL,                "false",            false,      _("Kidgame"),              _("enter kidgame"),			false },
+		{ PlayCount,        "playcount",   MD_INT,                 "0",                true,       _("Play count"),           _("enter number of times played"), false },
+		{ LastPlayed,       "lastplayed",  MD_TIME,                "0",                true,       _("Last played"),          _("enter last played date"), false },
+
+		{ Crc32,            "crc32",       MD_STRING,              "",                 true,       _("Crc32"),                _("Crc32 checksum"),			false },
+		{ Md5,              "md5",		   MD_STRING,              "",                 true,       _("Md5"),                  _("Md5 checksum"),			false },
+
+		{ GameTime,         "gametime",    MD_INT,                 "0",                true,       _("Game time"),            _("how long the game has been played in total (seconds)"), false },
+
+		{ Language,         "lang",        MD_STRING,              "",                 false,      _("Languages"),            _("this game's languages"),				false },
+		{ Region,           "region",      MD_STRING,              "",                 false,      _("Region"),               _("this game's region"),					false },
+
+		{ CheevosHash,      "cheevosHash", MD_STRING,              "",                 true,       _("Cheevos Hash"),          _("Cheevos checksum"),	    false },
+		{ CheevosId,        "cheevosId",   MD_INT,                 "",				   true,       _("Cheevos Game ID"),       _("Cheevos Game ID"),		false },
+
+		{ ScraperId,        "id",		   MD_INT,                 "",				   true,       _("Screenscraper Game ID"), _("Screenscraper Game ID"),	false, true },
+
+		{ MultiDisk,        "multidisk",   MD_STRING,              "",				   true,       _("MultiDisk"),             _("MultiDisk"),	false },
+		{ ParentGame,       "parent",      MD_PATH,                "",                 false,      _("Parent game"),           _("enter path to parent game"), false }
+	};
+	
+	mMetaDataDecls = std::vector<MetaDataDecl>(gameDecls, gameDecls + sizeof(gameDecls) / sizeof(gameDecls[0]));
+	
+	mMetaDataIndexes.clear();
+	for (int i = 0 ; i < mMetaDataDecls.size() ; i++)
+		mMetaDataIndexes[mMetaDataDecls[i].id] = i;
+
+	int maxID = mMetaDataDecls.size() + 1;
+
+	if (mDefaultGameMap != nullptr) 
+		delete[] mDefaultGameMap;
+
+	if (mGameTypeMap != nullptr) 
+		delete[] mGameTypeMap;
+
+	mDefaultGameMap = new std::string[maxID];
+	mGameTypeMap = new MetaDataType[maxID];
+
+	for (int i = 0; i < maxID; i++)
+		mGameTypeMap[i] = MD_STRING;
+		
+	for (auto iter = mMetaDataDecls.cbegin(); iter != mMetaDataDecls.cend(); iter++)
+	{
+		mDefaultGameMap[iter->id] = iter->defaultValue;
+		mGameTypeMap[iter->id] = iter->type;
+		mGameIdMap[iter->key] = iter->id;
+	}
+}
+
+MetaDataType MetaDataList::getType(MetaDataId id) const
+{
+	return mGameTypeMap[id];
+}
+
+MetaDataType MetaDataList::getType(const std::string name) const
+{
+	return getType(getId(name));
+}
+
+MetaDataId MetaDataList::getId(const std::string& key) const
+{
+	return mGameIdMap[key];
+}
+
+MetaDataList::MetaDataList(MetaDataListType type) : mType(type), mWasChanged(false), mRelativeTo(nullptr)
+{
+	memset(mIndices, -1, sizeof(mIndices));
+}
+
+void MetaDataList::loadFromXML(MetaDataListType type, pugi::xml_node& node, SystemData* system)
+{
+	mType = type;
+	mRelativeTo = system;	
+
+	mUnKnownElements.clear();
+	mScrapeDates.clear();
+
+	std::string value;
+	std::string relativeTo = mRelativeTo->getStartPath();
+
+	bool preloadMedias = Settings::PreloadMedias();
+	if (preloadMedias && Settings::ParseGamelistOnly())
+		preloadMedias = false;
+
+	for (pugi::xml_node xelement : node.children())
+	{
+		std::string name = xelement.name();
+
+		if (name == "scrap")
+		{
+			if (xelement.attribute("name") && xelement.attribute("date"))
+			{
+				auto scraperId = KnowScrapersIds.find(xelement.attribute("name").value());
+				if (scraperId == KnowScrapersIds.cend())
+					continue;
+				
+				Utils::Time::DateTime dateTime(xelement.attribute("date").value());
+				if (!dateTime.isValid())
+					continue;
+								
+				mScrapeDates[scraperId->second] = dateTime;
+			}		
+								
+			continue;
+		}
+
+		auto it = mGameIdMap.find(name);
+		if (it == mGameIdMap.cend())
+		{
+			if (name == "hash" || name == "path")
+				continue;
+
+			value = xelement.text().get();
+			if (!value.empty())
+				mUnKnownElements.emplace_back(name, value, true);
+
+			continue;
+		}
+
+		MetaDataDecl& mdd = mMetaDataDecls[mMetaDataIndexes[it->second]];
+		if (mdd.isAttribute)
+			continue;
+
+		value = xelement.text().get();
+
+		if (mdd.id == MetaDataId::Name)
+		{
+			mName = value;
+			continue;
+		}
+
+		if (mdd.id == MetaDataId::GenreIds)
+			continue;
+
+		if (value == mdd.defaultValue)
+			continue;
+
+		if (mdd.type == MD_BOOL)
+			value = Utils::String::toLower(value);
+		
+		if (preloadMedias && mdd.type == MD_PATH && (mdd.id == MetaDataId::Image || mdd.id == MetaDataId::Thumbnail || mdd.id == MetaDataId::Marquee || mdd.id == MetaDataId::Video) &&
+			!Utils::FileSystem::exists(Utils::FileSystem::resolveRelativePath(value, relativeTo, true)))
+			continue;
+		
+		// Players -> remove "1-"
+		// if (type == GAME_METADATA && mdd.id == MetaDataId::Players && Utils::String::startsWith(value, "1-"))
+		// 	value = Utils::String::replace(value, "1-", "");
+
+		set(mdd.id, value);
+	}
+
+	for (pugi::xml_attribute xattr : node.attributes())
+	{
+		std::string name = xattr.name();
+		auto it = mGameIdMap.find(name);
+		if (it == mGameIdMap.cend())
+		{
+			value = xattr.value();
+			if (!value.empty())
+				mUnKnownElements.emplace_back(name, value, false);
+
+			continue;
+		}
+
+		MetaDataDecl& mdd = mMetaDataDecls[mMetaDataIndexes[it->second]];
+		if (!mdd.isAttribute)
+			continue;
+
+		value = xattr.value();
+
+		if (value == mdd.defaultValue)
+			continue;
+
+		if (mdd.type == MD_BOOL)
+			value = Utils::String::toLower(value);
+
+		// Players -> remove "1-"
+		// if (type == GAME_METADATA && mdd.id == MetaDataId::Players && Utils::String::startsWith(value, "1-"))
+		// 	value = Utils::String::replace(value, "1-", "");
+
+		if (mdd.id == MetaDataId::Name)
+			mName = value;
+		else
+			set(mdd.id, value);
+	}
+}
+
+// Add migration for alternative formats & old tags
+void MetaDataList::migrate(FileData* file, pugi::xml_node& node)
+{
+	if (get(MetaDataId::Crc32).empty())
+	{
+		pugi::xml_node xelement = node.child("hash");
+		if (xelement)
+			set(MetaDataId::Crc32, xelement.text().get());
+	}
+}
+
+void MetaDataList::appendToXML(pugi::xml_node& parent, bool ignoreDefaults, const std::string& relativeTo, bool fullPaths) const
+{
+	const std::vector<MetaDataDecl>& mdd = getMDD();
+
+	for(auto mddIter = mdd.cbegin(); mddIter != mdd.cend(); mddIter++)
+	{
+		if (mddIter->id == 0)
+		{
+			parent.append_child("name").text().set(mName.c_str());
+			continue;
+		}
+
+		// Don't save GenreIds
+		if (mddIter->id == MetaDataId::GenreIds)
+			continue;
+
+		auto idx = mIndices[mddIter->id];
+		//auto mapIter = mMap.find(mddIter->id);
+		//if(mapIter != mMap.cend())
+		if (idx >= 0)
+		{
+			// we have this value!
+			// if it's just the default (and we ignore defaults), don't write it
+			if (ignoreDefaults && mValues[idx] == mddIter->defaultValue) // mapIter->second 
+				continue;
+
+			// try and make paths relative if we can
+			std::string value = mValues[idx]; // mapIter->second;
+			if (mddIter->type == MD_PATH)
+			{
+				if (fullPaths && mRelativeTo != nullptr)
+					value = Utils::FileSystem::resolveRelativePath(value, mRelativeTo->getStartPath(), true);
+				else
+					value = Utils::FileSystem::createRelativePath(value, relativeTo, true);
+			}
+						
+			if (mddIter->isAttribute)
+				parent.append_attribute(mddIter->key.c_str()).set_value(value.c_str());
+			else
+				parent.append_child(mddIter->key.c_str()).text().set(value.c_str());
+		}
+	}
+
+	for (std::tuple<std::string, std::string, bool> element : mUnKnownElements)
+	{	
+		bool isElement = std::get<2>(element);
+		if (isElement)
+			parent.append_child(std::get<0>(element).c_str()).text().set(std::get<1>(element).c_str());
+		else 
+			parent.append_attribute(std::get<0>(element).c_str()).set_value(std::get<1>(element).c_str());
+	}
+
+	if (mScrapeDates.size() > 0)
+	{
+		for (auto scrapeDate : mScrapeDates)
+		{
+			std::string name;
+
+			for (auto sids : KnowScrapersIds)
+			{
+				if (sids.second == scrapeDate.first)
+				{
+					name = sids.first;
+					break;
+				}
+			}
+
+			if (!name.empty())
+			{
+				auto scraper = parent.append_child("scrap");
+				scraper.append_attribute("name").set_value(name.c_str());
+				scraper.append_attribute("date").set_value(scrapeDate.second.getIsoString().c_str());
+			}
+		}
+	}
+}
+
+void MetaDataList::set(MetaDataId id, const std::string& value)
+{
+	if (id == MetaDataId::Name)
+	{
+		if (mName == value)
+			return;
+
+		mName = value;
+		mWasChanged = true;
+		return;
+	}
+
+	auto idx = mIndices[id];
+	if (idx >= 0 && mValues[idx] == value)
+//	auto prev = mMap.find(id);
+	// if (prev != mMap.cend() && prev->second == value)
+		return;
+
+	#define IS_TRIMCHAR(c) (c == ' ' || c == '\t' || c == '\r' || c == '\n')
+
+	if (mGameTypeMap[id] == MD_PATH && mRelativeTo != nullptr) // if it's a path, resolve relative paths	
+	{
+		if (idx < 0)
+		{
+			if (value.size())
+			{
+				mIndices[id] = (int8_t)mValues.size();
+				mValues.push_back(value[0] == '.' && value[1] == '/' ? value : Utils::FileSystem::createRelativePath(value, mRelativeTo->getStartPath(), true));
+			}
+		}
+		else
+			mValues[idx] = value[0] == '.' && value[1] == '/' ? value : Utils::FileSystem::createRelativePath(value, mRelativeTo->getStartPath(), true);
+	}
+	else
+	{
+		if (idx < 0)
+		{
+			if (value.size())
+			{
+				mIndices[id] = (int8_t)mValues.size();
+				mValues.push_back(value.size() && IS_TRIMCHAR(value[0]) && IS_TRIMCHAR(value.back()) ? Utils::String::trim(value) : value);
+			}
+		}
+		else
+			mValues[idx] = value.size() && IS_TRIMCHAR(value[0]) && IS_TRIMCHAR(value.back()) ? Utils::String::trim(value) : value;
+	}
+
+	mWasChanged = true;
+}
+
+const std::string MetaDataList::get(MetaDataId id, bool resolveRelativePaths) const
+{
+	if (id == MetaDataId::Name)
+		return mName;
+
+	auto idx = mIndices[id];
+	if (idx >= 0)
+//	auto it = mMap.find(id);
+//	if (it != mMap.end())
+	{
+		
+		if (resolveRelativePaths && mGameTypeMap[id] == MD_PATH && mRelativeTo != nullptr) // if it's a path, resolve relative paths				
+			return Utils::FileSystem::resolveRelativePath(mValues[idx]/*it->second*/, mRelativeTo->getStartPath(), true);
+
+		return mValues[idx]; // it->second;
+	}
+
+	return mDefaultGameMap[id];
+}
+
+void MetaDataList::set(const std::string& key, const std::string& value)
+{
+	if (mGameIdMap.find(key) == mGameIdMap.cend())
+		return;
+
+	set(getId(key), value);
+}
+
+const bool MetaDataList::exists(const std::string& key) const
+{
+	return mGameIdMap.find(key) != mGameIdMap.cend();
+}
+
+const std::string MetaDataList::get(const std::string& key, bool resolveRelativePaths) const
+{
+	auto it = mGameIdMap.find(key);
+	if (it == mGameIdMap.cend())
+		return "";
+		
+	return get(it->second, resolveRelativePaths);
+}
+
+int MetaDataList::getInt(MetaDataId id) const
+{
+	return atoi(get(id).c_str());
+}
+
+float MetaDataList::getFloat(MetaDataId id) const
+{
+	return Utils::String::toFloat(get(id));
+}
+
+bool MetaDataList::wasChanged() const
+{
+	return mWasChanged;
+}
+
+void MetaDataList::resetChangedFlag()
+{
+	mWasChanged = false;
+}
+
+void MetaDataList::importScrappedMetadata(const MetaDataList& source)
+{
+	int type = MetaDataImportType::Types::ALL;
+
+	if (Settings::getInstance()->getString("Scraper") == "ScreenScraper")
+	{
+		if (Settings::getInstance()->getString("ScrapperImageSrc").empty())
+			type &= ~MetaDataImportType::Types::IMAGE;
+
+		if (Settings::getInstance()->getString("ScrapperThumbSrc").empty())
+			type &= ~MetaDataImportType::Types::THUMB;
+
+		if (Settings::getInstance()->getString("ScrapperLogoSrc").empty())
+			type &= ~MetaDataImportType::Types::MARQUEE;
+
+		if (!Settings::getInstance()->getBool("ScrapeVideos"))
+			type &= ~MetaDataImportType::Types::VIDEO;
+
+		if (!Settings::getInstance()->getBool("ScrapeFanart"))
+			type &= ~MetaDataImportType::Types::FANART;
+
+		if (!Settings::getInstance()->getBool("ScrapeBoxBack"))
+			type &= ~MetaDataImportType::Types::BOXBACK;
+
+		if (!Settings::getInstance()->getBool("ScrapeTitleShot"))
+			type &= ~MetaDataImportType::Types::TITLESHOT;
+
+		if (!Settings::getInstance()->getBool("ScrapeMap"))
+			type &= ~MetaDataImportType::Types::MAP;
+
+		if (!Settings::getInstance()->getBool("ScrapeManual"))
+			type &= ~MetaDataImportType::Types::MANUAL;
+
+		if (!Settings::getInstance()->getBool("ScrapeCartridge"))
+			type &= ~MetaDataImportType::Types::CARTRIDGE;		
+	}
+
+	bool scapeNames = Settings::getInstance()->getBool("ScrapeNames");
+	bool scrapeDescription = Settings::getInstance()->getBool("ScrapeDescription");
+
+	for (auto mdd : getMDD())
+	{
+		if (mdd.isStatistic && mdd.id != MetaDataId::ScraperId)
+			continue;
+
+		if (mdd.id == MetaDataId::KidGame || mdd.id == MetaDataId::Tags) // Not scrapped yet
+			continue;
+
+		if (mdd.id == MetaDataId::Name && !scapeNames)
+		{
+			if (!get(mdd.id).empty())
+				continue;
+		}
+
+		if (mdd.id == MetaDataId::Desc && !scrapeDescription)
+		{
+			if (!get(mdd.id).empty())
+				continue;
+		}
+
+		if (mdd.id == MetaDataId::Region || mdd.id == MetaDataId::Language) // Not scrapped
+			continue;
+
+		if (mdd.id == MetaDataId::Favorite || mdd.id == MetaDataId::Hidden || mdd.id == MetaDataId::Emulator || mdd.id == MetaDataId::Core || mdd.id == MetaDataId::ParentGame)
+			continue;
+
+		if (mdd.id == MetaDataId::Image && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::IMAGE) != MetaDataImportType::Types::IMAGE))
+			continue;		
+
+		if (mdd.id == MetaDataId::Thumbnail && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::THUMB) != MetaDataImportType::Types::THUMB))
+			continue;
+
+		if (mdd.id == MetaDataId::Marquee && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::MARQUEE) != MetaDataImportType::Types::MARQUEE))
+			continue;
+
+		if (mdd.id == MetaDataId::Video && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::VIDEO) != MetaDataImportType::Types::VIDEO))
+			continue;
+
+		if (mdd.id == MetaDataId::TitleShot && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::TITLESHOT) != MetaDataImportType::Types::TITLESHOT))
+			continue;
+
+		if (mdd.id == MetaDataId::FanArt && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::FANART) != MetaDataImportType::Types::FANART))
+			continue;
+
+		if (mdd.id == MetaDataId::BoxBack && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::BOXBACK) != MetaDataImportType::Types::BOXBACK))
+			continue;
+
+		if (mdd.id == MetaDataId::Map && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::MAP) != MetaDataImportType::Types::MAP))
+			continue;
+
+		if (mdd.id == MetaDataId::Manual && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::MANUAL) != MetaDataImportType::Types::MANUAL))
+			continue;
+
+		if (mdd.id == MetaDataId::Cartridge && (source.get(mdd.id).empty() || (type & MetaDataImportType::Types::CARTRIDGE) != MetaDataImportType::Types::CARTRIDGE))
+			continue;
+
+		if (mdd.id == MetaDataId::Rating && source.getFloat(mdd.id) < 0)
+			continue;
+
+		set(mdd.id, source.get(mdd.id));
+	}
+
+	if (Utils::String::startsWith(source.getName(), "ZZZ(notgame)"))
+		set(MetaDataId::Hidden, "true");
+}
+
+std::string MetaDataList::getRelativeRootPath()
+{
+	if (mRelativeTo)
+		return mRelativeTo->getStartPath();
+
+	return "";
+}
+
+void MetaDataList::setScrapeDate(const std::string& scraper)
+{
+	auto it = KnowScrapersIds.find(scraper);
+	if (it == KnowScrapersIds.cend())
+		return;
+
+	mScrapeDates[it->second] = Utils::Time::DateTime::now();
+	mWasChanged = true;
+}
+
+Utils::Time::DateTime* MetaDataList::getScrapeDate(const std::string& scraper)
+{
+	auto it = KnowScrapersIds.find(scraper);
+	if (it != KnowScrapersIds.cend())
+	{
+		auto itd = mScrapeDates.find(it->second);
+		if (itd != mScrapeDates.cend())
+			return &itd->second;
+	}
+
+	return nullptr;
+}

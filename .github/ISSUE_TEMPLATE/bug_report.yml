@@ -1,0 +1,54 @@
+name: Report a bug
+description: Report a bug and help us improve EmulationStation.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not ask for help here, use Batocera and Retobat discord servers and forums instead.
+        Before you start, make sure your request is related to EmulationStation.        
+        If your request is related to the operating system (linux), a specific hardware device, or what happens with emulators / games, you're not in the good repository.
+        For Batocera specific issues, post in https://github.com/batocera-linux/batocera.linux/issues repository.
+        For Retobat specific issues, post in https://github.com/RetroBat-Official/retrobat-setup/issues repository.
+  - type: dropdown
+    id: project
+    attributes:
+      label: Concerned project
+      description: Does it concerns Batocera, Retrobat or another projet ?
+      options:
+        - Batocera
+        - Retrobat
+        - Both
+        - Standalone emulationstation
+        - Another project (specify in Distribution version)
+    validations:
+      required: true        
+  - type: input
+    id: version
+    attributes:
+      label: Distribution Version
+      description: Version tested.      
+      placeholder: Batocera V38, Retrobat V6, etc...
+    validations:
+      required: false
+  - type: input
+    id: arch
+    attributes:
+      label: Architecture
+      description: Architecture for Batocera, or Windows version for Retrobat
+      placeholder: Windows 10, Windows 11, Rasperry Pi 4 B, PC, Steam Deck, Odroid C4, Orange Pi 5, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue description
+      description: A precise explanation of the issue. 
+    validations:
+      required: true
+  - type: textarea
+    id: logs_and_data
+    attributes:
+      label: Logs and data
+      description: Provide all the relevant logs (es_log.txt) or files.      
+    validations:
+      required: false

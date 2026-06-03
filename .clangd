@@ -1,0 +1,7 @@
+CompileFlags:
+  Add:
+    - -I./es-core/src
+    - -I./es-app/src
+    - -I./external
+    - -DHIPPOS=1
+    - -std=c++17

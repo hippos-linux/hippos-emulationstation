@@ -1,0 +1,436 @@
+#ifndef API_SYSTEM
+#define API_SYSTEM
+
+#include <string>
+#include <map>
+#include "Window.h"
+#include "components/BusyComponent.h"
+#include "resources/TextureData.h"
+#include "components/IExternalActivity.h"
+
+struct BiosFile 
+{
+  std::string status;
+  std::string md5;
+  std::string path;
+};
+
+struct BiosSystem 
+{
+  std::string name;
+  std::vector<BiosFile> bios;
+};
+
+struct BatoceraBezel
+{
+	std::string name;
+	std::string url;
+	std::string folderPath;
+	bool isInstalled;
+};
+
+struct BatoceraTheme
+{
+	std::string name; 
+	std::string url;  
+	std::string author;
+	std::string lastUpdate;
+	int upToDate;
+	int size;
+	std::string image;
+	
+	bool isInstalled;
+};
+
+struct BrightnessDevice {
+  std::string path;
+  std::string pathmax;
+  int value;
+};
+
+struct PacmanPackage
+{
+	PacmanPackage()
+	{
+		download_size = 0;
+		installed_size = 0;
+	}
+
+	std::string name;
+	std::string repository;
+	std::string available_version;
+	std::string description;
+	std::string url;
+
+	std::string packager;
+	std::string status;
+
+	size_t download_size;
+	size_t installed_size;
+
+	std::string preview_url;
+
+	std::string group;
+	std::vector<std::string> licenses;	
+
+	std::string arch;
+
+	bool isInstalled() { return status == "installed"; }
+};
+
+struct PadInfo
+{
+	int id;
+	std::string name;
+	std::string device;
+	std::string status;
+	std::string path;
+	int battery;
+};
+
+struct Service
+{
+  std::string name;
+  bool enabled;
+};
+
+struct Hotkey
+{
+  std::string button;
+  std::string action;
+  std::string default_action;
+};
+
+struct GlobalHotkey
+{
+  std::string device_fancy_name;
+  std::string device_config;
+  std::string key;
+  std::string action;
+};
+
+struct Pad2key
+{
+  std::string name;
+  std::string config;
+  std::string device_path;
+};
+
+struct Pad2keyKey
+{
+  std::string name;
+  std::string value;
+};
+
+struct Pad2keyDevice
+{
+  std::string name;
+  std::string type;
+  std::vector<Pad2keyKey> keys;
+};
+
+class ApiSystem : public IPdfHandler, public IExternalActivity
+{
+public:
+	enum LED_TYPE {
+		LED_TYPE_NONE,
+		LED_TYPE_UNIFIED,
+		LED_TYPE_ADDRESSABLE
+	};
+
+	enum ScriptId : unsigned int
+	{
+		WIFI = 0,
+		RETROACHIVEMENTS = 1,
+		BLUETOOTH = 2,		
+		RESOLUTION = 3,
+		BIOSINFORMATION = 4,
+		NETPLAY = 5,
+		KODI = 6,
+		GAMESETTINGS = 7,
+		DECORATIONS = 8,
+		SHADERS = 9,
+		DISKFORMAT = 10,
+		OVERCLOCK = 11,
+		PDFEXTRACTION = 12,
+		HIPPOSSTORE = 13,
+		EVMAPY = 14,
+		THEMESDOWNLOADER = 15,
+		THEBEZELPROJECT = 16,
+		PADSINFO = 17,
+		HIPPOSPREGAMELISTSHOOK = 18,
+		TIMEZONES = 19,
+		AUDIODEVICE = 20,
+		BACKUP = 21,
+		INSTALL = 22,
+		SUPPORTFILE = 23,
+		UPGRADE = 24,
+		SUSPEND = 25,
+		VERSIONINFO = 26,
+		VIDEOFILTERS = 27,
+		SERVICES = 28,
+		READPLANEMODE = 29,
+		WRITEPLANEMODE = 30,
+		BACKGLASS = 31,
+		NFC = 32,
+	};
+
+	virtual bool isScriptingSupported(ScriptId script);
+
+    static ApiSystem* getInstance();
+	virtual void deinit() { };
+
+    virtual unsigned long getFreeSpaceGB(std::string mountpoint);
+
+    virtual std::string getFreeSpaceUserInfo();
+    virtual std::string getFreeSpaceSystemInfo();
+    std::string getFreeSpaceInfo(const std::string mountpoint);
+
+    bool isFreeSpaceLimit();
+
+    virtual std::string getVersion(bool extra = false);
+	virtual std::string getApplicationName();
+
+    std::string getRootPassword();
+
+    bool setOverscan(bool enable);
+
+    bool setOverclock(std::string mode);
+
+    virtual std::pair<std::string, int> updateSystem(const std::function<void(const std::string)>& func = nullptr);
+    virtual std::vector<std::string> getAvailableDeployments();
+    virtual std::pair<std::string, int> rollbackToDeployment(const std::string& subvol, const std::function<void(const std::string)>& func = nullptr);
+
+    virtual std::vector<std::string> listEmulatorUpdates();
+    virtual std::pair<std::string, int> updateEmulators(const std::function<void(const std::string)>& func = nullptr);
+    virtual std::pair<std::string, int> updateEmulator(const std::string& name, const std::function<void(const std::string)>& func = nullptr);
+
+    virtual std::vector<std::string> listFrontendUpdates();
+    virtual std::pair<std::string, int> updateFrontend(const std::string& name, const std::function<void(const std::string)>& func = nullptr);
+
+    std::pair<std::string, int> backupSystem(BusyComponent* ui, std::string device);
+    std::pair<std::string, int> installSystem(BusyComponent* ui, std::string device, std::string architecture);
+    std::pair<std::string, int> scrape(BusyComponent* ui);
+
+    virtual bool ping();
+    virtual bool canUpdate(std::vector<std::string>& output);
+	virtual void setReadyFlag(bool ready = true);
+	virtual bool isReadyFlagSet();
+
+    virtual bool launchKodi(Window *window);
+    bool launchFileManager(Window *window);
+
+#ifdef HIPPOS
+    virtual void launchControlcenter();
+#endif
+
+    // Gets a list of drives that are safe to unmount.
+    // Returns a vector of strings, each formatted as "DisplayName:MountPath"
+    std::vector<std::string> getEjectableDrives();
+
+    // Executes the eject command for a given mount path.
+    bool ejectDrive(const std::string& mountPath);
+
+	// Merges the specific drive mount path into the ROMs pool
+    bool mergeDrive(const std::string& mountPath);
+
+    // Prepares the specific device with partition the given filesystem
+    bool prepareDrive(const std::string& device, const std::string& fsType);
+
+	// Ignores a drive from future format requests if used by other OS'
+	bool ignoreDevicePermanently(const std::string& deviceId);
+
+#if !WIN32
+	bool enableWifi(std::string ssid, std::string key, std::string country);
+#else
+	bool enableWifi(std::string ssid, std::string key);
+#endif
+    bool disableWifi();
+
+	virtual std::string getIpAddress();
+
+	// BlueTooth methods
+	virtual bool enableBluetooth();
+	virtual bool disableBluetooth();
+	virtual void startBluetoothLiveDevices(const std::function<void(const std::string)>& func);
+	virtual void stopBluetoothLiveDevices();
+	virtual bool pairBluetoothDevice(const std::string& deviceName);
+	virtual bool connectBluetoothDevice(const std::string& deviceName);
+	virtual bool disconnectBluetoothDevice(const std::string& deviceName);
+	virtual bool removeBluetoothDevice(const std::string& deviceName);
+	virtual bool forgetBluetoothControllers();
+	virtual std::vector<std::string> getPairedBluetoothDeviceList();	
+    virtual bool scanNewBluetooth(const std::function<void(const std::string)>& func = nullptr); // Obsolete
+
+    std::vector<std::string> getAvailableBackupDevices();
+    std::vector<std::string> getAvailableInstallDevices();
+    std::vector<std::string> getAvailableInstallArchitectures();
+    std::vector<std::string> getAvailableOverclocking();
+    std::vector<BiosSystem> getBiosInformations(const std::string system = "");
+    virtual std::vector<std::string> getVideoModes(const std::string output = "");
+	std::vector<std::string> getCustomRunners();
+
+	virtual std::vector<std::string> getAvailableStorageDevices();
+	virtual std::vector<std::string> getSystemInformations();
+
+    bool generateSupportFile();
+
+    std::string getCurrentStorage();
+
+    bool setStorage(std::string basic_string);
+
+    bool storageManagerScan();
+    std::vector<std::string> storageManagerReport();
+    std::vector<std::string> storageManagerListDevices();
+    std::vector<std::string> storageManagerListDrives();
+    std::vector<std::string> storageManagerListNetwork();
+    std::vector<std::string> storageManagerListDuplicates();
+    std::vector<std::string> storageManagerListLarge();
+    std::vector<std::string> storageManagerListCaches();
+    bool storageManagerCleanup(const std::string& ids);
+    bool storageManagerDeleteFile(const std::string& path);
+    bool storageManagerMount(const std::string& device);
+    bool storageManagerUnmount(const std::string& target);
+    bool storageManagerEject(const std::string& mountPath);
+    bool storageManagerMountNetwork();
+    bool storageManagerRemoveNetwork(const std::string& source);
+
+	bool setButtonColorGameForce(std::string basic_string);
+
+	bool setPowerLedGameForce(std::string basic_string);    
+
+    /* audio card */
+    bool setAudioOutputDevice(std::string device);
+    std::vector<std::string> getAvailableAudioOutputDevices();
+    std::string getCurrentAudioOutputDevice();
+    bool setAudioOutputProfile(std::string profile);
+    std::vector<std::string> getAvailableAudioOutputProfiles();
+    std::string getCurrentAudioOutputProfile();
+
+    /* video output */
+    std::vector<std::string> getAvailableVideoOutputDevices();
+
+	// Themes
+	virtual std::vector<BatoceraTheme> getBatoceraThemesList();
+	virtual bool isThemeInstalled(const std::string& themeName, const std::string& url);
+	virtual std::pair<std::string,int> installBatoceraTheme(std::string thname, const std::function<void(const std::string)>& func = nullptr);
+	virtual std::pair<std::string, int> uninstallBatoceraBezel(std::string bezelsystem, const std::function<void(const std::string)>& func = nullptr);
+
+    virtual std::vector<BatoceraBezel> getBatoceraBezelsList();
+	virtual std::pair<std::string,int> installBatoceraBezel(std::string bezelsystem, const std::function<void(const std::string)>& func = nullptr);
+	virtual std::pair<std::string,int> uninstallBatoceraTheme(std::string bezelsystem, const std::function<void(const std::string)>& func = nullptr);
+
+	virtual std::string getCRC32(const std::string fileName, bool fromZipContents = true);
+	virtual std::string getMD5(const std::string fileName, bool fromZipContents = true);
+
+	virtual bool unzipFile(const std::string fileName, const std::string destFolder = "", const std::function<bool(const std::string)>& shouldExtract = nullptr);
+
+	virtual int getPdfPageCount(const std::string& fileName);
+	virtual std::vector<std::string> extractPdfImages(const std::string& fileName, int pageIndex = -1, int pageCount = 1, int quality = 0);
+
+	virtual std::string getRunningArchitecture();
+	virtual std::string getRunningBoard();
+
+	std::vector<PacmanPackage> getBatoceraStorePackages();
+	std::pair<std::string, int> installBatoceraStorePackage(std::string name, const std::function<void(const std::string)>& func = nullptr);
+	std::pair<std::string, int> uninstallBatoceraStorePackage(std::string name, const std::function<void(const std::string)>& func = nullptr);
+	void updateBatoceraStorePackageList();
+	void refreshBatoceraStorePackageList();
+
+	void callBatoceraPreGameListsHook();
+
+	bool	getBrightness(std::vector<BrightnessDevice>& value);
+	void	setBrightness(BrightnessDevice value);
+
+	// LED RGB sliders
+	bool getLED(int& red, int& green, int& blue);
+	void getLEDColours(int& red, int& green, int& blue);
+	void setLEDColours(int red, int green, int blue);
+
+	// LED Enabled?
+	bool isLEDEnabled();
+	void setLEDEnabled(bool enabled);
+
+	// LED Brightness
+	bool getLEDBrightness(int& value);
+	void setLEDBrightness(int value);
+
+	std::vector<std::string> getWifiNetworks(bool scan = false);
+
+	bool downloadFile(const std::string url, const std::string fileName, const std::string label = "", const std::function<void(const std::string)>& func = nullptr);
+	
+	// Formating
+	std::vector<std::string> getFormatDiskList();
+	std::vector<std::string> getFormatFileSystems();
+	int formatDisk(const std::string disk, const std::string format, const std::function<void(const std::string)>& func = nullptr);
+
+
+	virtual std::vector<std::string> getRetroachievementsSoundsList();
+	virtual std::vector<std::string> getVideoFilterList(const std::string& systemName, const std::string& emulator, const std::string& core);
+	virtual std::vector<std::string> getShaderList(const std::string& systemName, const std::string& emulator, const std::string& core);
+	virtual std::string getSevenZipCommand() { return "7zr"; }
+
+	virtual std::vector<std::string> getTimezones();
+	virtual std::string getCurrentTimezone();
+	virtual bool setTimezone(std::string tz);
+
+	virtual std::vector<PadInfo> getPadsInfo();
+	virtual std::string getHostsName();
+	virtual bool emuKill();
+	virtual void suspend();
+
+  	virtual void replugControllers_sindenguns();
+	virtual void replugControllers_wiimotes();
+	virtual void replugControllers_steamdeckguns();
+
+	virtual bool isPlaneMode();
+	virtual bool setPlaneMode(bool enable);
+	virtual bool isReadPlaneModeSupported();
+
+	virtual std::vector<Service> getServices();
+	virtual bool enableService(std::string name, bool enable);
+
+  	virtual std::vector<Hotkey> getJoysticksHotkeys();
+        virtual std::vector<std::string> getJoysticksHotkeysValues();
+        virtual void setJoysticksHotkeys(const std::vector<Hotkey>& hotkeys);
+
+      	virtual std::vector<GlobalHotkey> detectGlobalHotkeys();
+      	virtual std::vector<std::string> getGlobalHotkeysValues();
+    	virtual std::vector<GlobalHotkey> getGlobalHotkeys();
+      	virtual void removeGlobalHotkey(const std::string& config, const std::string& key);
+    	virtual void setGlobalHotkey(const std::string& config, const std::string& key, const std::string& action);
+
+      	virtual std::vector<Pad2key> getPad2keys();
+      	virtual std::vector<Pad2keyDevice> getPad2keyDevices(std::string config);
+      	virtual std::vector<Pad2keyKey> getPad2keyKeyValues();
+      	virtual std::string detectEvKey(const std::string& device_path);
+      	virtual void savePad2key(Pad2key ktp, const std::vector<Pad2keyDevice>& ktp_devices);
+
+	virtual std::vector<std::string> backglassThemes();
+	virtual void restartBackglass();
+
+	virtual bool nfc_is_available();
+	virtual bool nfc_write(const std::string& game);
+
+protected:
+	ApiSystem();
+
+	virtual bool executeScript(const std::string command);  
+	virtual std::pair<std::string, int> executeScript(const std::string command, const std::function<void(const std::string)>& func);
+	virtual std::vector<std::string> executeEnumerationScript(const std::string command);
+	virtual bool downloadGitRepository(const std::string& url, const std::string& branch, const std::string& fileName, const std::string& label, const std::function<void(const std::string)>& func, int64_t defaultDownloadSize = 0);
+	virtual std::string getGitRepositoryDefaultBranch(const std::string& url);
+		
+	virtual std::string getUpdateUrl();
+	virtual std::string getThemesUrl();
+
+    static ApiSystem* instance;
+
+    void launchExternalWindow_before(Window *window);
+    void launchExternalWindow_after(Window *window);
+
+private:
+	static LED_TYPE mSystemLedType;
+};
+
+#endif
