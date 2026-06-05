@@ -17,8 +17,8 @@ GuiSystemInformation::GuiSystemInformation(Window* window) : GuiSettings(window,
 	addGroup(_("INFORMATION"));
 
 	addWithLabel(_("VERSION"), std::make_shared<TextComponent>(window, ApiSystem::getInstance()->getVersion(), font, color));
-	addWithLabel(_("USER DISK USAGE"), std::make_shared<TextComponent>(window, ApiSystem::getInstance()->getFreeSpaceUserInfo(), font, warning ? 0xFF0000FF : color));
-	addWithLabel(_("SYSTEM DISK USAGE"), std::make_shared<TextComponent>(window, ApiSystem::getInstance()->getFreeSpaceSystemInfo(), font, color));
+	addWithLabel(_("IP ADDRESS"), std::make_shared<TextComponent>(window, ApiSystem::getInstance()->getIpAddress(), font, color));
+	addWithLabel(_("DISK USAGE"), std::make_shared<TextComponent>(window, ApiSystem::getInstance()->getFreeSpaceUserInfo(), font, warning ? 0xFF0000FF : color));
 
 	#ifndef WIN32
 		std::string path = "/media";
