@@ -2129,55 +2129,6 @@ void GuiMenu::openSystemSettings()
 #ifdef HIPPOS
 	s->addGroup(_("STORAGE"));
 
-	// Storage device
-	std::vector<std::string> availableStorage = ApiSystem::getInstance()->getAvailableStorageDevices();
-	if (availableStorage.size())
-	{		
-		std::string selectedStorage = ApiSystem::getInstance()->getCurrentStorage();
-
-		auto optionsStorage = std::make_shared<OptionListComponent<std::string> >(window, _("STORAGE DEVICE"), false);
-		for (auto it = availableStorage.begin(); it != availableStorage.end(); it++)
-		{
-				if (Utils::String::startsWith(*it, "DEV"))
-				{
-					std::vector<std::string> tokens = Utils::String::split(*it, ' ');
-
-					if (tokens.size() >= 3) {
-						// concatenat the ending words
-						std::string vname = "";
-						for (unsigned int i = 2; i < tokens.size(); i++) {
-							if (i > 2) vname += " ";
-							vname += tokens.at(i);
-						}
-						optionsStorage->add(vname, (*it), selectedStorage == std::string("DEV " + tokens.at(1)));
-					}
-				} else {
-				  std::vector<std::string> tokens = Utils::String::split(*it, ' ');
-				  if (tokens.size() == 1) {
-					optionsStorage->add((*it), (*it), selectedStorage == (*it));
-				  } else {
-				    // concatenat the ending words
-				    std::string vname = "";
-				    for (unsigned int i = 1; i < tokens.size(); i++) {
-				      if (i > 1) vname += " ";
-				      vname += tokens.at(i);
-				    }
-				    optionsStorage->add(_(vname.c_str()), tokens.at(0), selectedStorage == tokens.at(0));
-				  }
-				}
-		}
-
-		s->addWithLabel(_("STORAGE DEVICE"), optionsStorage);
-		s->addSaveFunc([optionsStorage, selectedStorage, s]
-		{
-			if (optionsStorage->changed())
-			{
-				ApiSystem::getInstance()->setStorage(optionsStorage->getSelected());
-				s->setVariable("reboot", true);
-			}
-		});
-	}
-
 	// backup
 	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::BACKUP))
 		s->addEntry(_("BACKUP USER DATA"), true, [this] { mWindow->pushGui(new GuiBackupStart(mWindow)); });
