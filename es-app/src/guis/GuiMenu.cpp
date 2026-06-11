@@ -3284,8 +3284,8 @@ void GuiMenu::openSystemEmulatorSettings(SystemData* system)
 
 	s->addSaveFunc([system, emul_choice, core_choice]
 	{
-		Settings::getInstance()->setString(system->getName() + ".emulator", emul_choice->getSelected());
-		Settings::getInstance()->setString(system->getName() + ".core", core_choice->getSelected());
+		SystemConf::getInstance()->set(system->getName() + ".emulator", emul_choice->getSelected());
+		SystemConf::getInstance()->set(system->getName() + ".core", core_choice->getSelected());
 	});
 
 	mWindow->pushGui(s);
