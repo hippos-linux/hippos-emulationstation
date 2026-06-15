@@ -1419,6 +1419,7 @@ void GuiMenu::openSystemSettings()
 	{
 		if (language_choice->changed() && SystemConf::getInstance()->set("system.language", language_choice->getSelected()))
 		{
+			SystemConf::getInstance()->saveSystemConf();
 			FileSorts::reset();
 			MetaDataList::initMetadata();
 
@@ -1426,7 +1427,7 @@ void GuiMenu::openSystemSettings()
 			s->setVariable("exitreboot", true);
 #endif
 			s->setVariable("reloadGuiMenu", true);
-		}		
+		}
 	});
 
 	// Keyboard layout & variant
