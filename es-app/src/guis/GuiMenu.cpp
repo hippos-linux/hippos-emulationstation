@@ -1877,12 +1877,26 @@ void GuiMenu::openSystemSettings()
 	  }
 	});
 
-	// ── CRT monitor ──────────────────────────────────────────────────────────
-	s->addGroup(_("CRT MONITOR"));
+	// ── CRT ──────────────────────────────────────────────────────────────────
+	s->addGroup(_("CRT"));
 
 	auto crtEnabled = std::make_shared<SwitchComponent>(mWindow);
 	crtEnabled->setState(SystemConf::getInstance()->get("crt.enabled") == "true");
-	s->addWithDescription(_("ENABLE CRT OUTPUT"), _("Output 15kHz/25kHz/31kHz signal. Requires restart. AMD GPU + DVI-I or VGA recommended."), crtEnabled);
+	s->addWithDescription(_("ENABLE CRT OUTPUT"),
+		_("Output 15kHz/25kHz/31kHz signal. Requires restart. For DP/HDMI to VGA adapters, select that port below."),
+		crtEnabled);
+
+	auto crtOutput = std::make_shared<OptionListComponent<std::string>>(mWindow, _("CRT VIDEO OUTPUT"), false);
+	std::string curOutput = SystemConf::getInstance()->get("crt.output");
+	if (curOutput.empty()) curOutput = "auto";
+	crtOutput->add(_("Auto"), "auto", curOutput == "auto");
+	for (const auto& out : ApiSystem::getInstance()->getAvailableVideoOutputDevices())
+		crtOutput->add(out, out, curOutput == out);
+	if (curOutput != "auto" && !crtOutput->hasSelection())
+		crtOutput->add(curOutput, curOutput, true);
+	s->addWithDescription(_("CRT VIDEO OUTPUT"),
+		_("Select the port your CRT or DAC adapter is connected to (e.g. DP-1)."),
+		crtOutput);
 
 	auto crtProfile = std::make_shared<OptionListComponent<std::string>>(mWindow, _("MONITOR PROFILE"), false);
 	std::string curProfile = SystemConf::getInstance()->get("crt.monitor_profile");
@@ -1898,7 +1912,20 @@ void GuiMenu::openSystemSettings()
 	crtProfile->add(_("Arcade 15/25/31kHz"),      "arcade_15_25_31",  curProfile == "arcade_15_25_31");
 	s->addWithDescription(_("MONITOR PROFILE"), _("CRT monitor type. Determines available resolutions. Takes effect after restart."), crtProfile);
 
-	s->addSaveFunc([s, crtEnabled, crtProfile, curProfile]
+	auto crtBootRes = std::make_shared<OptionListComponent<std::string>>(mWindow, _("BOOT RESOLUTION"), false);
+	std::string curBoot = SystemConf::getInstance()->get("crt.boot_resolution");
+	if (curBoot.empty()) curBoot = "640x480i";
+	for (const auto& entry : ApiSystem::getInstance()->getCrtBootModes(curProfile))
+	{
+		std::vector<std::string> tokens = Utils::String::split(entry, ':');
+		if (tokens.size() >= 2)
+			crtBootRes->add(_(tokens[1].c_str()), tokens[0], curBoot == tokens[0]);
+	}
+	if (!crtBootRes->hasSelection())
+		crtBootRes->add(curBoot, curBoot, true);
+	s->addWithDescription(_("BOOT RESOLUTION"), _("Menu/boot resolution on CRT. Takes effect after restart."), crtBootRes);
+
+	s->addSaveFunc([s, crtEnabled, crtOutput, crtProfile, crtBootRes, curProfile]
 	{
 		bool newEnabled = crtEnabled->getState();
 		bool wasEnabled = SystemConf::getInstance()->get("crt.enabled") == "true";
@@ -1907,9 +1934,19 @@ void GuiMenu::openSystemSettings()
 			SystemConf::getInstance()->set("crt.enabled", newEnabled ? "true" : "false");
 			s->setVariable("exitreboot", true);
 		}
+		if (crtOutput->changed())
+		{
+			SystemConf::getInstance()->set("crt.output", crtOutput->getSelected());
+			s->setVariable("exitreboot", true);
+		}
 		if (crtProfile->changed())
 		{
 			SystemConf::getInstance()->set("crt.monitor_profile", crtProfile->getSelected());
+			s->setVariable("exitreboot", true);
+		}
+		if (crtBootRes->changed())
+		{
+			SystemConf::getInstance()->set("crt.boot_resolution", crtBootRes->getSelected());
 			s->setVariable("exitreboot", true);
 		}
 	});
