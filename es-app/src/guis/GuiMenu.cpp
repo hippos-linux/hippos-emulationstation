@@ -1877,6 +1877,54 @@ void GuiMenu::openSystemSettings()
 	  }
 	});
 
+#ifdef HIPPOS
+	// Sleep timer
+	{
+		auto sleepTimer = std::make_shared<OptionListComponent<std::string>>(mWindow, _("SLEEP TIMER"), false);
+		std::string curTimer = SystemConf::getInstance()->get("system.sleep_timer");
+		if (curTimer.empty()) curTimer = "0";
+		sleepTimer->add(_("DISABLED"),   "0",   curTimer == "0" || curTimer.empty());
+		sleepTimer->add(_("15 MINUTES"), "15",  curTimer == "15");
+		sleepTimer->add(_("30 MINUTES"), "30",  curTimer == "30");
+		sleepTimer->add(_("1 HOUR"),     "60",  curTimer == "60");
+		sleepTimer->add(_("2 HOURS"),    "120", curTimer == "120");
+		s->addWithDescription(_("SLEEP TIMER"), _("Automatically suspend after this period of inactivity."), sleepTimer);
+		s->addSaveFunc([sleepTimer] {
+			if (sleepTimer->changed()) {
+				SystemConf::getInstance()->set("system.sleep_timer", sleepTimer->getSelected());
+				SystemConf::getInstance()->saveSystemConf();
+				system(("hippos-settings set system.sleep_timer " + sleepTimer->getSelected() + " 2>/dev/null || true").c_str());
+			}
+		});
+	}
+
+	// HDMI-CEC
+	{
+		auto cec = std::make_shared<SwitchComponent>(mWindow);
+		cec->setState(SystemConf::getInstance()->get("system.hdmi_cec.enabled") == "true");
+		s->addWithDescription(_("HDMI-CEC TV CONTROL"), _("Power the TV on/off automatically when the system wakes or sleeps."), cec);
+		s->addSaveFunc([cec] {
+			std::string val = cec->getState() ? "true" : "false";
+			SystemConf::getInstance()->set("system.hdmi_cec.enabled", val);
+			SystemConf::getInstance()->saveSystemConf();
+			system(("hippos-settings set system.hdmi_cec.enabled " + val + " 2>/dev/null || true").c_str());
+		});
+	}
+
+	// Wake on controller (USB HID wakeup from suspend)
+	{
+		auto wakeCtrl = std::make_shared<SwitchComponent>(mWindow);
+		wakeCtrl->setState(SystemConf::getInstance()->get("system.wake_on_controller") == "true");
+		s->addWithDescription(_("WAKE ON CONTROLLER"), _("Wake from suspend by pressing a button on a USB or dongle controller."), wakeCtrl);
+		s->addSaveFunc([wakeCtrl] {
+			std::string val = wakeCtrl->getState() ? "true" : "false";
+			SystemConf::getInstance()->set("system.wake_on_controller", val);
+			SystemConf::getInstance()->saveSystemConf();
+			system(("hippos-settings set system.wake_on_controller " + val + " 2>/dev/null; /usr/lib/hippos/hippos-wake-controllers 2>/dev/null || true").c_str());
+		});
+	}
+#endif
+
 	// ── CRT monitor ──────────────────────────────────────────────────────────
 	s->addGroup(_("CRT MONITOR"));
 
@@ -4373,6 +4421,21 @@ void GuiMenu::openNetworkSettings(bool selectWifiEnable)
 #if !WIN32
 	// Hostname
 	s->addInputTextConfigRow(_("HOSTNAME"), "system.hostname", false);
+#endif
+
+#ifdef HIPPOS
+	// Wake on LAN
+	{
+		auto wol = std::make_shared<SwitchComponent>(mWindow);
+		wol->setState(SystemConf::getInstance()->get("network.wol.enabled") == "true");
+		s->addWithDescription(_("WAKE ON LAN"), _("Wake this device from sleep via a magic packet sent over the network."), wol);
+		s->addSaveFunc([wol] {
+			std::string val = wol->getState() ? "true" : "false";
+			SystemConf::getInstance()->set("network.wol.enabled", val);
+			SystemConf::getInstance()->saveSystemConf();
+			system(("hippos-settings set network.wol.enabled " + val + " 2>/dev/null; /usr/lib/hippos/hippos-wol 2>/dev/null || true").c_str());
+		});
+	}
 #endif
 
 	// Wifi enable
