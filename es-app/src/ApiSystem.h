@@ -265,6 +265,8 @@ public:
     std::vector<std::string> getAvailableBackupDevices();
     std::vector<std::string> getAvailableInstallDevices();
     std::vector<std::string> getAvailableInstallArchitectures();
+    std::vector<std::string> getAvailableHipposDisks();
+    std::pair<std::string, int> cloneDisk(BusyComponent* ui, std::string sourceDisk, std::string targetDisk);
     std::vector<std::string> getAvailableOverclocking();
     std::vector<BiosSystem> getBiosInformations(const std::string system = "");
     virtual std::vector<std::string> getVideoModes(const std::string output = "");

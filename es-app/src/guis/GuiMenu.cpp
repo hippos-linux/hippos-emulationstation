@@ -45,6 +45,7 @@
 #include <LibretroRatio.h>
 #include "guis/GuiUpdate.h"
 #include "guis/GuiInstallStart.h"
+#include "guis/GuiCloneStart.h"
 #include "guis/GuiTextEditPopupKeyboard.h"
 #include "guis/GuiBackupStart.h"
 #include "guis/GuiTextEditPopup.h"
@@ -2183,7 +2184,10 @@ void GuiMenu::openSystemSettings()
 		s->addEntry(_("BACKUP USER DATA"), true, [this] { mWindow->pushGui(new GuiBackupStart(mWindow)); });
 
 	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::INSTALL))
+	{
 		s->addEntry(_("INSTALL ON A NEW DISK"), true, [this] { mWindow->pushGui(new GuiInstallStart(mWindow)); });
+		s->addEntry(_("CLONE TO EXTERNAL DRIVE"), true, [this] { mWindow->pushGui(new GuiCloneStart(mWindow)); });
+	}
 
 	s->addEntry(_("EJECT AN EXTRA DISK"), true, [this] { openUnmountDriveSettings(); });
 	s->addEntry(_("SMART STORAGE"), true, [this] { openStorageManager(); });

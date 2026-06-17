@@ -19,6 +19,7 @@
 #include "LocaleES.h"
 
 #include <stdlib.h>
+#include <sys/utsname.h>
 #include <sstream>
 #include <iostream>
 #include <fstream>
@@ -693,14 +694,49 @@ std::vector<std::string> ApiSystem::getAvailableBackupDevices()
 	return executeEnumerationScript("hippos-sync list");
 }
 
-std::vector<std::string> ApiSystem::getAvailableInstallDevices() 
+std::vector<std::string> ApiSystem::getAvailableInstallDevices()
 {
 	return executeEnumerationScript("hippos-install listDisks");
 }
 
-std::vector<std::string> ApiSystem::getAvailableInstallArchitectures() 
+std::vector<std::string> ApiSystem::getAvailableInstallArchitectures()
 {
 	return executeEnumerationScript("hippos-install listArchs");
+}
+
+std::vector<std::string> ApiSystem::getAvailableHipposDisks()
+{
+	return executeEnumerationScript("hippos-install listHipposDisks");
+}
+
+std::pair<std::string, int> ApiSystem::cloneDisk(BusyComponent* ui, std::string sourceDisk, std::string targetDisk)
+{
+	LOG(LogDebug) << "ApiSystem::cloneDisk";
+
+	std::string cmd = "hippos-install cloneFrom " + sourceDisk + " " + targetDisk;
+	FILE* pipe = popen(cmd.c_str(), "r");
+	if (pipe == NULL)
+		return std::pair<std::string, int>(std::string("Cannot call clone command"), -1);
+
+	char line[1024] = "";
+
+	FILE* flog = fopen(Utils::FileSystem::combine(Paths::getLogPath(), "hippos-clone.log").c_str(), "w");
+	while (fgets(line, 1024, pipe))
+	{
+		strtok(line, "\n");
+		if (flog != NULL) fprintf(flog, "%s\n", line);
+		ui->setText(std::string(line));
+	}
+
+	int exitCode = WEXITSTATUS(pclose(pipe));
+
+	if (flog != NULL)
+	{
+		fprintf(flog, "Exit code : %d\n", exitCode);
+		fclose(flog);
+	}
+
+	return std::pair<std::string, int>(std::string(line), exitCode);
 }
 
 std::vector<std::string> ApiSystem::getAvailableOverclocking() 
@@ -2460,10 +2496,15 @@ std::string ApiSystem::getRunningArchitecture()
 
 std::string ApiSystem::getRunningBoard()
 {
-	auto res = executeEnumerationScript("cat /boot/boot/batocera.board");
-	if (res.size() > 0)
-		return res[0];
-
+	// Detect architecture from running kernel
+	struct utsname u;
+	if (uname(&u) == 0)
+	{
+		std::string machine = u.machine;
+		if (machine == "x86_64")  return "amd64";
+		if (machine == "aarch64") return "arm64";
+		return machine;
+	}
 	return "";
 }
 
