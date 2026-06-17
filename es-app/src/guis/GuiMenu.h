@@ -70,6 +70,7 @@ private:
 #ifdef HIPPOS
         void openUnmountDriveSettings();
         void openStorageManager();
+        void openCrtSettings();
 #endif
 
         // windows
