@@ -855,6 +855,13 @@ std::vector<std::string> ApiSystem::getAvailableVideoOutputDevices()
 	return executeEnumerationScript("hippos-config lsoutputs");
 }
 
+std::vector<std::string> ApiSystem::getCrtBootModes(const std::string& profile)
+{
+	if (profile.empty())
+		return executeEnumerationScript("hippos-resolution listCrtBootModes");
+	return executeEnumerationScript("hippos-resolution listCrtBootModes \"" + profile + "\"");
+}
+
 std::vector<std::string> ApiSystem::getAvailableAudioOutputDevices() 
 {
 #if WIN32

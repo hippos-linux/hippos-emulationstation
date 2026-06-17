@@ -1333,6 +1333,132 @@ static std::vector<std::pair<std::string, std::string>> getScriptOutput(const st
 }
 #endif
 
+void GuiMenu::openCrtSettings()
+{
+	Window* window = mWindow;
+	auto s = new GuiSettings(mWindow, _("CRT").c_str());
+
+	// ── ENABLE CRT OUTPUT ─────────────────────────────────────────────────────
+	auto crtEnabled = std::make_shared<SwitchComponent>(mWindow);
+	crtEnabled->setState(SystemConf::getInstance()->get("crt.enabled") == "true");
+	s->addWithDescription(_("ENABLE CRT OUTPUT"),
+		_("Output a 15kHz/25kHz/31kHz signal via a CRT or DP/HDMI-to-VGA adapter. Takes effect after reboot."),
+		crtEnabled);
+
+	// ── CRT VIDEO OUTPUT ──────────────────────────────────────────────────────
+	// Populate from lsoutputs. Default-select the currently saved output; if none
+	// saved yet, default-select the first connected port so the list is never empty.
+	auto crtOutput = std::make_shared<OptionListComponent<std::string>>(mWindow, _("CRT VIDEO OUTPUT"), false);
+	std::string curOutput = SystemConf::getInstance()->get("crt.output");
+	if (curOutput == "auto") curOutput = "";
+
+	std::string firstConnected;
+	for (const auto& out : ApiSystem::getInstance()->getAvailableVideoOutputDevices())
+	{
+		bool selected = (!curOutput.empty() && curOutput == out);
+		crtOutput->add(out, out, selected);
+		if (firstConnected.empty()) firstConnected = out;
+	}
+	// If nothing matched the saved value, add it anyway so it shows.
+	if (!curOutput.empty() && !crtOutput->hasSelection())
+		crtOutput->add(curOutput, curOutput, true);
+	// If still no selection (fresh flash, empty saved value), select first entry.
+	if (!crtOutput->hasSelection() && !firstConnected.empty())
+		crtOutput->add(firstConnected, firstConnected, true);
+
+	s->addWithDescription(_("CRT VIDEO OUTPUT"),
+		_("Port your CRT or DAC adapter is connected to (e.g. DP-1). Must be set before enabling."),
+		crtOutput);
+
+	// ── MONITOR PROFILE ───────────────────────────────────────────────────────
+	auto crtProfile = std::make_shared<OptionListComponent<std::string>>(mWindow, _("MONITOR PROFILE"), false);
+	std::string curProfile = SystemConf::getInstance()->get("crt.monitor_profile");
+	if (curProfile.empty()) curProfile = "generic_15";
+	crtProfile->add(_("Generic 15kHz"),          "generic_15",       curProfile == "generic_15");
+	crtProfile->add(_("NTSC"),                    "ntsc",             curProfile == "ntsc");
+	crtProfile->add(_("PAL"),                     "pal",              curProfile == "pal");
+	crtProfile->add(_("Arcade 15kHz"),           "arcade_15",        curProfile == "arcade_15");
+	crtProfile->add(_("Arcade 15kHz Extended"),  "arcade_15ex",      curProfile == "arcade_15ex");
+	crtProfile->add(_("Arcade 25kHz"),           "arcade_25",        curProfile == "arcade_25");
+	crtProfile->add(_("Arcade 31kHz"),           "arcade_31",        curProfile == "arcade_31");
+	crtProfile->add(_("Arcade 15/25kHz"),        "arcade_15_25",     curProfile == "arcade_15_25");
+	crtProfile->add(_("Arcade 15/25/31kHz"),     "arcade_15_25_31",  curProfile == "arcade_15_25_31");
+	s->addWithDescription(_("MONITOR PROFILE"),
+		_("CRT monitor type. Determines available boot resolutions."),
+		crtProfile);
+
+	// ── BOOT RESOLUTION ───────────────────────────────────────────────────────
+	// Populated from hippos-resolution listCrtBootModes <profile>.
+	// Repopulated dynamically when MONITOR PROFILE changes.
+	auto crtBootRes = std::make_shared<OptionListComponent<std::string>>(mWindow, _("BOOT RESOLUTION"), false);
+	std::string curBoot = SystemConf::getInstance()->get("crt.boot_resolution");
+	if (curBoot.empty()) curBoot = "640x480i_15";
+
+	auto populateBootRes = [crtBootRes, curBoot](const std::string& profile) {
+		crtBootRes->clear();
+		for (const auto& entry : ApiSystem::getInstance()->getCrtBootModes(profile))
+		{
+			std::vector<std::string> tokens = Utils::String::split(entry, ':');
+			if (tokens.size() >= 2)
+				crtBootRes->add(_(tokens[1].c_str()), tokens[0], curBoot == tokens[0]);
+		}
+		if (!crtBootRes->hasSelection())
+			crtBootRes->selectFirstItem();
+		crtBootRes->invalidate();
+	};
+	populateBootRes(curProfile);
+
+	crtProfile->setSelectedChangedCallback([populateBootRes](const std::string& newProfile) {
+		populateBootRes(newProfile);
+	});
+
+	s->addWithDescription(_("BOOT RESOLUTION"),
+		_("Menu and boot resolution for the CRT. Options depend on the selected monitor profile."),
+		crtBootRes);
+
+	// ── SAVE + FIRST-BOOT SETUP ───────────────────────────────────────────────
+	s->addSaveFunc([s, window, crtEnabled, crtOutput, crtProfile, crtBootRes]
+	{
+		std::string newOutput  = crtOutput->hasSelection()  ? crtOutput->getSelected()  : "";
+		std::string newProfile = crtProfile->hasSelection() ? crtProfile->getSelected() : "generic_15";
+		std::string newBoot    = crtBootRes->hasSelection() ? crtBootRes->getSelected() : "640x480i_15";
+
+		bool wantEnabled = crtEnabled->getState();
+		if (wantEnabled && newOutput.empty())
+			wantEnabled = false;
+
+		bool wasEnabled = SystemConf::getInstance()->get("crt.enabled") == "true";
+
+		// Write every key via hippos-settings — this uses Python's atomic tmp.replace()
+		// and is guaranteed to survive a btrfs reboot. ES's SystemConf::saveSystemConf()
+		// can lose writes within the 5-second btrfs commit window on hard reboot.
+		auto hset = [](const std::string& key, const std::string& val) {
+			system(("hippos-settings set " + key + " " + val).c_str());
+			// Mirror into ES in-memory state so the UI stays consistent.
+			SystemConf::getInstance()->set(key, val);
+		};
+
+		if (!newOutput.empty()) hset("crt.output",           newOutput);
+		hset("crt.monitor_profile",  newProfile);
+		hset("crt.boot_resolution",  newBoot);
+		hset("crt.enabled",          wantEnabled ? "true" : "false");
+
+		// Run setup or teardown NOW so grub.cfg video= is written before first reboot.
+		if (wantEnabled)
+			system("sudo /usr/lib/hippos/hippos-crt-setup >/dev/null 2>&1");
+		else if (wasEnabled)
+			system("sudo /usr/lib/hippos/hippos-crt-teardown >/dev/null 2>&1");
+
+		// Prompt for reboot.
+		window->pushGui(new GuiMsgBox(window,
+			_("CRT settings saved. A reboot is required to apply the changes."),
+			_("REBOOT NOW"), [] { Utils::Platform::quitES(Utils::Platform::QuitMode::REBOOT); },
+			_("LATER"),      nullptr));
+	});
+
+	mWindow->pushGui(s);
+}
+
 void GuiMenu::openSystemSettings() 
 {
 	Window *window = mWindow;
@@ -1344,6 +1470,11 @@ void GuiMenu::openSystemSettings()
 
 	// System informations
 	s->addEntry(_("INFORMATION"), true, [this] { openSystemInformations(); });
+
+#ifdef HIPPOS
+	// CRT settings child page
+	s->addEntry(_("CRT"), true, [this] { openCrtSettings(); });
+#endif
 
 #ifdef __linux__
 	// Default boot session
@@ -1875,43 +2006,6 @@ void GuiMenu::openSystemSettings()
 	    }
 	    SystemConf::getInstance()->saveSystemConf();
 	  }
-	});
-
-	// ── CRT monitor ──────────────────────────────────────────────────────────
-	s->addGroup(_("CRT MONITOR"));
-
-	auto crtEnabled = std::make_shared<SwitchComponent>(mWindow);
-	crtEnabled->setState(SystemConf::getInstance()->get("crt.enabled") == "true");
-	s->addWithDescription(_("ENABLE CRT OUTPUT"), _("Output 15kHz/25kHz/31kHz signal. Requires restart. AMD GPU + DVI-I or VGA recommended."), crtEnabled);
-
-	auto crtProfile = std::make_shared<OptionListComponent<std::string>>(mWindow, _("MONITOR PROFILE"), false);
-	std::string curProfile = SystemConf::getInstance()->get("crt.monitor_profile");
-	if (curProfile.empty()) curProfile = "generic_15";
-	crtProfile->add(_("Generic 15kHz"),           "generic_15",       curProfile == "generic_15");
-	crtProfile->add(_("NTSC"),                     "ntsc",             curProfile == "ntsc");
-	crtProfile->add(_("PAL"),                      "pal",              curProfile == "pal");
-	crtProfile->add(_("Arcade 15kHz"),            "arcade_15",        curProfile == "arcade_15");
-	crtProfile->add(_("Arcade 15kHz Extended"),   "arcade_15ex",      curProfile == "arcade_15ex");
-	crtProfile->add(_("Arcade 25kHz"),            "arcade_25",        curProfile == "arcade_25");
-	crtProfile->add(_("Arcade 31kHz"),            "arcade_31",        curProfile == "arcade_31");
-	crtProfile->add(_("Arcade 15/25kHz"),         "arcade_15_25",     curProfile == "arcade_15_25");
-	crtProfile->add(_("Arcade 15/25/31kHz"),      "arcade_15_25_31",  curProfile == "arcade_15_25_31");
-	s->addWithDescription(_("MONITOR PROFILE"), _("CRT monitor type. Determines available resolutions. Takes effect after restart."), crtProfile);
-
-	s->addSaveFunc([s, crtEnabled, crtProfile, curProfile]
-	{
-		bool newEnabled = crtEnabled->getState();
-		bool wasEnabled = SystemConf::getInstance()->get("crt.enabled") == "true";
-		if (newEnabled != wasEnabled)
-		{
-			SystemConf::getInstance()->set("crt.enabled", newEnabled ? "true" : "false");
-			s->setVariable("exitreboot", true);
-		}
-		if (crtProfile->changed())
-		{
-			SystemConf::getInstance()->set("crt.monitor_profile", crtProfile->getSelected());
-			s->setVariable("exitreboot", true);
-		}
 	});
 
 #else

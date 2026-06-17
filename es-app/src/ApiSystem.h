@@ -309,6 +309,7 @@ public:
 
     /* video output */
     std::vector<std::string> getAvailableVideoOutputDevices();
+    std::vector<std::string> getCrtBootModes(const std::string& profile = "");
 
 	// Themes
 	virtual std::vector<BatoceraTheme> getBatoceraThemesList();
