@@ -2239,11 +2239,11 @@ std::vector<std::string> ApiSystem::extractPdfImages(const std::string& fileName
 }
 
 
-std::vector<PacmanPackage> ApiSystem::getBatoceraStorePackages()
+std::vector<PacmanPackage> ApiSystem::getStorePackages()
 {
 	std::vector<PacmanPackage> packages;
 
-	LOG(LogDebug) << "ApiSystem::getBatoceraStorePackages";
+	LOG(LogDebug) << "ApiSystem::getStorePackages";
 
 	auto res = executeEnumerationScript("hippos-store list");
 	std::string data = Utils::String::join(res, "\n");
@@ -2312,17 +2312,17 @@ std::vector<PacmanPackage> ApiSystem::getBatoceraStorePackages()
 	return packages;
 }
 
-std::pair<std::string, int> ApiSystem::installBatoceraStorePackage(std::string name, const std::function<void(const std::string)>& func)
+std::pair<std::string, int> ApiSystem::installStorePackage(std::string name, const std::function<void(const std::string)>& func)
 {
 	return executeScript("hippos-store install \"" + name + "\"", func);
 }
 
-std::pair<std::string, int> ApiSystem::uninstallBatoceraStorePackage(std::string name, const std::function<void(const std::string)>& func)
+std::pair<std::string, int> ApiSystem::uninstallStorePackage(std::string name, const std::function<void(const std::string)>& func)
 {
 	return executeScript("hippos-store remove \"" + name + "\"", func);
 }
 
-void ApiSystem::refreshBatoceraStorePackageList()
+void ApiSystem::refreshStorePackageList()
 {
 	executeScript("hippos-store refresh");
 	executeScript("hippos-store clean-all");

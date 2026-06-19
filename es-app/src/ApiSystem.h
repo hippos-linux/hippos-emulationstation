@@ -336,11 +336,11 @@ public:
 	virtual std::string getRunningArchitecture();
 	virtual std::string getRunningBoard();
 
-	std::vector<PacmanPackage> getBatoceraStorePackages();
-	std::pair<std::string, int> installBatoceraStorePackage(std::string name, const std::function<void(const std::string)>& func = nullptr);
-	std::pair<std::string, int> uninstallBatoceraStorePackage(std::string name, const std::function<void(const std::string)>& func = nullptr);
+	std::vector<PacmanPackage> getStorePackages();
+	std::pair<std::string, int> installStorePackage(std::string name, const std::function<void(const std::string)>& func = nullptr);
+	std::pair<std::string, int> uninstallStorePackage(std::string name, const std::function<void(const std::string)>& func = nullptr);
 	void updateBatoceraStorePackageList();
-	void refreshBatoceraStorePackageList();
+	void refreshStorePackageList();
 
 	void callBatoceraPreGameListsHook();
 

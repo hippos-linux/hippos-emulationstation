@@ -252,7 +252,7 @@ void GuiHippOSStore::loadList(bool updatePackageList, bool restoreIndex)
 std::vector<PacmanPackage> GuiHippOSStore::queryPackages()
 {
 	auto systemNames = SystemData::getKnownSystemNames();
-	auto packages = ApiSystem::getInstance()->getBatoceraStorePackages();
+	auto packages = ApiSystem::getInstance()->getStorePackages();
 
 	std::vector<PacmanPackage> copy;
 	for (auto& package : packages)
