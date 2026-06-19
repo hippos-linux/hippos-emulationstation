@@ -366,6 +366,41 @@ std::pair<std::string, int> ApiSystem::updateFrontend(const std::string& name, c
 	return std::pair<std::string, int>(std::string(line), exitCode);
 }
 
+std::vector<std::string> ApiSystem::listPatches()
+{
+	LOG(LogDebug) << "ApiSystem::listPatches";
+	return executeEnumerationScript("hippos-upgrade list-patches");
+}
+
+std::pair<std::string, int> ApiSystem::applyPatches(const std::function<void(const std::string)>& func)
+{
+	LOG(LogDebug) << "ApiSystem::applyPatches";
+
+	FILE *pipe = popen("hippos-upgrade apply-patches", "r");
+	if (pipe == nullptr)
+		return std::pair<std::string, int>(std::string("Cannot call apply-patches command"), -1);
+
+	char line[1024] = "";
+	FILE *flog = fopen(Utils::FileSystem::combine(Paths::getLogPath(), "hippos-upgrade-patches.log").c_str(), "w");
+	while (fgets(line, 1024, pipe))
+	{
+		strtok(line, "\n");
+		if (flog != nullptr)
+			fprintf(flog, "%s\n", line);
+		if (func != nullptr)
+			func(std::string(line));
+	}
+
+	int exitCode = WEXITSTATUS(pclose(pipe));
+	if (flog != nullptr)
+	{
+		fprintf(flog, "Exit code : %d\n", exitCode);
+		fclose(flog);
+	}
+
+	return std::pair<std::string, int>(std::string(line), exitCode);
+}
+
 std::vector<std::string> ApiSystem::getAvailableDeployments()
 {
 	auto lines = executeEnumerationScript("hippos-upgrade list-deployments");

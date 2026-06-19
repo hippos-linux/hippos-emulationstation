@@ -39,6 +39,8 @@ private:
 	std::vector<std::string> mEmulatorUpdates;
 	bool mHasFrontendUpdate;
 	std::string mFrontendUpdateName;
+	bool mHasPatchUpdates;
+	std::vector<std::string> mPatchUpdates;
 
     std::pair<std::string, int> mResult;
 

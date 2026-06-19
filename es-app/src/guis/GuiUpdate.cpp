@@ -41,6 +41,12 @@ public:
 		return t;
 	}
 
+	// Patches update
+	static ThreadedUpdater* forPatches(Window* window)
+	{
+		return new ThreadedUpdater(window, Mode::Patches);
+	}
+
 	void start()
 	{
 		GuiUpdate::state = GuiUpdateState::State::UPDATER_RUNNING;
@@ -62,6 +68,9 @@ public:
 				break;
 			case Mode::Frontend:
 				mWndNotification->updateTitle(_U(" ") + _("UPDATING EMULATIONSTATION"));
+				break;
+			case Mode::Patches:
+				mWndNotification->updateTitle(_U(" ") + _("APPLYING PATCHES"));
 				break;
 		}
 
@@ -130,6 +139,14 @@ public:
 					mWndNotification->updateText(info);
 				});
 				break;
+
+			case Mode::Patches:
+				updateStatus = ApiSystem::getInstance()->applyPatches([this](const std::string info)
+				{
+					mWndNotification->updatePercent(-1);
+					mWndNotification->updateText(info);
+				});
+				break;
 		}
 
 		if (updateStatus.second == 0)
@@ -147,6 +164,11 @@ public:
 			{
 				mWndNotification->updateTitle(_U(" ") + _("EMULATIONSTATION UPDATED"));
 				mWndNotification->updateText(_("RESTART TO APPLY"));
+			}
+			else if (mMode == Mode::Patches)
+			{
+				mWndNotification->updateTitle(_U(" ") + _("PATCHES APPLIED"));
+				mWndNotification->updateText(_("PATCHES APPLIED SUCCESSFULLY"));
 			}
 			else
 			{
@@ -168,7 +190,7 @@ public:
 	}
 
 private:
-	enum class Mode { System, Emulator, AllEmulators, Frontend };
+	enum class Mode { System, Emulator, AllEmulators, Frontend, Patches };
 
 	ThreadedUpdater(Window* window, Mode mode)
 		: mWindow(window), mMode(mode), mWndNotification(nullptr), mHandle(nullptr) {}
@@ -193,6 +215,7 @@ GuiUpdate::GuiUpdate(Window* window) : GuiComponent(window), mBusyAnim(window)
 	mHasRootfsUpdate = false;
 	mHasEmulatorUpdates = false;
 	mHasFrontendUpdate = false;
+	mHasPatchUpdates = false;
 	mPingHandle = new std::thread(&GuiUpdate::threadPing, this);
 	mBusyAnim.setSize(mSize);
 }
@@ -230,7 +253,10 @@ void GuiUpdate::threadPing()
 		mFrontendUpdateName = (tab != std::string::npos) ? line.substr(0, tab) : "emulationstation";
 	}
 
-	if (!mHasRootfsUpdate && !mHasEmulatorUpdates && !mHasFrontendUpdate)
+	mPatchUpdates = ApiSystem::getInstance()->listPatches();
+	mHasPatchUpdates = !mPatchUpdates.empty();
+
+	if (!mHasRootfsUpdate && !mHasEmulatorUpdates && !mHasFrontendUpdate && !mHasPatchUpdates)
 		onNoUpdateAvailable();
 	else
 		onUpdateAvailable();
@@ -241,7 +267,8 @@ void GuiUpdate::onUpdateAvailable()
 	mLoading = false;
 	LOG(LogInfo) << "GuiUpdate : Update available (rootfs=" << mHasRootfsUpdate
 		<< " emulators=" << mHasEmulatorUpdates
-		<< " frontend=" << mHasFrontendUpdate << ")";
+		<< " frontend=" << mHasFrontendUpdate
+		<< " patches=" << mHasPatchUpdates << ")";
 	mState = 9; // show update list
 }
 
@@ -346,6 +373,17 @@ void GuiUpdate::update(int deltaTime)
 				updateList->addEntry(label.c_str(), false, [this, emuName]
 				{
 					auto* t = ThreadedUpdater::forEmulator(mWindow, emuName);
+					t->start();
+				});
+			}
+
+			if (mHasPatchUpdates)
+			{
+				std::string label = _("PATCHES");
+				label += "  (" + std::to_string(mPatchUpdates.size()) + ")";
+				updateList->addEntry(label.c_str(), false, [this]
+				{
+					auto* t = ThreadedUpdater::forPatches(mWindow);
 					t->start();
 				});
 			}

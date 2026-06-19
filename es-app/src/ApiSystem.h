@@ -208,6 +208,9 @@ public:
     virtual std::vector<std::string> listFrontendUpdates();
     virtual std::pair<std::string, int> updateFrontend(const std::string& name, const std::function<void(const std::string)>& func = nullptr);
 
+    virtual std::vector<std::string> listPatches();
+    virtual std::pair<std::string, int> applyPatches(const std::function<void(const std::string)>& func = nullptr);
+
     std::pair<std::string, int> backupSystem(BusyComponent* ui, std::string device);
     std::pair<std::string, int> installSystem(BusyComponent* ui, std::string device, std::string architecture);
     std::pair<std::string, int> scrape(BusyComponent* ui);
