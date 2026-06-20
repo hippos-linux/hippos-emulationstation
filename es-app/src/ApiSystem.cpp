@@ -774,7 +774,61 @@ std::pair<std::string, int> ApiSystem::cloneDisk(BusyComponent* ui, std::string 
 	return std::pair<std::string, int>(std::string(line), exitCode);
 }
 
-std::vector<std::string> ApiSystem::getAvailableOverclocking() 
+std::vector<std::string> ApiSystem::getInstallDiskAllPartitions(const std::string& disk)
+{
+	return executeEnumerationScript("hippos-install listAllPartitions " + disk);
+}
+
+std::vector<std::string> ApiSystem::getInstallDiskTargets(const std::string& disk)
+{
+	return executeEnumerationScript("hippos-install listInstallTargets " + disk);
+}
+
+std::vector<std::string> ApiSystem::getInstallDiskEfiPartitions(const std::string& disk)
+{
+	return executeEnumerationScript("hippos-install listEfiPartitions " + disk);
+}
+
+std::vector<std::string> ApiSystem::getInstallDiskFreeSpace(const std::string& disk)
+{
+	return executeEnumerationScript("hippos-install listFreeSpace " + disk);
+}
+
+static std::pair<std::string, int> runInstallCommand(BusyComponent* ui, const std::string& cmd, const std::string& logName)
+{
+	FILE* pipe = popen(cmd.c_str(), "r");
+	if (pipe == NULL)
+		return { "Cannot call install command", -1 };
+
+	char line[1024] = "";
+	FILE* flog = fopen(Utils::FileSystem::combine(Paths::getLogPath(), logName).c_str(), "w");
+	while (fgets(line, 1024, pipe))
+	{
+		strtok(line, "\n");
+		if (flog != NULL) fprintf(flog, "%s\n", line);
+		ui->setText(std::string(line));
+	}
+	int exitCode = WEXITSTATUS(pclose(pipe));
+	if (flog != NULL) { fprintf(flog, "Exit code : %d\n", exitCode); fclose(flog); }
+	return { std::string(line), exitCode };
+}
+
+std::pair<std::string, int> ApiSystem::installToPartition(BusyComponent* ui, std::string partition, std::string efiPartition)
+{
+	LOG(LogDebug) << "ApiSystem::installToPartition";
+	return runInstallCommand(ui, "hippos-install installToPartition " + partition + " " + efiPartition, "hippos-install.log");
+}
+
+std::pair<std::string, int> ApiSystem::installInFreeSpace(BusyComponent* ui, std::string disk, std::string freeSpec, std::string efiPartition)
+{
+	LOG(LogDebug) << "ApiSystem::installInFreeSpace";
+	// freeSpec is "start_MiB:end_MiB" from listFreeSpace
+	std::string start = freeSpec.substr(0, freeSpec.find(':'));
+	std::string end   = freeSpec.substr(freeSpec.find(':') + 1);
+	return runInstallCommand(ui, "hippos-install installInFreeSpace " + disk + " " + start + " " + end + " " + efiPartition, "hippos-install.log");
+}
+
+std::vector<std::string> ApiSystem::getAvailableOverclocking()
 {
 	return executeEnumerationScript("hippos-overclock list");
 }

@@ -75,6 +75,7 @@ set(ES_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiCollectionSystemsOptions.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiBackupStart.h # batocera
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiInstallStart.h # batocera
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiInstallPartitionSelect.h # batocera
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiCloneStart.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiClone.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiUpdate.h # batocera
@@ -186,6 +187,7 @@ set(ES_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiCollectionSystemsOptions.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiBackupStart.cpp # batocera
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiInstallStart.cpp # batocera
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiInstallPartitionSelect.cpp # batocera
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiCloneStart.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiClone.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiUpdate.cpp # batocera    
