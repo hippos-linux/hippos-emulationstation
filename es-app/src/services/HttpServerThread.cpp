@@ -790,6 +790,8 @@ void HttpServerThread::run()
 
 			deleteSystem = true;
 		}
+
+		Utils::FileSystem::FileSystemCache::reset();
 			
 		std::unordered_map<std::string, FileData*> fileMap;
 		fileMap[system->getRootFolder()->getPath()] = system->getRootFolder();
