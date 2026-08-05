@@ -796,7 +796,9 @@ std::vector<std::string> ApiSystem::getInstallDiskFreeSpace(const std::string& d
 
 static std::pair<std::string, int> runInstallCommand(BusyComponent* ui, const std::string& cmd, const std::string& logName)
 {
-	FILE* pipe = popen(cmd.c_str(), "r");
+	// Merge stderr into the captured stream — mkfs/parted/etc. write their actual
+	// error text there, and without this the log only ever shows the exit code.
+	FILE* pipe = popen((cmd + " 2>&1").c_str(), "r");
 	if (pipe == NULL)
 		return { "Cannot call install command", -1 };
 
