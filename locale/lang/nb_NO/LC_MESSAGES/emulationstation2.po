@@ -3653,7 +3653,7 @@ msgstr "%s tilkoblet"
 msgid "%s disconnected"
 msgstr "%s koblet fra"
 
-msgid "SHIFTS FOR UPPER,LOWER, AND SPECIAL"
+msgid "SHIFTS FOR UPPER, LOWER, AND SPECIAL"
 msgstr "SKIFT TEGN"
 
 msgid "ALT GR"

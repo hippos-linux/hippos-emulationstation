@@ -3673,7 +3673,7 @@ msgstr "%s connectat"
 msgid "%s disconnected"
 msgstr "%s desconnectat"
 
-msgid "SHIFTS FOR UPPER,LOWER, AND SPECIAL"
+msgid "SHIFTS FOR UPPER, LOWER, AND SPECIAL"
 msgstr "ALTERNA ENTRE MAJÚSCULES, MINÚSCULES I ESPECIALS"
 
 msgid "ALT GR"
