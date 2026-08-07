@@ -1557,7 +1557,7 @@ msgstr "PUNTEGGIO COMUNITÀ"
 msgid "VIDEO"
 msgstr "VIDEO"
 
-msgid "FANART"
+msgid "FAN ART"
 msgstr "ARTE DEI FAN"
 
 msgid "BEZEL (16:9)"
@@ -3237,7 +3237,7 @@ msgstr "inserisci percorso immagine box"
 msgid "Fan art"
 msgstr "Fan art"
 
-msgid "enter path to fanart"
+msgid "enter path to fan art"
 msgstr "inserisci percorso fan art"
 
 msgid "Title shot"
@@ -4088,7 +4088,7 @@ msgstr[1] "%d secondi fa"
 #~ msgid "SCRAPE VIDEOS"
 #~ msgstr "SCARICA VIDEO ANTEPRIMA"
 
-#~ msgid "SCRAPE FANART"
+#~ msgid "SCRAPE FAN ART"
 #~ msgstr "SCARICA FANART"
 
 #~ msgid "SCRAPE BEZEL (16:9)"
