@@ -1369,6 +1369,30 @@ void GuiMenu::openSystemSettings()
 				system(("hippos-settings set system.boot_session " + bootSession->getSelected()).c_str());
 		});
 	}
+
+	// Default kernel — both variants always installed, hippos-select-kernel
+	// syncs GRUB_DEFAULT to this at next boot. See kb/guidance/settings-reference.md.
+	{
+		auto kernelChoice = std::make_shared<OptionListComponent<std::string>>(window, _("DEFAULT KERNEL"), false);
+		std::string currentKernel = "standard";
+		FILE* f = popen("hippos-settings get system.kernel 2>/dev/null", "r");
+		if (f) {
+			char buf[32] = {};
+			if (fgets(buf, sizeof(buf), f)) {
+				std::string val(buf);
+				if (!val.empty() && val.back() == '\n') val.pop_back();
+				if (val == "lts") currentKernel = "lts";
+			}
+			pclose(f);
+		}
+		kernelChoice->add(_("STANDARD"), "standard", currentKernel == "standard");
+		kernelChoice->add(_("LTS"), "lts", currentKernel == "lts");
+		s->addWithLabel(_("DEFAULT KERNEL"), kernelChoice);
+		s->addSaveFunc([kernelChoice, currentKernel] {
+			if (kernelChoice->changed())
+				system(("hippos-settings set system.kernel " + kernelChoice->getSelected()).c_str());
+		});
+	}
 #endif
 
 	// language choice
