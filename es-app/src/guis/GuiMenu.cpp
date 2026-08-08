@@ -1198,7 +1198,7 @@ void GuiMenu::openUpdatesSettings()
 		auto updatesTypeList = std::make_shared<OptionListComponent<std::string> >(mWindow, _("UPDATE TYPE"), false);
 
 #if HIPPOS
-#define BETA_NAME "butterfly"
+#define BETA_NAME "dev"
 #else
 #define BETA_NAME "beta"
 #endif
