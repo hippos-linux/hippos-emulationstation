@@ -4421,6 +4421,12 @@ void GuiMenu::openWifiSettings(Window* win, std::string title, std::string data,
 
 void GuiMenu::openNetworkSettings(bool selectWifiEnable)
 {
+	// wifi.enabled can change outside this process (`hippos wifi` CLI, first-boot
+	// setup) while ES keeps running, but SystemConf only reads hippos.conf once at
+	// startup. Reload before showing the toggle so it reflects what's actually on
+	// disk instead of whatever was cached when ES launched.
+	SystemConf::getInstance()->loadSystemConf();
+
 	bool baseWifiEnabled = SystemConf::getInstance()->getBool("wifi.enabled");
 
 	auto theme = ThemeData::getMenuTheme();
