@@ -192,6 +192,7 @@ public:
 	virtual std::string getApplicationName();
 
     std::string getRootPassword();
+    bool setRootPassword(const std::string& password);
 
     bool setOverscan(bool enable);
 

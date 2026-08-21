@@ -977,6 +977,33 @@ std::string ApiSystem::getRootPassword()
 	return oss.str().c_str();
 }
 
+// POSIX single-quote a value for use inside a shelled-out command string.
+// executeScript() runs everything through `sh -c`, and unlike the other
+// arguments passed through it (paths, enum-style option strings), a
+// password is arbitrary user-typed text that can contain quotes, `$`, or
+// backticks — those need to actually be neutralized, not just wrapped.
+static std::string shellSingleQuote(const std::string& value)
+{
+	std::string quoted = "'";
+	for (char c : value)
+	{
+		if (c == '\'')
+			quoted += "'\\''";
+		else
+			quoted += c;
+	}
+	quoted += "'";
+	return quoted;
+}
+
+bool ApiSystem::setRootPassword(const std::string& password)
+{
+	if (password.empty())
+		return false;
+
+	return executeScript("hippos-config setRootPassword " + shellSingleQuote(password));
+}
+
 std::vector<std::string> ApiSystem::getAvailableVideoOutputDevices() 
 {
 	return executeEnumerationScript("hippos-config lsoutputs");

@@ -2259,8 +2259,11 @@ void GuiMenu::openSystemSettings()
 		securityEnabled->setState(SystemConf::getInstance()->get("system.security.enabled") == "1");
 		securityGui->addWithDescription(_("ENFORCE SECURITY"), _("Require a password for accessing the network share."), securityEnabled);
 
-		auto rootpassword = std::make_shared<TextComponent>(mWindow, ApiSystem::getInstance()->getRootPassword(), ThemeData::getMenuTheme()->Text.font, ThemeData::getMenuTheme()->Text.color);
-		securityGui->addWithLabel(_("ROOT PASSWORD"), rootpassword);
+		securityGui->addInputTextRow(_("ROOT PASSWORD"), ApiSystem::getInstance()->getRootPassword(), true, nullptr, [](std::string newVal)
+		{
+			if (!newVal.empty())
+				ApiSystem::getInstance()->setRootPassword(newVal);
+		});
 
 		securityGui->addSaveFunc([this, securityEnabled, s] 
 		{
