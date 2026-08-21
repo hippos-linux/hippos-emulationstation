@@ -323,10 +323,16 @@ int setLocale(char * argv1)
 #if WIN32
 	std::locale::global(std::locale("en-US"));
 #else
+	// EsLocale::init()'s locale arg only reaches changeLocale() as a value to
+	// force into LANGUAGE — an empty string here means "leave LANGUAGE as
+	// whatever the process inherited" instead of "use the user's ES setting",
+	// so the language picker in GuiMenu (which only ever writes
+	// system.language) had nothing wired to it at startup.
+	std::string language = SystemConf::getInstance()->get("system.language");
 	if (Utils::FileSystem::exists("./locale/lang")) // for local builds
-		EsLocale::init("", "./locale/lang");	
+		EsLocale::init(language, "./locale/lang");
 	else
-		EsLocale::init("", "/usr/share/locale");	
+		EsLocale::init(language, "/usr/share/locale");
 #endif
 
 	setlocale(LC_TIME, "");
