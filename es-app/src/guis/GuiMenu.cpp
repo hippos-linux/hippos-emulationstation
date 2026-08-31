@@ -1955,7 +1955,34 @@ void GuiMenu::openSystemSettings()
 
 	auto crtEnabled = std::make_shared<SwitchComponent>(mWindow);
 	crtEnabled->setState(SystemConf::getInstance()->get("crt.enabled") == "true");
-	s->addWithDescription(_("ENABLE CRT OUTPUT"), _("Output 15kHz/25kHz/31kHz signal. Requires restart. AMD GPU + DVI-I or VGA recommended."), crtEnabled);
+	s->addWithDescription(_("ENABLE CRT OUTPUT"), _("Output 15kHz/25kHz/31kHz signal. Requires CRT VIDEO OUTPUT to be set below. Requires restart."), crtEnabled);
+
+	// CRT VIDEO OUTPUT — populated from the canonical DRM connector list
+	// (hippos-config lscrtoutputs via ApiSystem::getCrtOutputs), not the
+	// general getAvailableVideoOutputDevices()/lsoutputs used elsewhere in
+	// this menu: hippos-crt-setup stores/consumes crt.output as a DRM name
+	// (e.g. "DP-1"), not an X11/DDX name (e.g. "DisplayPort-0").
+	auto crtOutput = std::make_shared<OptionListComponent<std::string>>(mWindow, _("CRT VIDEO OUTPUT"), false);
+	std::string curOutput = SystemConf::getInstance()->get("crt.output");
+	if (curOutput == "auto") curOutput = ""; // stale pre-migration value; current code never writes this
+
+	for (const auto& entry : ApiSystem::getInstance()->getCrtOutputs())
+	{
+		std::vector<std::string> tokens = Utils::String::split(entry, ':');
+		if (tokens.size() < 2)
+			continue;
+		crtOutput->add(tokens[1], tokens[0], !curOutput.empty() && curOutput == tokens[0]);
+	}
+	// The saved connector isn't in the current enumeration (DAC/cable
+	// disconnected, hardware changed, etc.) — keep it as a visible, selected
+	// option instead of silently dropping the user's configuration just
+	// because this screen was opened while it's not currently detected.
+	if (!curOutput.empty() && !crtOutput->hasSelection())
+		crtOutput->add(curOutput + " " + _("(not detected)"), curOutput, true);
+
+	s->addWithDescription(_("CRT VIDEO OUTPUT"),
+		_("DRM connector driving the CRT — the native port, or the port your DP/HDMI-to-VGA DAC adapter is on."),
+		crtOutput);
 
 	auto crtProfile = std::make_shared<OptionListComponent<std::string>>(mWindow, _("MONITOR PROFILE"), false);
 	std::string curProfile = SystemConf::getInstance()->get("crt.monitor_profile");
@@ -1971,13 +1998,29 @@ void GuiMenu::openSystemSettings()
 	crtProfile->add(_("Arcade 15/25/31kHz"),      "arcade_15_25_31",  curProfile == "arcade_15_25_31");
 	s->addWithDescription(_("MONITOR PROFILE"), _("CRT monitor type. Determines available resolutions. Takes effect after restart."), crtProfile);
 
-	s->addSaveFunc([s, crtEnabled, crtProfile, curProfile]
+	s->addSaveFunc([s, window, crtEnabled, crtOutput, crtProfile, curOutput, curProfile]
 	{
-		bool newEnabled = crtEnabled->getState();
 		bool wasEnabled = SystemConf::getInstance()->get("crt.enabled") == "true";
+		bool newEnabled = crtEnabled->getState();
+		std::string newOutput = crtOutput->hasSelection() ? crtOutput->getSelected() : "";
+
+		if (newEnabled && newOutput.empty())
+		{
+			// Never silently enable without a configured output, and never
+			// silently pick one on the user's behalf either — tell the user
+			// and leave crt.enabled as it was rather than quietly no-op it.
+			window->pushGui(new GuiMsgBox(window, _("CRT VIDEO OUTPUT must be set before CRT can be enabled.")));
+			newEnabled = wasEnabled;
+		}
+
 		if (newEnabled != wasEnabled)
 		{
 			SystemConf::getInstance()->set("crt.enabled", newEnabled ? "true" : "false");
+			s->setVariable("exitreboot", true);
+		}
+		if (!newOutput.empty() && newOutput != curOutput)
+		{
+			SystemConf::getInstance()->set("crt.output", newOutput);
 			s->setVariable("exitreboot", true);
 		}
 		if (crtProfile->changed())

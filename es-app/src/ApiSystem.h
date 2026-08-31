@@ -322,6 +322,7 @@ public:
 
     /* video output */
     std::vector<std::string> getAvailableVideoOutputDevices();
+    std::vector<std::string> getCrtOutputs();
 
 	// Themes
 	virtual std::vector<BatoceraTheme> getBatoceraThemesList();

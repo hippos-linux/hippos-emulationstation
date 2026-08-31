@@ -1004,9 +1004,18 @@ bool ApiSystem::setRootPassword(const std::string& password)
 	return executeScript("hippos-config setRootPassword " + shellSingleQuote(password));
 }
 
-std::vector<std::string> ApiSystem::getAvailableVideoOutputDevices() 
+std::vector<std::string> ApiSystem::getAvailableVideoOutputDevices()
 {
 	return executeEnumerationScript("hippos-config lsoutputs");
+}
+
+std::vector<std::string> ApiSystem::getCrtOutputs()
+{
+	// Canonical DRM connector names, not lsoutputs' X11/DDX names — the CRT
+	// backend (hippos-crt-setup) stores/consumes crt.output as a DRM name
+	// (e.g. "DP-1"), since that's what GRUB's video= kernel parameter needs.
+	// Each line is "name:name (connected|disconnected)".
+	return executeEnumerationScript("hippos-config lscrtoutputs");
 }
 
 std::vector<std::string> ApiSystem::getAvailableAudioOutputDevices() 
