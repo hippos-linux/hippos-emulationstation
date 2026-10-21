@@ -1228,6 +1228,10 @@ void GuiMenu::openUpdatesSettings()
 				SystemConf::getInstance()->saveSystemConf();
 		});
 
+		// Sent via Discord DM with Early Access / Dev Access; gates beta
+		// updates and UPLOAD LOGS.
+		updateGui->addInputTextConfigRow(_("ACCESS TOKEN"), "updates.token", true);
+
 		// Rollback to previous deployment
 		if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::UPGRADE))
 		{
