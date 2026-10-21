@@ -173,6 +173,7 @@ public:
 		WRITEPLANEMODE = 30,
 		BACKGLASS = 31,
 		NFC = 32,
+		UPLOADLOGS = 33,
 	};
 
 	virtual bool isScriptingSupported(ScriptId script);
@@ -287,6 +288,7 @@ public:
 	virtual std::vector<std::string> getSystemInformations();
 
     bool generateSupportFile();
+    std::pair<std::string, int> uploadLogs(const std::string& issue);
 
     std::string getCurrentStorage();
 

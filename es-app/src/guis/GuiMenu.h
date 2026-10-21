@@ -56,6 +56,7 @@ private:
         void openNetworkSettings(bool selectWifiEnable = false);        
         void openQuitMenu();
         void openDesktopSelector();
+        void openUploadLogs();
         void openSystemInformations();
         void openServicesSettings();
         void openMultiScreensSettings();

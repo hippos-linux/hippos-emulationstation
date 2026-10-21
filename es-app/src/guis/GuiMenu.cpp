@@ -226,6 +226,11 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 	addEntry(_("SELECT DESKTOP").c_str(), true, [this] { openDesktopSelector(); }, "iconSystem");
 #endif
 
+	// The upload token is what routes the bundle to the tester's own beta
+	// thread (or the dev channel), so there's nowhere to send it without one.
+	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::UPLOADLOGS) && !SystemConf::getInstance()->get("updates.token").empty())
+		addEntry(_("UPLOAD LOGS").c_str(), false, [this] { openUploadLogs(); }, "iconAdvanced");
+
 #ifdef WIN32
 	addEntry(_("QUIT"), !Settings::getInstance()->getBool("ShowOnlyExit") || !Settings::getInstance()->getBool("ShowExit"), [this] { openQuitMenu(); }, "iconQuit");
 #else
@@ -4681,6 +4686,28 @@ void GuiMenu::openDesktopSelector()
 	}
 
 	mWindow->pushGui(s);
+}
+
+void GuiMenu::openUploadLogs()
+{
+	if (!checkNetwork())
+		return;
+
+	Window* window = mWindow;
+	auto upload = [window](const std::string& issue)
+	{
+		window->pushGui(new GuiLoading<std::pair<std::string, int>>(window, _("UPLOADING LOGS..."),
+			[issue](IGuiLoadingHandler*) { return ApiSystem::getInstance()->uploadLogs(issue); },
+			[window](std::pair<std::string, int> result)
+			{
+				window->pushGui(new GuiMsgBox(window, result.second == 0 ? _("LOGS UPLOADED") : result.first, _("OK")));
+			}));
+	};
+
+	if (Settings::getInstance()->getBool("UseOSK"))
+		mWindow->pushGui(new GuiTextEditPopupKeyboard(mWindow, _("DESCRIBE THE ISSUE"), "", upload, false));
+	else
+		mWindow->pushGui(new GuiTextEditPopup(mWindow, _("DESCRIBE THE ISSUE"), "", upload, false));
 }
 
 void GuiMenu::openQuitMenu()

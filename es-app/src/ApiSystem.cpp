@@ -1004,6 +1004,11 @@ bool ApiSystem::setRootPassword(const std::string& password)
 	return executeScript("hippos-config setRootPassword " + shellSingleQuote(password));
 }
 
+std::pair<std::string, int> ApiSystem::uploadLogs(const std::string& issue)
+{
+	return executeScript("hippos-upload-logs " + shellSingleQuote(issue), nullptr);
+}
+
 std::vector<std::string> ApiSystem::getAvailableVideoOutputDevices()
 {
 	return executeEnumerationScript("hippos-config lsoutputs");
@@ -2144,6 +2149,9 @@ bool ApiSystem::isScriptingSupported(ScriptId script)
 		break;
 	case ApiSystem::NFC:
 		executables.push_back("hippos-nfc");
+		break;
+	case ApiSystem::UPLOADLOGS:
+		executables.push_back("hippos-upload-logs");
 		break;
 	}
 
