@@ -1526,7 +1526,7 @@ std::string ApiSystem::getCRC32(std::string fileName, bool fromZipContents)
 			int idx = all.find("CRC = ");
 			if (idx != std::string::npos)
 				return all.substr(idx + 6);
-			else if (all.find(fn) == (all.size() - fn.size()) && all.length() > 8 && all[9] == ' ')
+			else if (all.find(fn) == (all.size() - fn.size()) && all.length() > 9 && all[9] == ' ')
 				return all.substr(0, 8);
 		}
 	}
@@ -2334,10 +2334,7 @@ std::vector<std::string> ApiSystem::extractPdfImages(const std::string& fileName
 		char buffer[12];
 		sprintf(buffer, "%08d", (uint32_t)pageIndex);
 		
-		if (pageIndex < 0)
-			prefix = "page-" + squality + "-" + std::string(buffer) + "-pdf"; // page
-		else
-			prefix = Utils::FileSystem::getFileName(fileName) + "-" + squality + "-" + std::string(buffer) + "-pdf"; // page
+		prefix = Utils::FileSystem::getFileName(fileName) + "-" + squality + "-" + std::string(buffer) + "-pdf"; // page
 
 		page = " -f " + std::to_string(pageIndex) + " -l " + std::to_string(pageIndex + pageCount - 1);
 	}

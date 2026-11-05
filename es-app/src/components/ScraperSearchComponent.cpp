@@ -484,7 +484,7 @@ int ScraperSearchComponent::getSelectedIndex()
 
 void ScraperSearchComponent::updateInfoPane()
 {
-	if (mResultList && mResultList->getCursorIndex() == mInfoPaneCursor)
+	if (!mResultList || mResultList->getCursorIndex() == mInfoPaneCursor)
 		return;
 
 	mInfoPaneCursor = mResultList->getCursorIndex();

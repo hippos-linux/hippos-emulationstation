@@ -2570,7 +2570,7 @@ ThemeData::ThemeMenu::ThemeMenu(ThemeData* theme)
 		Group.visible = true;
 
 		if (elem->has("fontPath") || elem->has("fontSize"))
-			Group.font = Font::getFromTheme(elem, ThemeFlags::ALL, Font::get(FONT_SIZE_SMALL), "true");
+			Group.font = Font::getFromTheme(elem, ThemeFlags::ALL, Font::get(FONT_SIZE_SMALL), true);
 		if (elem->has("color"))
 			Group.color = elem->get<unsigned int>("color");
 		if (elem->has("backgroundColor"))

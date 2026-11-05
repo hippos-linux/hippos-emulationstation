@@ -16,7 +16,7 @@ struct Delegate
 
 	void operator-=(T* ptr)
 	{
-		std::remove(mFuncs.begin(), mFuncs.end(), ptr);
+		mFuncs.erase(std::remove(mFuncs.begin(), mFuncs.end(), ptr), mFuncs.end());
 	}
 
 	void invoke(const std::function<void(T*)>& func)

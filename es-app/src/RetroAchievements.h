@@ -34,11 +34,11 @@ struct Achievement
 
 struct GameInfoAndUserProgress
 {
-	int ID;
+	int ID = 0;
 	std::string Title;
-	int ConsoleID;
-	int ForumTopicID;
-	int Flags;
+	int ConsoleID = 0;
+	int ForumTopicID = 0;
+	int Flags = 0;
 	std::string ImageIcon;
 	std::string ImageTitle;
 	std::string ImageIngame;
@@ -47,15 +47,15 @@ struct GameInfoAndUserProgress
 	std::string Developer;
 	std::string Genre;
 	std::string Released;
-	bool IsFinal;
+	bool IsFinal = false;
 	std::string ConsoleName;
 	std::string RichPresencePatch;
-	int NumAchievements;
+	int NumAchievements = 0;
 	std::string NumDistinctPlayersCasual;
 	std::string NumDistinctPlayersHardcore;
 	std::vector<Achievement> Achievements;
-	int NumAwardedToUser;
-	int NumAwardedToUserHardcore;
+	int NumAwardedToUser = 0;
+	int NumAwardedToUserHardcore = 0;
 	std::string UserCompletion;
 	std::string UserCompletionHardcore;
 
@@ -141,7 +141,7 @@ struct UserSummary
 		return "https://retroachievements.org" + UserPic;
 	}
 
-	int RecentlyPlayedCount;
+	int RecentlyPlayedCount = 0;
 	std::vector<RecentGame> RecentlyPlayed;
 	std::string MemberSince;
 //	LastActivity LastActivity;
@@ -185,13 +185,13 @@ struct RetroAchievementGame
 	std::string lastplayed;
 	std::string badge;
 
-	int scoreSoftcore;
-	int scoreHardcore;
-	int possibleScore;
+	int scoreSoftcore = 0;
+	int scoreHardcore = 0;
+	int possibleScore = 0;
 
-	int wonAchievementsSoftcore;
-	int wonAchievementsHardcore;
-	int totalAchievements;
+	int wonAchievementsSoftcore = 0;
+	int wonAchievementsHardcore = 0;
+	int totalAchievements = 0;
 };
 
 struct RetroAchievementInfo

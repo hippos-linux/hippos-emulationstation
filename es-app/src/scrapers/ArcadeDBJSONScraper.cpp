@@ -53,7 +53,7 @@ bool ArcadeDBScraper::isSupportedPlatform(SystemData* system)
 	if (system && system->getName() == "teknoparrot")
 		return false;
 
-	return system && system->hasPlatformId(PlatformIds::ARCADE) || system->hasPlatformId(PlatformIds::NEOGEO) || system->hasPlatformId(PlatformIds::LCD_GAMES);
+	return system && (system->hasPlatformId(PlatformIds::ARCADE) || system->hasPlatformId(PlatformIds::NEOGEO) || system->hasPlatformId(PlatformIds::LCD_GAMES));
 }
 
 const std::set<Scraper::ScraperMediaSource>& ArcadeDBScraper::getSupportedMedias()

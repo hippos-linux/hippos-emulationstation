@@ -39,7 +39,7 @@ struct ad_packet
 
 struct LobbyAppEntry
 {
-	FileData*   fileData;
+	FileData*   fileData = nullptr;
 	std::string username;
 	std::string game_crc;
 	std::string mitm_ip;
@@ -50,19 +50,19 @@ struct LobbyAppEntry
 	std::string ip;
 	std::string updated;
 	std::string country;
-	int         host_method;
-	bool		has_password;
+	int         host_method = 0;
+	bool		has_password = false;
 	std::string game_name;
-	bool		has_spectate_password;
+	bool		has_spectate_password = false;
 	std::string core_name;
-	int         mitm_port;
+	int         mitm_port = 0;
 	std::string mitm_session;
-	bool		fixed;
+	bool		fixed = false;
 	std::string retroarch_version;
-	int         port;
+	int         port = 0;
 
-	bool		isCrcValid;
-	bool		coreExists;
+	bool		isCrcValid = false;
+	bool		coreExists = false;
 };
 
 

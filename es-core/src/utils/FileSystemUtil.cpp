@@ -1535,7 +1535,7 @@ namespace Utils
 			int div = 0;
 			unsigned long rem = 0;
 
-			while (size >= 1024 && div < (sizeof SIZES / sizeof *SIZES))
+			while (size >= 1024 && div + 1 < (int)(sizeof SIZES / sizeof *SIZES))
 			{
 				rem = (size % 1024);
 				div++;
@@ -1556,7 +1556,7 @@ namespace Utils
 			int div = 0;
 			unsigned long rem = 0;
 
-			while (size >= 1024 && div < (sizeof SIZES / sizeof *SIZES))
+			while (size >= 1024 && div + 1 < (int)(sizeof SIZES / sizeof *SIZES))
 			{
 				rem = (size % 1024);
 				div++;

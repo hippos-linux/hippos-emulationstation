@@ -145,7 +145,7 @@ std::string GameNameFormatter::getDisplayName(FileData* fd, bool showFolderIcon,
 			name = SEPARATOR_BEFORE + valueOrDefault(fd->getSourceFileData()->getMetadata(MetaDataId::Players), "1") + SEPARATOR_AFTER + name;
 		else if (mSortId == FileSorts::RATING_ASCENDING || mSortId == FileSorts::RATING_DESCENDING)
 		{
-			int stars = (int)Math::round(Math::clamp(0.0f, 1.0f, Utils::String::toFloat(fd->getSourceFileData()->getMetadata(MetaDataId::Rating)))*5.0);
+			int stars = (int)Math::round(Math::clamp(Utils::String::toFloat(fd->getSourceFileData()->getMetadata(MetaDataId::Rating)), 0.0f, 1.0f)*5.0);
 			std::string str;
 			for (int i = 0; i < stars; i++)
 				str += RATINGSTAR;

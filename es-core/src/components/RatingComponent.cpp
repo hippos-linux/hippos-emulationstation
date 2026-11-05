@@ -16,7 +16,7 @@ RatingComponent::RatingComponent(Window* window) : GuiComponent(window), mColorS
 
 void RatingComponent::setValue(const std::string& value)
 {
-	float newValue = Math::clamp(0.0f, 1.0f, Utils::String::toFloat(value));
+	float newValue = Math::clamp(Utils::String::toFloat(value), 0.0f, 1.0f);
 	if (mValue == newValue)
 		return;
 
@@ -251,7 +251,7 @@ void RatingComponent::applyTheme(const std::shared_ptr<ThemeData>& theme, const 
 
 	if (elem->has("value"))
 	{
-		mValue = Math::clamp(0.0f, 1.0f, elem->get<float>("value"));		
+		mValue = Math::clamp(elem->get<float>("value"), 0.0f, 1.0f);		
 		updateVertices();
 	}
 
@@ -287,7 +287,7 @@ void RatingComponent::setProperty(const std::string name, const ThemeData::Theme
 {
 	if (name == "value" && value.type == ThemeData::ThemeElement::Property::PropertyType::Float)
 	{
-		mValue = Math::clamp(0.0f, 1.0f, value.f);
+		mValue = Math::clamp(value.f, 0.0f, 1.0f);
 		updateVertices();
 	}
 	else 

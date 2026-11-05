@@ -53,7 +53,7 @@ namespace Math
 
 	} // Math::max
 
-	float clamp(const float _min, const float _max, const float _num)
+	float clamp(const float _num, const float _min, const float _max)
 	{
 		return max(min(_num, _max), _min);
 

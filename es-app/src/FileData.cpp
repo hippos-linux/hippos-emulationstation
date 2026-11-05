@@ -2069,7 +2069,7 @@ BindableProperty FileData::getProperty(const std::string& name)
 	{
 		#define RATINGSTAR _U("\uF005")
 
-		int stars = (int)Math::round(Math::clamp(0.0f, 1.0f, Utils::String::toFloat(getMetadata(MetaDataId::Rating))) * 5.0);
+		int stars = (int)Math::round(Math::clamp(Utils::String::toFloat(getMetadata(MetaDataId::Rating)), 0.0f, 1.0f) * 5.0);
 
 		std::string str;
 		for (int i = 0; i < stars; i++)
