@@ -637,7 +637,13 @@ bool ApiSystem::enableWifi(std::string ssid, std::string key)
 {
 	return executeScript("hippos-wifi enable \"" + ssid + "\" \"" + key + "\"");
 }
+
 #endif
+
+bool ApiSystem::isVrrSupported()
+{
+	return executeScript("hippos-resolution supportVrr", nullptr).second == 0;
+}
 
 bool ApiSystem::disableWifi() 
 {
@@ -1734,14 +1740,12 @@ bool ApiSystem::getLED(int& red, int& green, int& blue)
             blue = std::stoi(token);
         }
 
-        executeScript("hippos-led-handheld block_color_changes"); // temporarily prevent changes from external daemon
         LOG(LogInfo) << "ApiSystem::getLED > LED colours are:" << red << " " << green << " " << blue;
 
         return true;
     }
 	else if (mSystemLedType == LED_TYPE_ADDRESSABLE) {
 		getLEDColours(red, green, blue);
-        executeScript("hippos-led-handheld block_color_changes");
 		return true;
 	}
 
@@ -1994,6 +1998,31 @@ void ApiSystem::setLEDEnabled(bool enabled)
 
 	SystemConf::getInstance()->saveSystemConf();
 #endif
+}
+
+// The LED driver comes up in its firmware default on every boot.
+void ApiSystem::restoreLEDs()
+{
+	int red, green, blue;
+	if (!getLED(red, green, blue))
+		return;
+
+	auto conf = SystemConf::getInstance();
+	if (!isLEDEnabled())
+	{
+		setLEDColours(0, 0, 0);
+		return;
+	}
+
+	if (!conf->get("led.colour").empty())
+	{
+		getLEDColours(red, green, blue);
+		setLEDColours(red, green, blue);
+	}
+
+	std::string brightness = conf->get("led.brightness");
+	if (!brightness.empty())
+		setLEDBrightness(Utils::String::toInteger(brightness));
 }
 
 std::vector<std::string> ApiSystem::getWifiNetworks(bool scan)
@@ -3121,7 +3150,13 @@ void ApiSystem::savePad2key(Pad2key ktp, const std::vector<Pad2keyDevice>& ktp_d
 
       cmd_dev = "";
       cmd_dev += " --device-number " +  std::to_string(ndev);
-      cmd_dev += " --device-name \"" + ktp_devices[d].name + "\"";
+
+      if(ktp_devices[d].type == "hotkeys" && ktp_devices[d].name == "") {
+	// force a name for hotkeys
+	cmd_dev += " --device-name \"ktp hotkeys\"";
+      } else {
+	cmd_dev += " --device-name \"" + ktp_devices[d].name + "\"";
+      }
       cmd_dev += " --device-type "   + ktp_devices[d].type;
 
       cmd_dev += " --set-values \"";

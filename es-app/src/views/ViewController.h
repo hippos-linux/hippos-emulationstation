@@ -7,6 +7,7 @@
 #include "GuiComponent.h"
 #include <vector>
 #include <functional>
+#include <future>
 
 class IGameListView;
 class ISimpleGameListView;
@@ -122,6 +123,8 @@ private:
 	void playViewTransition(bool forceImmediate);
 	bool doLaunchGame(FileData* game, LaunchGameOptions options);
 	bool checkLaunchOptions(FileData* game, LaunchGameOptions options, Vector3f center);
+	std::shared_future<bool> checkMissingBiosAsync(FileData* game);
+	void promptMissingBios(FileData* game, LaunchGameOptions options, Vector3f center);
 	int getSystemId(SystemData* system);
 	void changeVolume(int increment);
 

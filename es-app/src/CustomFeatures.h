@@ -36,7 +36,13 @@ struct CustomFeature
 	std::string group;
 	int order;
 
+	// system setting written when the feature is supported (e.g. by hippos-tdp)
+	std::string requiredSetting;
+
 	std::vector<CustomFeatureChoice> choices;
+
+	bool isAvailable() const;
+	std::vector<CustomFeatureChoice> availableChoices() const;
 };
 
 struct EmulatorData;

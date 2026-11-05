@@ -34,6 +34,7 @@
 #include "Paths.h"
 #include "resources/TextureData.h"
 #include "views/gamelist/GameNameFormatter.h"
+#include "watchers/WatchersManager.h"
 
 using namespace Utils::Platform;
 
@@ -438,6 +439,15 @@ const std::string FileData::getMarqueePath()
 	return marquee;
 }
 
+static bool isPngFile(const std::string& path)
+{
+	static const char signature[] = { '\x89', 'P', 'N', 'G', '\r', '\n', '\x1a', '\n' };
+
+	char header[sizeof(signature)];
+	std::ifstream file(WINSTRINGW(path), std::ios::binary);
+	return file.read(header, sizeof(header)) && std::equal(header, header + sizeof(header), signature);
+}
+
 const std::string FileData::getImagePath()
 {
 	std::string image = getMetadata(MetaDataId::Image);
@@ -446,7 +456,8 @@ const std::string FileData::getImagePath()
 	if (image.empty())
 	{
 		auto romExt = Utils::String::toLower(Utils::FileSystem::getExtension(getPath()));
-		if (romExt == ".png" || (getSystemName() == "pico8" && romExt == ".p8"))
+		// .p8 carts can be PNG carts with a .p8 name, or plain text carts that can't be shown as an image
+		if (romExt == ".png" || (getSystemName() == "pico8" && romExt == ".p8" && isPngFile(getPath())))
 			return getPath();
 
 		if (image.empty())
@@ -790,10 +801,17 @@ bool FileData::launchGame(Window* window, LaunchGameOptions options)
 
 	mRunningGame = gameToUpdate;
 
+	// Pause watchers before game launch
+	WatchersManager::pause();
+
 	ProcessStartInfo process(command);
 	process.window = hideWindow ? NULL : window;
 	
 	int exitCode = process.run();
+	
+	// Resume watchers when returning to ES
+	WatchersManager::resume();
+	
 	if (exitCode != 0)
 		LOG(LogWarning) << "...launch terminated with nonzero exit code " << exitCode << "!";
 
@@ -973,10 +991,17 @@ std::set<std::string> FileData::getContentFiles()
 				while (std::getline(m3u, line))
 				{
 					auto trim = Utils::String::trim(line);
-					if (trim[0] == '#' || trim[0] == '\\' || trim[0] == '/' || trim[0] == '\0')
+					if (trim.empty() || trim[0] == '#')
 						continue;
 
-					files.insert(path + "/" + trim);
+					trim = Utils::String::replace(trim, "\\", "/");
+
+					if (Utils::FileSystem::isAbsolute(trim))
+						files.insert(Utils::FileSystem::getGenericPath(trim));
+					else if (trim[0] == '/')
+						continue;
+					else
+						files.insert(Utils::FileSystem::getCanonicalPath(path + "/" + trim));
 				}
 
 				m3u.close();

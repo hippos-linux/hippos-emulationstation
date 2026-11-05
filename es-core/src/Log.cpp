@@ -18,6 +18,8 @@
 
 #if WIN32
 #include <Windows.h>
+#elif defined(__linux__)
+#include <unistd.h>
 #endif
 
 LogLevel Log::mReportingLevel = (LogLevel) -1;
@@ -276,6 +278,14 @@ void Log::init()
         else                             lvl = (LogLevel)-1;  // disabled
     }
 
+    // signal(SIGSEGV, crashHandler); // It's already managed by main()
+    signal(SIGABRT, crashHandler);
+
+#ifndef WIN32
+    // Before the disabled-log return, else SDL takes SIGTERM and ES ignores it
+    signal(SIGTERM, crashHandler);
+#endif
+
     auto base = Paths::getUserEmulationStationPath() + "/es_log";
     auto logPath = base + ".txt";
 
@@ -298,13 +308,6 @@ void Log::init()
     }
 
     Utils::FileSystem::renameFile(logPath, base + ".0.txt", true);
-
-    // signal(SIGSEGV, crashHandler); // It's already managed by main()
-    signal(SIGABRT, crashHandler);
-
-#ifndef WIN32
-    signal(SIGTERM, crashHandler);
-#endif
 
     bool debugToStderr = (lvl >= LogDebug);
     AsyncLogger::instance().open(logPath, lvl, debugToStderr);

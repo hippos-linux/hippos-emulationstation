@@ -537,6 +537,7 @@ int main(int argc, char* argv[])
 	auto threadPool = new Utils::ThreadPool("main()", -3);
 	auto vlcInit = threadPool->queueWorkItem([] { VideoVlcComponent::init(); });
 	threadPool->queueWorkItem([] { ApiSystem::getInstance()->getIpAddress(); });
+	threadPool->queueWorkItem([] { ApiSystem::getInstance()->restoreLEDs(); });
 	threadPool->queueWorkItem([] { MetaDataList::initMetadata(); });
 	threadPool->queueWorkItem([] { MameNames::init(); });
 	threadPool->queueWorkItem([] { Genres::init(); });
@@ -679,9 +680,7 @@ int main(int argc, char* argv[])
 
 	while(running)
 	{
-#ifdef WIN32	
 		int processStart = SDL_GetTicks();
-#endif
 
 		SDL_Event event;
 
@@ -796,17 +795,18 @@ int main(int argc, char* argv[])
 		TRYCATCH("Window.update" ,window.update(deltaTime))	
 		TRYCATCH("Window.render", window.render())
 
-/*
-#ifdef WIN32		
-		int processDuration = SDL_GetTicks() - processStart;
-		if (processDuration < timeLimit)
+		int fpsLimit = Settings::FpsLimit();
+		if (fpsLimit > 0)
 		{
-			int timeToWait = timeLimit - processDuration;
-			if (timeToWait > 0 && timeToWait < 25 && Settings::VSync())
-				Sleep(timeToWait);
+			int frameTime = 1000 / fpsLimit;
+			int processDuration = SDL_GetTicks() - processStart;
+			if (processDuration < frameTime)
+			{
+				int timeToWait = frameTime - processDuration;
+				if (timeToWait > 0 && timeToWait < 100)
+					SDL_Delay(timeToWait);
+			}
 		}
-#endif
-*/
 
 		Renderer::swapBuffers();		
 	}

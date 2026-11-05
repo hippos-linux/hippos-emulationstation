@@ -147,6 +147,7 @@ namespace PlatformIds
 		{ "pico8",					PICO8 },
 		{ "sgb",					SUPER_GAME_BOY },
 		{ "vc4000",					VC4000 },
+		{ "j2me",					J2ME },
 
 		{ "watara",					WATARA_SUPERVISION },
 		{ "supervision",			WATARA_SUPERVISION },
@@ -161,6 +162,7 @@ namespace PlatformIds
 		{ "pet",					COMMODORE_PET },
 		{ "cpet",					COMMODORE_PET },
 		{ "cplus4",					COMMODORE_PLUS4 },
+		{ "c16",					COMMODORE_16 },
 		{ "atom",					ACORN_ATOM },
 		{ "bbcmicro",				ACORN_BBC_MICRO },
 		{ "bbc",					ACORN_BBC_MICRO },

@@ -1769,7 +1769,7 @@ namespace Utils
 
 			preloaded.insert(path);
 
-			auto doWork = [&](std::string* dir)
+			auto doWork = [trySaveStates](std::string* dir)
 			{
 				if (trySaveStates)
 				{

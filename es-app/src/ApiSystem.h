@@ -277,6 +277,7 @@ public:
     std::vector<std::string> getInstallDiskTargets(const std::string& disk);
     std::vector<std::string> getInstallDiskEfiPartitions(const std::string& disk);
     std::vector<std::string> getInstallDiskFreeSpace(const std::string& disk);
+    bool isVrrSupported();
     std::pair<std::string, int> installToPartition(BusyComponent* ui, std::string partition, std::string efiPartition);
     std::pair<std::string, int> installInFreeSpace(BusyComponent* ui, std::string disk, std::string freeSpec, std::string efiPartition);
     std::vector<std::string> getAvailableOverclocking();
@@ -370,6 +371,9 @@ public:
 	// LED Brightness
 	bool getLEDBrightness(int& value);
 	void setLEDBrightness(int value);
+
+	// Re-apply the saved led.* settings
+	void restoreLEDs();
 
 	std::vector<std::string> getWifiNetworks(bool scan = false);
 

@@ -720,6 +720,14 @@ void GuiMenu::openDeveloperSettings()
 	
 	s->addSwitch(_("SHOW FRAMERATE"), _("Also turns on the emulator's native FPS counter, if available."), "DrawFramerate", true, nullptr);
 	s->addSwitch(_("VSYNC"), "VSync", true, [] { Renderer::setSwapInterval(); });
+	auto fpsLimit = std::make_shared<OptionListComponent<int>>(mWindow, _("FPS LIMIT"), false);
+	fpsLimit->add(_("NO"), 0, Settings::FpsLimit() == 0);
+	fpsLimit->add("30", 30, Settings::FpsLimit() == 30);
+	fpsLimit->add("60", 60, Settings::FpsLimit() == 60);
+	fpsLimit->add("90", 90, Settings::FpsLimit() == 90);
+	fpsLimit->add("120", 120, Settings::FpsLimit() == 120);
+	s->addWithLabel(_("FPS LIMIT"), fpsLimit);
+	s->addSaveFunc([fpsLimit] { Settings::setFpsLimit(fpsLimit->getSelected()); });
 
 #ifdef HIPPOS
 	// overscan
@@ -1111,6 +1119,21 @@ void GuiMenu::openDeveloperSettings()
 	s->addWithDescription(_("PRELOAD METADATA MEDIA ON BOOT"), _("Reduces lag when scrolling through a fully scraped gamelist, increases boot time"), preloadMedias);
 	s->addSaveFunc([preloadMedias] { Settings::getInstance()->setBool("PreloadMedias", preloadMedias->getState()); });
 	
+	// directory depth to index
+	int curDepth = Settings::IndexDirectoryDepth();
+	auto dirDepth = std::make_shared<OptionListComponent<int>>(mWindow, _("DIRECTORY DEPTH TO INDEX"), false);
+	dirDepth->add(_("UNLIMITED"), 0, curDepth <= 0);
+	for (int i = 1; i <= 10; i++)
+		dirDepth->add(std::to_string(i), i, curDepth == i);
+	if (curDepth > 10)
+		dirDepth->add(std::to_string(curDepth), curDepth, true);
+	s->addWithDescription(_("DIRECTORY DEPTH TO INDEX"), _("Maximum depth scanned inside each ROM folder, to ignore subfolders with many files."), dirDepth);
+	s->addSaveFunc([s, dirDepth]
+	{
+		if (Settings::setIndexDirectoryDepth(dirDepth->getSelected()))
+			s->setVariable("reloadGames", true);
+	});
+
 	// threaded loading
 	auto threadedLoading = std::make_shared<SwitchComponent>(mWindow);
 	threadedLoading->setState(Settings::getInstance()->getBool("ThreadedLoading"));
@@ -1142,7 +1165,9 @@ void GuiMenu::openDeveloperSettings()
 		if (s->getVariable("reboot"))
 			window->displayNotificationMessage(_U("\uF011  ") + _("REBOOT REQUIRED TO APPLY THE NEW CONFIGURATION"));
 
-		if (s->getVariable("reloadAll"))
+		if (s->getVariable("reloadGames"))
+			ViewController::reloadAllGames(window, false);
+		else if (s->getVariable("reloadAll"))
 		{
 			ViewController::get()->reloadAll(window);
 			window->closeSplashScreen();
@@ -1732,41 +1757,45 @@ void GuiMenu::openSystemSettings()
 
 	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::AUDIODEVICE))
 	{
-		std::vector<std::string> availableAudio = ApiSystem::getInstance()->getAvailableAudioOutputDevices();
-		if (availableAudio.size())
 		{
 			// audio device
 			auto optionsAudio = std::make_shared<OptionListComponent<std::string> >(mWindow, _("AUDIO OUTPUT"), false);
 
-			std::string selectedAudio = ApiSystem::getInstance()->getCurrentAudioOutputDevice();
+			std::string selectedAudio = SystemConf::getInstance()->get("audio.device");
 			if (selectedAudio.empty())
 				selectedAudio = "auto";
 
-			bool afound = false;
-			for (auto it = availableAudio.begin(); it != availableAudio.end(); it++)
+			auto fillAudio = [selectedAudio](OptionListComponent<std::string>* list, const std::vector<std::string>& availableAudio)
 			{
-				std::vector<std::string> tokens = Utils::String::split(*it, '\t');
-
-				if (selectedAudio == tokens.at(0))
-					afound = true;
-
-				if (tokens.size() >= 2)
+				bool afound = false;
+				for (auto it = availableAudio.begin(); it != availableAudio.end(); it++)
 				{
-					// concatenat the ending words
-					std::string vname = "";
-					for (unsigned int i = 1; i < tokens.size(); i++)
-					{
-						if (i > 2) vname += " ";
-						vname += tokens.at(i);
-					}
-					optionsAudio->add(vname, tokens.at(0), selectedAudio == tokens.at(0));
-				}
-				else
-					optionsAudio->add((*it), (*it), selectedAudio == tokens.at(0));
-			}
+					std::vector<std::string> tokens = Utils::String::split(*it, '\t');
 
-			if (!afound)
-				optionsAudio->add(selectedAudio, selectedAudio, true);
+					if (selectedAudio == tokens.at(0))
+						afound = true;
+
+					if (tokens.size() >= 2)
+					{
+						// concatenat the ending words
+						std::string vname = "";
+						for (unsigned int i = 1; i < tokens.size(); i++)
+						{
+							if (i > 2) vname += " ";
+							vname += tokens.at(i);
+						}
+						list->add(vname, tokens.at(0), selectedAudio == tokens.at(0));
+					}
+					else
+						list->add((*it), (*it), selectedAudio == tokens.at(0));
+				}
+
+				if (!afound)
+					list->add(selectedAudio, selectedAudio, true);
+			};
+
+			fillAudio(optionsAudio.get(), {});
+			optionsAudio->populateAsync<std::vector<std::string>>([] { return ApiSystem::getInstance()->getAvailableAudioOutputDevices(); }, fillAudio);
 
 			s->addWithLabel(_("AUDIO OUTPUT"), optionsAudio);
 
@@ -1782,53 +1811,57 @@ void GuiMenu::openSystemSettings()
 		}
 
 		// audio profile
-		std::vector<std::string> availableAudioProfiles = ApiSystem::getInstance()->getAvailableAudioOutputProfiles();
-		if (availableAudioProfiles.size())
 		{
 			auto optionsAudioProfile = std::make_shared<OptionListComponent<std::string> >(mWindow, _("AUDIO PROFILE"), false);
 
-			std::string selectedAudioProfile = ApiSystem::getInstance()->getCurrentAudioOutputProfile();
+			std::string selectedAudioProfile = SystemConf::getInstance()->get("audio.profile");
 			if (selectedAudioProfile.empty())
 				selectedAudioProfile = "auto";
 
-			bool afound = false;
-			for (auto it = availableAudioProfiles.begin(); it != availableAudioProfiles.end(); it++)
+			auto fillAudioProfiles = [selectedAudioProfile](OptionListComponent<std::string>* list, const std::vector<std::string>& availableAudioProfiles)
 			{
-				std::vector<std::string> tokens = Utils::String::split(*it, '\t');
-
-				if (selectedAudioProfile == tokens.at(0))
-					afound = true;
-
-				std::string vname = "";
-				if (tokens.size() >= 2)
+				bool afound = false;
+				for (auto it = availableAudioProfiles.begin(); it != availableAudioProfiles.end(); it++)
 				{
-					// Check if the profile contains "bluez_card" and remove it from the display name
-					if (tokens.at(1).find("bluez_card") != std::string::npos)
+					std::vector<std::string> tokens = Utils::String::split(*it, '\t');
+
+					if (selectedAudioProfile == tokens.at(0))
+						afound = true;
+
+					std::string vname = "";
+					if (tokens.size() >= 2)
 					{
-						// Skip the "bluez_card" token and use the remaining tokens for the display name
-						for (unsigned int i = 2; i < tokens.size(); i++)
+						// Check if the profile contains "bluez_card" and remove it from the display name
+						if (tokens.at(1).find("bluez_card") != std::string::npos)
 						{
-							if (i > 2) vname += " ";
-							vname += tokens.at(i);
+							// Skip the "bluez_card" token and use the remaining tokens for the display name
+							for (unsigned int i = 2; i < tokens.size(); i++)
+							{
+								if (i > 2) vname += " ";
+								vname += tokens.at(i);
+							}
 						}
+						else
+						{
+							// Normal concatenation for other profiles
+							for (unsigned int i = 1; i < tokens.size(); i++)
+							{
+								if (i > 1) vname += " ";
+								vname += tokens.at(i);
+							}
+						}
+						list->add(vname, tokens.at(0), selectedAudioProfile == tokens.at(0));
 					}
 					else
-					{
-						// Normal concatenation for other profiles
-						for (unsigned int i = 1; i < tokens.size(); i++)
-						{
-							if (i > 1) vname += " ";
-							vname += tokens.at(i);
-						}
-					}
-					optionsAudioProfile->add(vname, tokens.at(0), selectedAudioProfile == tokens.at(0));
+						list->add((*it), (*it), selectedAudioProfile == tokens.at(0));
 				}
-				else
-					optionsAudioProfile->add((*it), (*it), selectedAudioProfile == tokens.at(0));
-			}
 
-			if (afound == false)
-				optionsAudioProfile->add(selectedAudioProfile, selectedAudioProfile, true);
+				if (afound == false)
+					list->add(selectedAudioProfile, selectedAudioProfile, true);
+			};
+
+			fillAudioProfiles(optionsAudioProfile.get(), {});
+			optionsAudioProfile->populateAsync<std::vector<std::string>>([] { return ApiSystem::getInstance()->getAvailableAudioOutputProfiles(); }, fillAudioProfiles);
 
 			s->addWithDescription(_("AUDIO PROFILE"), _("Available options can change depending on current audio output."), optionsAudioProfile);
 
@@ -1868,6 +1901,22 @@ void GuiMenu::openSystemSettings()
 		s->setVariable("exitreboot", true);
 	  }
 	});
+
+	if (ApiSystem::getInstance()->isVrrSupported())
+	{
+		auto vrr = std::make_shared<SwitchComponent>(mWindow);
+		vrr->setState(SystemConf::getInstance()->getBool("display.vrr", true));
+		s->addWithDescription(_("VARIABLE REFRESH RATE"), _("Lets the display follow the frame rate. Turn off if the screen flickers."), vrr);
+		s->addSaveFunc([vrr, s]
+		{
+			if (vrr->getState() != SystemConf::getInstance()->getBool("display.vrr", true))
+			{
+				SystemConf::getInstance()->set("display.vrr", vrr->getState() ? "1" : "0");
+				// Read by hippos-xorg-setup when the X server starts
+				s->setVariable("reboot", true);
+			}
+		});
+	}
 
 	// splash
 	auto optionsSplash = std::make_shared<OptionListComponent<std::string> >(mWindow, _("BOOT SPLASH"), false);
@@ -2107,16 +2156,18 @@ void GuiMenu::openSystemSettings()
 	});
 #endif
 
-	// Overclock choice
+	// Overclock choice, only when the device offers more than the default
+	std::vector<std::string> availableOverclocking;
 	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::OVERCLOCK))
+		availableOverclocking = ApiSystem::getInstance()->getAvailableOverclocking();
+
+	if (availableOverclocking.size() > 1)
 	{
 		auto overclock_choice = std::make_shared<OptionListComponent<std::string>>(window, _("OVERCLOCK"), false);
 
 		std::string currentOverclock = Settings::getInstance()->getString("Overclock");
 		if (currentOverclock == "")
 			currentOverclock = "none";
-
-		std::vector<std::string> availableOverclocking = ApiSystem::getInstance()->getAvailableOverclocking();
 
 		// Overclocking device
 		bool isOneSet = false;
@@ -2741,26 +2792,37 @@ void GuiMenu::addFeatureItem(Window* window, GuiSettings* settings, const Custom
 	}
 	else if (feat.preset == "videomodes" || feat.preset == "videomode")
 	{
-		item->add(_("AUTO"), "auto", storedValue.empty() || storedValue == "auto");
-
-		auto modes = ApiSystem::getInstance()->getVideoModes();
-		for (auto videoMode : modes)
+		auto fillModes = [storedValue](OptionListComponent<std::string>* list, const std::vector<std::string>& modes)
 		{
-			std::vector<std::string> tokens = Utils::String::split(videoMode, ':');
-			if (tokens.size() == 0)
-				continue;
+			list->add(_("AUTO"), "auto", storedValue.empty() || storedValue == "auto");
 
-			std::string vname;
-			for (unsigned int i = 1; i < tokens.size(); i++)
+			for (auto videoMode : modes)
 			{
-				if (i > 1)
-					vname += ":";
+				std::vector<std::string> tokens = Utils::String::split(videoMode, ':');
+				if (tokens.size() == 0)
+					continue;
 
-				vname += tokens.at(i);
+				std::string vname;
+				for (unsigned int i = 1; i < tokens.size(); i++)
+				{
+					if (i > 1)
+						vname += ":";
+
+					vname += tokens.at(i);
+				}
+
+				list->add(_(vname.c_str()), tokens.at(0), storedValue == tokens.at(0));
 			}
+		};
 
-			item->add(_(vname.c_str()), tokens.at(0), storedValue == tokens.at(0));
-		}
+		// Listing the modes is slow, so the stored and inherited ones stand in until they arrive.
+		fillModes(item.get(), {});
+		if (!storedValue.empty() && storedValue != "auto")
+			item->add(storedValue, storedValue, true);
+		if (!inheritedValue.empty() && inheritedValue != "auto" && inheritedValue != storedValue)
+			item->add(inheritedValue, inheritedValue, false);
+
+		item->populateAsync<std::vector<std::string>>([] { return ApiSystem::getInstance()->getVideoModes(); }, fillModes);
 	}
 	else if (feat.preset == "runners")
 	{
@@ -2776,7 +2838,7 @@ void GuiMenu::addFeatureItem(Window* window, GuiSettings* settings, const Custom
 	{
 		item->add(_("AUTO"), "", storedValue.empty() || storedValue == "auto");
 
-		for (auto fval : feat.choices)
+		for (auto fval : feat.availableChoices())
 			item->add(pgettext("game_options", fval.name.c_str()), fval.value, storedValue == fval.value);
 	}
 
@@ -2859,10 +2921,12 @@ static std::string getFeatureMenuDescription(const std::string& configName, cons
 }
 
 
-void GuiMenu::addFeatures(const VectorEx<CustomFeature>& features, Window* window, GuiSettings* settings, const std::string& configName, const std::string& system, const std::string& emulator, const std::string& core, const std::string& defaultGroupName, bool addDefaultGroupOnlyIfNotFirst)
+void GuiMenu::addFeatures(const VectorEx<CustomFeature>& allFeatures, Window* window, GuiSettings* settings, const std::string& configName, const std::string& system, const std::string& emulator, const std::string& core, const std::string& defaultGroupName, bool addDefaultGroupOnlyIfNotFirst)
 {
 	bool firstGroup = true;
-	
+
+	auto features = allFeatures.where([](auto x) { return x.isAvailable(); });
+
 	auto groups = features.groupBy([](auto x) { return x.group; });
 	for (auto group : groups)
 	{
@@ -3750,6 +3814,27 @@ void GuiMenu::openThemeConfiguration(Window* mWindow, GuiComponent* s, std::shar
 				themeconfig->setVariable("reloadAll", true);
 		});
 
+		// Directory depth to index
+		auto globalDepth = Settings::IndexDirectoryDepth();
+		auto defDepth = globalDepth <= 0 ? _("UNLIMITED") : std::to_string(globalDepth);
+		auto curDepth = Settings::getInstance()->getString(system->getName() + ".IndexDirectoryDepth");
+		auto dirDepth = std::make_shared<OptionListComponent<std::string>>(mWindow, _("DIRECTORY DEPTH TO INDEX"), false);
+		dirDepth->add(_("AUTO"), "", curDepth == "" || curDepth == "auto");
+		dirDepth->add(_("UNLIMITED"), "0", curDepth == "0");
+		for (int i = 1; i <= 10; i++)
+			dirDepth->add(std::to_string(i), std::to_string(i), curDepth == std::to_string(i));
+		if (!dirDepth->hasSelection()) // keep a hand-edited value (e.g. "15") selectable
+			dirDepth->add(curDepth, curDepth, true);
+		themeconfig->addWithDescription(_("DIRECTORY DEPTH TO INDEX"), _("DEFAULT VALUE") + " : " + defDepth, dirDepth);
+		themeconfig->addSaveFunc([themeconfig, dirDepth, system]
+		{
+			if (Settings::getInstance()->setString(system->getName() + ".IndexDirectoryDepth", dirDepth->getSelected()))
+			{
+				themeconfig->setVariable("reloadAll", true);
+				themeconfig->setVariable("forceReloadGames", true);
+			}
+		});
+
 		// Folder View Mode
 		auto folderView = Settings::getInstance()->getString("FolderViewMode");
 		auto defFol = folderView.empty() ? "" : Utils::String::toUpper(_(folderView.c_str()));
@@ -4092,6 +4177,7 @@ void GuiMenu::openThemeConfiguration(Window* mWindow, GuiComponent* s, std::shar
 
 				Settings::getInstance()->setString(system->getName() + ".FavoritesFirst", "");
 				Settings::getInstance()->setString(system->getName() + ".ShowHiddenFiles", "");
+				Settings::getInstance()->setString(system->getName() + ".IndexDirectoryDepth", "");
 				Settings::getInstance()->setString(system->getName() + ".FolderViewMode", "");
 				Settings::getInstance()->setString(system->getName() + ".ShowFilenames", "");
 				Settings::getInstance()->setString(system->getName() + ".ShowParentFolder", "");
@@ -4924,7 +5010,7 @@ void GuiMenu::createDecorationItemTemplate(Window* window, std::vector<Decoratio
 
 	// spacer between icon and text
 	auto spacer = std::make_shared<GuiComponent>(window);
-	spacer->setSize(IMGPADDING, 0);
+	spacer->setSize(IMGPADDING, maxSize.y());
 	row.addElement(spacer, false);
 
 	std::string label = data;
@@ -5495,27 +5581,33 @@ std::shared_ptr<OptionListComponent<std::string>> GuiMenu::createVideoResolution
 	if (currentVideoMode.empty())
 		currentVideoMode = std::string("auto");
 	
-	std::vector<std::string> videoResolutionModeMap = ApiSystem::getInstance()->getVideoModes(output);
-	videoResolutionMode_choice->add(_("AUTO"), "auto", currentVideoMode == "auto");
-	for (auto videoMode = videoResolutionModeMap.begin(); videoMode != videoResolutionModeMap.end(); videoMode++)
+	auto fillModes = [currentVideoMode](OptionListComponent<std::string>* list, const std::vector<std::string>& videoResolutionModeMap)
 	{
-		std::vector<std::string> tokens = Utils::String::split(*videoMode, ':');
-
-		// concatenat the ending words
-		std::string vname;
-		for (unsigned int i = 1; i < tokens.size(); i++) 
+		list->add(_("AUTO"), "auto", currentVideoMode == "auto");
+		for (auto videoMode = videoResolutionModeMap.begin(); videoMode != videoResolutionModeMap.end(); videoMode++)
 		{
-			if (i > 1) 
-				vname += ":";
+			std::vector<std::string> tokens = Utils::String::split(*videoMode, ':');
 
-			vname += tokens.at(i);
+			// concatenat the ending words
+			std::string vname;
+			for (unsigned int i = 1; i < tokens.size(); i++) 
+			{
+				if (i > 1) 
+					vname += ":";
+
+				vname += tokens.at(i);
+			}
+
+			list->add(_(vname.c_str()), tokens.at(0), currentVideoMode == tokens.at(0));
 		}
+	};
 
-		videoResolutionMode_choice->add(_(vname.c_str()), tokens.at(0), currentVideoMode == tokens.at(0));
-	}
+	// Listing the modes is slow, so the current one stands in until they arrive.
+	fillModes(videoResolutionMode_choice.get(), {});
+	if (currentVideoMode != "auto")
+		videoResolutionMode_choice->add(currentVideoMode, currentVideoMode, true);
 
-	if (!videoResolutionMode_choice->hasSelection())
-		videoResolutionMode_choice->selectFirstItem();
+	videoResolutionMode_choice->populateAsync<std::vector<std::string>>([output] { return ApiSystem::getInstance()->getVideoModes(output); }, fillModes);
 
 	return videoResolutionMode_choice;
 }
