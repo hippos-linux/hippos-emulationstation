@@ -67,20 +67,20 @@ namespace Math
 
 	float lerp(const float _start, const float _end, const float _fraction)
 	{
-		return (_start + ((_end - _start) * clamp(0, 1, _fraction)));
+		return (_start + ((_end - _start) * clamp(_fraction, 0, 1)));
 
 	} // Math::lerp
 
 	float smoothStep(const float _left, const float _right, const float _x)
 	{
-		const float x = clamp(0, 1, (_x - _left)/(_right - _left));
+		const float x = clamp((_x - _left)/(_right - _left), 0, 1);
 		return x * x * (3 - (2 * x));
 
 	} // Math::smoothStep
 
 	float smootherStep(const float _left, const float _right, const float _x)
 	{
-		const float x = clamp(0, 1, (_x - _left)/(_right - _left));
+		const float x = clamp((_x - _left)/(_right - _left), 0, 1);
 		return x * x * x * (x * ((x * 6) - 15) + 10);
 
 	} // Math::smootherStep
