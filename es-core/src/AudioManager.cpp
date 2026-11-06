@@ -458,10 +458,21 @@ void AudioManager::playSong(const std::string& song)
 			LOG(LogError) << "Error AudioManager opening modfile " << song;
 	}
 
-	// now only mp3 will be parsed for ID3: .ogg, .wav and .flac will display file name
+	// Mp3 tags are parsed below. SDL_mixer reads the tags of other formats, such as Vorbis comments, when it loads the file.
 	if (ext != ".mp3")
 	{
-		setSongName(Utils::FileSystem::getStem(song.c_str()));
+		std::string songName = mCurrentMusic != nullptr ? Mix_GetMusicTitleTag(mCurrentMusic) : "";
+		if (songName.empty())
+		{
+			setSongName(Utils::FileSystem::getStem(song.c_str()));
+			return;
+		}
+
+		const std::string artist = Mix_GetMusicArtistTag(mCurrentMusic);
+		if (!artist.empty())
+			songName += " - " + artist;
+
+		setSongName(songName);
 		return;
 	}
 
