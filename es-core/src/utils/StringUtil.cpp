@@ -770,6 +770,24 @@ namespace Utils
 			return Utils::String::toUpper(_string.substr(0, 1)) + Utils::String::toLower(_string.substr(1));
 		}
 
+		std::string capitalizeWords(const std::string& _string)
+		{
+			std::string capitalized;
+			bool wordStart = true;
+
+			for (size_t cursor = 0; cursor < _string.length();)
+			{
+				const size_t next = nextCursor(_string, cursor);
+				const std::string character = _string.substr(cursor, next - cursor);
+
+				capitalized += wordStart ? toUpper(character) : character;
+				wordStart = character == " ";
+				cursor = next;
+			}
+
+			return capitalized;
+		}
+
 		std::string removeHtmlTags(const std::string& html)
 		{
 			if (html.empty())

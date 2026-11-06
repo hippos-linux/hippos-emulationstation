@@ -931,7 +931,8 @@ SystemData* CollectionSystemManager::createNewCollectionEntry(const std::string&
 {	
 	SystemMetadata md;
 	md.name = name;
-	md.fullName = sysDecl.longName;
+	// Custom collections keep the capitalization their owner typed.
+	md.fullName = sysDecl.isCustom ? sysDecl.longName : Utils::String::capitalizeWords(sysDecl.longName);
 	md.themeFolder = sysDecl.themeFolder;
 	md.manufacturer = "Collections";
 	md.hardwareType = sysDecl.isCustom ? "custom collection" : "auto collection";
