@@ -300,6 +300,7 @@ public:
     std::vector<std::string> storageManagerListDevices();
     std::vector<std::string> storageManagerListDrives();
     std::vector<std::string> storageManagerListNetwork();
+    std::vector<std::string> storageManagerPendingMerges();
     std::vector<std::string> storageManagerListDuplicates();
     std::vector<std::string> storageManagerListLarge();
     std::vector<std::string> storageManagerListCaches();

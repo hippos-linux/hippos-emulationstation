@@ -936,6 +936,7 @@ std::vector<std::string> ApiSystem::storageManagerReport() { return executeEnume
 std::vector<std::string> ApiSystem::storageManagerListDevices() { return executeEnumerationScript("hippos-storage-manager list_devices"); }
 std::vector<std::string> ApiSystem::storageManagerListDrives() { return executeEnumerationScript("hippos-storage-manager list_drives"); }
 std::vector<std::string> ApiSystem::storageManagerListNetwork() { return executeEnumerationScript("hippos-storage-manager list_network"); }
+std::vector<std::string> ApiSystem::storageManagerPendingMerges() { return executeEnumerationScript("hippos-storage-manager pending_merges"); }
 std::vector<std::string> ApiSystem::storageManagerListDuplicates() { return executeEnumerationScript("hippos-storage-manager list_duplicates"); }
 std::vector<std::string> ApiSystem::storageManagerListLarge() { return executeEnumerationScript("hippos-storage-manager list_large"); }
 std::vector<std::string> ApiSystem::storageManagerListCaches() { return executeEnumerationScript("hippos-storage-manager list_caches"); }
