@@ -1003,6 +1003,43 @@ static std::string shellSingleQuote(const std::string& value)
 	return quoted;
 }
 
+// The credentials reach the script through the environment and stdin, so they
+// appear neither in the logged command line nor in the process list.
+static std::string credentialsPipe(const std::string& user, const std::string& password)
+{
+	setenv("HIPPOS_SHARE_USER", user.c_str(), 1);
+	setenv("HIPPOS_SHARE_PASSWORD", password.c_str(), 1);
+	return "printf '%s\\n%s\\n' \"$HIPPOS_SHARE_USER\" \"$HIPPOS_SHARE_PASSWORD\" | ";
+}
+
+static void clearCredentials()
+{
+	unsetenv("HIPPOS_SHARE_USER");
+	unsetenv("HIPPOS_SHARE_PASSWORD");
+}
+
+bool ApiSystem::storageManagerAddNetwork(const std::string& address, const std::string& user, const std::string& password)
+{
+	std::string command = "hippos-storage-manager add_network " + shellSingleQuote(address);
+	if (user.empty())
+		return executeScript(command);
+	bool added = executeScript(credentialsPipe(user, password) + command + " --credentials-stdin");
+	clearCredentials();
+	return added;
+}
+
+std::vector<std::string> ApiSystem::scanNetworkShares()
+{
+	return executeEnumerationScript("hippos-network-roms-discover discover");
+}
+
+std::vector<std::string> ApiSystem::listNetworkShares(const std::string& host, const std::string& user, const std::string& password)
+{
+	auto shares = executeEnumerationScript(credentialsPipe(user, password) + "hippos-network-roms-discover shares " + shellSingleQuote(host));
+	clearCredentials();
+	return shares;
+}
+
 bool ApiSystem::setRootPassword(const std::string& password)
 {
 	if (password.empty())

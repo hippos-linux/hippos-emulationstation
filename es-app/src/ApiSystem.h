@@ -311,6 +311,9 @@ public:
     bool storageManagerEject(const std::string& mountPath);
     bool storageManagerMountNetwork();
     bool storageManagerRemoveNetwork(const std::string& source);
+    bool storageManagerAddNetwork(const std::string& address, const std::string& user = "", const std::string& password = "");
+    std::vector<std::string> scanNetworkShares();
+    std::vector<std::string> listNetworkShares(const std::string& host, const std::string& user, const std::string& password);
 
 	bool setButtonColorGameForce(std::string basic_string);
 

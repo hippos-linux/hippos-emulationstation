@@ -15,6 +15,8 @@
 #include <SDL_timer.h>
 #include "HfsDBScraper.h"
 #include "IGDBScraper.h"
+#include "LibretroThumbnailsScraper.h"
+#include "SteamGridDBScraper.h"
 #include "utils/Uri.h"
 
 #define OVERQUOTA_RETRY_DELAY 15000
@@ -34,8 +36,13 @@ std::vector<std::pair<std::string, Scraper*>> Scraper::scrapers
 	{ "HfsDB", new HfsDBScraper() },
 #endif
 
+#ifdef STEAMGRIDDB_APIKEY
+	{ "SteamGridDB", new SteamGridDBScraper() },
+#endif
+
 	{ "IGDB", new IGDBScraper() },
-	{ "ArcadeDB", new ArcadeDBScraper() }
+	{ "ArcadeDB", new ArcadeDBScraper() },
+	{ "Libretro Thumbnails", new LibretroThumbnailsScraper() }
 };
 
 std::string Scraper::getScraperName(Scraper* scraper)

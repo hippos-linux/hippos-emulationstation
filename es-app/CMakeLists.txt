@@ -87,6 +87,7 @@ set(ES_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiLoading.h # batocera
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiThemeInstaller.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiBezelInstaller.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetworkSources.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlay.h # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlaySettings.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievements.h
@@ -113,6 +114,8 @@ set(ES_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/GamesDBJSONScraper.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/GamesDBJSONScraperResources.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/ArcadeDBJSONScraper.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/LibretroThumbnailsScraper.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/SteamGridDBScraper.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/HfsDBScraper.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/IGDBScraper.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/ScreenScraper.h    
@@ -195,6 +198,7 @@ set(ES_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiInstall.cpp # batocera    
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiThemeInstaller.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiBezelInstaller.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetworkSources.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlay.cpp # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlaySettings.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievements.cpp
@@ -221,6 +225,8 @@ set(ES_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/GamesDBJSONScraper.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/GamesDBJSONScraperResources.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/ArcadeDBJSONScraper.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/LibretroThumbnailsScraper.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/SteamGridDBScraper.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/HfsDBScraper.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/IGDBScraper.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/scrapers/ScreenScraper.cpp	

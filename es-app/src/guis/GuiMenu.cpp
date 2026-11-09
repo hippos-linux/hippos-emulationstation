@@ -7,6 +7,7 @@
 #include "guis/GuiDetectDevice.h"
 #include "guis/GuiGeneralScreensaverOptions.h"
 #include "guis/GuiMsgBox.h"
+#include "guis/GuiNetworkSources.h"
 #include "guis/GuiScraperStart.h"
 #include "guis/GuiHashStart.h"
 #include "guis/GuiThemeInstaller.h"
@@ -6147,51 +6148,7 @@ void GuiMenu::openStorageManager()
 		window->pushGui(sub);
 	});
 
-	s->addEntry(_("NETWORK SOURCES"), false, [window]
-	{
-		auto lines = ApiSystem::getInstance()->storageManagerListNetwork();
-		if (lines.empty())
-		{
-			window->pushGui(new GuiMsgBox(window, _("No network sources configured.")));
-			return;
-		}
-		auto* sub = new GuiSettings(window, _("NETWORK SOURCES").c_str());
-		for (const auto& line : lines)
-		{
-			auto t = Utils::String::split(line, '|');
-			if (t.size() < 3) continue;
-			std::string source = t[0];
-			std::string status = t[2];
-			std::string entry  = source + "  [" + status + "]";
-			sub->addEntry(entry, false, [window, sub, source, status]
-			{
-				auto* act = new GuiSettings(window, source.c_str());
-				if (status != "mounted")
-				{
-					act->addEntry(_("MOUNT"), false, [window, act, sub]
-					{
-						ApiSystem::getInstance()->storageManagerMountNetwork();
-						act->close();
-						sub->close();
-					});
-				}
-				act->addEntry(_("REMOVE"), false, [window, act, sub, source]
-				{
-					window->pushGui(new GuiMsgBox(window,
-						_("REMOVE THIS NETWORK SOURCE?") + "\n" + source,
-						_("REMOVE"), [window, act, sub, source]
-						{
-							ApiSystem::getInstance()->storageManagerRemoveNetwork(source);
-							act->close();
-							sub->close();
-						},
-						_("CANCEL"), nullptr));
-				});
-				window->pushGui(act);
-			});
-		}
-		window->pushGui(sub);
-	});
+	s->addEntry(_("NETWORK SOURCES"), true, [window] { GuiNetworkSources::open(window); });
 
 	s->addEntry(_("DUPLICATES"), false, [window]
 	{
