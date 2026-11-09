@@ -2368,15 +2368,36 @@ void GuiMenu::openSystemSettings()
 				ApiSystem::getInstance()->setRootPassword(newVal);
 		});
 
-		securityGui->addSaveFunc([this, securityEnabled, s] 
+		// hippos-session-setup reads system.login at boot to choose between
+		// autologin and the login screen. The hippos password is the root
+		// password above, so the login screen is only offered once it is no
+		// longer the published default.
+		auto requireLogin = std::make_shared<SwitchComponent>(mWindow);
+		requireLogin->setState(SystemConf::getInstance()->get("system.login") == "true");
+		securityGui->addWithDescription(_("ASK FOR PASSWORD AT STARTUP"), _("Start at a login screen instead of the games. Uses the root password above and needs a keyboard."), requireLogin);
+
+		securityGui->addSaveFunc([this, securityEnabled, requireLogin, s]
 		{
 			Window* window = this->mWindow;
 
-			if (securityEnabled->changed()) 
+			if (securityEnabled->changed())
 			{
 				SystemConf::getInstance()->set("system.security.enabled", securityEnabled->getState() ? "1" : "0");
 				SystemConf::getInstance()->saveSystemConf();
-				s->setVariable("reboot", true);				
+				s->setVariable("reboot", true);
+			}
+
+			if (requireLogin->changed())
+			{
+				if (requireLogin->getState() && ApiSystem::getInstance()->getRootPassword() != "custom")
+				{
+					window->pushGui(new GuiMsgBox(window, _("SET A ROOT PASSWORD FIRST. THE DEFAULT PASSWORD IS PUBLIC, SO IT CAN'T PROTECT THE LOGIN SCREEN."), _("OK")));
+					return;
+				}
+
+				SystemConf::getInstance()->set("system.login", requireLogin->getState() ? "true" : "false");
+				SystemConf::getInstance()->saveSystemConf();
+				s->setVariable("reboot", true);
 			}
 		});
 		mWindow->pushGui(securityGui);
