@@ -4998,6 +4998,16 @@ void GuiMenu::openQuitMenu_static(Window *window, bool quickAccessMenu, bool ani
 			},
 			_("NO"), nullptr));
 	}, "iconQuit");
+
+	// Ends the login session; greetd then shows the login screen.
+	s->addEntry(_("LOG OUT"), false, [window] {
+		window->pushGui(new GuiMsgBox(window, _("LOG OUT?"),
+			_("YES"), [] {
+				LOG(LogInfo) << "Logging out";
+				system("hippos logout");
+			},
+			_("NO"), nullptr));
+	}, "iconQuit");
 #endif
 
 #ifdef WIN32
