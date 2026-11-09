@@ -2368,15 +2368,15 @@ void GuiMenu::openSystemSettings()
 				ApiSystem::getInstance()->setRootPassword(newVal);
 		});
 
-		// hippos-session-setup reads system.login at boot to choose between
-		// autologin and the login screen. The hippos password is the root
-		// password above, so the login screen is only offered once it is no
-		// longer the published default.
-		auto requireLogin = std::make_shared<SwitchComponent>(mWindow);
-		requireLogin->setState(SystemConf::getInstance()->get("system.login") == "true");
-		securityGui->addWithDescription(_("ASK FOR PASSWORD AT STARTUP"), _("Start at a login screen instead of the games. Uses the root password above and needs a keyboard."), requireLogin);
+		// hippos-session-setup reads system.autologin at boot to choose between
+		// autologin and the login screen. The login screen takes the root
+		// password above (hippos shares it), so it is only offered once that
+		// password is no longer the published default.
+		auto autoLogin = std::make_shared<SwitchComponent>(mWindow);
+		autoLogin->setState(SystemConf::getInstance()->get("system.autologin") != "false");
+		securityGui->addWithDescription(_("AUTO LOGIN"), _("Start straight into the games. When off, startup shows a login screen that takes the root password above."), autoLogin);
 
-		securityGui->addSaveFunc([this, securityEnabled, requireLogin, s]
+		securityGui->addSaveFunc([this, securityEnabled, autoLogin, s]
 		{
 			Window* window = this->mWindow;
 
@@ -2387,15 +2387,15 @@ void GuiMenu::openSystemSettings()
 				s->setVariable("reboot", true);
 			}
 
-			if (requireLogin->changed())
+			if (autoLogin->changed())
 			{
-				if (requireLogin->getState() && ApiSystem::getInstance()->getRootPassword() != "custom")
+				if (!autoLogin->getState() && ApiSystem::getInstance()->getRootPassword() != "custom")
 				{
 					window->pushGui(new GuiMsgBox(window, _("SET A ROOT PASSWORD FIRST. THE DEFAULT PASSWORD IS PUBLIC, SO IT CAN'T PROTECT THE LOGIN SCREEN."), _("OK")));
 					return;
 				}
 
-				SystemConf::getInstance()->set("system.login", requireLogin->getState() ? "true" : "false");
+				SystemConf::getInstance()->set("system.autologin", autoLogin->getState() ? "true" : "false");
 				SystemConf::getInstance()->saveSystemConf();
 				s->setVariable("reboot", true);
 			}
