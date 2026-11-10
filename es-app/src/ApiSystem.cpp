@@ -1184,7 +1184,7 @@ std::string ApiSystem::getThemesUrl()
 	if (!systemsetting.empty())
 		return systemsetting;
 
-	return "https://updates.batocera.org/themes.json";
+	return "https://hippos-linux.org/updates/themes.json";
 }
 
 std::string ApiSystem::getGitRepositoryDefaultBranch(const std::string& url)
@@ -2441,6 +2441,8 @@ std::vector<PacmanPackage> ApiSystem::getStorePackages()
 			std::string tag = node.name();
 			if (tag == "name")
 				package.name = node.text().get();
+			if (tag == "title")
+				package.title = node.text().get();
 			if (tag == "repository")
 				package.repository = node.text().get();
 			if (tag == "available_version")

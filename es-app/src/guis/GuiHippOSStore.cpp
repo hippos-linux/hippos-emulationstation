@@ -17,7 +17,7 @@
 #include "guis/GuiTextEditPopupKeyboard.h"
 #include "components/WebImageComponent.h"
 
-#include <unordered_set>
+#include <map>
 #include <algorithm>
 
 #define WINDOW_WIDTH (float)Math::min(Renderer::getScreenHeight() * 1.125f, Renderer::getScreenWidth() * 0.95f)
@@ -153,36 +153,25 @@ void GuiHippOSStore::centerWindow()
 	setPosition((Renderer::getScreenWidth() - getSize().x()) / 2, (Renderer::getScreenHeight() - getSize().y()) / 2);
 }
 
-static bool sortPackagesByGroup(PacmanPackage& sys1, PacmanPackage& sys2)
-{
-	if (sys1.group == sys2.group)
-		return Utils::String::compareIgnoreCase(sys1.description, sys2.description) < 0;		
-
-	return sys1.group.compare(sys2.group) < 0;
-}
 
 void GuiHippOSStore::loadList(bool updatePackageList, bool restoreIndex)
 {
 	int idx = updatePackageList || !restoreIndex ? -1 : mList->getCursorIndex();
 	mList->clear();
 
-	std::unordered_set<std::string> repositories;
+	std::vector<std::string> repositories;
 	for (auto& package : mPackages)
 	{
 		if (!mArchitecture.empty() && !package.arch.empty() && package.arch != "any" && package.arch != mArchitecture)
 			continue;
 
-		if (repositories.find(package.repository) == repositories.cend())
-			repositories.insert(package.repository);
+		if (std::find(repositories.cbegin(), repositories.cend(), package.repository) == repositories.cend())
+			repositories.push_back(package.repository);
 	}
 
 	if (repositories.size() > 0 && mTabs->size() == 0 && mTabFilter.empty())
 	{
-		std::vector<std::string> gps;
-		for (auto gp : repositories)
-			gps.push_back(gp);
-
-		std::sort(gps.begin(), gps.end());
+		const std::vector<std::string>& gps = repositories;
 		for (auto group : gps)
 			mTabs->addTab(group);
 
@@ -214,7 +203,9 @@ void GuiHippOSStore::loadList(bool updatePackageList, bool restoreIndex)
 		if (!mTabFilter.empty() && package.repository != mTabFilter)				
 			continue;		
 
-		if (!mTextFilter.empty() && !Utils::String::containsIgnoreCase(package.name, mTextFilter))
+		if (!mTextFilter.empty() &&
+			!Utils::String::containsIgnoreCase(package.displayName(), mTextFilter) &&
+			!Utils::String::containsIgnoreCase(package.description, mTextFilter))
 			continue;
 
 		if (lastGroup != package.group)
@@ -278,7 +269,18 @@ std::vector<PacmanPackage> GuiHippOSStore::queryPackages()
 		copy.push_back(package);
 	}
 
-	std::sort(copy.begin(), copy.end(), sortPackagesByGroup);
+	std::map<std::string, size_t> repositoryOrder;
+	for (auto& package : copy)
+		repositoryOrder.emplace(package.repository, repositoryOrder.size());
+
+	std::stable_sort(copy.begin(), copy.end(), [&repositoryOrder](const PacmanPackage& a, const PacmanPackage& b)
+	{
+		if (a.repository != b.repository)
+			return repositoryOrder[a.repository] < repositoryOrder[b.repository];
+		if (a.group != b.group)
+			return a.group.compare(b.group) < 0;
+		return Utils::String::compareIgnoreCase(a.displayName(), b.displayName()) < 0;
+	});
 	return copy;
 }
 
@@ -304,7 +306,7 @@ void GuiHippOSStore::processPackage(PacmanPackage package)
 	if (package.name.empty())
 		return;
 
-	GuiSettings* msgBox = new GuiSettings(mWindow, package.name);
+	GuiSettings* msgBox = new GuiSettings(mWindow, package.displayName());
 	msgBox->setSubTitle(package.description);
 	msgBox->setTag("popup");
 	
@@ -313,7 +315,7 @@ void GuiHippOSStore::processPackage(PacmanPackage package)
 		msgBox->addEntry(_U("\uF019 ") + _("UPDATE"), false, [this, msgBox, package]
 		{
 			char trstring[1024];
-			snprintf(trstring, 1024, _("'%s' ADDED TO DOWNLOAD QUEUE").c_str(), package.name.c_str());
+			snprintf(trstring, 1024, _("'%s' ADDED TO DOWNLOAD QUEUE").c_str(), package.displayName().c_str());
 			mWindow->displayNotificationMessage(_U("\uF019 ") + std::string(trstring));
 
 			ContentInstaller::Enqueue(mWindow, ContentInstaller::CONTENT_STORE_INSTALL, package.name);
@@ -337,7 +339,7 @@ void GuiHippOSStore::processPackage(PacmanPackage package)
 		msgBox->addEntry(_U("\uF019 ") + _("INSTALL"), false, [this, msgBox, package]
 		{
 			char trstring[1024];
-			snprintf(trstring, 1024, _("'%s' ADDED TO DOWNLOAD QUEUE").c_str(), package.name.c_str());
+			snprintf(trstring, 1024, _("'%s' ADDED TO DOWNLOAD QUEUE").c_str(), package.displayName().c_str());
 			mWindow->displayNotificationMessage(_U("\uF019 ") + std::string(trstring));
 
 			ContentInstaller::Enqueue(mWindow, ContentInstaller::CONTENT_STORE_INSTALL, package.name);
@@ -431,27 +433,28 @@ GuiHippOSStoreEntry::GuiHippOSStoreEntry(Window* window, PacmanPackage& entry, b
 	mImage->setText(isInstalled ? _U("\uF058") : _U("\uF019"));	
 	mImage->setSize(theme->Text.font->getLetterHeight() * 1.5f, 0);
 
-	std::string label = entry.description;
+	std::string label = entry.title.empty() ? entry.description : entry.title;
 
 	mText = std::make_shared<TextComponent>(mWindow, label, theme->Text.font, theme->Text.color);
 	mText->setLineSpacing(1.5);
 	mText->setVerticalAlignment(ALIGN_TOP);
 
-	std::string details =
-		_U("\uf0C5  ") + entry.name +
-		_U("  \uf085  ") + entry.available_version +
-		_U("  \uf007  ") + entry.packager;
-		
-	if (withPreviewImage)
+	std::string details = entry.description;
+	if (entry.title.empty())
 	{
 		details =
 			_U("\uf0C5  ") + entry.name +
-			/*"\r\n" + */_U("  \uf085  ") + entry.available_version +
-			"\r\n" + _U("  \uf007  ") + entry.packager;
-	}
+			_U("  \uf085  ") + entry.available_version +
+			_U("  \uf007  ") + entry.packager;
 
-	if (!entry.repository.empty() && entry.repository != "hippos")
-		details = details + _U("  \uf114  ") + entry.repository;
+		if (withPreviewImage)
+		{
+			details =
+				_U("\uf0C5  ") + entry.name +
+				_U("  \uf085  ") + entry.available_version +
+				"\r\n" + _U("  \uf007  ") + entry.packager;
+		}
+	}
 
 	if (entry.installed_size > 0)
 		details = details + _U("  \uf0A0  ") + Utils::FileSystem::kiloBytesToString(entry.installed_size);

@@ -57,6 +57,7 @@ struct PacmanPackage
 	}
 
 	std::string name;
+	std::string title;
 	std::string repository;
 	std::string available_version;
 	std::string description;
@@ -76,6 +77,7 @@ struct PacmanPackage
 	std::string arch;
 
 	bool isInstalled() { return status == "installed"; }
+	std::string displayName() const { return title.empty() ? name : title; }
 };
 
 struct PadInfo
