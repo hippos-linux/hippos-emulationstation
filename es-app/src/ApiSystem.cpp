@@ -2755,7 +2755,7 @@ void ApiSystem::suspend()
 void ApiSystem::replugControllers_sindenguns()
 {
 	LOG(LogDebug) << "ApiSystem::replugControllers_sindenguns";
-	executeScript("/usr/bin/virtual-sindenlightgun-remap");
+	executeScript("sudo -n systemctl restart 'hippos-lightgun@*.service'");
 }
 
 void ApiSystem::replugControllers_wiimotes()
