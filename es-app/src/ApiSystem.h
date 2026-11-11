@@ -315,6 +315,10 @@ public:
     bool storageManagerRemoveNetwork(const std::string& source);
     bool storageManagerAddNetwork(const std::string& address, const std::string& user = "", const std::string& password = "");
     std::vector<std::string> scanNetworkShares();
+    struct Desktop { std::string id; std::string label; bool installed; bool current; bool removable; std::string note; };
+    std::vector<Desktop> listDesktops();
+    std::pair<std::string, int> installDesktop(const std::string& id, const std::function<void(const std::string)>& func);
+    std::pair<std::string, int> uninstallDesktop(const std::string& id, const std::function<void(const std::string)>& func);
     std::vector<std::string> listNetworkShares(const std::string& host, const std::string& user, const std::string& password);
 
 	bool setButtonColorGameForce(std::string basic_string);

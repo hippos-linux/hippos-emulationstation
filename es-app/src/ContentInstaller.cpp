@@ -80,27 +80,7 @@ void ContentInstaller::updateNotificationComponentTitle(bool incQueueSize)
 
 void ContentInstaller::updateNotificationComponentContent(const std::string info)
 {
-	auto pos = info.find(">>>");
-	if (pos != std::string::npos)
-	{
-		std::string percent(info.substr(pos));
-		percent = Utils::String::replace(percent, ">", "");
-		percent = Utils::String::replace(percent, "%", "");
-		percent = Utils::String::replace(percent, " ", "");
-
-		int value = atoi(percent.c_str());
-
-		std::string text(info.substr(0, pos));
-		text = Utils::String::trim(text);
-
-		mWndNotification->updatePercent(value);
-		mWndNotification->updateText(text);
-	}
-	else
-	{
-		mWndNotification->updatePercent(-1);
-		mWndNotification->updateText(info);
-	}
+	mWndNotification->updateFromScriptLine(info);
 }
 
 void ContentInstaller::threadUpdate()

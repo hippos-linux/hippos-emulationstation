@@ -1542,6 +1542,44 @@ void Window::processStorageRequest(std::string line)
 			pushGui(msg);
 		}
 	}
+	else if (type == "REQUEST_NETWORK_MERGE" && parts.size() >= 4)
+	{
+		std::string shareName = parts[2];
+		std::string uri = parts[3];
+		for (size_t i = 4; i < parts.size(); i++)
+			uri += ":" + parts[i];
+
+		std::string message = _("NETWORK GAME SHARE DETECTED") + "\n\n" +
+							  _("SHARE")   + ": " + shareName + "\n" +
+							  _("ADDRESS") + ": " + uri + "\n\n" +
+							  _("Merge games from this share now?") + "\n" +
+							  _("(This will also apply on future boots)");
+
+		auto mergeLambda = [this, uri, processNext] {
+			this->displayNotificationMessage(_("Merge requested... Please wait."));
+
+			std::thread([this, uri, processNext]() {
+				bool success = ApiSystem::getInstance()->storageManagerAddNetwork(uri, "", "");
+				this->postToUiThread([this, success, processNext]() {
+					if (!success)
+						this->pushGui(new GuiMsgBox(this, _("MERGE FAILED") + "\n" + _("Please check the logs."), _("OK"), [processNext] { processNext(); }));
+					else
+						processNext();
+				});
+			}).detach();
+		};
+
+		pushGui(new GuiMsgBox(this, message,
+			_("NO, IGNORE THIS TIME"), [processNext] { processNext(); },
+			_("NO, IGNORE FOREVER"), [this, uri, processNext] {
+				this->displayNotificationMessage(_("Adding share to ignore list..."));
+				std::thread([uri, processNext, this]() {
+					ApiSystem::getInstance()->ignoreDevicePermanently(uri);
+					this->postToUiThread([processNext] { processNext(); });
+				}).detach();
+			},
+			_("YES, MERGE SHARE"), mergeLambda));
+	}
 	else if (type == "REQUEST_FORMAT" && parts.size() >= 2)
 	{
 		std::string deviceName = parts[1];

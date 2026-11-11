@@ -23,6 +23,7 @@ public:
 	void updateTitle(const std::string text);
 	void updateText(const std::string text, const std::string action = "");
 	void updatePercent(int percent);
+	void updateFromScriptLine(const std::string& line);
 
 	float getFading() { return mFadeOut; }
 	bool isClosing() { return mClosing; };

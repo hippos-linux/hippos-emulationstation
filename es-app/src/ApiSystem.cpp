@@ -1028,6 +1028,28 @@ bool ApiSystem::storageManagerAddNetwork(const std::string& address, const std::
 	return added;
 }
 
+std::vector<ApiSystem::Desktop> ApiSystem::listDesktops()
+{
+	std::vector<Desktop> desktops;
+	for (const auto& line : executeEnumerationScript("/usr/lib/hippos/desktop-switcher list --machine"))
+	{
+		auto fields = Utils::String::split(line, '|', true);
+		if (fields.size() >= 5)
+			desktops.push_back({ fields[0], fields[1], fields[2] == "1", fields[3] == "1", fields[4] == "1", fields.size() > 5 ? fields[5] : "" });
+	}
+	return desktops;
+}
+
+std::pair<std::string, int> ApiSystem::installDesktop(const std::string& id, const std::function<void(const std::string)>& func)
+{
+	return executeScript("/usr/lib/hippos/desktop-switcher install " + shellSingleQuote(id), func);
+}
+
+std::pair<std::string, int> ApiSystem::uninstallDesktop(const std::string& id, const std::function<void(const std::string)>& func)
+{
+	return executeScript("/usr/lib/hippos/desktop-switcher uninstall " + shellSingleQuote(id), func);
+}
+
 std::vector<std::string> ApiSystem::scanNetworkShares()
 {
 	return executeEnumerationScript("hippos-network-roms-discover discover");

@@ -5,6 +5,7 @@
 #include "components/TextComponent.h"
 #include "LocaleES.h"
 #include "Window.h"
+#include "utils/StringUtil.h"
 #include <SDL_timer.h>
 
 #define PADDING_PX  (Renderer::getScreenWidth()*0.01)
@@ -91,6 +92,25 @@ void AsyncNotificationComponent::updatePercent(int percent)
 	std::unique_lock<std::mutex> lock(mMutex);
 
 	mPercent = percent;
+}
+
+void AsyncNotificationComponent::updateFromScriptLine(const std::string& line)
+{
+	auto pos = line.find(">>>");
+	if (pos == std::string::npos)
+	{
+		updatePercent(-1);
+		updateText(line);
+		return;
+	}
+
+	std::string percent = line.substr(pos);
+	percent = Utils::String::replace(percent, ">", "");
+	percent = Utils::String::replace(percent, "%", "");
+	percent = Utils::String::replace(percent, " ", "");
+
+	updatePercent(atoi(percent.c_str()));
+	updateText(Utils::String::trim(line.substr(0, pos)));
 }
 
 void AsyncNotificationComponent::updateTitle(const std::string text)

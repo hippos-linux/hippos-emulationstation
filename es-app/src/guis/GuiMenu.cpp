@@ -22,6 +22,7 @@
 #include "guis/GuiSystemInformation.h"
 #include "guis/GuiControllersSettings.h"
 #include "guis/GuiLoading.h"
+#include "components/AsyncNotificationComponent.h"
 #include "views/UIModeController.h"
 #include "views/ViewController.h"
 #include "CollectionSystemManager.h"
@@ -4736,64 +4737,74 @@ void GuiMenu::openNetworkSettings(bool selectWifiEnable)
 	mWindow->pushGui(s);
 }
 
+static void runDesktopJob(Window* window, const std::string& title,
+	const std::function<std::pair<std::string, int>(const std::function<void(const std::string)>&)>& job,
+	const std::function<void(bool)>& done)
+{
+	auto notification = window->createAsyncNotificationComponent();
+	notification->updateTitle(title);
+	std::thread([window, notification, job, done] {
+		auto result = job([notification](const std::string line) { notification->updateFromScriptLine(line); });
+		notification->close();
+		window->postToUiThread([done, result] { done(result.second == 0); });
+	}).detach();
+}
+
 void GuiMenu::openDesktopSelector()
 {
 	auto s = new GuiSettings(mWindow, _("SELECT DESKTOP").c_str());
 
-	struct Desktop { std::string id; std::string label; std::string pkg; };
-	static const std::vector<Desktop> desktops = {
-		{"lxqt",     "LXQt",                 "lxqt-core"},
-		{"plasma",   "KDE Plasma",           "kde-plasma-desktop"},
-		{"xfce",     "XFCE",                 "xfce4"},
-		{"gnome",    "GNOME",                "gnome-core"},
-		{"mate",     "MATE",                 "mate-desktop-environment-core"},
-		{"cinnamon", "Cinnamon",             "cinnamon"},
-	};
-
-	std::string currentDesktop = "lxqt";
+	for (const auto& d : ApiSystem::getInstance()->listDesktops())
 	{
-		FILE* f = popen("hippos-settings get system.desktop 2>/dev/null", "r");
-		if (f) {
-			char buf[64] = {};
-			if (fgets(buf, sizeof(buf), f)) {
-				std::string val(buf);
-				if (!val.empty() && val.back() == '\n') val.pop_back();
-				if (!val.empty()) currentDesktop = val;
-			}
-			pclose(f);
-		}
-	}
-
-	for (auto& d : desktops)
-	{
-		bool installed = (system(("dpkg -l " + d.pkg + " 2>/dev/null | grep -q '^ii'").c_str()) == 0);
-
+		bool installed = d.installed;
 		std::string label = d.label;
-		if (d.id == currentDesktop) label += " ★";
-		else if (installed)         label += " ✓";
+		if (d.current)        label += " ★";
+		else if (installed)   label += " ✓";
 
-		s->addEntry(label.c_str(), false, [this, d, installed] {
-			std::string msg = installed
-				? (_("SWITCH TO") + " " + d.label + "?")
-				: (_("INSTALL AND SWITCH TO") + " " + d.label + "?\n" + _("This may take several minutes."));
+		bool removable = d.removable;
+		s->addWithDescription(label, d.note, nullptr, [this, d, installed, removable] {
+			Window* window = mWindow;
+			auto switchTo = [d] { system(("/usr/lib/hippos/switch-to-desktop " + d.id).c_str()); };
 
-			mWindow->pushGui(new GuiMsgBox(mWindow, msg,
-				_("YES"), [this, d, installed] {
-					if (installed) {
-						system(("/usr/lib/hippos/switch-to-desktop " + d.id).c_str());
-					} else {
-						mWindow->pushGui(new GuiLoading<int>(mWindow,
-							_("INSTALLING") + " " + d.label + "...",
-							[d](IGuiLoadingHandler*) {
-								return system(("/usr/lib/hippos/desktop-switcher install " + d.id).c_str());
-							},
-							[this, d](int) {
-								system(("/usr/lib/hippos/switch-to-desktop " + d.id).c_str());
-							}
-						));
-					}
-				},
-				_("NO"), nullptr));
+			if (!installed)
+			{
+				window->pushGui(new GuiMsgBox(window,
+					_("INSTALL") + " " + d.label + "?\n" + _("This may take several minutes. You can keep using ES while it installs."),
+					_("YES"), [window, d, switchTo] {
+						runDesktopJob(window, _("INSTALLING") + " " + d.label,
+							[d](const std::function<void(const std::string)>& progress) { return ApiSystem::getInstance()->installDesktop(d.id, progress); },
+							[window, d, switchTo](bool ok) {
+								if (ok)
+									window->pushGui(new GuiMsgBox(window, d.label + " " + _("IS INSTALLED.") + "\n" + _("Switch to it now?"),
+										_("SWITCH NOW"), switchTo, _("LATER"), nullptr));
+								else
+									window->pushGui(new GuiMsgBox(window, d.label + " " + _("COULD NOT BE INSTALLED") + "\n" + _("Please check the logs."), _("OK")));
+							});
+					},
+					_("NO"), nullptr));
+				return;
+			}
+
+			auto uninstall = [window, d] {
+				window->pushGui(new GuiMsgBox(window,
+					_("UNINSTALL") + " " + d.label + "?\n" + _("Its packages are removed; your files are kept."),
+					_("YES"), [window, d] {
+						runDesktopJob(window, _("UNINSTALLING") + " " + d.label,
+							[d](const std::function<void(const std::string)>& progress) { return ApiSystem::getInstance()->uninstallDesktop(d.id, progress); },
+							[window, d](bool ok) {
+								window->pushGui(new GuiMsgBox(window, ok
+									? d.label + " " + _("HAS BEEN UNINSTALLED.")
+									: d.label + " " + _("COULD NOT BE UNINSTALLED") + "\n" + _("Please check the logs."), _("OK")));
+							});
+					},
+					_("NO"), nullptr));
+			};
+
+			if (removable)
+				window->pushGui(new GuiMsgBox(window, d.label,
+					_("SWITCH TO IT"), switchTo, _("UNINSTALL"), uninstall, _("CANCEL"), nullptr));
+			else
+				window->pushGui(new GuiMsgBox(window, _("SWITCH TO") + " " + d.label + "?", _("YES"), switchTo, _("NO"), nullptr));
 		});
 	}
 

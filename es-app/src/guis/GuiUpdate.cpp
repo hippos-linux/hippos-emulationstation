@@ -93,27 +93,7 @@ public:
 		switch (mMode)
 		{
 			case Mode::System:
-				updateStatus = ApiSystem::getInstance()->updateSystem([this](const std::string info)
-				{
-					auto pos = info.find(">>>");
-					if (pos != std::string::npos)
-					{
-						std::string percent(info.substr(pos));
-						percent = Utils::String::replace(percent, ">", "");
-						percent = Utils::String::replace(percent, "%", "");
-						percent = Utils::String::replace(percent, " ", "");
-						int value = atoi(percent.c_str());
-						std::string text(info.substr(0, pos));
-						text = Utils::String::trim(text);
-						mWndNotification->updatePercent(value);
-						mWndNotification->updateText(text);
-					}
-					else
-					{
-						mWndNotification->updatePercent(-1);
-						mWndNotification->updateText(info);
-					}
-				});
+				updateStatus = ApiSystem::getInstance()->updateSystem([this](const std::string info) { mWndNotification->updateFromScriptLine(info); });
 				break;
 
 			case Mode::Emulator:
