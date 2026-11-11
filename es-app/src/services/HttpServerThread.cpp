@@ -15,6 +15,8 @@
 #include "CollectionSystemManager.h"
 #include "guis/GuiMenu.h"
 #include "guis/GuiMsgBox.h"
+#include "components/AsyncNotificationComponent.h"
+#include "utils/StringUtil.h"
 #include "utils/FileSystemUtil.h"
 #include "HttpApi.h"
 #include "Settings.h"
@@ -533,6 +535,65 @@ void HttpServerThread::run()
 		{
 			GuiMenu::updateGameLists(w, false);
 		});
+	});
+
+	mHttpServer->Post("/reloadgames", [this](const httplib::Request& req, httplib::Response& res)
+	{
+		if (!isAllowed(req, res))
+			return;
+
+		if (req.body.empty())
+		{
+			res.set_content("400 bad request - body is missing", "text/plain");
+			res.status = 400;
+			return;
+		}
+
+		auto msg = req.body;
+		Window* w = mWindow;
+		mWindow->postToUiThread([msg, w]()
+		{
+			w->pushGui(new GuiMsgBox(w, msg,
+				_("REFRESH NOW"), [w] { GuiMenu::updateGameLists(w, false); },
+				_("LATER"), nullptr));
+		});
+	});
+
+	mHttpServer->Post("/progress", [this](const httplib::Request& req, httplib::Response& res)
+	{
+		if (!isAllowed(req, res))
+			return;
+
+		auto id = req.get_param_value("id");
+		if (id.empty())
+		{
+			res.set_content("400 bad request - id is missing", "text/plain");
+			res.status = 400;
+			return;
+		}
+
+		std::unique_lock<std::mutex> lock(mProgressLock);
+		auto it = mProgress.find(id);
+
+		if (req.get_param_value("done") == "1")
+		{
+			if (it != mProgress.cend())
+			{
+				it->second->close();
+				mProgress.erase(it);
+			}
+			return;
+		}
+
+		if (it == mProgress.cend())
+			it = mProgress.emplace(id, mWindow->createAsyncNotificationComponent()).first;
+
+		auto notification = it->second;
+		if (req.has_param("title"))
+			notification->updateTitle(req.get_param_value("title"));
+		if (req.has_param("text"))
+			notification->updateText(req.get_param_value("text"));
+		notification->updatePercent(req.has_param("percent") ? Utils::String::toInteger(req.get_param_value("percent")) : -1);
 	});
 
 	mHttpServer->Post("/messagebox", [this](const httplib::Request& req, httplib::Response& res)

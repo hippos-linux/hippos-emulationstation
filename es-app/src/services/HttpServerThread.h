@@ -1,7 +1,11 @@
 #pragma once
 
 #include "Window.h"
+#include <map>
+#include <mutex>
 #include <thread>
+
+class AsyncNotificationComponent;
 
 namespace httplib
 {
@@ -23,6 +27,9 @@ private:
 	std::thread*	mThread;
 
 	httplib::Server* mHttpServer;
+
+	std::mutex mProgressLock;
+	std::map<std::string, AsyncNotificationComponent*> mProgress;
 
 	void run();
 };
