@@ -214,6 +214,7 @@ void Settings::setDefaults()
 	
 	mIntMap["RecentlyScrappedFilter"] = 3;
 	mIntMap["IndexDirectoryDepth"] = 0; // 0 = unlimited
+	mStringMap["windows.IndexDirectoryDepth"] = "1";
 	
 	mIntMap["ScreenSaverTime"] = Settings::_ScreenSaverTime;
 	mIntMap["FpsLimit"] = 0;

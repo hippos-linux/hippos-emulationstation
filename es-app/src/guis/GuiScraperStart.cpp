@@ -9,6 +9,8 @@
 #include "LocaleES.h"
 #include "GuiLoading.h"
 #include "views/gamelist/IGameListView.h"
+#include "utils/FileSystemUtil.h"
+#include <set>
 
 GuiScraperStart::GuiScraperStart(Window* window)
 	: GuiSettings(window, _("SCRAPER"), true)
@@ -399,6 +401,22 @@ void GuiScraperStart::start()
 		}));
 }
 
+void GuiScraperStart::listMediaFolders(const std::vector<FileData*>& games)
+{
+	std::set<std::string> folders;
+	for (auto game : games)
+		for (const auto& mdd : MetaDataList::getMDD())
+			if (mdd.type == MD_PATH && mdd.id != MetaDataId::ParentGame)
+			{
+				std::string path = game->getMetadata(mdd.id);
+				if (!path.empty())
+					folders.insert(Utils::FileSystem::getParent(path));
+			}
+
+	for (const auto& folder : folders)
+		Utils::FileSystem::getDirectoryFiles(folder);
+}
+
 std::queue<ScraperSearchParams> GuiScraperStart::getSearches(std::vector<SystemData*> systems, FilterFunc mediaSelector, FilterFunc dateSelector, IGuiLoadingHandler* handler)
 {
 	std::queue<ScraperSearchParams> queue;
@@ -413,6 +431,7 @@ std::queue<ScraperSearchParams> GuiScraperStart::getSearches(std::vector<SystemD
 		}
 
 		auto games = system->getRootFolder()->getFilesRecursive(GAME);
+		listMediaFolders(games);
 		for(auto game : games)
 		{
 			if (dateSelector(game) && mediaSelector(game))

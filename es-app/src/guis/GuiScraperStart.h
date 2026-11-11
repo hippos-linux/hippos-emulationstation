@@ -36,6 +36,8 @@ private:
 	void loadSettingsPage();
 	void loadAccountsPage();
 
+	void listMediaFolders(const std::vector<FileData*>& games);
+
 	std::queue<ScraperSearchParams> getSearches(std::vector<SystemData*> systems, FilterFunc mediaSelector, FilterFunc dateSelector, IGuiLoadingHandler* handler = nullptr);
 
 	std::shared_ptr<OptionListComponent<FilterFunc>> mDateFilters;
