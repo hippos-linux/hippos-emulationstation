@@ -2,7 +2,6 @@
 
 #include "Window.h"
 #include <map>
-#include <mutex>
 #include <thread>
 
 class AsyncNotificationComponent;
@@ -28,7 +27,6 @@ private:
 
 	httplib::Server* mHttpServer;
 
-	std::mutex mProgressLock;
 	std::map<std::string, AsyncNotificationComponent*> mProgress;
 
 	void run();

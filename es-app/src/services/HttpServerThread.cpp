@@ -572,28 +572,36 @@ void HttpServerThread::run()
 			return;
 		}
 
-		std::unique_lock<std::mutex> lock(mProgressLock);
-		auto it = mProgress.find(id);
+		bool done = req.get_param_value("done") == "1";
+		bool hasTitle = req.has_param("title");
+		bool hasText = req.has_param("text");
+		auto title = req.get_param_value("title");
+		auto text = req.get_param_value("text");
+		int percent = req.has_param("percent") ? Utils::String::toInteger(req.get_param_value("percent")) : -1;
 
-		if (req.get_param_value("done") == "1")
+		mWindow->postToUiThread([this, id, done, hasTitle, title, hasText, text, percent]()
 		{
-			if (it != mProgress.cend())
+			auto it = mProgress.find(id);
+			if (done)
 			{
-				it->second->close();
-				mProgress.erase(it);
+				if (it != mProgress.cend())
+				{
+					it->second->close();
+					mProgress.erase(it);
+				}
+				return;
 			}
-			return;
-		}
 
-		if (it == mProgress.cend())
-			it = mProgress.emplace(id, mWindow->createAsyncNotificationComponent()).first;
+			if (it == mProgress.cend())
+				it = mProgress.emplace(id, mWindow->createAsyncNotificationComponent()).first;
 
-		auto notification = it->second;
-		if (req.has_param("title"))
-			notification->updateTitle(req.get_param_value("title"));
-		if (req.has_param("text"))
-			notification->updateText(req.get_param_value("text"));
-		notification->updatePercent(req.has_param("percent") ? Utils::String::toInteger(req.get_param_value("percent")) : -1);
+			auto notification = it->second;
+			if (hasTitle)
+				notification->updateTitle(title);
+			if (hasText)
+				notification->updateText(text);
+			notification->updatePercent(percent);
+		});
 	});
 
 	mHttpServer->Post("/messagebox", [this](const httplib::Request& req, httplib::Response& res)
