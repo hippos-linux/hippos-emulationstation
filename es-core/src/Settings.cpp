@@ -375,7 +375,6 @@ void Settings::setDefaults()
 	mStringMap["INPUT P8NAME"] = "DEFAULT";
 
 #ifdef HIPPOS
-	mStringMap["HOTKEY_CONTROLCENTER"] = "a";
 #endif
 
 	// Audio settings

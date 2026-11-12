@@ -589,12 +589,6 @@ void ApiSystem::launchExternalWindow_after(Window *window)
 	LOG(LogDebug) << "ApiSystem::launchExternalWindow_after OK";
 }
 
-#ifdef HIPPOS
-void ApiSystem::launchControlcenter() {
-  system("hippos");
-}
-#endif
-
 bool ApiSystem::launchKodi(Window *window) 
 {
 	LOG(LogDebug) << "ApiSystem::launchKodi";

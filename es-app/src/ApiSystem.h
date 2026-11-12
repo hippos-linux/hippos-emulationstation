@@ -230,10 +230,6 @@ public:
     virtual bool launchKodi(Window *window);
     bool launchFileManager(Window *window);
 
-#ifdef HIPPOS
-    virtual void launchControlcenter();
-#endif
-
     // Gets a list of drives that are safe to unmount.
     // Returns a vector of strings, each formatted as "DisplayName:MountPath"
     std::vector<std::string> getEjectableDrives();
