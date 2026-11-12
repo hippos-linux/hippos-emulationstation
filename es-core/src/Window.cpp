@@ -99,6 +99,9 @@ void Window::removeGui(GuiComponent* gui)
 				mGuiStack.back()->topWindow(true);
 			}
 
+			if (mGamelistReloadPending && mGuiStack.size() == 1)
+				postToUiThread([this] { requestGamelistReload(); });
+
 			return;
 		}
 	}
@@ -1445,6 +1448,19 @@ void Window::setReloadGamelistsCallback(const std::function<void()>& func)
     mReloadGamelistsCallback = func;
 }
 
+void Window::requestGamelistReload()
+{
+	if (mGuiStack.size() > 1)
+	{
+		mGamelistReloadPending = true;
+		return;
+	}
+
+	mGamelistReloadPending = false;
+	if (mReloadGamelistsCallback)
+		mReloadGamelistsCallback();
+}
+
 void Window::processStorageRequest(std::string line)
 {
 	static std::vector<std::string> storageQueue;
@@ -1455,8 +1471,8 @@ void Window::processStorageRequest(std::string line)
 	auto processNext = [this]() {
 		if (storageQueue.empty()) {
 			isProcessing = false;
-			if (needReload && mReloadGamelistsCallback) {
-				mReloadGamelistsCallback();
+			if (needReload) {
+				requestGamelistReload();
 				this->displayNotificationMessage(_("Reloaded the games list..."));
 				needReload = false;
 			}

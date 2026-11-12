@@ -533,7 +533,7 @@ void HttpServerThread::run()
 		Window* w = mWindow;
 		mWindow->postToUiThread([w]()
 		{
-			GuiMenu::updateGameLists(w, false);
+			w->requestGamelistReload();
 		});
 	});
 

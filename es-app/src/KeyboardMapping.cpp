@@ -175,9 +175,14 @@ KeyMappingFile::KeyName::KeyName(const std::string& k, const std::string& p2k, c
 	}
 }
 
+static bool isStickAction(const std::string& type)
+{
+	return type == "mouse" || type == "scroll";
+}
+
 bool KeyMappingFile::checkTriggerExists(const std::string& target, const std::string& type)
 {
-	if (type == "mouse")
+	if (isStickAction(type))
 		return (target == "joystick1" || target == "joystick2");
 
 	for (auto map : triggerNames)
@@ -290,7 +295,7 @@ KeyMappingFile KeyMappingFile::load(const std::string& fileName)
 					}				
 				}
 
-				if ((map.targets.size() > 0 || map.type == "mouse") && map.triggers.size() > 0)
+				if ((map.targets.size() > 0 || isStickAction(map.type)) && map.triggers.size() > 0)
 					pm.mappings.push_back(map);
 			}
 
@@ -348,7 +353,7 @@ void KeyMappingFile::save(const std::string& fileName)
 		{
 			auto mapping = player.mappings[m];
 
-			if (mapping.triggers.size() == 0 || (mapping.targets.size() == 0 && mapping.type != "mouse"))
+			if (mapping.triggers.size() == 0 || (mapping.targets.size() == 0 && !isStickAction(mapping.type)))
 				continue;
 
 			writer.StartObject();

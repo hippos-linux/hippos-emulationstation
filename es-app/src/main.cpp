@@ -3,6 +3,7 @@
 
 #include "services/HttpServerThread.h"
 #include "guis/GuiDetectDevice.h"
+#include "guis/GuiMenu.h"
 #include "guis/GuiMsgBox.h"
 #include "utils/FileSystemUtil.h"
 #include "views/ViewController.h"
@@ -547,7 +548,7 @@ int main(int argc, char* argv[])
 	Window window;
 	ViewController::init(&window);
 
-	window.setReloadGamelistsCallback([&window] { ViewController::reloadAllGames(&window, true, true); });	
+	window.setReloadGamelistsCallback([&window] { GuiMenu::updateGameLists(&window, false); });	
 	window.pushGui(ViewController::get());
 	if (!window.init(true, false))
 	{

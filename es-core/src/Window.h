@@ -111,6 +111,7 @@ public:
 
 	void processStorageRequest(std::string line);
 	void setReloadGamelistsCallback(const std::function<void()>& func);
+	void requestGamelistReload();
 
 private:
 	std::vector<GuiComponent*> hitTest(int x, int y);
@@ -190,6 +191,7 @@ private:
 	unsigned int mMenuBackgroundShaderTextureCache;
 
 	std::function<void()> mReloadGamelistsCallback;
+	bool mGamelistReloadPending = false;
 };
 
 #endif // ES_CORE_WINDOW_H
