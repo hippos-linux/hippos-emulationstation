@@ -1040,6 +1040,11 @@ bool ApiSystem::storageManagerAddNetwork(const std::string& address, const std::
 	return added;
 }
 
+bool ApiSystem::storageManagerSetNetworkSaves(const std::string& source, bool writable)
+{
+	return executeScript("hippos-storage-manager set_network_saves " + shellSingleQuote(source) + (writable ? " on" : " off"));
+}
+
 std::vector<ApiSystem::Desktop> ApiSystem::listDesktops()
 {
 	std::vector<Desktop> desktops;

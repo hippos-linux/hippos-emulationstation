@@ -199,10 +199,32 @@ namespace
 			return;
 		std::string source = fields[0];
 		std::string status = fields[2];
+		bool writeSaves = fields.size() > 3 && fields[3] == "on";
+		bool savesWritten = fields.size() > 4 && fields[4] == "yes";
 		std::string label = source.substr(0, source.find(' '));
-		menu->addEntry(label + "  [" + status + "]", true, [window, menu, source, label, status]
+		menu->addEntry(label + "  [" + status + "]", true, [window, menu, source, label, status, writeSaves, savesWritten]
 		{
 			auto* actions = new GuiSettings(window, label.c_str());
+			std::string savesState = !writeSaves ? _("OFF") : (status != "mounted" || savesWritten) ? _("ON") : _("ON, BUT THE SHARE IS READ-ONLY");
+			actions->addEntry(_("WRITE SAVES BACK TO THIS SHARE") + ": " + savesState, false, [window, menu, actions, source, writeSaves]
+			{
+				window->pushGui(new GuiLoading<bool>(window, _("REMOUNTING NETWORK SHARE..."),
+					[source, writeSaves](auto)
+					{
+						ApiSystem::getInstance()->storageManagerSetNetworkSaves(source, !writeSaves);
+						return true;
+					},
+					[window, menu, actions, writeSaves](bool)
+					{
+						actions->close();
+						menu->close();
+						GuiNetworkSources::open(window);
+						if (!writeSaves)
+							window->pushGui(new GuiMsgBox(window,
+								_("SAVES ALREADY ON THIS SHARE ARE NOW UPDATED IN PLACE, SO THE SAME SAVE WORKS ON EVERY COMPUTER THAT USES IT.") + "\n" +
+								_("IF THE SHARE STAYS READ-ONLY, REMOVE IT AND ADD IT AGAIN SIGNED IN AS A USER THAT CAN WRITE TO IT.")));
+					}));
+			});
 			if (status != "mounted")
 			{
 				actions->addEntry(_("MOUNT"), false, [window, menu, actions]

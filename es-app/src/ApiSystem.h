@@ -312,6 +312,7 @@ public:
     bool storageManagerEject(const std::string& mountPath);
     bool storageManagerMountNetwork();
     bool storageManagerRemoveNetwork(const std::string& source);
+    bool storageManagerSetNetworkSaves(const std::string& source, bool writable);
     bool storageManagerAddNetwork(const std::string& address, const std::string& user = "", const std::string& password = "");
     std::vector<std::string> scanNetworkShares();
     struct Desktop { std::string id; std::string label; bool installed; bool current; bool removable; std::string note; };
