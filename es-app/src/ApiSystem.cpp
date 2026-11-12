@@ -271,6 +271,24 @@ std::vector<std::string> ApiSystem::listEmulatorUpdates()
 	return executeEnumerationScript("hippos-upgrade list-emulator-updates");
 }
 
+bool ApiSystem::isHandheldAvailable()
+{
+	return Utils::FileSystem::exists("/usr/bin/hippos-handheld") && executeScript("hippos-handheld available");
+}
+
+std::vector<std::string> ApiSystem::listHandheldSettings()
+{
+	return executeEnumerationScript("hippos-handheld list");
+}
+
+bool ApiSystem::setHandheldSettings(const std::map<std::string, std::string>& changes)
+{
+	std::string command = "hippos-handheld set";
+	for (const auto& change : changes)
+		command += " '" + Utils::String::replace(change.first + "=" + change.second, "'", "'\\''") + "'";
+	return executeScript(command);
+}
+
 std::pair<std::string, int> ApiSystem::updateEmulators(const std::function<void(const std::string)>& func)
 {
 	LOG(LogDebug) << "ApiSystem::updateEmulators";

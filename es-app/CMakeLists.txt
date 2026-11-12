@@ -101,6 +101,7 @@ set(ES_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiHippOSStore.h	
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiBios.h # batocera	
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiControllersSettings.h # batocera
+	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiHandheldSettings.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiPad2key.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiKeyMappingEditor.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiKeyboardLayout.h	
@@ -211,6 +212,7 @@ set(ES_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiImageViewer.cpp # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiHippOSStore.cpp	
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiBios.cpp # batocera	
+	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiHandheldSettings.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiControllersSettings.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiPad2key.cpp # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiKeyMappingEditor.cpp

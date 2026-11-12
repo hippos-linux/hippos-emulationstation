@@ -8,6 +8,7 @@
 #include "ThreadedBluetooth.h"
 #include "guis/GuiBluetoothDevices.h"
 #include "guis/GuiPad2key.h"
+#include "guis/GuiHandheldSettings.h"
 
 #include "guis/GuiMsgBox.h"
 #include "GuiLoading.h"
@@ -195,6 +196,9 @@ GuiControllersSettings::GuiControllersSettings(Window* wnd, int autoSel) : GuiSe
 	addGroup(_("BEHAVIOR"));
 
 	addEntry(_("JOYSTICKS HOTKEYS"), true, [this] { openControllersHotkeys(); });
+
+	if (ApiSystem::getInstance()->isHandheldAvailable())
+		addEntry(_("HANDHELD CONTROLLER SETTINGS"), true, [window] { GuiHandheldSettings::open(window); });
 
 	auto useGuns = std::make_shared<SwitchComponent>(window);
 	useGuns->setState(SystemConf::getInstance()->get("global.use_guns") != "0");

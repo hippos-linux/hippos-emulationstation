@@ -206,6 +206,9 @@ public:
     virtual std::pair<std::string, int> rollbackToDeployment(const std::string& subvol, const std::function<void(const std::string)>& func = nullptr);
 
     virtual std::vector<std::string> listEmulatorUpdates();
+    bool isHandheldAvailable();
+    std::vector<std::string> listHandheldSettings();
+    bool setHandheldSettings(const std::map<std::string, std::string>& changes);
     virtual std::pair<std::string, int> updateEmulators(const std::function<void(const std::string)>& func = nullptr);
     virtual std::pair<std::string, int> updateEmulator(const std::string& name, const std::function<void(const std::string)>& func = nullptr);
 
