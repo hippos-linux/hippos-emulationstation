@@ -1074,6 +1074,12 @@ std::string ApiSystem::currentMediaCenter()
 	return fields.size() > 1 ? fields[1] : "";
 }
 
+std::string ApiSystem::mediaCenterLauncher()
+{
+	auto lines = executeEnumerationScript(std::string(MEDIA_CENTER_TOOL) + " launcher");
+	return lines.empty() ? "" : lines.front();
+}
+
 bool ApiSystem::selectMediaCenter(const std::string& id)
 {
 	return executeScript(std::string(MEDIA_CENTER_TOOL) + " select " + shellSingleQuote(id));

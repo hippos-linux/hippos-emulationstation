@@ -322,6 +322,7 @@ public:
     std::pair<std::string, int> installInstallable(const std::string& tool, const std::string& id, const std::function<void(const std::string)>& func);
     std::pair<std::string, int> uninstallInstallable(const std::string& tool, const std::string& id, const std::function<void(const std::string)>& func);
     std::string currentMediaCenter();
+    std::string mediaCenterLauncher();
     bool selectMediaCenter(const std::string& id);
     std::vector<std::string> listNetworkShares(const std::string& host, const std::string& user, const std::string& password);
 

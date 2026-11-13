@@ -155,8 +155,16 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 		addEntry(Utils::String::toUpper(mediaCenter).c_str(), false, [this] 
 	{ 
 		Window *window = mWindow;
+		FileData* entry = nullptr;
+		std::string launcher = ApiSystem::getInstance()->mediaCenterLauncher();
+		SystemData* linuxApps = SystemData::getSystem("webapps");
+		if (!launcher.empty() && linuxApps != nullptr)
+			entry = linuxApps->getRootFolder()->FindByPath(launcher);
+
 		delete this;
-		if (!ApiSystem::getInstance()->launchMediaCenter(window))
+		if (entry != nullptr)
+			ViewController::get()->launch(entry);
+		else if (!ApiSystem::getInstance()->launchMediaCenter(window))
 			LOG(LogWarning) << "Media center exited with a non-zero result";
 
 	}, "iconKodi");	
