@@ -8,6 +8,7 @@
 #include "components/OptionListComponent.h"
 #include <SystemData.h>
 #include "KeyboardMapping.h"
+#include "ApiSystem.h"
 #include "utils/VectorEx.h"
 
 struct DecorationSetInfo
@@ -56,6 +57,17 @@ private:
         void openNetworkSettings(bool selectWifiEnable = false);        
         void openQuitMenu();
         void openDesktopSelector();
+        void openMediaCenterSelector();
+
+        struct InstallableSelector
+        {
+            std::string title;
+            std::string tool;
+            std::string chooseLabel;
+            std::function<void(const ApiSystem::Installable&)> choose;
+            std::function<void(Window*, const ApiSystem::Installable&)> installed;
+        };
+        static void openInstallableSelector(Window* window, const InstallableSelector& selector);
         void openUploadLogs();
         void openSystemInformations();
         void openServicesSettings();

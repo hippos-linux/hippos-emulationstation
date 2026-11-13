@@ -589,12 +589,11 @@ void ApiSystem::launchExternalWindow_after(Window *window)
 	LOG(LogDebug) << "ApiSystem::launchExternalWindow_after OK";
 }
 
-bool ApiSystem::launchKodi(Window *window) 
+bool ApiSystem::launchMediaCenter(Window *window) 
 {
-	LOG(LogDebug) << "ApiSystem::launchKodi";
+	LOG(LogDebug) << "ApiSystem::launchMediaCenter";
 
-	std::string commandline = InputManager::getInstance()->configureEmulators();
-	std::string command = "hippos-kodi " + commandline;
+	std::string command = std::string(MEDIA_CENTER_TOOL) + " launch";
 
 	ApiSystem::launchExternalWindow_before(window);
 
@@ -607,7 +606,6 @@ bool ApiSystem::launchKodi(Window *window)
 
 	ApiSystem::launchExternalWindow_after(window);
 
-	// handle end of kodi
 	switch (exitCode) 
 	{
 	case 10: // reboot code
@@ -1045,26 +1043,40 @@ bool ApiSystem::storageManagerSetNetworkSaves(const std::string& source, bool wr
 	return executeScript("hippos-storage-manager set_network_saves " + shellSingleQuote(source) + (writable ? " on" : " off"));
 }
 
-std::vector<ApiSystem::Desktop> ApiSystem::listDesktops()
+std::vector<ApiSystem::Installable> ApiSystem::listInstallables(const std::string& tool)
 {
-	std::vector<Desktop> desktops;
-	for (const auto& line : executeEnumerationScript("/usr/lib/hippos/desktop-switcher list --machine"))
+	std::vector<Installable> items;
+	for (const auto& line : executeEnumerationScript(tool + " list --machine"))
 	{
 		auto fields = Utils::String::split(line, '|', true);
 		if (fields.size() >= 5)
-			desktops.push_back({ fields[0], fields[1], fields[2] == "1", fields[3] == "1", fields[4] == "1", fields.size() > 5 ? fields[5] : "" });
+			items.push_back({ fields[0], fields[1], fields[2] == "1", fields[3] == "1", fields[4] == "1", fields.size() > 5 ? fields[5] : "" });
 	}
-	return desktops;
+	return items;
 }
 
-std::pair<std::string, int> ApiSystem::installDesktop(const std::string& id, const std::function<void(const std::string)>& func)
+std::pair<std::string, int> ApiSystem::installInstallable(const std::string& tool, const std::string& id, const std::function<void(const std::string)>& func)
 {
-	return executeScript("/usr/lib/hippos/desktop-switcher install " + shellSingleQuote(id), func);
+	return executeScript(tool + " install " + shellSingleQuote(id), func);
 }
 
-std::pair<std::string, int> ApiSystem::uninstallDesktop(const std::string& id, const std::function<void(const std::string)>& func)
+std::pair<std::string, int> ApiSystem::uninstallInstallable(const std::string& tool, const std::string& id, const std::function<void(const std::string)>& func)
 {
-	return executeScript("/usr/lib/hippos/desktop-switcher uninstall " + shellSingleQuote(id), func);
+	return executeScript(tool + " uninstall " + shellSingleQuote(id), func);
+}
+
+std::string ApiSystem::currentMediaCenter()
+{
+	auto lines = executeEnumerationScript(std::string(MEDIA_CENTER_TOOL) + " current");
+	if (lines.empty())
+		return "";
+	auto fields = Utils::String::split(lines.front(), '|', true);
+	return fields.size() > 1 ? fields[1] : "";
+}
+
+bool ApiSystem::selectMediaCenter(const std::string& id)
+{
+	return executeScript(std::string(MEDIA_CENTER_TOOL) + " select " + shellSingleQuote(id));
 }
 
 std::vector<std::string> ApiSystem::scanNetworkShares()

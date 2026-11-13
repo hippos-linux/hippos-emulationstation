@@ -933,7 +933,7 @@ bool Win32ApiSystem::canUpdate(std::vector<std::string>& output)
 	return false;
 }
 
-bool Win32ApiSystem::launchKodi(Window *window)
+bool Win32ApiSystem::launchMediaCenter(Window *window)
 {
 	std::string command = Paths::getKodiPath();
 	if (!Utils::FileSystem::exists(command))

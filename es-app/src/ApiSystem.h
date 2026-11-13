@@ -227,7 +227,7 @@ public:
 	virtual void setReadyFlag(bool ready = true);
 	virtual bool isReadyFlagSet();
 
-    virtual bool launchKodi(Window *window);
+    virtual bool launchMediaCenter(Window *window);
     bool launchFileManager(Window *window);
 
     // Gets a list of drives that are safe to unmount.
@@ -315,10 +315,14 @@ public:
     bool storageManagerSetNetworkSaves(const std::string& source, bool writable);
     bool storageManagerAddNetwork(const std::string& address, const std::string& user = "", const std::string& password = "");
     std::vector<std::string> scanNetworkShares();
-    struct Desktop { std::string id; std::string label; bool installed; bool current; bool removable; std::string note; };
-    std::vector<Desktop> listDesktops();
-    std::pair<std::string, int> installDesktop(const std::string& id, const std::function<void(const std::string)>& func);
-    std::pair<std::string, int> uninstallDesktop(const std::string& id, const std::function<void(const std::string)>& func);
+    static constexpr const char* DESKTOP_TOOL = "/usr/lib/hippos/desktop-switcher";
+    static constexpr const char* MEDIA_CENTER_TOOL = "/usr/lib/hippos/hippos-mediacenter";
+    struct Installable { std::string id; std::string label; bool installed; bool current; bool removable; std::string note; };
+    std::vector<Installable> listInstallables(const std::string& tool);
+    std::pair<std::string, int> installInstallable(const std::string& tool, const std::string& id, const std::function<void(const std::string)>& func);
+    std::pair<std::string, int> uninstallInstallable(const std::string& tool, const std::string& id, const std::function<void(const std::string)>& func);
+    std::string currentMediaCenter();
+    bool selectMediaCenter(const std::string& id);
     std::vector<std::string> listNetworkShares(const std::string& host, const std::string& user, const std::string& password);
 
 	bool setButtonColorGameForce(std::string basic_string);

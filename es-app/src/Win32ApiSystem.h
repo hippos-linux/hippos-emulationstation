@@ -35,7 +35,7 @@ public:
 
 	bool ping() override;
 
-	bool launchKodi(Window *window) override;	
+	bool launchMediaCenter(Window *window) override;	
 
 	std::vector<std::string> getShaderList(const std::string& systemName, const std::string& emulator, const std::string& core) override;
 

@@ -601,7 +601,7 @@ int main(int argc, char* argv[])
 		if (splashScreen)
 			window.closeSplashScreen();
 
-		ApiSystem::getInstance()->launchKodi(&window);
+		ApiSystem::getInstance()->launchMediaCenter(&window);
 
 		if (splashScreen)
 		{

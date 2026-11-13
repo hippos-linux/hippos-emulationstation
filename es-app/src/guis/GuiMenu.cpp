@@ -149,15 +149,15 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 	// SYSTEM SETTINGS >
 	// QUIT >
 
-	// KODI
 #ifdef _ENABLE_KODI_
-	if (SystemConf::getInstance()->getBool("kodi.enabled", true) && ApiSystem::getInstance()->isScriptingSupported(ApiSystem::KODI))
-		addEntry(_("KODI MEDIA CENTER").c_str(), false, [this] 
+	std::string mediaCenter = SystemConf::getInstance()->getBool("kodi.enabled", true) ? ApiSystem::getInstance()->currentMediaCenter() : "";
+	if (!mediaCenter.empty())
+		addEntry(Utils::String::toUpper(mediaCenter).c_str(), false, [this] 
 	{ 
 		Window *window = mWindow;
 		delete this;
-		if (!ApiSystem::getInstance()->launchKodi(window))
-			LOG(LogWarning) << "Shutdown terminated with non-zero result!";
+		if (!ApiSystem::getInstance()->launchMediaCenter(window))
+			LOG(LogWarning) << "Media center exited with a non-zero result";
 
 	}, "iconKodi");	
 #endif
@@ -226,6 +226,7 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 
 #ifdef __linux__
 	addEntry(_("SELECT DESKTOP").c_str(), true, [this] { openDesktopSelector(); }, "iconSystem");
+	addEntry(_("SELECT MEDIA CENTER").c_str(), true, [this] { openMediaCenterSelector(); }, "iconKodi");
 #endif
 
 	// The upload token is what routes the bundle to the tester's own beta
@@ -4737,7 +4738,7 @@ void GuiMenu::openNetworkSettings(bool selectWifiEnable)
 	mWindow->pushGui(s);
 }
 
-static void runDesktopJob(Window* window, const std::string& title,
+static void runInstallJob(Window* window, const std::string& title,
 	const std::function<std::pair<std::string, int>(const std::function<void(const std::string)>&)>& job,
 	const std::function<void(bool)>& done)
 {
@@ -4750,65 +4751,92 @@ static void runDesktopJob(Window* window, const std::string& title,
 	}).detach();
 }
 
-void GuiMenu::openDesktopSelector()
+void GuiMenu::openInstallableSelector(Window* window, const InstallableSelector& selector)
 {
-	auto s = new GuiSettings(mWindow, _("SELECT DESKTOP").c_str());
+	auto s = new GuiSettings(window, selector.title.c_str());
+	const std::string tool = selector.tool;
 
-	for (const auto& d : ApiSystem::getInstance()->listDesktops())
+	for (const auto& item : ApiSystem::getInstance()->listInstallables(tool))
 	{
-		bool installed = d.installed;
-		std::string label = d.label;
-		if (d.current)        label += " ★";
-		else if (installed)   label += " ✓";
+		std::string label = item.label;
+		if (item.current)         label += " ★";
+		else if (item.installed)  label += " ✓";
 
-		bool removable = d.removable;
-		s->addWithDescription(label, d.note, nullptr, [this, d, installed, removable] {
-			Window* window = mWindow;
-			auto switchTo = [d] { system(("/usr/lib/hippos/switch-to-desktop " + d.id).c_str()); };
+		s->addWithDescription(label, item.note, nullptr, [window, selector, tool, item] {
+			auto choose = [selector, item] { selector.choose(item); };
 
-			if (!installed)
+			if (!item.installed)
 			{
 				window->pushGui(new GuiMsgBox(window,
-					_("INSTALL") + " " + d.label + "?\n" + _("This may take several minutes. You can keep using ES while it installs."),
-					_("YES"), [window, d, switchTo] {
-						runDesktopJob(window, _("INSTALLING") + " " + d.label,
-							[d](const std::function<void(const std::string)>& progress) { return ApiSystem::getInstance()->installDesktop(d.id, progress); },
-							[window, d, switchTo](bool ok) {
+					_("INSTALL") + " " + item.label + "?\n" + _("This may take several minutes. You can keep using ES while it installs."),
+					_("YES"), [window, selector, tool, item] {
+						runInstallJob(window, _("INSTALLING") + " " + item.label,
+							[tool, item](const std::function<void(const std::string)>& progress) { return ApiSystem::getInstance()->installInstallable(tool, item.id, progress); },
+							[window, selector, item](bool ok) {
 								if (ok)
-									window->pushGui(new GuiMsgBox(window, d.label + " " + _("IS INSTALLED.") + "\n" + _("Switch to it now?"),
-										_("SWITCH NOW"), switchTo, _("LATER"), nullptr));
+									selector.installed(window, item);
 								else
-									window->pushGui(new GuiMsgBox(window, d.label + " " + _("COULD NOT BE INSTALLED") + "\n" + _("Please check the logs."), _("OK")));
+									window->pushGui(new GuiMsgBox(window, item.label + " " + _("COULD NOT BE INSTALLED") + "\n" + _("Please check the logs."), _("OK")));
 							});
 					},
 					_("NO"), nullptr));
 				return;
 			}
 
-			auto uninstall = [window, d] {
+			auto uninstall = [window, tool, item] {
 				window->pushGui(new GuiMsgBox(window,
-					_("UNINSTALL") + " " + d.label + "?\n" + _("Its packages are removed; your files are kept."),
-					_("YES"), [window, d] {
-						runDesktopJob(window, _("UNINSTALLING") + " " + d.label,
-							[d](const std::function<void(const std::string)>& progress) { return ApiSystem::getInstance()->uninstallDesktop(d.id, progress); },
-							[window, d](bool ok) {
+					_("UNINSTALL") + " " + item.label + "?\n" + _("Its packages are removed; your files are kept."),
+					_("YES"), [window, tool, item] {
+						runInstallJob(window, _("UNINSTALLING") + " " + item.label,
+							[tool, item](const std::function<void(const std::string)>& progress) { return ApiSystem::getInstance()->uninstallInstallable(tool, item.id, progress); },
+							[window, item](bool ok) {
 								window->pushGui(new GuiMsgBox(window, ok
-									? d.label + " " + _("HAS BEEN UNINSTALLED.")
-									: d.label + " " + _("COULD NOT BE UNINSTALLED") + "\n" + _("Please check the logs."), _("OK")));
+									? item.label + " " + _("HAS BEEN UNINSTALLED.")
+									: item.label + " " + _("COULD NOT BE UNINSTALLED") + "\n" + _("Please check the logs."), _("OK")));
 							});
 					},
 					_("NO"), nullptr));
 			};
 
-			if (removable)
-				window->pushGui(new GuiMsgBox(window, d.label,
-					_("SWITCH TO IT"), switchTo, _("UNINSTALL"), uninstall, _("CANCEL"), nullptr));
+			if (item.removable)
+				window->pushGui(new GuiMsgBox(window, item.label, selector.chooseLabel, choose, _("UNINSTALL"), uninstall, _("CANCEL"), nullptr));
 			else
-				window->pushGui(new GuiMsgBox(window, _("SWITCH TO") + " " + d.label + "?", _("YES"), switchTo, _("NO"), nullptr));
+				window->pushGui(new GuiMsgBox(window, selector.chooseLabel + " " + item.label + "?", _("YES"), choose, _("NO"), nullptr));
 		});
 	}
 
-	mWindow->pushGui(s);
+	window->pushGui(s);
+}
+
+void GuiMenu::openDesktopSelector()
+{
+	InstallableSelector selector;
+	selector.title = _("SELECT DESKTOP");
+	selector.tool = ApiSystem::DESKTOP_TOOL;
+	selector.chooseLabel = _("SWITCH TO");
+	selector.choose = [](const ApiSystem::Installable& item) { system(("/usr/lib/hippos/switch-to-desktop " + item.id).c_str()); };
+	selector.installed = [](Window* window, const ApiSystem::Installable& item) {
+		window->pushGui(new GuiMsgBox(window, item.label + " " + _("IS INSTALLED.") + "\n" + _("Switch to it now?"),
+			_("SWITCH NOW"), [item] { system(("/usr/lib/hippos/switch-to-desktop " + item.id).c_str()); }, _("LATER"), nullptr));
+	};
+	openInstallableSelector(mWindow, selector);
+}
+
+void GuiMenu::openMediaCenterSelector()
+{
+	InstallableSelector selector;
+	selector.title = _("SELECT MEDIA CENTER");
+	selector.tool = ApiSystem::MEDIA_CENTER_TOOL;
+	selector.chooseLabel = _("USE");
+	Window* window = mWindow;
+	selector.choose = [window](const ApiSystem::Installable& item) {
+		ApiSystem::getInstance()->selectMediaCenter(item.id);
+		window->pushGui(new GuiMsgBox(window, item.label + " " + _("NOW OPENS FROM MEDIA CENTER IN THE MAIN MENU."), _("OK")));
+	};
+	selector.installed = [](Window* window, const ApiSystem::Installable& item) {
+		window->pushGui(new GuiMsgBox(window, item.label + " " + _("IS INSTALLED.") + "\n" + _("It now opens from MEDIA CENTER in the main menu."), _("OK")));
+	};
+	openInstallableSelector(mWindow, selector);
 }
 
 void GuiMenu::openUploadLogs()
