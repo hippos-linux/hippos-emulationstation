@@ -1558,16 +1558,23 @@ void Window::processStorageRequest(std::string line)
 			pushGui(msg);
 		}
 	}
-	else if (type == "REQUEST_NETWORK_MERGE" && parts.size() >= 4)
+	else if (type == "REQUEST_NETWORK_MERGE" && parts.size() >= 7)
 	{
 		std::string shareName = parts[2];
-		std::string uri = parts[3];
-		for (size_t i = 4; i < parts.size(); i++)
+		std::string uri = parts[6];
+		for (size_t i = 7; i < parts.size(); i++)
 			uri += ":" + parts[i];
+
+		std::string found;
+		const std::pair<std::string, std::string> counts[] = { { _("ROM FILES"), parts[3] }, { _("BIOS FILES"), parts[4] }, { _("SAVE FILES"), parts[5] } };
+		for (const auto& count : counts)
+			if (!count.second.empty())
+				found += count.first + ": " + count.second + "\n";
 
 		std::string message = _("NETWORK GAME SHARE DETECTED") + "\n\n" +
 							  _("SHARE")   + ": " + shareName + "\n" +
-							  _("ADDRESS") + ": " + uri + "\n\n" +
+							  _("ADDRESS") + ": " + uri + "\n" +
+							  found + "\n" +
 							  _("Merge games from this share now?") + "\n" +
 							  _("(This will also apply on future boots)");
 
