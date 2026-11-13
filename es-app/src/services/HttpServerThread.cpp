@@ -34,6 +34,7 @@ Misc APIS
 -----------------
 GET  /caps                                                      -> capability info
 GET  /restart
+GET  /shutdown
 GET  /quit
 GET  /emukill
 GET  /reloadgames
@@ -250,6 +251,14 @@ void HttpServerThread::run()
 			return;
 
 		Utils::Platform::quitES(Utils::Platform::QuitMode::REBOOT);
+	});
+
+	mHttpServer->Get("/shutdown", [](const httplib::Request& req, httplib::Response& res)
+	{
+		if (!isAllowed(req, res))
+			return;
+
+		Utils::Platform::quitES(Utils::Platform::QuitMode::SHUTDOWN);
 	});
 
 	mHttpServer->Get("/emukill", [](const httplib::Request& req, httplib::Response& res)
