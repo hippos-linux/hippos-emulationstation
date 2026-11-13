@@ -212,6 +212,8 @@ namespace Utils
 
 		static QuitMode quitMode = QuitMode::QUIT;
 
+		void touch(const std::string& filename);
+
 		int quitES(QuitMode mode)
 		{
 			quitMode = mode;
@@ -220,12 +222,14 @@ namespace Utils
 			{
 			case QuitMode::REBOOT:
 			case QuitMode::FAST_REBOOT:
+				touch("/tmp/reboot.please");
 				Scripting::fireEvent("quit", "reboot");
 				Scripting::fireEvent("reboot");
 				break;
 
 			case QuitMode::SHUTDOWN:
 			case QuitMode::FAST_SHUTDOWN:
+				touch("/tmp/shutdown.please");
 				Scripting::fireEvent("quit", "shutdown");
 				Scripting::fireEvent("shutdown");
 				break;

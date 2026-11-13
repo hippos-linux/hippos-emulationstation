@@ -292,14 +292,17 @@ void ThreadedScraper::start(Window* window, const std::queue<ScraperSearchParams
 
 void ThreadedScraper::stop()
 {
-	auto thread = ThreadedScraper::mInstance;
-	if (thread == nullptr)
+	auto instance = ThreadedScraper::mInstance;
+	if (instance == nullptr)
 		return;
 
-	try
+	std::thread* handle = instance->mHandle;
+	instance->mExitCode = ASYNC_DONE;
+
+	if (handle != nullptr && handle->joinable() && handle->get_id() != std::this_thread::get_id())
 	{
-		thread->mExitCode = ASYNC_DONE;
+		handle->join();
+		delete handle;
 	}
-	catch (...) {}
 }
 
