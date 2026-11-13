@@ -150,9 +150,9 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 	// QUIT >
 
 #ifdef _ENABLE_KODI_
-	std::string mediaCenter = SystemConf::getInstance()->getBool("kodi.enabled", true) ? ApiSystem::getInstance()->currentMediaCenter() : "";
-	if (!mediaCenter.empty())
-		addEntry(Utils::String::toUpper(mediaCenter).c_str(), false, [this] 
+	mMediaCenter = ApiSystem::getInstance()->currentMediaCenter();
+	if (!mMediaCenter.empty() && SystemConf::getInstance()->getBool("kodi.enabled", true))
+		addEntry(Utils::String::toUpper(mMediaCenter).c_str(), false, [this] 
 	{ 
 		Window *window = mWindow;
 		FileData* entry = nullptr;
@@ -4759,10 +4759,20 @@ static void runInstallJob(Window* window, const std::string& title,
 	}).detach();
 }
 
-void GuiMenu::openInstallableSelector(Window* window, const InstallableSelector& selector)
+void GuiMenu::openInstallableSelector(const InstallableSelector& selector)
 {
+	Window* window = mWindow;
 	auto s = new GuiSettings(window, selector.title.c_str());
 	const std::string tool = selector.tool;
+	auto pthis = this;
+	s->onFinalize([pthis, window]
+	{
+		if (ApiSystem::getInstance()->currentMediaCenter() != pthis->mMediaCenter)
+		{
+			delete pthis;
+			window->pushGui(new GuiMenu(window, false));
+		}
+	});
 
 	for (const auto& item : ApiSystem::getInstance()->listInstallables(tool))
 	{
@@ -4770,8 +4780,8 @@ void GuiMenu::openInstallableSelector(Window* window, const InstallableSelector&
 		if (item.current)         label += " ★";
 		else if (item.installed)  label += " ✓";
 
-		s->addWithDescription(label, item.note, nullptr, [window, selector, tool, item] {
-			auto choose = [selector, item] { selector.choose(item); };
+		s->addWithDescription(label, item.note, nullptr, [window, s, selector, tool, item] {
+			auto choose = [s, selector, item] { selector.choose(item); s->close(); };
 
 			if (!item.installed)
 			{
@@ -4827,7 +4837,7 @@ void GuiMenu::openDesktopSelector()
 		window->pushGui(new GuiMsgBox(window, item.label + " " + _("IS INSTALLED.") + "\n" + _("Switch to it now?"),
 			_("SWITCH NOW"), [item] { system(("/usr/lib/hippos/switch-to-desktop " + item.id).c_str()); }, _("LATER"), nullptr));
 	};
-	openInstallableSelector(mWindow, selector);
+	openInstallableSelector(selector);
 }
 
 void GuiMenu::openMediaCenterSelector()
@@ -4836,15 +4846,11 @@ void GuiMenu::openMediaCenterSelector()
 	selector.title = _("SELECT MEDIA CENTER");
 	selector.tool = ApiSystem::MEDIA_CENTER_TOOL;
 	selector.chooseLabel = _("USE");
-	Window* window = mWindow;
-	selector.choose = [window](const ApiSystem::Installable& item) {
-		ApiSystem::getInstance()->selectMediaCenter(item.id);
-		window->pushGui(new GuiMsgBox(window, item.label + " " + _("NOW OPENS FROM MEDIA CENTER IN THE MAIN MENU."), _("OK")));
-	};
+	selector.choose = [](const ApiSystem::Installable& item) { ApiSystem::getInstance()->selectMediaCenter(item.id); };
 	selector.installed = [](Window* window, const ApiSystem::Installable& item) {
 		window->pushGui(new GuiMsgBox(window, item.label + " " + _("IS INSTALLED.") + "\n" + _("It now opens from MEDIA CENTER in the main menu."), _("OK")));
 	};
-	openInstallableSelector(mWindow, selector);
+	openInstallableSelector(selector);
 }
 
 void GuiMenu::openUploadLogs()

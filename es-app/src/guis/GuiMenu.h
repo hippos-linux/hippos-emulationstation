@@ -67,7 +67,7 @@ private:
             std::function<void(const ApiSystem::Installable&)> choose;
             std::function<void(Window*, const ApiSystem::Installable&)> installed;
         };
-        static void openInstallableSelector(Window* window, const InstallableSelector& selector);
+        void openInstallableSelector(const InstallableSelector& selector);
         void openUploadLogs();
         void openSystemInformations();
         void openServicesSettings();
@@ -92,6 +92,7 @@ private:
         static void openWifiSettings(Window* win, std::string title, std::string data, const std::function<void(std::string)>& onsave);
 
         MenuComponent mMenu;
+        std::string mMediaCenter;
         std::shared_ptr<TextComponent> mVersion;
 
         static std::shared_ptr<OptionListComponent<std::string>> createRatioOptionList(Window *window, std::string configname);
