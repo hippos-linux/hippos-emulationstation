@@ -39,6 +39,7 @@ GET  /quit
 GET  /emukill
 GET  /reloadgames
 POST /messagebox												-> body must contain the message text as text/plain
+POST /confirm													-> body must be: message text\nshell command to run on YES
 POST /notify													-> body must contain the message text as text/plain
 POST /launch													-> body must contain the exact file path as text/plain
 POST /input														-> body must contain an input name (left, right, up, down, a, b...) as text/plain
@@ -643,6 +644,38 @@ void HttpServerThread::run()
 		}
 
 		mWindow->displayNotificationMessage(req.body);
+	});
+
+	mHttpServer->Post("/confirm", [this](const httplib::Request& req, httplib::Response& res)
+	{
+		if (!isAllowed(req, res))
+			return;
+
+		if (req.body.empty())
+		{
+			res.set_content("400 bad request - body is missing", "text/plain");
+			res.status = 400;
+			return;
+		}
+
+		auto nl = req.body.find('\n');
+		if (nl == std::string::npos)
+		{
+			res.set_content("400 bad request - body must be: message\\nshell_command", "text/plain");
+			res.status = 400;
+			return;
+		}
+
+		std::string msg = req.body.substr(0, nl);
+		std::string cmd = req.body.substr(nl + 1);
+		Window* w = mWindow;
+		mWindow->postToUiThread([msg, cmd, w]() {
+			w->pushGui(new GuiMsgBox(w, msg,
+				_("YES"), [cmd]() { system(cmd.c_str()); },
+				_("NO"),  nullptr));
+		});
+
+		res.set_content("OK", "text/plain");
 	});
 	
 	mHttpServer->Post("/storage/event", [this](const httplib::Request& req, httplib::Response& res)
