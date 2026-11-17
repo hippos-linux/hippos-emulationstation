@@ -94,4 +94,4 @@ Based on [batocera-emulationstation](https://github.com/batocera-linux/batocera-
 
 ## License
 
-GPLv2 — see [COPYING](COPYING).
+GPLv2 — see [LICENSE.md](LICENSE.md).
