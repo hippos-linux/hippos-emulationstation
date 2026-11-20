@@ -1557,9 +1557,6 @@ msgstr "PUNTEGGIO COMUNITÀ"
 msgid "VIDEO"
 msgstr "VIDEO"
 
-msgid "FAN ART"
-msgstr "ARTE DEI FAN"
-
 msgid "BEZEL (16:9)"
 msgstr "CORNICE (16:9)"
 

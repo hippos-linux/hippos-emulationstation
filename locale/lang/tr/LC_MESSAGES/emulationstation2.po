@@ -1558,9 +1558,6 @@ msgstr "TOPLULUK DEĞERLENDİRMESİ"
 msgid "VIDEO"
 msgstr "VİDEO"
 
-msgid "FAN ART"
-msgstr "FAN GÖRSELİ"
-
 msgid "BEZEL (16:9)"
 msgstr "ÇERÇEVE (16:9)"
 

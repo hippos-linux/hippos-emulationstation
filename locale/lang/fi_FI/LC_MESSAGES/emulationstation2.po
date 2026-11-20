@@ -1554,9 +1554,6 @@ msgstr "YHTEISÖN ARVOSANA"
 msgid "VIDEO"
 msgstr "VIDEO"
 
-msgid "FAN ART"
-msgstr "FANITAIDE"
-
 msgid "BEZEL (16:9)"
 msgstr "KEHYS (16:9)"
 

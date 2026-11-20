@@ -1560,9 +1560,6 @@ msgstr "Hodnotenie komunity"
 msgid "VIDEO"
 msgstr "Video"
 
-msgid "FAN ART"
-msgstr "Fanart"
-
 msgid "BEZEL (16:9)"
 msgstr "Okraj (16:9)"
 

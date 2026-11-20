@@ -1556,9 +1556,6 @@ msgstr "ĐÁNH GIÁ CỘNG ĐỒNG"
 msgid "VIDEO"
 msgstr "VIDEO"
 
-msgid "FAN ART"
-msgstr "FANART"
-
 msgid "BEZEL (16:9)"
 msgstr "BEZEL (16:9)"
 

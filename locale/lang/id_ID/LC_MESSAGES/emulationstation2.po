@@ -1551,9 +1551,6 @@ msgstr "PERINGKAT KOMUNITAS"
 msgid "VIDEO"
 msgstr "VIDEO"
 
-msgid "FAN ART"
-msgstr "SENI"
-
 msgid "BEZEL (16:9)"
 msgstr "RESOLUSI (16:9)"
 

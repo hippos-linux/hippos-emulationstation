@@ -1562,9 +1562,6 @@ msgstr "OCENA SPOŁECZNOŚCI"
 msgid "VIDEO"
 msgstr "WIDEO"
 
-msgid "FAN ART"
-msgstr "FAN ART"
-
 msgid "BEZEL (16:9)"
 msgstr "RAMKA (16:9)"
 

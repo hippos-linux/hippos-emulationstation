@@ -1555,9 +1555,6 @@ msgstr "COMMUNITY RATING"
 msgid "VIDEO"
 msgstr "VIDEO"
 
-msgid "FAN ART"
-msgstr "FAN ART"
-
 msgid "BEZEL (16:9)"
 msgstr "BEZEL (16:9)"
 

@@ -1562,9 +1562,6 @@ msgstr "COMMUNITY BEOORDELING"
 msgid "VIDEO"
 msgstr "VIDEO"
 
-msgid "FAN ART"
-msgstr "FANART"
-
 msgid "BEZEL (16:9)"
 msgstr "Schermrand (16:9)"
 

@@ -1568,9 +1568,6 @@ msgstr "SCORUL COMUNITĂȚII"
 msgid "VIDEO"
 msgstr "VIDEOCLIP"
 
-msgid "FAN ART"
-msgstr "FANART"
-
 msgid "BEZEL (16:9)"
 msgstr "RAMĂ (16:9)"
 

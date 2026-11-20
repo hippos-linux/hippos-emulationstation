@@ -1564,9 +1564,6 @@ msgstr "NOTES"
 msgid "VIDEO"
 msgstr "VIDÉO"
 
-msgid "FAN ART"
-msgstr "FANART"
-
 msgid "BEZEL (16:9)"
 msgstr "DÉCORATION (16:9)"
 

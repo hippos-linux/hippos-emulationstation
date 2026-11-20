@@ -1560,9 +1560,6 @@ msgstr "VALORACIÓN DE LA COMUNIDAD"
 msgid "VIDEO"
 msgstr "VIDEO"
 
-msgid "FAN ART"
-msgstr "FANART"
-
 msgid "BEZEL (16:9)"
 msgstr "BISEL (16:9)"
 

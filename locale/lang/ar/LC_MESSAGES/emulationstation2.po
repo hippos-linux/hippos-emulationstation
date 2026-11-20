@@ -1598,9 +1598,6 @@ msgstr "تقييم الجماهير"
 msgid "VIDEO"
 msgstr "فيديو"
 
-msgid "FAN ART"
-msgstr "تصاميم الهواة"
-
 msgid "BEZEL (16:9)"
 msgstr "الإطار المحيط (16:9)"
 

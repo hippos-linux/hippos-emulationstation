@@ -1559,9 +1559,6 @@ msgstr "PUNTUACIÓ DE LA COMUNITAT"
 msgid "VIDEO"
 msgstr "VÍDEO"
 
-msgid "FAN ART"
-msgstr "FANART"
-
 msgid "BEZEL (16:9)"
 msgstr "MOTLLURA (16:9)"
 
