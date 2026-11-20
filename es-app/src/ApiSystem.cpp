@@ -2290,6 +2290,9 @@ bool ApiSystem::isScriptingSupported(ScriptId script)
 	case ApiSystem::UPLOADLOGS:
 		executables.push_back("hippos-upload-logs");
 		break;
+	case ApiSystem::DESKTOP:
+		executables.push_back("startlxqt");
+		break;
 	}
 
 	if (executables.size() == 0)
@@ -2473,13 +2476,16 @@ std::vector<std::string> ApiSystem::extractPdfImages(const std::string& fileName
 }
 
 
-std::vector<PacmanPackage> ApiSystem::getStorePackages()
+std::vector<PacmanPackage> ApiSystem::getStorePackages(const std::string& searchTerm)
 {
 	std::vector<PacmanPackage> packages;
 
-	LOG(LogDebug) << "ApiSystem::getStorePackages";
+	LOG(LogDebug) << "ApiSystem::getStorePackages " << searchTerm;
 
-	auto res = executeEnumerationScript("hippos-store list");
+	std::string command = searchTerm.empty()
+		? "hippos-store list"
+		: "hippos-store search '" + Utils::String::replace(searchTerm, "'", "'\\''") + "'";
+	auto res = executeEnumerationScript(command);
 	std::string data = Utils::String::join(res, "\n");
 	if (data.empty())
 	{

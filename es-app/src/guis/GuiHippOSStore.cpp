@@ -105,7 +105,11 @@ void GuiHippOSStore::update(int deltaTime)
 		if (silent)
 		{
 			if (refreshPackages)
+			{
 				mPackages = queryPackages();
+				if (!mTextFilter.empty())
+					mSearchResults = querySearchResults(mTextFilter);
+			}
 
 			if (!restoreIndex)
 				mWindow->postToUiThread([this]() { loadList(false, false); });
@@ -213,16 +217,22 @@ void GuiHippOSStore::loadList(bool updatePackageList, bool restoreIndex)
 
 		lastGroup = package.group;
 
-		ComponentListRow row;
-
-		auto grid = std::make_shared<GuiHippOSStoreEntry>(mWindow, package, hasImages);
-		row.addElement(grid, true);
-
-		if (!grid->isInstallPending())
-			row.makeAcceptInputHandler([this, package] { processPackage(package); });
-
-		mList->addRow(row, i == idx, false);
+		addPackageRow(package, hasImages, i == idx);
 		i++;
+	}
+
+	if (!mTextFilter.empty())
+	{
+		for (auto package : mSearchResults)
+		{
+			if (lastGroup != package.group)
+				mList->addGroup(package.group, false);
+
+			lastGroup = package.group;
+
+			addPackageRow(package, hasImages, i == idx);
+			i++;
+		}
 	}
 
 	if (i == 0)
@@ -238,6 +248,27 @@ void GuiHippOSStore::loadList(bool updatePackageList, bool restoreIndex)
 	centerWindow();
 
 	mReloadList = 0;
+}
+
+void GuiHippOSStore::addPackageRow(PacmanPackage& package, bool hasImages, bool selected)
+{
+	ComponentListRow row;
+
+	auto grid = std::make_shared<GuiHippOSStoreEntry>(mWindow, package, hasImages);
+	row.addElement(grid, true);
+
+	if (!grid->isInstallPending())
+		row.makeAcceptInputHandler([this, package] { processPackage(package); });
+
+	mList->addRow(row, selected, false);
+}
+
+std::vector<PacmanPackage> GuiHippOSStore::querySearchResults(const std::string& term)
+{
+	auto results = ApiSystem::getInstance()->getStorePackages(term);
+	for (auto& package : results)
+		package.group = Utils::String::toUpper(package.group);
+	return results;
 }
 
 std::vector<PacmanPackage> GuiHippOSStore::queryPackages()
@@ -390,7 +421,20 @@ void GuiHippOSStore::showSearch()
 	auto updateVal = [this](const std::string& newVal)
 	{
 		mTextFilter = newVal;
-		mReloadList = 3;
+		if (mTextFilter.empty())
+		{
+			mSearchResults.clear();
+			mReloadList = 3;
+			return;
+		}
+
+		mWindow->pushGui(new GuiLoading<std::vector<PacmanPackage>>(mWindow, _("SEARCHING FLATHUB AND DEBIAN"),
+			[newVal](auto gui) { return querySearchResults(newVal); },
+			[this](std::vector<PacmanPackage> results)
+			{
+				mSearchResults = results;
+				loadList(false, false);
+			}));
 	};
 
 	if (Settings::getInstance()->getBool("UseOSK"))

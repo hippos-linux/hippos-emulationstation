@@ -51,14 +51,17 @@ public:
 
 private:
 	static std::vector<PacmanPackage> queryPackages();
+	static std::vector<PacmanPackage> querySearchResults(const std::string& term);
 	void loadPackagesAsync(bool updatePackageList = false);
 	void loadList(bool updatePackageList, bool restoreIndex = true);
 	void processPackage(PacmanPackage package);
 	void centerWindow();
 	void showSearch();
+	void addPackageRow(PacmanPackage& package, bool hasImages, bool selected);
 
 	int				mReloadList;
 	std::vector<PacmanPackage> mPackages;
+	std::vector<PacmanPackage> mSearchResults;
 	
 
 	NinePatchComponent				mBackground;

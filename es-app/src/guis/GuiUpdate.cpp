@@ -150,14 +150,21 @@ public:
 				mWndNotification->updateTitle(_U(" ") + _("PATCHES APPLIED"));
 				mWndNotification->updateText(_("PATCHES APPLIED SUCCESSFULLY"));
 			}
+			else if (mMode == Mode::AllEmulators)
+			{
+				mWndNotification->updateTitle(_U(" ") + _("EMULATORS UPDATED"));
+				mWndNotification->updateText(_("ALL EMULATORS UP TO DATE"));
+			}
 			else
 			{
 				mWndNotification->updateTitle(_U(" ") + _("EMULATOR UPDATED"));
-				mWndNotification->updateText(mEmulatorName.empty() ? _("ALL EMULATORS UP TO DATE") : mEmulatorName);
+				mWndNotification->updateText(mEmulatorName);
 			}
 
+			const bool needsRestart = mMode == Mode::System || mMode == Mode::Frontend;
+			const std::chrono::seconds shownFor = needsRestart ? std::chrono::hours(12) : std::chrono::seconds(5);
 			std::this_thread::yield();
-			std::this_thread::sleep_for(std::chrono::hours(12));
+			std::this_thread::sleep_for(shownFor);
 		}
 		else
 		{
@@ -327,13 +334,21 @@ void GuiUpdate::update(int deltaTime)
 				});
 			}
 
-			// One entry per emulator — show a clean display name
+			if (mEmulatorUpdates.size() > 1)
+			{
+				std::string label = _("ALL EMULATORS") + "  (" + std::to_string(mEmulatorUpdates.size()) + ")";
+				updateList->addEntry(label.c_str(), false, [this]
+				{
+					auto* t = ThreadedUpdater::forAllEmulators(mWindow);
+					t->start();
+				});
+			}
+
 			for (auto& line : mEmulatorUpdates)
 			{
 				auto tab = line.find('\t');
 				std::string emuName = (tab != std::string::npos) ? line.substr(0, tab) : line;
 
-				// Build display name: capitalise each hyphen/underscore-separated word
 				std::string label;
 				bool newWord = true;
 				for (char c : emuName)

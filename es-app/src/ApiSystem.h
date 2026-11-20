@@ -176,6 +176,7 @@ public:
 		BACKGLASS = 31,
 		NFC = 32,
 		UPLOADLOGS = 33,
+		DESKTOP = 34,
 	};
 
 	virtual bool isScriptingSupported(ScriptId script);
@@ -363,7 +364,7 @@ public:
 	virtual std::string getRunningArchitecture();
 	virtual std::string getRunningBoard();
 
-	std::vector<PacmanPackage> getStorePackages();
+	std::vector<PacmanPackage> getStorePackages(const std::string& searchTerm = "");
 	std::pair<std::string, int> installStorePackage(std::string name, const std::function<void(const std::string)>& func = nullptr);
 	std::pair<std::string, int> uninstallStorePackage(std::string name, const std::function<void(const std::string)>& func = nullptr);
 	void updateBatoceraStorePackageList();

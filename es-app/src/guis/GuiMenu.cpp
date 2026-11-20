@@ -233,7 +233,8 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 	}
 
 #ifdef __linux__
-	addEntry(_("SELECT DESKTOP").c_str(), true, [this] { openDesktopSelector(); }, "iconSystem");
+	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::DESKTOP))
+		addEntry(_("SELECT DESKTOP").c_str(), true, [this] { openDesktopSelector(); }, "iconSystem");
 	addEntry(_("SELECT MEDIA CENTER").c_str(), true, [this] { openMediaCenterSelector(); }, "iconKodi");
 #endif
 
@@ -430,7 +431,7 @@ void GuiMenu::openServicesSettings()
 	for(unsigned int i = 0; i < services.size(); i++) {
 	  auto service_enabled = std::make_shared<SwitchComponent>(mWindow);
 	  service_enabled->setState(services[i].enabled);
-	  s->addWithLabel(services[i].name, service_enabled);
+	  s->addWithLabel(Utils::String::toUpper(services[i].name), service_enabled);
 	  service_enabled->setOnChangedCallback([services, i, service_enabled]()
 	  {
 	    ApiSystem::getInstance()->enableService(services[i].name, service_enabled->getState());
@@ -1407,7 +1408,7 @@ void GuiMenu::openSystemSettings()
 	s->addEntry(_("INFORMATION"), true, [this] { openSystemInformations(); });
 
 #ifdef __linux__
-	// Default boot session
+	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::DESKTOP))
 	{
 		auto bootSession = std::make_shared<OptionListComponent<std::string>>(window, _("DEFAULT BOOT SESSION"), false);
 		std::string currentBootSession = "es";
@@ -5059,14 +5060,17 @@ void GuiMenu::openQuitMenu_static(Window *window, bool quickAccessMenu, bool ani
 	}, "iconFastShutdown");
 
 #ifdef __linux__
-	s->addEntry(_("SWITCH TO DESKTOP"), false, [window] {
-		window->pushGui(new GuiMsgBox(window, _("SWITCH TO DESKTOP?"),
-			_("YES"), [] {
-				LOG(LogInfo) << "Switching to desktop session";
-				system("/usr/lib/hippos/switch-to-desktop");
-			},
-			_("NO"), nullptr));
-	}, "iconQuit");
+	if (ApiSystem::getInstance()->isScriptingSupported(ApiSystem::DESKTOP))
+	{
+		s->addEntry(_("SWITCH TO DESKTOP"), false, [window] {
+			window->pushGui(new GuiMsgBox(window, _("SWITCH TO DESKTOP?"),
+				_("YES"), [] {
+					LOG(LogInfo) << "Switching to desktop session";
+					system("/usr/lib/hippos/switch-to-desktop");
+				},
+				_("NO"), nullptr));
+		}, "iconQuit");
+	}
 
 	// Ends the login session; greetd then shows the login screen.
 	s->addEntry(_("LOG OUT"), false, [window] {
