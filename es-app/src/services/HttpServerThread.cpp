@@ -129,6 +129,21 @@ std::string HttpServerThread::getMimeType(const std::string &path)
 	return "text/plain";
 }
 
+static FileData* findGameByPath(const std::string& path)
+{
+	for (auto system : SystemData::sSystemVector)
+	{
+		if (system->isCollection() || !system->isGameSystem())
+			continue;
+
+		for (auto file : system->getRootFolder()->getFilesRecursive(GAME))
+			if (file->getFullPath() == path || file->getPath() == path)
+				return file;
+	}
+
+	return nullptr;
+}
+
 static bool isAllowed(const httplib::Request& req, httplib::Response& res)
 {
 	if (req.remote_addr != "127.0.0.1" && !Settings::getInstance()->getBool("PublicWebAccess"))
@@ -713,25 +728,22 @@ void HttpServerThread::run()
 		}
 
 		auto path = Utils::FileSystem::getAbsolutePath(req.body);
-
-		for (auto system : SystemData::sSystemVector)
+		if (findGameByPath(path) == nullptr)
 		{
-			if (system->isCollection() || !system->isGameSystem())
-				continue;
-
-			for (auto file : system->getRootFolder()->getFilesRecursive(GAME))
-			{
-				if (file->getFullPath() == path || file->getPath() == path)
-				{
-					Window* w = mWindow;
-					mWindow->postToUiThread([w, file]() {
-						w->cancelScreenSaver();
-						ViewController::get()->launch(file);
-					});
-					return;
-				}
-			}
+			res.set_content("404 game not found", "text/html");
+			res.status = 404;
+			return;
 		}
+
+		Window* w = mWindow;
+		mWindow->postToUiThread([w, path]() {
+			FileData* game = findGameByPath(path);
+			if (game == nullptr)
+				return;
+
+			w->cancelScreenSaver();
+			ViewController::get()->launch(game);
+		});
 	});
 
 	mHttpServer->Post("/input", [this](const httplib::Request& req, httplib::Response& res)
