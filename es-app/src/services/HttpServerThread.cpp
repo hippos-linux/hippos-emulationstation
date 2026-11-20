@@ -727,6 +727,13 @@ void HttpServerThread::run()
 			return;
 		}
 
+		if (FileData::GetRunningGame() != nullptr)
+		{
+			res.set_content("409 a game is already running", "text/html");
+			res.status = 409;
+			return;
+		}
+
 		auto path = Utils::FileSystem::getAbsolutePath(req.body);
 		if (findGameByPath(path) == nullptr)
 		{
