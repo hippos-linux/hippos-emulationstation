@@ -452,6 +452,7 @@ protected:
 	ApiSystem();
 
 	virtual bool executeScript(const std::string command);  
+	bool executeScriptLoggedAs(const std::string& command, const std::string& loggedCommand);
 	virtual std::pair<std::string, int> executeScript(const std::string command, const std::function<void(const std::string)>& func);
 	virtual std::vector<std::string> executeEnumerationScript(const std::string command);
 	virtual bool downloadGitRepository(const std::string& url, const std::string& branch, const std::string& fileName, const std::string& label, const std::function<void(const std::string)>& func, int64_t defaultDownloadSize = 0);

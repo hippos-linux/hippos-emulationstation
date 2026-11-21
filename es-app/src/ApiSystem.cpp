@@ -640,12 +640,14 @@ bool ApiSystem::launchFileManager(Window *window)
 #if !WIN32
 bool ApiSystem::enableWifi(std::string ssid, std::string key, std::string country) 
 {
-	return executeScript("hippos-wifi enable \"" + ssid + "\" \"" + key + "\" \"" + country + "\"");
+	return executeScriptLoggedAs("hippos-wifi enable \"" + ssid + "\" \"" + key + "\" \"" + country + "\"",
+		"hippos-wifi enable \"" + ssid + "\" <key> \"" + country + "\"");
 }
 #else
 bool ApiSystem::enableWifi(std::string ssid, std::string key) 
 {
-	return executeScript("hippos-wifi enable \"" + ssid + "\" \"" + key + "\"");
+	return executeScriptLoggedAs("hippos-wifi enable \"" + ssid + "\" \"" + key + "\"",
+		"hippos-wifi enable \"" + ssid + "\" <key>");
 }
 
 #endif
@@ -2186,12 +2188,17 @@ std::pair<std::string, int> ApiSystem::executeScript(const std::string command, 
 
 bool ApiSystem::executeScript(const std::string command)
 {	
-	LOG(LogInfo) << "Running " << command;
+	return executeScriptLoggedAs(command, command);
+}
+
+bool ApiSystem::executeScriptLoggedAs(const std::string& command, const std::string& loggedCommand)
+{
+	LOG(LogInfo) << "Running " << loggedCommand;
 
 	if (system(command.c_str()) == 0)
 		return true;
-	
-	LOG(LogError) << "Error executing " << command;
+
+	LOG(LogError) << "Error executing " << loggedCommand;
 	return false;
 }
 
