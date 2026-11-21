@@ -9,6 +9,10 @@
 #include "utils/Platform.h"
 #include "LocaleES.h"
 #include "components/AsyncNotificationComponent.h"
+#include "views/ViewController.h"
+#include "SystemData.h"
+#include "Paths.h"
+#include "utils/FileSystemUtil.h"
 
 GuiUpdateState::State GuiUpdate::state = GuiUpdateState::State::NO_UPDATE;
 
@@ -86,9 +90,17 @@ public:
 		}
 	}
 
+	static std::string emulatorIntegration()
+	{
+		return Utils::FileSystem::readAllText(SystemData::getConfigPath()) +
+			Utils::FileSystem::readAllText(Paths::getEmulationStationPath() + "/es_features.cfg");
+	}
+
 	void threadUpdate()
 	{
 		std::pair<std::string, int> updateStatus = { "", 0 };
+		const bool changesEmulators = mMode == Mode::Emulator || mMode == Mode::AllEmulators;
+		const std::string integrationBefore = changesEmulators ? emulatorIntegration() : "";
 
 		switch (mMode)
 		{
@@ -127,6 +139,12 @@ public:
 					mWndNotification->updateText(info);
 				});
 				break;
+		}
+
+		if (changesEmulators && emulatorIntegration() != integrationBefore)
+		{
+			Window* window = mWindow;
+			mWindow->postToUiThread([window]() { ViewController::reloadAllGames(window, false); });
 		}
 
 		if (updateStatus.second == 0)
