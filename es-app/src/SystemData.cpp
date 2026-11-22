@@ -415,6 +415,9 @@ void SystemData::populateFolder(FolderData* folder, std::unordered_map<std::stri
 			if (mMetadata.name == "vpinball" && fn == "roms")
 				continue;			
 
+			if (mMetadata.name == "ports" && fn == "portmaster")
+				continue;
+
 			// Index subfolder depth limit (maxDepth = 2 -> roms/<system>/<game>/<subfolder>/ is scanned, nothing deeper)
 			if (maxDepth > 0 && depth >= maxDepth)
 				continue;
