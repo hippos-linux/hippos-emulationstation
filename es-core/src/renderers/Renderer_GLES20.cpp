@@ -40,7 +40,6 @@ namespace Renderer
 	static ShaderProgram    shaderProgramColorNoTexture;
 	static ShaderProgram    shaderProgramAlpha;
 
-	static GLuint			vertexBuffer     = 0;
 
 	static std::map<unsigned int, TextureInfo*> _textures;
 
@@ -52,7 +51,15 @@ namespace Renderer
 //////////////////////////////////////////////////////////////////////////
 
 	static ShaderProgram* currentProgram = nullptr;
-	
+	static const Vertex*  currentVertices = nullptr;
+
+	static void setVertices(const Vertex* vertices)
+	{
+		currentVertices = vertices;
+		if (currentProgram != nullptr)
+			currentProgram->setVertices(vertices);
+	}
+
 	static void useProgram(ShaderProgram* program)
 	{
 		if (program == currentProgram)
@@ -71,6 +78,8 @@ namespace Renderer
 		if (currentProgram != nullptr)
 		{
 			currentProgram->select();
+			if (currentVertices != nullptr)
+				currentProgram->setVertices(currentVertices);
 			currentProgram->setMatrix(mvpMatrix);
 		}
 	}
@@ -364,15 +373,6 @@ namespace Renderer
 
 //////////////////////////////////////////////////////////////////////////
 
-	static void setupVertexBuffer()
-	{
-		GL_CHECK_ERROR(glGenBuffers(1, &vertexBuffer));
-		GL_CHECK_ERROR(glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer));
-
-	} // setupVertexBuffer
-
-//////////////////////////////////////////////////////////////////////////
-
 	static GLenum convertBlendFactor(const Blend::Factor _blendFactor)
 	{
 		switch(_blendFactor)
@@ -595,7 +595,6 @@ namespace Renderer
 #endif
 
 		setupDefaultShaders();
-		setupVertexBuffer();
 
 		GL_CHECK_ERROR(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 
@@ -846,7 +845,7 @@ namespace Renderer
 	void GLES20Renderer::drawLines(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor)
 	{
 		// Pass buffer data
-		GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
+		setVertices(_vertices);
 
 		useProgram(&shaderProgramColorNoTexture);
 
@@ -894,7 +893,7 @@ namespace Renderer
 
 		if ((_fillColor) & 0xFF)
 		{
-			GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * inner.size(), inner.data(), GL_DYNAMIC_DRAW));
+			setVertices(inner.data());
 			GL_CHECK_ERROR(glDrawArrays(GL_TRIANGLE_FAN, 0, inner.size()));
 		}
 
@@ -908,7 +907,7 @@ namespace Renderer
 			GL_CHECK_ERROR(glEnable(GL_BLEND));
 			GL_CHECK_ERROR(glBlendFunc(convertBlendFactor(Blend::SRC_ALPHA), convertBlendFactor(Blend::ONE_MINUS_SRC_ALPHA)));
 
-			GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * outer.size(), outer.data(), GL_DYNAMIC_DRAW));
+			setVertices(outer.data());
 			GL_CHECK_ERROR(glDrawArrays(GL_TRIANGLE_FAN, 0, outer.size()));
 			
 			disableStencil();
@@ -919,8 +918,7 @@ namespace Renderer
 
 	void GLES20Renderer::drawTriangleStrips(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor, bool verticesChanged)
 	{
-		if (verticesChanged)
-			GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
+		setVertices(_vertices);
 
 		// Setup shader
 		if (boundTexture != 0)
@@ -1076,7 +1074,7 @@ namespace Renderer
 	void GLES20Renderer::drawTriangleFan(const Vertex* _vertices, const unsigned int _numVertices, const Blend::Factor _srcBlendFactor, const Blend::Factor _dstBlendFactor)
 	{		
 		// Pass buffer data
-		GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW));
+		setVertices(_vertices);
 
 		// Setup shader
 		if (boundTexture != 0)
@@ -1126,7 +1124,7 @@ namespace Renderer
 
 		glEnable(GL_BLEND);
 		glBlendFunc(convertBlendFactor(Blend::SRC_ALPHA), convertBlendFactor(Blend::ONE_MINUS_SRC_ALPHA));
-		glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * _numVertices, _vertices, GL_DYNAMIC_DRAW);
+		setVertices(_vertices);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, _numVertices);
 		glDisable(GL_BLEND);
 
@@ -1302,7 +1300,7 @@ namespace Renderer
 			for (int i = 0; i < 4; ++i)
 				vertices[i].pos.round();
 
-			GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 4, &vertices, GL_DYNAMIC_DRAW));
+			setVertices(vertices);
 
 			for (int i = 0; i < shaderBatch->size(); i++)
 			{
@@ -1350,7 +1348,7 @@ namespace Renderer
 
 						for (int i = 0; i < 4; ++i) vertices[i].pos.round();
 
-						GL_CHECK_ERROR(glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 4, &vertices, GL_DYNAMIC_DRAW));
+						setVertices(vertices);
 
 						GL_CHECK_ERROR(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 					}

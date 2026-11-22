@@ -457,22 +457,25 @@ namespace Renderer
 		GL_CHECK_ERROR(glUseProgram(mId));
 
 		if (mPositionAttribute != -1)
-		{
-			GL_CHECK_ERROR(glVertexAttribPointer(mPositionAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, pos)));
 			GL_CHECK_ERROR(glEnableVertexAttribArray(mPositionAttribute));
-		}
 
 		if (mColorAttribute != -1)
-		{
-			GL_CHECK_ERROR(glVertexAttribPointer(mColorAttribute, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (const void*)offsetof(Vertex, col)));
 			GL_CHECK_ERROR(glEnableVertexAttribArray(mColorAttribute));
-		}
 
 		if (mTexCoordAttribute != -1)
-		{
-			GL_CHECK_ERROR(glVertexAttribPointer(mTexCoordAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, tex)));
 			GL_CHECK_ERROR(glEnableVertexAttribArray(mTexCoordAttribute));
-		}
+	}
+
+	void ShaderProgram::setVertices(const Vertex* vertices)
+	{
+		if (mPositionAttribute != -1)
+			GL_CHECK_ERROR(glVertexAttribPointer(mPositionAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), &vertices->pos));
+
+		if (mColorAttribute != -1)
+			GL_CHECK_ERROR(glVertexAttribPointer(mColorAttribute, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), &vertices->col));
+
+		if (mTexCoordAttribute != -1)
+			GL_CHECK_ERROR(glVertexAttribPointer(mTexCoordAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), &vertices->tex));
 	}
 
 	void ShaderProgram::unSelect()

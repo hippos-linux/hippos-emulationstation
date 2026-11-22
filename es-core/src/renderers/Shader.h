@@ -11,6 +11,8 @@
 
 namespace Renderer
 {
+	struct Vertex;
+
 	class Shader
 	{
 	public:
@@ -44,6 +46,7 @@ namespace Renderer
 
 		void select();
 		void unSelect();
+		void setVertices(const Vertex* vertices);
 
 		void setMatrix(Transform4x4f& mvpMatrix);
 		void setSaturation(GLfloat saturation);
