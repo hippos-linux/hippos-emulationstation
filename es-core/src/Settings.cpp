@@ -274,6 +274,7 @@ void Settings::setDefaults()
 	mStringMap["ScreenSaverDecorations"] = "systems";
 
 	mBoolMap["ShowCheevosIcon"] = true;
+	mBoolMap["ShowMergedDriveIcon"] = true;
 
 	mBoolMap["ShowWheelIconOnGames"] = true;
 	mBoolMap["ShowGunIconOnGames"] = true;

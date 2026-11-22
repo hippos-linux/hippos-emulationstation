@@ -1,4 +1,5 @@
 #include "FileData.h"
+#include "MergedDrive.h"
 
 #include "utils/FileSystemUtil.h"
 #include "utils/StringUtil.h"
@@ -512,6 +513,14 @@ const bool FileData::isVerticalArcadeGame()
 		return MameNames::getInstance()->isVertical(Utils::FileSystem::getStem(getPath()));
 
 	return false;
+}
+
+bool FileData::isOnMergedDrive()
+{
+	if (mOnMergedDrive < 0)
+		mOnMergedDrive = MergedDrive::isOnMergedDrive(getPath()) ? 1 : 0;
+
+	return mOnMergedDrive == 1;
 }
 
 const bool FileData::isLightGunGame()

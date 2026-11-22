@@ -17,6 +17,7 @@
 #define CHEEVOSICON _U("\uF091")
 #define SAVESTATE	_U("\uF0C7")
 #define MANUAL		_U("\uF02D")
+#define MERGEDDRIVE	_U("\uF0A0")
 
 #define GUN			_U("\uF05B")
 #define WHEEL			_U("\uF1B9")
@@ -71,6 +72,7 @@ GameNameFormatter::GameNameFormatter(SystemData* system)
 
 	mShowManualIcon = system->getBoolSetting("ShowManualIcon");
 	mShowSaveStates = system->getBoolSetting("ShowSaveStates");
+	mShowMergedDriveIcon = system->getBoolSetting("ShowMergedDriveIcon");
 
 	mShowGunIcon = system->getName() != "lightgun" && system->getBoolSetting("ShowGunIconOnGames");
 	mShowWheelIcon = system->getName() != "wheel" && system->getBoolSetting("ShowWheelIconOnGames");
@@ -234,6 +236,9 @@ std::string GameNameFormatter::getDisplayName(FileData* fd, bool showFolderIcon,
 	bool manual = mShowManualIcon && (!fd->getMetadata(MetaDataId::Manual).empty() || !fd->getMetadata(MetaDataId::Magazine).empty());
 	if (manual)
 		after.push_back(MANUAL);
+
+	if (mShowMergedDriveIcon && fd->getType() == GAME && fd->getSourceFileData()->isOnMergedDrive())
+		after.push_back(MERGEDDRIVE);
 
 	if (mShowFlags == 2)
 		after.push_back(getLangFlag(LangInfo::getFlag(fd->getMetadata(MetaDataId::Language), fd->getMetadata(MetaDataId::Region))));

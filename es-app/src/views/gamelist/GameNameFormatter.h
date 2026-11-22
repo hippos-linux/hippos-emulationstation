@@ -23,7 +23,8 @@ private:
 	bool mShowSystemAfterYear;
 	bool mShowGameTime;
 
-	bool mShowManualIcon;		
+	bool mShowManualIcon;
+	bool mShowMergedDriveIcon;		
 	bool mShowSaveStates;
 
 	bool mShowGunIcon;

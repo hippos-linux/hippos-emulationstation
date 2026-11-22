@@ -1,4 +1,5 @@
 #include "SystemData.h"
+#include "MergedDrive.h"
 
 #include "SystemConf.h"
 #include "utils/FileSystemUtil.h"
@@ -342,6 +343,7 @@ void SystemData::populateFolder(FolderData* folder, std::unordered_map<std::stri
 	else if (shv == "0") showHidden = false;
 
 	Utils::FileSystem::fileList dirContent = Utils::FileSystem::getDirectoryFiles(folderPath);
+	auto internalNames = MergedDrive::internalFileNames(folderPath);
 	for (auto fileInfo : dirContent)
 	{
 		filePath = fileInfo.path;
@@ -361,6 +363,8 @@ void SystemData::populateFolder(FolderData* folder, std::unordered_map<std::stri
 		if(mEnvData->isValidExtension(extension))
 		{
 			FileData* newGame = new FileData(GAME, filePath, this);
+			if (internalNames)
+				newGame->setOnMergedDrive(internalNames->count(Utils::FileSystem::getFileName(filePath)) == 0);
 
 			// preventing new arcade assets to be added
 			if(!newGame->isArcadeAsset())

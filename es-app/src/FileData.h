@@ -132,6 +132,8 @@ public:
   	const bool isWheelGame();
     	const bool isTrackballGame();
       	const bool isSpinnerGame();
+	bool isOnMergedDrive();
+	void setOnMergedDrive(bool value) { mOnMergedDrive = value ? 1 : 0; }
 	inline std::string getFullPath() { return getPath(); };
 	inline std::string getFileName() { return Utils::FileSystem::getFileName(getPath()); };
 	virtual FileData* getSourceFileData();
@@ -207,6 +209,7 @@ protected:
 	FileType mType;
 	SystemData* mSystem;
 	std::string* mDisplayName;
+	signed char mOnMergedDrive = -1;
 };
 
 class CollectionFileData : public FileData
