@@ -469,6 +469,21 @@ void launchStartupGame()
 
 // #include "utils/MathExpr.h"
 
+constexpr int IDLE_EVENT_POLL_MS = 10;
+
+static int waitEventIdle(SDL_Event* event, int timeoutMs)
+{
+	const Uint32 deadline = SDL_GetTicks() + (Uint32)timeoutMs;
+	while (!SDL_PollEvent(event))
+	{
+		if (SDL_TICKS_PASSED(SDL_GetTicks(), deadline))
+			return 0;
+
+		SDL_Delay(IDLE_EVENT_POLL_MS);
+	}
+	return 1;
+}
+
 int main(int argc, char* argv[])
 {	
 	// Utils::MathExpr::performUnitTests();
@@ -717,9 +732,9 @@ int main(int argc, char* argv[])
 		int eventResult;
 
 		if (screenSaverWait)
-			eventResult = SDL_WaitEventTimeout(&event, screenSaverTimeout);
+			eventResult = waitEventIdle(&event, screenSaverTimeout);
 		else if (ps_standby)
-			eventResult = SDL_WaitEventTimeout(&event, PowerSaver::getTimeout());
+			eventResult = waitEventIdle(&event, PowerSaver::getTimeout());
 		else
 			eventResult = SDL_PollEvent(&event);
 
@@ -784,7 +799,7 @@ int main(int argc, char* argv[])
 		if (window.isSleeping())
 		{
 			lastTime = SDL_GetTicks();
-			SDL_Delay(1); // this doesn't need to be accurate, we're just giving up our CPU time until something wakes us up
+			SDL_Delay(IDLE_EVENT_POLL_MS);
 			continue;
 		}
 

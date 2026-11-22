@@ -260,7 +260,7 @@ void Settings::setDefaults()
 	mBoolMap["ScreenSaverControls"] = true;
 	mStringMap["ScreenSaverGameInfo"] = "never";
 	mBoolMap["StretchVideoOnScreenSaver"] = false;
-	mStringMap["PowerSaverMode"] = "default"; 
+	mStringMap["PowerSaverMode"] = "enhanced"; 
 
 	mBoolMap["StopMusicOnScreenSaver"] = true;
 

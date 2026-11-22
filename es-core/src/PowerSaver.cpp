@@ -5,6 +5,8 @@
 #include <SDL.h>
 #include "math/Misc.h"
 
+constexpr int IDLE_REDRAW_MS = 1000;
+
 bool PowerSaver::mState = false;
 bool PowerSaver::mRunningScreenSaver = false;
 
@@ -43,10 +45,13 @@ void PowerSaver::init()
 
 int PowerSaver::getTimeout()
 {
-	 if (mMode == INSTANT || mMode == ENHANCED)
-		 return mRunningScreenSaver ? mWakeupTimeout : mScreenSaverTimeout;
+	if (mMode == INSTANT || mMode == ENHANCED)
+	{
+		int timeout = mRunningScreenSaver ? mWakeupTimeout : mScreenSaverTimeout;
+		return timeout < 0 || timeout > IDLE_REDRAW_MS ? IDLE_REDRAW_MS : timeout;
+	}
 
-	 return 40; // 1000;
+	return 40;
 }
 
 void PowerSaver::loadWakeupTime()
@@ -109,11 +114,8 @@ void PowerSaver::setState(bool state)
 void PowerSaver::runningScreenSaver(bool state)
 {
 	mRunningScreenSaver = state;
-	if (mWakeupTimeout < mMode)
-	{
-		// Disable PS if wake up time is less than mode as PS will never trigger
+	if (mWakeupTimeout >= 0 && mWakeupTimeout < mMode)
 		setState(!state);
-	}
 }
 
 bool PowerSaver::isScreenSaverActive()
