@@ -38,9 +38,6 @@ namespace MergedDrive
 				continue;
 
 			auto list = Utils::String::split(branches, ':');
-			if (list.size() < 2)
-				return Pool();
-
 			return Pool{ current, list[0].substr(0, list[0].find('=')) };
 		}
 		return Pool();
