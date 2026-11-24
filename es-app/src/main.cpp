@@ -42,6 +42,7 @@
 #include "Scripting.h"
 #include "watchers/WatchersManager.h"
 #include "HttpReq.h"
+#include <cstdlib>
 #include <thread>
 #include "ZaparooSupport.h"
 #include "utils/ThreadPool.h"
@@ -849,6 +850,17 @@ int main(int argc, char* argv[])
 
 	if (SystemData::hasDirtySystems())
 		window.renderSplashScreen(_("SAVING METADATA. PLEASE WAIT..."));
+
+#ifdef HIPPOS
+	ViewController::saveState();
+	CollectionSystemManager::deinit();
+	SystemData::saveGamelistsOnExit();
+	Scripting::exitScriptingEngine();
+	Utils::Platform::processQuitMode();
+	LOG(LogInfo) << "EmulationStation cleanly shutting down.";
+	Log::close();
+	_Exit(0);
+#endif
 
 	MameNames::deinit();
 	ViewController::saveState();

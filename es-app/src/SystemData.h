@@ -115,6 +115,7 @@ public:
 
 	static bool IsManufacturerSupported;
 	static bool hasDirtySystems();
+	static void saveGamelistsOnExit();
 	static void deleteSystems();
 	static bool loadConfig(Window* window = nullptr); //Load the system config file at getConfigPath(). Returns true if no errors were encountered. An example will be written if the file doesn't exist.	
 	static std::string getConfigPath();

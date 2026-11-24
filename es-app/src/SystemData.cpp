@@ -1318,20 +1318,25 @@ bool SystemData::hasDirtySystems()
 	return false;
 }
 
-void SystemData::deleteSystems()
+void SystemData::saveGamelistsOnExit()
 {
 	bool saveOnExit = !Settings::IgnoreGamelist() && Settings::SaveGamelistsOnExit();
 
-	for (unsigned int i = 0; i < sSystemVector.size(); i++)
+	for (auto system : sSystemVector)
 	{
-		SystemData* pData = sSystemVector.at(i);
-		pData->getRootFolder()->removeVirtualFolders();
+		system->getRootFolder()->removeVirtualFolders();
 
-		if (saveOnExit && !pData->mIsCollectionSystem)
-			updateGamelist(pData);
-
-		delete pData;
+		if (saveOnExit && !system->mIsCollectionSystem)
+			updateGamelist(system);
 	}
+}
+
+void SystemData::deleteSystems()
+{
+	saveGamelistsOnExit();
+
+	for (auto system : sSystemVector)
+		delete system;
 
 	sSystemVector.clear();
 	IsManufacturerSupported = false;
