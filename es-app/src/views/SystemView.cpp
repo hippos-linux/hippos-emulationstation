@@ -367,10 +367,7 @@ void SystemView::showNetplay()
 	if (!SystemData::isNetplayActivated() && SystemConf::getInstance()->getBool("global.netplay"))
 		return;
 
-	if (ApiSystem::getInstance()->getIpAddress() == "NOT CONNECTED")
-		mWindow->pushGui(new GuiMsgBox(mWindow, _("YOU ARE NOT CONNECTED TO A NETWORK"), _("OK"), nullptr));
-	else
-		mWindow->pushGui(new GuiNetPlay(mWindow));
+	GuiNetPlay::open(mWindow);
 }
 
 SystemData* SystemView::getSelected()

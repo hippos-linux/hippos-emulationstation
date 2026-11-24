@@ -34,6 +34,12 @@ GuiNetPlaySettings::GuiNetPlaySettings(Window* window, int selectItem) : GuiSett
 	addSwitch(_("AUTOMATICALLY CREATE LOBBY"), _("Automatically creates a Netplay lobby when starting a game."), "NetPlayAutomaticallyCreateLobby", true, nullptr);
 	addSwitch(_("SHOW RELAY SERVER GAMES ONLY"), _("Relay server games have a higher chance of successful entry."), "NetPlayShowOnlyRelayServerGames", true, nullptr);
 	addSwitch(_("SHOW UNAVAILABLE GAMES"), _("Show rooms for games not present on this machine."), "NetPlayShowMissingGames", true, nullptr);
+	addEntry(_("SHOW HIDDEN CHAT PLAYERS AGAIN"), false, [this]
+	{
+		SystemConf::getInstance()->set("global.netplay.muted", "");
+		SystemConf::getInstance()->saveSystemConf();
+		mWindow->displayNotificationMessage(_("HIDDEN PLAYERS CLEARED"));
+	});
 
 	addGroup(_("GAME INDEXES"));
 

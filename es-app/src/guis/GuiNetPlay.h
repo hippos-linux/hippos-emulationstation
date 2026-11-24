@@ -37,6 +37,20 @@ struct ad_packet
 	char     subsystem_name[NETPLAY_HOST_LONGSTR_LEN];
 };
 
+enum class LobbyKind
+{
+	Libretro,
+	Hippos,
+	Dolphin
+};
+
+struct LobbySource
+{
+	std::unique_ptr<HttpReq> request;
+	std::string content;
+	LobbyKind kind = LobbyKind::Libretro;
+};
+
 struct LobbyAppEntry
 {
 	FileData*   fileData = nullptr;
@@ -55,8 +69,10 @@ struct LobbyAppEntry
 	std::string game_name;
 	bool		has_spectate_password = false;
 	std::string core_name;
+	std::string emulator;
 	int         mitm_port = 0;
 	std::string mitm_session;
+	std::string traversal_code;
 	bool		fixed = false;
 	std::string retroarch_version;
 	int         port = 0;
@@ -66,9 +82,13 @@ struct LobbyAppEntry
 };
 
 
+class NetPlayChat;
+
 class GuiNetPlay : public GuiComponent 
 {
 public:
+	static void open(Window* window);
+
 	GuiNetPlay(Window* window);
 	~GuiNetPlay();
 
@@ -84,13 +104,16 @@ public:
 private:
 	void startRequest();
 	
-	bool populateFromJson(const std::string json);
+	void populateFromLobbies(std::vector<std::pair<std::string, LobbyKind>> responses);
+	void populateFromJson(const std::string& json, bool hipposLobby, std::vector<LobbyAppEntry>& entries);
+	void populateFromDolphinJson(const std::string& json, std::vector<LobbyAppEntry>& entries);
 	bool populateFromLan();
 
 	bool populateList();
 
 	void launchGame(LobbyAppEntry entry);
 	void lanLobbyRequest();
+	void chooseChatRoom();
 
 	FileData* getFileData(const std::string& gameInfo, bool crc = true, const std::string& coreName = "");
 	bool coreExists(FileData* file, std::string core_name);
@@ -105,13 +128,14 @@ private:
 	std::shared_ptr<TextComponent>	mSubtitle;
 
 	std::shared_ptr<ComponentList>	mList;
+	std::shared_ptr<NetPlayChat>	mChat;
 
 	std::shared_ptr<ComponentGrid>	mHeaderGrid;
 	std::shared_ptr<ComponentGrid>	mButtonGrid;
 
 	BusyComponent					mBusyAnim;
 
-	std::unique_ptr<HttpReq>		mLobbyRequest;
+	std::vector<LobbySource>		mLobbySources;
 
 	std::vector<LobbyAppEntry>		mLanEntries;
 	std::vector<LobbyAppEntry>		mLobbyEntries;

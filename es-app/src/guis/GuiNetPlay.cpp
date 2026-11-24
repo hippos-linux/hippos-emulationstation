@@ -19,6 +19,14 @@
 #include "guis/GuiSettings.h"
 #include "guis/GuiTextEditPopup.h"
 #include "guis/GuiTextEditPopupKeyboard.h"
+#include "guis/GuiNetPlayHost.h"
+#include "guis/NetPlayChat.h"
+#include "ApiSystem.h"
+#include "DolphinGameId.h"
+#include "Paths.h"
+#include "utils/FileSystemUtil.h"
+
+#include <map>
 
 #include <rapidjson/rapidjson.h>
 #include <rapidjson/pointer.h>
@@ -37,7 +45,8 @@
 #include <unistd.h>
 #endif
 
-#define WINDOW_WIDTH (float)Math::min(Renderer::getScreenHeight() * 1.125f, Renderer::getScreenWidth() * 0.90f)
+static const std::string DOLPHIN_LOBBY_URL = "https://lobby.dolphin-emu.org";
+static const std::string DOLPHIN_EMULATOR = "dolphin-emu";
 
 // http://lobby.libretro.com/list/
 // Core list :
@@ -161,11 +170,19 @@ static std::map<std::string, std::string> coreList =
 #endif
 };
 
+void GuiNetPlay::open(Window* window)
+{
+	if (ApiSystem::getInstance()->getIpAddress() == "NOT CONNECTED")
+		window->pushGui(new GuiMsgBox(window, _("YOU ARE NOT CONNECTED TO A NETWORK"), _("OK"), nullptr));
+	else
+		window->pushGui(new GuiNetPlay(window));
+}
+
 GuiNetPlay::GuiNetPlay(Window* window)
 	: GuiComponent(window), 
 	mBusyAnim(window),
 	mBackground(window, ":/frame.png"),
-	mGrid(window, Vector2i(1, 3)),
+	mGrid(window, Vector2i(2, 3)),
 	mList(nullptr),
 	mLanLobbySocket(-1),
 	mLanLobbySocketTimeout(0),
@@ -187,24 +204,29 @@ GuiNetPlay::GuiNetPlay(Window* window)
 
 	mHeaderGrid = std::make_shared<ComponentGrid>(mWindow, Vector2i(1, 5));
 
-	mTitle = std::make_shared<TextComponent>(mWindow, _("CONNECT TO NETPLAY"), theme->Title.font, theme->Title.color, ALIGN_CENTER);
-	mSubtitle = std::make_shared<TextComponent>(mWindow, _("Select a game lobby to join"), theme->TextSmall.font, theme->TextSmall.color, ALIGN_CENTER);
+	mTitle = std::make_shared<TextComponent>(mWindow, _("NETPLAY LOBBY"), theme->Title.font, theme->Title.color, ALIGN_CENTER);
+	mSubtitle = std::make_shared<TextComponent>(mWindow, _("Join a game, host your own or chat"), theme->TextSmall.font, theme->TextSmall.color, ALIGN_CENTER);
 	
 	mHeaderGrid->setEntry(mTitle, Vector2i(0, 1), false, true);
 	mHeaderGrid->setEntry(mSubtitle, Vector2i(0, 3), false, true);
 
-	mGrid.setEntry(mHeaderGrid, Vector2i(0, 0), false, true);
-	// Lobby Entries List
-	mList = std::make_shared<ComponentList>(mWindow);
-	mGrid.setEntry(mList, Vector2i(0, 1), true, true, Vector2i(1, 1), GridFlags::BORDER_TOP);
+	mGrid.setEntry(mHeaderGrid, Vector2i(0, 0), false, true, Vector2i(2, 1));
 
-	// Buttons
+	mList = std::make_shared<ComponentList>(mWindow);
+	mGrid.setEntry(mList, Vector2i(0, 1), true, true, Vector2i(1, 1), GridFlags::BORDER_TOP | GridFlags::BORDER_RIGHT);
+
+	mChat = std::make_shared<NetPlayChat>(mWindow);
+	mGrid.setEntry(mChat, Vector2i(1, 1), true, true, Vector2i(1, 1), GridFlags::BORDER_TOP);
+
 	std::vector< std::shared_ptr<ButtonComponent> > buttons;
+	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("HOST A GAME"), _("HOST A GAME"), [this] { openNetplayHostPicker(mWindow); }));
+	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("SAY"), _("SAY"), [this] { mChat->say(); }));
+	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("CHAT ROOM"), _("CHAT ROOM"), [this] { chooseChatRoom(); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("REFRESH"), _("REFRESH"), [this] { startRequest(); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("CLOSE"), _("CLOSE"), [this] { delete this; }));
 
 	mButtonGrid = makeButtonGrid(mWindow, buttons);
-	mGrid.setEntry(mButtonGrid, Vector2i(0, 2), true, false, Vector2i(1,1), GridFlags::BORDER_TOP);
+	mGrid.setEntry(mButtonGrid, Vector2i(0, 2), true, false, Vector2i(2, 1), GridFlags::BORDER_TOP);
 
 	mGrid.setUnhandledInputCallback([this](InputConfig* config, Input input) -> bool 
 	{
@@ -221,13 +243,10 @@ GuiNetPlay::GuiNetPlay(Window* window)
 		return false;
 	});
 
-	float width = (float)Math::min((int)Renderer::getScreenHeight(), (int)(Renderer::getScreenWidth() * 0.90f));
-
-	// Position & Size
 	if (Renderer::ScreenSettings::fullScreenMenus())
 		setSize(Renderer::getScreenWidth(), Renderer::getScreenHeight());
 	else
-		setSize(WINDOW_WIDTH, Renderer::getScreenHeight() * 0.90f);
+		setSize(Renderer::getScreenWidth() * 0.95f, Renderer::getScreenHeight() * 0.90f);
 
 	setPosition((Renderer::getScreenWidth() - mSize.x()) / 2, (Renderer::getScreenHeight() - mSize.y()) / 2);
 
@@ -267,6 +286,7 @@ void GuiNetPlay::onSizeChanged()
 
 	mGrid.setRowHeight(0, (titleHeight + titleSubtitleSpacing + subtitleHeight + TITLE_VERT_PADDING));
 	mGrid.setRowHeight(2, mButtonGrid->getSize().y());
+	mGrid.setColWidthPerc(0, 0.6f);
 
 	mHeaderGrid->setRowHeight(1, titleHeight);
 	mHeaderGrid->setRowHeight(2, titleSubtitleSpacing);
@@ -275,7 +295,7 @@ void GuiNetPlay::onSizeChanged()
 
 void GuiNetPlay::startRequest()
 {
-	if (mLobbyRequest != nullptr)
+	if (!mLobbySources.empty())
 		return;
 
 	mList->clear();
@@ -288,7 +308,31 @@ void GuiNetPlay::startRequest()
 	if (netPlayLobby.empty())
 		netPlayLobby = "http://lobby.libretro.com/list/";
 
-	mLobbyRequest = std::unique_ptr<HttpReq>(new HttpReq(netPlayLobby));
+	LobbySource libretroLobby;
+	libretroLobby.request = std::unique_ptr<HttpReq>(new HttpReq(netPlayLobby));
+	mLobbySources.push_back(std::move(libretroLobby));
+
+	std::string hipposLobbyUrl = SystemConf::getInstance()->get("global.netplay.hipposlobby");
+	if (!hipposLobbyUrl.empty())
+	{
+		if (hipposLobbyUrl.back() != '/')
+			hipposLobbyUrl += "/";
+
+		LobbySource hipposLobby;
+		hipposLobby.request = std::unique_ptr<HttpReq>(new HttpReq(hipposLobbyUrl + "list"));
+		hipposLobby.kind = LobbyKind::Hippos;
+		mLobbySources.push_back(std::move(hipposLobby));
+	}
+
+	std::string dolphinVersionFile = Paths::getRootPath() + "/emulators/" + DOLPHIN_EMULATOR + "/version";
+	std::string dolphinVersion = Utils::FileSystem::exists(dolphinVersionFile) ? Utils::String::trim(Utils::FileSystem::readAllText(dolphinVersionFile)) : "";
+	if (!dolphinVersion.empty())
+	{
+		LobbySource dolphinLobby;
+		dolphinLobby.request = std::unique_ptr<HttpReq>(new HttpReq(DOLPHIN_LOBBY_URL + "/v0/list?version=" + HttpReq::urlEncode(dolphinVersion) + "&password=0&in_game=0"));
+		dolphinLobby.kind = LobbyKind::Dolphin;
+		mLobbySources.push_back(std::move(dolphinLobby));
+	}
 }
 
 void GuiNetPlay::update(int deltaTime)
@@ -312,7 +356,7 @@ void GuiNetPlay::update(int deltaTime)
 			if (mList->size() != 0)
 				mList->setCursorIndex(0, true);
 
-			mLobbyRequest.reset();
+			mLobbySources.clear();
 
 			mPopulateThread->join();
 			delete mPopulateThread;
@@ -321,29 +365,51 @@ void GuiNetPlay::update(int deltaTime)
 		return;
 	}
 
-	if (!mLobbyRequest)
+	if (mLobbySources.empty())
 		return;
 
-	auto status = mLobbyRequest->status();
-	if (status == HttpReq::REQ_IN_PROGRESS)
+	bool pending = false;
+	for (auto& source : mLobbySources)
+	{
+		if (!source.request)
+			continue;
+
+		auto status = source.request->status();
+		if (status == HttpReq::REQ_IN_PROGRESS)
+		{
+			pending = true;
+			continue;
+		}
+
+		if (status == HttpReq::REQ_SUCCESS)
+			source.content = source.request->getContent();
+		else if (source.kind != LobbyKind::Libretro)
+			LOG(LogWarning) << "GuiNetPlay - lobby request failed: " << source.request->getUrl() << " " << source.request->getErrorMsg();
+		else
+			mWindow->pushGui(new GuiMsgBox(mWindow, _("FAILED") + std::string(" : ") + source.request->getErrorMsg()));
+
+		source.request.reset();
+	}
+
+	if (pending)
 	{
 		mBusyAnim.update(deltaTime);
 		return;
 	}
 
-	if (status != HttpReq::REQ_SUCCESS)
+	std::vector<std::pair<std::string, LobbyKind>> responses;
+	for (auto& source : mLobbySources)
+		if (!source.content.empty())
+			responses.push_back({ source.content, source.kind });
+
+	if (responses.empty())
 	{
-		mWindow->pushGui(new GuiMsgBox(mWindow, _("FAILED") + std::string(" : ") + mLobbyRequest->getErrorMsg()));
-		mLobbyRequest.reset();
+		mLobbySources.clear();
 		return;
 	}
 
-	if (status == HttpReq::REQ_SUCCESS && mPopulateThread == nullptr)
-	{
-		auto content = mLobbyRequest->getContent();
-		mThreadFinished = false;
-		mPopulateThread = new std::thread([&, content]() { populateFromJson(content); });
-	}
+	mThreadFinished = false;
+	mPopulateThread = new std::thread([this, responses]() { populateFromLobbies(responses); });
 }
 
 #if WIN32
@@ -483,9 +549,21 @@ void GuiNetPlay::lanLobbyRequest()
 
 bool GuiNetPlay::input(InputConfig* config, Input input)
 {
-	if (config->isMappedTo(BUTTON_BACK, input) && input.value != 0)
+	if (input.value != 0 && config->isMappedTo(BUTTON_BACK, input))
 	{
 		delete this;
+		return true;
+	}
+
+	if (input.value != 0 && config->isMappedTo("y", input))
+	{
+		mChat->say();
+		return true;
+	}
+
+	if (input.value != 0 && config->isMappedTo("x", input))
+	{
+		openNetplayHostPicker(mWindow);
 		return true;
 	}
 
@@ -496,7 +574,8 @@ std::vector<HelpPrompt> GuiNetPlay::getHelpPrompts()
 {
 	std::vector<HelpPrompt> prompts = mGrid.getHelpPrompts();
 	prompts.push_back(HelpPrompt(BUTTON_BACK, _("BACK")));
-	prompts.push_back(HelpPrompt(BUTTON_OK, _("LAUNCH")));
+	prompts.push_back(HelpPrompt("x", _("HOST A GAME")));
+	prompts.push_back(HelpPrompt("y", _("SAY")));
 	return prompts;
 }
 
@@ -712,71 +791,44 @@ private:
 
 bool GuiNetPlay::populateList()
 {
-	bool groupAvailable = false;
+	std::vector<LobbyAppEntry> owned;
+	std::vector<LobbyAppEntry> missing;
 
-	bool netPlayShowMissingGames = Settings::NetPlayShowMissingGames();
+	for (auto& entries : { mLanEntries, mLobbyEntries })
+		for (auto& game : entries)
+			(game.fileData != nullptr && game.coreExists ? owned : missing).push_back(game);
 
-	if (mLanEntries.size())
+	std::stable_sort(owned.begin(), owned.end(), [](const LobbyAppEntry& a, const LobbyAppEntry& b)
 	{
-		mList->addGroup(_("LAN GAMES"), true);
+		int bySystem = Utils::String::compareIgnoreCase(a.fileData->getSystem()->getFullName(), b.fileData->getSystem()->getFullName());
+		if (bySystem != 0)
+			return bySystem < 0;
 
-		for (auto game : mLanEntries)
-		{
-			if (game.fileData == nullptr)
-				continue;
+		return Utils::String::compareIgnoreCase(a.fileData->getName(), b.fileData->getName()) < 0;
+	});
 
-			ComponentListRow row;
-			row.addElement(std::make_shared<NetPlayLobbyListEntry>(mWindow, game), true);
-
-			if (game.fileData != nullptr)
-				row.makeAcceptInputHandler([this, game] { launchGame(game); });
-
-			mList->addRow(std::move(row));
-		}
-	}
-
-	for (auto& game : mLobbyEntries)
+	std::string group;
+	for (auto& game : owned)
 	{
-		if (game.fileData == nullptr)
-			continue;
-
-		if (!netPlayShowMissingGames && !game.coreExists)
-			continue;
-
-		if (!groupAvailable)
+		const std::string& systemName = game.fileData->getSystem()->getFullName();
+		if (systemName != group)
 		{
-			if (netPlayShowMissingGames)
-				mList->addGroup(_("AVAILABLE GAMES"), true);
-			else 
-				mList->addGroup(_("ONLINE GAMES"), true);
-
-			groupAvailable = true;
+			mList->addGroup(systemName, true);
+			group = systemName;
 		}
 
 		ComponentListRow row;
 		row.addElement(std::make_shared<NetPlayLobbyListEntry>(mWindow, game), true);
-
-		if (game.fileData != nullptr)
-			row.makeAcceptInputHandler([this, game] { launchGame(game); });
-
+		row.makeAcceptInputHandler([this, game] { launchGame(game); });
 		mList->addRow(std::move(row));
 	}
 
-	if (netPlayShowMissingGames)
+	if (Settings::NetPlayShowMissingGames() && !missing.empty())
 	{
-		bool groupUnavailable = false;
+		mList->addGroup(_("UNAVAILABLE GAMES"), true);
 
-		for (auto& game : mLobbyEntries)
+		for (auto& game : missing)
 		{
-			if (game.fileData != nullptr)
-				continue;
-
-			if (!groupUnavailable)
-			{
-				mList->addGroup(_("UNAVAILABLE GAMES"), true);
-				groupUnavailable = true;
-			}
-
 			ComponentListRow row;
 			row.addElement(std::make_shared<NetPlayLobbyListEntry>(mWindow, game), true);
 			mList->addRow(std::move(row));
@@ -790,29 +842,137 @@ bool GuiNetPlay::populateList()
 		empty->setText(_("NO GAMES FOUND"));
 		row.addElement(empty, true);
 		mList->addRow(std::move(row));
-
-		mGrid.moveCursor(Vector2i(0, 1));
 	}
 
 	return true;
 }
 
-bool GuiNetPlay::populateFromJson(const std::string json)
+void GuiNetPlay::chooseChatRoom()
+{
+	auto picker = new GuiSettings(mWindow, _("CHAT ROOM"));
+	picker->addEntry(_("GLOBAL CHAT"), false, [this, picker]
+	{
+		mChat->setChannel(NetPlayChat::GLOBAL_CHANNEL, _("GLOBAL CHAT"));
+		picker->close();
+	});
+
+	for (auto system : SystemData::sSystemVector)
+	{
+		if (system->isCollection() || system->isGroupChildSystem() || !system->isNetplaySupported() || system->getGameCount() == 0)
+			continue;
+
+		picker->addEntry(system->getFullName(), false, [this, picker, system]
+		{
+			mChat->setChannel(system->getName(), system->getFullName());
+			picker->close();
+		});
+	}
+
+	mWindow->pushGui(picker);
+}
+
+void GuiNetPlay::populateFromLobbies(std::vector<std::pair<std::string, LobbyKind>> responses)
+{
+	std::vector<LobbyAppEntry> entries;
+	for (auto& response : responses)
+	{
+		if (response.second == LobbyKind::Dolphin)
+			populateFromDolphinJson(response.first, entries);
+		else
+			populateFromJson(response.first, response.second == LobbyKind::Hippos, entries);
+	}
+
+	std::sort(entries.begin(), entries.end(), [](const LobbyAppEntry& a, const LobbyAppEntry& b) {
+		return a.isCrcValid ? !b.isCrcValid : (a.coreExists && !b.coreExists);
+		});
+
+	mLobbyEntries = entries;
+	mThreadFinished = true;
+}
+
+static std::map<std::string, FileData*> dolphinGamesById()
+{
+	std::map<std::string, FileData*> games;
+	for (auto sys : SystemData::sSystemVector)
+	{
+		if (sys->isCollection())
+			continue;
+
+		auto emulators = sys->getEmulators();
+		if (std::none_of(emulators.cbegin(), emulators.cend(), [](const EmulatorData& emul) { return emul.name == DOLPHIN_EMULATOR; }))
+			continue;
+
+		for (auto file : sys->getRootFolder()->getFilesRecursive(GAME, false, sys))
+		{
+			std::string id = readDolphinGameId(file->getPath());
+			if (!id.empty())
+				games.emplace(id, file);
+		}
+	}
+	return games;
+}
+
+void GuiNetPlay::populateFromDolphinJson(const std::string& json, std::vector<LobbyAppEntry>& entries)
 {
 	rapidjson::Document doc;
 	doc.Parse(json.c_str());
 
-	if (doc.HasParseError())
+	if (doc.HasParseError() || !doc.IsObject() || !doc.HasMember("sessions") || !doc["sessions"].IsArray())
 	{
-		std::string err = std::string("GuiNetPlay - Error parsing JSON. \n\t");		
-		LOG(LogError) << err;
-		return false;
+		LOG(LogError) << "GuiNetPlay - Error parsing Dolphin lobby JSON";
+		return;
 	}
 
-	bool netPlayShowOnlyRelayServerGames = Settings::NetPlayShowOnlyRelayServerGames();
+	auto games = dolphinGamesById();
 
-	std::vector<LobbyAppEntry> entries;
-	entries.reserve(doc.Size());
+	for (auto& session : doc["sessions"].GetArray())
+	{
+		if (!session.HasMember("game") || !session["game"].IsString() || !session.HasMember("server_id") || !session["server_id"].IsString() ||
+			!session.HasMember("method") || !session["method"].IsString() || !session.HasMember("port") || !session["port"].IsNumber())
+			continue;
+
+		LobbyAppEntry game;
+		game.game_name = session["game"].GetString();
+		game.ip = session["server_id"].GetString();
+		game.port = session["port"].GetInt();
+		if (std::string(session["method"].GetString()) == "traversal")
+			game.traversal_code = game.ip;
+
+		if (session.HasMember("name") && session["name"].IsString())
+			game.username = session["name"].GetString();
+		if (session.HasMember("region") && session["region"].IsString())
+			game.country = session["region"].GetString();
+		if (session.HasMember("version") && session["version"].IsString())
+			game.retroarch_version = session["version"].GetString();
+
+		game.frontend = "Dolphin";
+		game.emulator = DOLPHIN_EMULATOR;
+		game.core_name = DOLPHIN_EMULATOR;
+
+		auto file = games.find(game.game_name);
+		if (file != games.cend())
+		{
+			game.fileData = file->second;
+			game.isCrcValid = true;
+			game.coreExists = true;
+		}
+
+		entries.push_back(std::move(game));
+	}
+}
+
+void GuiNetPlay::populateFromJson(const std::string& json, bool hipposLobby, std::vector<LobbyAppEntry>& entries)
+{
+	rapidjson::Document doc;
+	doc.Parse(json.c_str());
+
+	if (doc.HasParseError() || !doc.IsArray())
+	{
+		LOG(LogError) << "GuiNetPlay - Error parsing lobby JSON";
+		return;
+	}
+
+	bool netPlayShowOnlyRelayServerGames = Settings::NetPlayShowOnlyRelayServerGames() && !hipposLobby;
 
 	for (auto& item : doc.GetArray())
 	{
@@ -834,6 +994,9 @@ bool GuiNetPlay::populateFromJson(const std::string json)
 
 		if (fields.HasMember("core_name") && fields["core_name"].IsString())
 			game.core_name = fields["core_name"].GetString();
+
+		if (hipposLobby && fields.HasMember("emulator") && fields["emulator"].IsString())
+			game.emulator = fields["emulator"].GetString();
 
 		FileData* file = nullptr;
 
@@ -910,18 +1073,7 @@ bool GuiNetPlay::populateFromJson(const std::string json)
 		game.coreExists = coreExists(file, game.core_name);
 
 		entries.push_back(std::move(game));
-	}	
-
-
-	std::sort(entries.begin(), entries.end(), [](const LobbyAppEntry& a, const LobbyAppEntry& b) {
-		return a.isCrcValid ? !b.isCrcValid : (a.coreExists && !b.coreExists);
-		});
-
-	mLobbyEntries = entries;
-//	populateList();
-
-	mThreadFinished = true;
-	return true;
+	}
 }
 
 bool GuiNetPlay::populateFromLan()
@@ -1005,7 +1157,7 @@ void GuiNetPlay::render(const Transform4x4f &parentTrans)
 {
 	GuiComponent::render(parentTrans);
 
-	if (mLobbyRequest)
+	if (!mLobbySources.empty())
 		mBusyAnim.render(parentTrans);
 }
 
@@ -1024,6 +1176,7 @@ void GuiNetPlay::launchGame(LobbyAppEntry entry)
 	{
 		options.ip = entry.ip;
 		options.port = entry.port;
+		options.session = entry.traversal_code;
 	}
 	
 	auto coreInfo = coreList.find(entry.core_name);
@@ -1031,6 +1184,8 @@ void GuiNetPlay::launchGame(LobbyAppEntry entry)
 		options.core = coreInfo->second;
 	else 	
 		options.core = Utils::String::toLower(Utils::String::replace(entry.core_name, " ", "_"));
+
+	options.emulator = entry.emulator;
 	
 	auto theme = ThemeData::getMenuTheme();
 	std::shared_ptr<Font> font = theme->Text.font;
