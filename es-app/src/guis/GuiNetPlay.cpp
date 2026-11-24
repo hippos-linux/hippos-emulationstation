@@ -965,7 +965,7 @@ void GuiNetPlay::populateFromLobbies(std::vector<std::pair<std::string, LobbyKin
 			populateFromJson(response.first, response.second == LobbyKind::Hippos, entries);
 	}
 
-	mergeHipposRetroArchRooms(entries);
+	mergeRoomsListedTwice(entries);
 
 	std::sort(entries.begin(), entries.end(), [](const LobbyAppEntry& a, const LobbyAppEntry& b) {
 		return a.isCrcValid ? !b.isCrcValid : (a.coreExists && !b.coreExists);
@@ -977,10 +977,13 @@ void GuiNetPlay::populateFromLobbies(std::vector<std::pair<std::string, LobbyKin
 
 static bool isSameHost(const LobbyAppEntry& a, const LobbyAppEntry& b)
 {
+	if (a.emulator == RIVERHORSE_EMULATOR && b.emulator == RIVERHORSE_EMULATOR)
+		return a.username == b.username && a.fileData != nullptr && a.fileData == b.fileData;
+
 	return a.ip == b.ip && a.port == b.port;
 }
 
-void GuiNetPlay::mergeHipposRetroArchRooms(std::vector<LobbyAppEntry>& entries)
+void GuiNetPlay::mergeRoomsListedTwice(std::vector<LobbyAppEntry>& entries)
 {
 	std::vector<LobbyAppEntry> hipposRooms;
 	std::vector<LobbyAppEntry> merged;
@@ -989,9 +992,9 @@ void GuiNetPlay::mergeHipposRetroArchRooms(std::vector<LobbyAppEntry>& entries)
 
 	for (auto& hipposRoom : hipposRooms)
 	{
-		auto retroArchRoom = std::find_if(merged.begin(), merged.end(), [&hipposRoom](const LobbyAppEntry& entry) { return !entry.hippos && isSameHost(entry, hipposRoom); });
-		if (retroArchRoom != merged.end())
-			retroArchRoom->hippos = true;
+		auto otherListing = std::find_if(merged.begin(), merged.end(), [&hipposRoom](const LobbyAppEntry& entry) { return !entry.hippos && isSameHost(entry, hipposRoom); });
+		if (otherListing != merged.end())
+			otherListing->hippos = true;
 		else
 			merged.push_back(hipposRoom);
 	}
