@@ -47,6 +47,7 @@
 
 static const std::string DOLPHIN_LOBBY_URL = "https://lobby.dolphin-emu.org";
 static const std::string DOLPHIN_EMULATOR = "dolphin-emu";
+static const int LOBBY_REFRESH_MS = 30000;
 
 // http://lobby.libretro.com/list/
 // Core list :
@@ -186,6 +187,7 @@ GuiNetPlay::GuiNetPlay(Window* window)
 	mList(nullptr),
 	mLanLobbySocket(-1),
 	mLanLobbySocketTimeout(0),
+	mRefreshDelay(LOBBY_REFRESH_MS),
 	mPopulateThread(nullptr),
 	mThreadFinished(false)
 {	
@@ -219,7 +221,7 @@ GuiNetPlay::GuiNetPlay(Window* window)
 	mGrid.setEntry(mChat, Vector2i(1, 1), true, true, Vector2i(1, 1), GridFlags::BORDER_TOP);
 
 	std::vector< std::shared_ptr<ButtonComponent> > buttons;
-	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("HOST A GAME"), _("HOST A GAME"), [this] { openNetplayHostPicker(mWindow); }));
+	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("HOST A GAME"), _("HOST A GAME"), [this] { openNetplayHostPicker(mWindow, [this] { delete this; }); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("SAY"), _("SAY"), [this] { mChat->say(); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("CHAT ROOM"), _("CHAT ROOM"), [this] { chooseChatRoom(); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("REFRESH"), _("REFRESH"), [this] { startRequest(); }));
@@ -298,7 +300,7 @@ void GuiNetPlay::startRequest()
 	if (!mLobbySources.empty())
 		return;
 
-	mList->clear();
+	mRefreshDelay = LOBBY_REFRESH_MS;
 	mLobbyEntries.clear();
 	mLanEntries.clear();
 
@@ -352,10 +354,6 @@ void GuiNetPlay::update(int deltaTime)
 		if (mThreadFinished)
 		{
 			populateList();
-
-			if (mList->size() != 0)
-				mList->setCursorIndex(0, true);
-
 			mLobbySources.clear();
 
 			mPopulateThread->join();
@@ -366,7 +364,12 @@ void GuiNetPlay::update(int deltaTime)
 	}
 
 	if (mLobbySources.empty())
+	{
+		mRefreshDelay -= deltaTime;
+		if (mRefreshDelay <= 0)
+			startRequest();
 		return;
+	}
 
 	bool pending = false;
 	for (auto& source : mLobbySources)
@@ -563,7 +566,7 @@ bool GuiNetPlay::input(InputConfig* config, Input input)
 
 	if (input.value != 0 && config->isMappedTo("x", input))
 	{
-		openNetplayHostPicker(mWindow);
+		openNetplayHostPicker(mWindow, [this] { delete this; });
 		return true;
 	}
 
@@ -676,18 +679,23 @@ public:
 		mImage = std::make_shared<ImageComponent>(mWindow);
 		// mImage->setIsLinear(true);
 
-		std::string name = entry.fileData == nullptr ? entry.game_name : entry.fileData->getMetadata(MetaDataId::Name) + " [" + entry.fileData->getSystemName() + "]";
+		std::string name = entry.fileData == nullptr ? entry.game_name : entry.fileData->getMetadata(MetaDataId::Name);
 
 		mText = std::make_shared<TextComponent>(mWindow, name.c_str(), theme->Text.font, theme->Text.color);
 		mText->setLineSpacing(1.5);
 		mText->setVerticalAlignment(ALIGN_TOP);
 
-		std::string userInfo = _U("\uf007  ") + entry.username + _U("  \uf0AC  ") + entry.country + _U("  \uf108  ") + entry.frontend; // _U("  \uf0E8  ") + entry.ip +  
+		std::string userInfo = _U("\uf007  ") + entry.username;
+		if (!entry.country.empty())
+			userInfo += _U("  \uf0AC  ") + entry.country;
+		userInfo += _U("  \uf108  ") + entry.frontend;
 
 		mSubstring = std::make_shared<TextComponent>(mWindow, userInfo.c_str(), theme->TextSmall.font, theme->Text.color);
 		mSubstring->setOpacity(192);
 
-		std::string subInfo = _U("\uf11B  ") + entry.core_name + " (" + entry.retroarch_version + ")";
+		std::string subInfo = _U("\uf11B  ") + entry.core_name;
+		if (!entry.retroarch_version.empty())
+			subInfo += " (" + entry.retroarch_version + ")";
 
 		if (entry.fileData != nullptr)
 		{
@@ -791,6 +799,9 @@ private:
 
 bool GuiNetPlay::populateList()
 {
+	int cursor = mList->size() > 0 ? mList->getCursorId() : 0;
+	mList->clear();
+
 	std::vector<LobbyAppEntry> owned;
 	std::vector<LobbyAppEntry> missing;
 
@@ -837,13 +848,13 @@ bool GuiNetPlay::populateList()
 
 	if (mList->size() == 0)
 	{
+		auto theme = ThemeData::getMenuTheme();
 		ComponentListRow row;
-		auto empty = std::make_shared<TextComponent>(mWindow);
-		empty->setText(_("NO GAMES FOUND"));
-		row.addElement(empty, true);
+		row.addElement(std::make_shared<TextComponent>(mWindow, _("NO GAMES FOUND"), theme->Text.font, theme->Text.color), true);
 		mList->addRow(std::move(row));
 	}
 
+	mList->setCursorIndex(std::min(cursor, mList->size() - 1), true);
 	return true;
 }
 
@@ -1157,7 +1168,7 @@ void GuiNetPlay::render(const Transform4x4f &parentTrans)
 {
 	GuiComponent::render(parentTrans);
 
-	if (!mLobbySources.empty())
+	if (!mLobbySources.empty() && mList->size() == 0)
 		mBusyAnim.render(parentTrans);
 }
 

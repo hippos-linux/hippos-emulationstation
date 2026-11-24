@@ -724,9 +724,9 @@ bool SystemData::loadFeatures()
 						for (auto feat : essystem.customFeatures)
 							core.customFeatures.push_back(feat);
 					}
-
-					core.netplay = (core.features & EmulatorFeatures::Features::netplay) == EmulatorFeatures::Features::netplay;
 				}
+
+				core.netplay = ((emul.features | core.features) & EmulatorFeatures::Features::netplay) == EmulatorFeatures::Features::netplay;
 			}
 		}
 	}

@@ -120,6 +120,7 @@ private:
 
 	int								mLanLobbySocket;
 	int								mLanLobbySocketTimeout;
+	int								mRefreshDelay;
 
 	NinePatchComponent				mBackground;
 	ComponentGrid					mGrid;
