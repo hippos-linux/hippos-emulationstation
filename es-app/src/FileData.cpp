@@ -716,7 +716,7 @@ std::string FileData::getlaunchCommand(LaunchGameOptions& options, bool includeC
 			command = Utils::String::replace(command, "%NETPLAY%", "--host --port " + SystemConf::getInstance()->get("global.netplay.port") + " --nick " + SystemConf::getInstance()->get("global.netplay.nickname"));
 		else
 #endif
-			command = Utils::String::replace(command, "%NETPLAY%", "-netplaymode host");
+			command = Utils::String::replace(command, "%NETPLAY%", "-netplaymode host" + (options.ip.empty() ? std::string() : " -netplayip " + options.ip));
 	}
 	else
 		command = Utils::String::replace(command, "%NETPLAY%", "");

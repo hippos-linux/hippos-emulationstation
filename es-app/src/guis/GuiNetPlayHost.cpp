@@ -5,26 +5,35 @@
 #include "LocaleES.h"
 #include "SystemData.h"
 #include "Window.h"
+#include "HipposLobby.h"
 #include "guis/GuiMsgBox.h"
+#include "guis/GuiNetPlayChallenge.h"
 #include "guis/GuiSettings.h"
 #include "utils/StringUtil.h"
 #include "views/ViewController.h"
 
 #include <algorithm>
 
-bool startNetplayHost(Window* window, FileData* game)
+void startNetplayHost(Window* window, FileData* game, const std::function<void()>& onHosting)
 {
 	if (ApiSystem::getInstance()->getIpAddress() == "NOT CONNECTED")
 	{
 		window->pushGui(new GuiMsgBox(window, _("YOU ARE NOT CONNECTED TO A NETWORK"), _("OK"), nullptr));
-		return false;
+		return;
 	}
 
 	game->checkCrc32();
+
+	if (HipposLobby::takesChallenges(game->getEmulator()))
+	{
+		window->pushGui(new GuiNetPlayChallenge(window, game, onHosting));
+		return;
+	}
+
 	LaunchGameOptions options;
 	options.netPlayMode = SERVER;
 	ViewController::get()->launch(game, options);
-	return true;
+	onHosting();
 }
 
 static void openNetplayGamePicker(Window* window, SystemData* system, GuiSettings* systemPicker, const std::function<void()>& onHosting)
@@ -42,11 +51,8 @@ static void openNetplayGamePicker(Window* window, SystemData* system, GuiSetting
 
 		picker->addEntry(game->getName(), false, [window, picker, systemPicker, game, onHosting]
 		{
-			if (!startNetplayHost(window, game))
-				return;
-
 			systemPicker->close();
-			onHosting();
+			startNetplayHost(window, game, onHosting);
 			picker->close();
 		});
 	}

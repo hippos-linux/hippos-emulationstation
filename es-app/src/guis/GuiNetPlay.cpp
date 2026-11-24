@@ -23,6 +23,7 @@
 #include "guis/NetPlayChat.h"
 #include "ApiSystem.h"
 #include "DolphinGameId.h"
+#include "HipposLobby.h"
 #include "Paths.h"
 #include "utils/FileSystemUtil.h"
 
@@ -30,6 +31,8 @@
 
 #include <rapidjson/rapidjson.h>
 #include <rapidjson/pointer.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/writer.h>
 
 #include "animations/LambdaAnimation.h"
 
@@ -314,14 +317,11 @@ void GuiNetPlay::startRequest()
 	libretroLobby.request = std::unique_ptr<HttpReq>(new HttpReq(netPlayLobby));
 	mLobbySources.push_back(std::move(libretroLobby));
 
-	std::string hipposLobbyUrl = SystemConf::getInstance()->get("global.netplay.hipposlobby");
-	if (!hipposLobbyUrl.empty())
+	std::string hipposLobbyList = HipposLobby::url("/list");
+	if (!hipposLobbyList.empty())
 	{
-		if (hipposLobbyUrl.back() != '/')
-			hipposLobbyUrl += "/";
-
 		LobbySource hipposLobby;
-		hipposLobby.request = std::unique_ptr<HttpReq>(new HttpReq(hipposLobbyUrl + "list"));
+		hipposLobby.request = std::unique_ptr<HttpReq>(new HttpReq(hipposLobbyList));
 		hipposLobby.kind = LobbyKind::Hippos;
 		mLobbySources.push_back(std::move(hipposLobby));
 	}
@@ -360,6 +360,12 @@ void GuiNetPlay::update(int deltaTime)
 			delete mPopulateThread;
 			mPopulateThread = nullptr;
 		}
+		return;
+	}
+
+	if (mChallengeRequest && mChallengeRequest->status() != HttpReq::REQ_IN_PROGRESS)
+	{
+		finishChallenge();
 		return;
 	}
 
@@ -1009,6 +1015,12 @@ void GuiNetPlay::populateFromJson(const std::string& json, bool hipposLobby, std
 		if (hipposLobby && fields.HasMember("emulator") && fields["emulator"].IsString())
 			game.emulator = fields["emulator"].GetString();
 
+		if (hipposLobby && fields.HasMember("id") && fields["id"].IsString())
+			game.room_id = fields["id"].GetString();
+
+		if (hipposLobby && fields.HasMember("mode") && fields["mode"].IsString())
+			game.challenge = std::string(fields["mode"].GetString()) == "challenge";
+
 		FileData* file = nullptr;
 
 		if (fields.HasMember("game_crc") && fields["game_crc"].IsString() && fields["game_crc"] != "00000000")
@@ -1172,8 +1184,64 @@ void GuiNetPlay::render(const Transform4x4f &parentTrans)
 		mBusyAnim.render(parentTrans);
 }
 
+void GuiNetPlay::challengeHost(const LobbyAppEntry& entry)
+{
+	if (mChallengeRequest)
+		return;
+
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	writer.StartObject();
+	writer.Key("username");
+	writer.String(SystemConf::getInstance()->get("global.netplay.nickname").c_str());
+	writer.EndObject();
+
+	HttpReqOptions options;
+	options.dataToPost = buffer.GetString();
+	options.customHeaders.push_back("Content-Type: application/json");
+	mChallengeEntry = entry;
+	mChallengeRequest = std::unique_ptr<HttpReq>(new HttpReq(HipposLobby::url("/rooms/" + entry.room_id + "/challenge"), &options));
+}
+
+void GuiNetPlay::finishChallenge()
+{
+	auto status = mChallengeRequest->status();
+	std::string content = status == HttpReq::REQ_SUCCESS ? mChallengeRequest->getContent() : "";
+	mChallengeRequest.reset();
+
+	if (status == HttpReq::REQ_404_NOTFOUND || status == 409)
+	{
+		mWindow->pushGui(new GuiMsgBox(mWindow, _("SOMEONE ELSE ALREADY JOINED THIS GAME")));
+		startRequest();
+		return;
+	}
+
+	rapidjson::Document doc;
+	doc.Parse(content.c_str());
+	if (status != HttpReq::REQ_SUCCESS || doc.HasParseError() || !doc.IsObject() || !doc.HasMember("ip") || !doc["ip"].IsString())
+	{
+		mWindow->pushGui(new GuiMsgBox(mWindow, _("THE NETPLAY LOBBY CAN'T BE REACHED")));
+		return;
+	}
+
+	LaunchGameOptions options;
+	options.netPlayMode = CLIENT;
+	options.ip = doc["ip"].GetString();
+	options.port = doc.HasMember("port") && doc["port"].IsInt() ? doc["port"].GetInt() : mChallengeEntry.port;
+	options.core = mChallengeEntry.core_name;
+	options.emulator = mChallengeEntry.emulator;
+	ViewController::get()->launch(mChallengeEntry.fileData, options);
+	delete this;
+}
+
 void GuiNetPlay::launchGame(LobbyAppEntry entry)
 {
+	if (entry.challenge)
+	{
+		challengeHost(entry);
+		return;
+	}
+
 	LaunchGameOptions options;
 	options.netPlayMode = CLIENT;
 

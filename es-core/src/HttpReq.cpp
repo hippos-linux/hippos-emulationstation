@@ -169,6 +169,9 @@ void HttpReq::performRequest(const std::string& url, HttpReqOptions* options)
 		curl_easy_setopt(mHandle, CURLOPT_COPYPOSTFIELDS, options->dataToPost.c_str());
 	}
 
+	if (options != nullptr && !options->method.empty())
+		curl_easy_setopt(mHandle, CURLOPT_CUSTOMREQUEST, options->method.c_str());
+
 	if (options != nullptr && options->customHeaders.size() > 0)
 	{
 		struct curl_slist *hs = nullptr;

@@ -73,6 +73,8 @@ struct LobbyAppEntry
 	int         mitm_port = 0;
 	std::string mitm_session;
 	std::string traversal_code;
+	std::string room_id;
+	bool		challenge = false;
 	bool		fixed = false;
 	std::string retroarch_version;
 	int         port = 0;
@@ -114,6 +116,8 @@ private:
 	void launchGame(LobbyAppEntry entry);
 	void lanLobbyRequest();
 	void chooseChatRoom();
+	void challengeHost(const LobbyAppEntry& entry);
+	void finishChallenge();
 
 	FileData* getFileData(const std::string& gameInfo, bool crc = true, const std::string& coreName = "");
 	bool coreExists(FileData* file, std::string core_name);
@@ -137,6 +141,8 @@ private:
 	BusyComponent					mBusyAnim;
 
 	std::vector<LobbySource>		mLobbySources;
+	std::unique_ptr<HttpReq>		mChallengeRequest;
+	LobbyAppEntry					mChallengeEntry;
 
 	std::vector<LobbyAppEntry>		mLanEntries;
 	std::vector<LobbyAppEntry>		mLobbyEntries;

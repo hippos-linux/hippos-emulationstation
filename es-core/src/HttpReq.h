@@ -63,6 +63,7 @@ public:
 	std::string outputFilename;
 	std::vector<std::string> customHeaders;
 	std::string dataToPost;
+	std::string method;
 	std::string userAgent;
     long connectTimeout;
 	bool useCookieManager;

@@ -1,5 +1,6 @@
 #include "guis/NetPlayChat.h"
 
+#include "HipposLobby.h"
 #include "HttpReq.h"
 #include "LocaleES.h"
 #include "Settings.h"
@@ -53,11 +54,7 @@ NetPlayChat::~NetPlayChat() = default;
 
 std::string NetPlayChat::chatUrl() const
 {
-	std::string lobby = SystemConf::getInstance()->get("global.netplay.hipposlobby");
-	if (!lobby.empty() && lobby.back() == '/')
-		lobby.pop_back();
-
-	return lobby + "/chat/" + mChannel;
+	return HipposLobby::url("/chat/" + mChannel);
 }
 
 void NetPlayChat::setChannel(const std::string& channel, const std::string& label)
@@ -72,7 +69,7 @@ void NetPlayChat::setChannel(const std::string& channel, const std::string& labe
 
 void NetPlayChat::startPoll()
 {
-	if (SystemConf::getInstance()->get("global.netplay.hipposlobby").empty())
+	if (chatUrl().empty())
 		return;
 
 	mPollRequest = std::unique_ptr<HttpReq>(new HttpReq(chatUrl() + "?after=" + std::to_string(mLastMessageId)));

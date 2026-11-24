@@ -246,7 +246,7 @@ GuiGameOptions::GuiGameOptions(Window* window, FileData* game) : GuiComponent(wi
 					msgBox->addGroup(_("START GAME"));
 					msgBox->addEntry(_U("\uF144 ") + _("HOST A NETPLAY GAME"), false, [window, msgBox, game]
 						{
-							startNetplayHost(window, game);
+							startNetplayHost(window, game, [] {});
 							msgBox->close();
 						});
 					msgBox->addGroup(_("OPTIONS"));
