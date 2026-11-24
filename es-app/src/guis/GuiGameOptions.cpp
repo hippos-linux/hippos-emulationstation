@@ -251,7 +251,7 @@ GuiGameOptions::GuiGameOptions(Window* window, FileData* game) : GuiComponent(wi
 							if (HipposLobby::takesChallenges(game->getEmulator()))
 								GuiNetPlay::open(window, game);
 							else
-								startNetplayHost(window, game, false);
+								startNetplayHost(window, game);
 							msgBox->close();
 						});
 					msgBox->addGroup(_("OPTIONS"));

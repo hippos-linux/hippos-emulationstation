@@ -12,32 +12,26 @@
 
 #include <algorithm>
 
-void closeNetplayMenus(Window* window)
+void launchFromNetplayLobby(Window* window, FileData* game, LaunchGameOptions options)
 {
 	while (window->peekGui() != nullptr && window->peekGui() != ViewController::get())
 		delete window->peekGui();
-}
 
-void launchFromNetplayLobby(Window* window, FileData* game, const LaunchGameOptions& options)
-{
 	ViewController::get()->launch(game, options);
-	closeNetplayMenus(window);
 }
 
-bool startNetplayHost(Window* window, FileData* game, bool listInLobby)
+void startNetplayHost(Window* window, FileData* game)
 {
 	if (ApiSystem::getInstance()->getIpAddress() == "NOT CONNECTED")
 	{
 		window->pushGui(new GuiMsgBox(window, _("YOU ARE NOT CONNECTED TO A NETWORK"), _("OK"), nullptr));
-		return false;
+		return;
 	}
 
 	game->checkCrc32();
 	LaunchGameOptions options;
 	options.netPlayMode = SERVER;
-	options.listInLobby = listInLobby;
 	ViewController::get()->launch(game, options);
-	return true;
 }
 
 static void openNetplayGamePicker(Window* window, SystemData* system, GuiSettings* systemPicker, const std::function<void(FileData*)>& onGameChosen)
@@ -55,9 +49,11 @@ static void openNetplayGamePicker(Window* window, SystemData* system, GuiSetting
 
 		picker->addEntry(game->getName(), false, [picker, systemPicker, game, onGameChosen]
 		{
+			auto chosen = onGameChosen;
+			FileData* chosenGame = game;
 			systemPicker->close();
-			onGameChosen(game);
 			picker->close();
+			chosen(chosenGame);
 		});
 	}
 

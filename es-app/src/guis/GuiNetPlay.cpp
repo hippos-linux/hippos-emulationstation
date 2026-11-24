@@ -1240,8 +1240,11 @@ void GuiNetPlay::hostGame(FileData* game)
 		return;
 	}
 
-	if (startNetplayHost(mWindow, game, true))
-		closeNetplayMenus(mWindow);
+	game->checkCrc32();
+	LaunchGameOptions options;
+	options.netPlayMode = SERVER;
+	options.listInLobby = true;
+	launchFromNetplayLobby(mWindow, game, options);
 }
 
 void GuiNetPlay::chooseChallengeOptions(FileData* game)
