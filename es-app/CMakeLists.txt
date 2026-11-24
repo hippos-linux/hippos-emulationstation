@@ -95,7 +95,7 @@ set(ES_HEADERS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/NetPlayChat.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DolphinGameId.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/HipposLobby.h
-	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlayChallenge.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/NetPlayChallenge.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievements.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievementsSettings.h	
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiSystemInformation.h
@@ -213,7 +213,7 @@ set(ES_SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/NetPlayChat.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/DolphinGameId.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/HipposLobby.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlayChallenge.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/NetPlayChallenge.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievements.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievementsSettings.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiSystemInformation.cpp	

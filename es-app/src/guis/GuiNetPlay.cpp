@@ -21,6 +21,7 @@
 #include "guis/GuiTextEditPopupKeyboard.h"
 #include "guis/GuiNetPlayHost.h"
 #include "guis/NetPlayChat.h"
+#include "guis/NetPlayChallenge.h"
 #include "ApiSystem.h"
 #include "DolphinGameId.h"
 #include "HipposLobby.h"
@@ -174,12 +175,18 @@ static std::map<std::string, std::string> coreList =
 #endif
 };
 
-void GuiNetPlay::open(Window* window)
+void GuiNetPlay::open(Window* window, FileData* challengeGame)
 {
 	if (ApiSystem::getInstance()->getIpAddress() == "NOT CONNECTED")
+	{
 		window->pushGui(new GuiMsgBox(window, _("YOU ARE NOT CONNECTED TO A NETWORK"), _("OK"), nullptr));
-	else
-		window->pushGui(new GuiNetPlay(window));
+		return;
+	}
+
+	auto lobby = new GuiNetPlay(window);
+	window->pushGui(lobby);
+	if (challengeGame != nullptr)
+		lobby->startChallenge(challengeGame);
 }
 
 GuiNetPlay::GuiNetPlay(Window* window)
@@ -224,7 +231,7 @@ GuiNetPlay::GuiNetPlay(Window* window)
 	mGrid.setEntry(mChat, Vector2i(1, 1), true, true, Vector2i(1, 1), GridFlags::BORDER_TOP);
 
 	std::vector< std::shared_ptr<ButtonComponent> > buttons;
-	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("HOST A GAME"), _("HOST A GAME"), [this] { openNetplayHostPicker(mWindow, [this] { delete this; }); }));
+	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("HOST A GAME"), _("HOST A GAME"), [this] { openNetplayHostPicker(mWindow, [this](FileData* game) { hostGame(game); }); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("SAY"), _("SAY"), [this] { mChat->say(); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("CHAT ROOM"), _("CHAT ROOM"), [this] { chooseChatRoom(); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("REFRESH"), _("REFRESH"), [this] { startRequest(); }));
@@ -368,6 +375,9 @@ void GuiNetPlay::update(int deltaTime)
 		finishChallenge();
 		return;
 	}
+
+	if (mHostedChallenge && updateHostedChallenge(deltaTime))
+		return;
 
 	if (mLobbySources.empty())
 	{
@@ -572,7 +582,7 @@ bool GuiNetPlay::input(InputConfig* config, Input input)
 
 	if (input.value != 0 && config->isMappedTo("x", input))
 	{
-		openNetplayHostPicker(mWindow, [this] { delete this; });
+		openNetplayHostPicker(mWindow, [this](FileData* game) { hostGame(game); });
 		return true;
 	}
 
@@ -716,6 +726,9 @@ public:
 				subInfo = subInfo + "  " + _U("\uf058  ") + _("SAME ROM");
 		}
 
+		if (entry.own)
+			subInfo = _U("\uf11B  ") + entry.core_name + "   " + _("YOUR GAME, WAITING FOR A CHALLENGER");
+
 		if (entry.fileData != nullptr && !entry.coreExists)
 			subInfo = subInfo + "   " + _U("\uf071  ") + _("UNAVAILABLE CORE");
 		
@@ -827,6 +840,8 @@ bool GuiNetPlay::populateList()
 	std::string group;
 	for (auto& game : owned)
 	{
+		game.own = mHostedChallenge && game.room_id == mHostedChallenge->getRoomId();
+
 		const std::string& systemName = game.fileData->getSystem()->getFullName();
 		if (systemName != group)
 		{
@@ -836,7 +851,10 @@ bool GuiNetPlay::populateList()
 
 		ComponentListRow row;
 		row.addElement(std::make_shared<NetPlayLobbyListEntry>(mWindow, game), true);
-		row.makeAcceptInputHandler([this, game] { launchGame(game); });
+		if (game.own)
+			row.makeAcceptInputHandler([this] { confirmStopChallenge(); });
+		else
+			row.makeAcceptInputHandler([this, game] { launchGame(game); });
 		mList->addRow(std::move(row));
 	}
 
@@ -1232,6 +1250,64 @@ void GuiNetPlay::finishChallenge()
 	options.emulator = mChallengeEntry.emulator;
 	ViewController::get()->launch(mChallengeEntry.fileData, options);
 	delete this;
+}
+
+void GuiNetPlay::hostGame(FileData* game)
+{
+	if (HipposLobby::takesChallenges(game->getEmulator()))
+	{
+		startChallenge(game);
+		return;
+	}
+
+	startNetplayHost(mWindow, game);
+	delete this;
+}
+
+void GuiNetPlay::startChallenge(FileData* game)
+{
+	game->checkCrc32();
+	mHostedChallenge = std::make_unique<NetPlayChallenge>(game);
+	mWindow->displayNotificationMessage(_("WAITING FOR A CHALLENGER"));
+}
+
+void GuiNetPlay::confirmStopChallenge()
+{
+	mWindow->pushGui(new GuiMsgBox(mWindow, _("STOP HOSTING THIS GAME?"), _("YES"), [this]
+	{
+		mHostedChallenge.reset();
+		mListedChallengeRoom.clear();
+		startRequest();
+	}, _("NO"), nullptr));
+}
+
+bool GuiNetPlay::updateHostedChallenge(int deltaTime)
+{
+	mHostedChallenge->update(deltaTime);
+
+	if (mHostedChallenge->hasFailed())
+	{
+		mHostedChallenge.reset();
+		mWindow->displayNotificationMessage(_("THE NETPLAY LOBBY CAN'T BE REACHED"));
+		return false;
+	}
+
+	const std::string& roomId = mHostedChallenge->getRoomId();
+	if (!roomId.empty() && roomId != mListedChallengeRoom)
+	{
+		mListedChallengeRoom = roomId;
+		startRequest();
+	}
+
+	if (mHostedChallenge->getChallengerIp().empty())
+		return false;
+
+	LaunchGameOptions options;
+	options.netPlayMode = SERVER;
+	options.ip = mHostedChallenge->getChallengerIp();
+	ViewController::get()->launch(mHostedChallenge->getGame(), options);
+	delete this;
+	return true;
 }
 
 void GuiNetPlay::launchGame(LobbyAppEntry entry)

@@ -1,11 +1,8 @@
-#include "guis/GuiNetPlayChallenge.h"
+#include "guis/NetPlayChallenge.h"
 
 #include "FileData.h"
 #include "HipposLobby.h"
 #include "HttpReq.h"
-#include "LocaleES.h"
-#include "Window.h"
-#include "views/ViewController.h"
 
 #include <rapidjson/document.h>
 #include <SDL_timer.h>
@@ -14,30 +11,30 @@ static const int STATUS_POLL_MS = 2000;
 static const int HEARTBEAT_MS = 30000;
 static const Uint32 REMOVE_ROOM_TIMEOUT_MS = 3000;
 
-GuiNetPlayChallenge::GuiNetPlayChallenge(Window* window, FileData* game, const std::function<void()>& onMatchStarted)
-	: GuiSettings(window, _("WAITING FOR A CHALLENGER")),
-	mGame(game),
-	mOnMatchStarted(onMatchStarted),
+NetPlayChallenge::NetPlayChallenge(FileData* game)
+	: mGame(game),
 	mPollDelay(STATUS_POLL_MS),
 	mHeartbeatDelay(HEARTBEAT_MS),
-	mMatched(false)
+	mFailed(false)
 {
-	setSubTitle(game->getName());
-	addEntry(_("CANCEL"), false, [this] { close(); });
-
 	HttpReqOptions options;
 	options.dataToPost = HipposLobby::challengeRoomJson(game);
 	options.customHeaders.push_back("Content-Type: application/json");
 	mRequest = std::unique_ptr<HttpReq>(new HttpReq(HipposLobby::url("/rooms"), &options));
 }
 
-GuiNetPlayChallenge::~GuiNetPlayChallenge()
+NetPlayChallenge::~NetPlayChallenge()
 {
-	if (!mMatched)
-		removeRoom();
+	if (mRoomId.empty() || !mChallengerIp.empty())
+		return;
+
+	sendRoomRequest("DELETE");
+	Uint32 deadline = SDL_GetTicks() + REMOVE_ROOM_TIMEOUT_MS;
+	while (mRequest->status() == HttpReq::REQ_IN_PROGRESS && SDL_GetTicks() < deadline)
+		SDL_Delay(10);
 }
 
-void GuiNetPlayChallenge::sendRoomRequest(const std::string& method)
+void NetPlayChallenge::sendRoomRequest(const std::string& method)
 {
 	HttpReqOptions options;
 	options.method = method;
@@ -50,20 +47,10 @@ void GuiNetPlayChallenge::sendRoomRequest(const std::string& method)
 		mRequest = std::move(request);
 }
 
-void GuiNetPlayChallenge::removeRoom()
+void NetPlayChallenge::update(int deltaTime)
 {
-	if (mRoomId.empty())
+	if (mFailed || !mChallengerIp.empty())
 		return;
-
-	sendRoomRequest("DELETE");
-	Uint32 deadline = SDL_GetTicks() + REMOVE_ROOM_TIMEOUT_MS;
-	while (mRequest->status() == HttpReq::REQ_IN_PROGRESS && SDL_GetTicks() < deadline)
-		SDL_Delay(10);
-}
-
-void GuiNetPlayChallenge::update(int deltaTime)
-{
-	GuiSettings::update(deltaTime);
 
 	if (mHeartbeat && mHeartbeat->status() != HttpReq::REQ_IN_PROGRESS)
 		mHeartbeat.reset();
@@ -88,13 +75,8 @@ void GuiNetPlayChallenge::update(int deltaTime)
 		mRequest.reset();
 
 		if (status != HttpReq::REQ_SUCCESS)
-		{
-			mWindow->displayNotificationMessage(_("THE NETPLAY LOBBY CAN'T BE REACHED"));
-			close();
-			return;
-		}
-
-		if (mRoomId.empty())
+			mFailed = true;
+		else if (mRoomId.empty())
 			readCreatedRoom(content);
 		else
 			readRoomStatus(content);
@@ -109,13 +91,13 @@ void GuiNetPlayChallenge::update(int deltaTime)
 	}
 }
 
-void GuiNetPlayChallenge::readCreatedRoom(const std::string& json)
+void NetPlayChallenge::readCreatedRoom(const std::string& json)
 {
 	rapidjson::Document doc;
 	doc.Parse(json.c_str());
 	if (doc.HasParseError() || !doc.IsObject() || !doc.HasMember("id") || !doc["id"].IsString() || !doc.HasMember("token") || !doc["token"].IsString())
 	{
-		close();
+		mFailed = true;
 		return;
 	}
 
@@ -123,7 +105,7 @@ void GuiNetPlayChallenge::readCreatedRoom(const std::string& json)
 	mToken = doc["token"].GetString();
 }
 
-void GuiNetPlayChallenge::readRoomStatus(const std::string& json)
+void NetPlayChallenge::readRoomStatus(const std::string& json)
 {
 	rapidjson::Document doc;
 	doc.Parse(json.c_str());
@@ -131,17 +113,6 @@ void GuiNetPlayChallenge::readRoomStatus(const std::string& json)
 		return;
 
 	const auto& challenger = doc["challenger"];
-	if (!challenger.HasMember("ip") || !challenger["ip"].IsString())
-		return;
-
-	mMatched = true;
-
-	LaunchGameOptions options;
-	options.netPlayMode = SERVER;
-	options.ip = challenger["ip"].GetString();
-	ViewController::get()->launch(mGame, options);
-
-	auto onMatchStarted = mOnMatchStarted;
-	close();
-	onMatchStarted();
+	if (challenger.HasMember("ip") && challenger["ip"].IsString())
+		mChallengerIp = challenger["ip"].GetString();
 }

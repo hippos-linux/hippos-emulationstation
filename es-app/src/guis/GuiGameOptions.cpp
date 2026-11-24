@@ -1,5 +1,7 @@
 #include "GuiGameOptions.h"
 #include "guis/GuiNetPlayHost.h"
+#include "HipposLobby.h"
+#include "guis/GuiNetPlay.h"
 #include "guis/GuiGamelistFilter.h"
 #include "scrapers/Scraper.h"
 #include "views/gamelist/IGameListView.h"
@@ -246,7 +248,10 @@ GuiGameOptions::GuiGameOptions(Window* window, FileData* game) : GuiComponent(wi
 					msgBox->addGroup(_("START GAME"));
 					msgBox->addEntry(_U("\uF144 ") + _("HOST A NETPLAY GAME"), false, [window, msgBox, game]
 						{
-							startNetplayHost(window, game, [] {});
+							if (HipposLobby::takesChallenges(game->getEmulator()))
+								GuiNetPlay::open(window, game);
+							else
+								startNetplayHost(window, game);
 							msgBox->close();
 						});
 					msgBox->addGroup(_("OPTIONS"));

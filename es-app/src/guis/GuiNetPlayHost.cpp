@@ -5,16 +5,14 @@
 #include "LocaleES.h"
 #include "SystemData.h"
 #include "Window.h"
-#include "HipposLobby.h"
 #include "guis/GuiMsgBox.h"
-#include "guis/GuiNetPlayChallenge.h"
 #include "guis/GuiSettings.h"
 #include "utils/StringUtil.h"
 #include "views/ViewController.h"
 
 #include <algorithm>
 
-void startNetplayHost(Window* window, FileData* game, const std::function<void()>& onHosting)
+void startNetplayHost(Window* window, FileData* game)
 {
 	if (ApiSystem::getInstance()->getIpAddress() == "NOT CONNECTED")
 	{
@@ -23,20 +21,12 @@ void startNetplayHost(Window* window, FileData* game, const std::function<void()
 	}
 
 	game->checkCrc32();
-
-	if (HipposLobby::takesChallenges(game->getEmulator()))
-	{
-		window->pushGui(new GuiNetPlayChallenge(window, game, onHosting));
-		return;
-	}
-
 	LaunchGameOptions options;
 	options.netPlayMode = SERVER;
 	ViewController::get()->launch(game, options);
-	onHosting();
 }
 
-static void openNetplayGamePicker(Window* window, SystemData* system, GuiSettings* systemPicker, const std::function<void()>& onHosting)
+static void openNetplayGamePicker(Window* window, SystemData* system, GuiSettings* systemPicker, const std::function<void(FileData*)>& onGameChosen)
 {
 	auto games = system->getRootFolder()->getFilesRecursive(GAME, true, system);
 	std::sort(games.begin(), games.end(), [](FileData* a, FileData* b) { return Utils::String::compareIgnoreCase(a->getName(), b->getName()) < 0; });
@@ -49,10 +39,10 @@ static void openNetplayGamePicker(Window* window, SystemData* system, GuiSetting
 		if (!game->isNetplaySupported())
 			continue;
 
-		picker->addEntry(game->getName(), false, [window, picker, systemPicker, game, onHosting]
+		picker->addEntry(game->getName(), false, [picker, systemPicker, game, onGameChosen]
 		{
 			systemPicker->close();
-			startNetplayHost(window, game, onHosting);
+			onGameChosen(game);
 			picker->close();
 		});
 	}
@@ -60,7 +50,7 @@ static void openNetplayGamePicker(Window* window, SystemData* system, GuiSetting
 	window->pushGui(picker);
 }
 
-void openNetplayHostPicker(Window* window, const std::function<void()>& onHosting)
+void openNetplayHostPicker(Window* window, const std::function<void(FileData*)>& onGameChosen)
 {
 	auto picker = new GuiSettings(window, _("HOST A NETPLAY GAME"));
 	picker->setSubTitle(_("Choose a system"));
@@ -70,7 +60,7 @@ void openNetplayHostPicker(Window* window, const std::function<void()>& onHostin
 		if (system->isCollection() || system->isGroupChildSystem() || !system->isNetplaySupported() || system->getGameCount() == 0)
 			continue;
 
-		picker->addEntry(system->getFullName(), true, [window, picker, system, onHosting] { openNetplayGamePicker(window, system, picker, onHosting); });
+		picker->addEntry(system->getFullName(), true, [window, picker, system, onGameChosen] { openNetplayGamePicker(window, system, picker, onGameChosen); });
 	}
 
 	window->pushGui(picker);

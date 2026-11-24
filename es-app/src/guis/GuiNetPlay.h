@@ -75,6 +75,7 @@ struct LobbyAppEntry
 	std::string traversal_code;
 	std::string room_id;
 	bool		challenge = false;
+	bool		own = false;
 	bool		fixed = false;
 	std::string retroarch_version;
 	int         port = 0;
@@ -85,11 +86,12 @@ struct LobbyAppEntry
 
 
 class NetPlayChat;
+class NetPlayChallenge;
 
 class GuiNetPlay : public GuiComponent 
 {
 public:
-	static void open(Window* window);
+	static void open(Window* window, FileData* challengeGame = nullptr);
 
 	GuiNetPlay(Window* window);
 	~GuiNetPlay();
@@ -118,6 +120,10 @@ private:
 	void chooseChatRoom();
 	void challengeHost(const LobbyAppEntry& entry);
 	void finishChallenge();
+	void hostGame(FileData* game);
+	void startChallenge(FileData* game);
+	void confirmStopChallenge();
+	bool updateHostedChallenge(int deltaTime);
 
 	FileData* getFileData(const std::string& gameInfo, bool crc = true, const std::string& coreName = "");
 	bool coreExists(FileData* file, std::string core_name);
@@ -143,6 +149,8 @@ private:
 	std::vector<LobbySource>		mLobbySources;
 	std::unique_ptr<HttpReq>		mChallengeRequest;
 	LobbyAppEntry					mChallengeEntry;
+	std::unique_ptr<NetPlayChallenge>	mHostedChallenge;
+	std::string						mListedChallengeRoom;
 
 	std::vector<LobbyAppEntry>		mLanEntries;
 	std::vector<LobbyAppEntry>		mLobbyEntries;

@@ -5,5 +5,5 @@
 class Window;
 class FileData;
 
-void startNetplayHost(Window* window, FileData* game, const std::function<void()>& onHosting);
-void openNetplayHostPicker(Window* window, const std::function<void()>& onHosting);
+void startNetplayHost(Window* window, FileData* game);
+void openNetplayHostPicker(Window* window, const std::function<void(FileData*)>& onGameChosen);
