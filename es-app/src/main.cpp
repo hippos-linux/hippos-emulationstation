@@ -676,9 +676,11 @@ int main(int argc, char* argv[])
 	ApiSystem::getInstance()->setReadyFlag();
 
 #ifdef HIPPOS
-	// Drives mounted during boot were ready before ES could ask about them.
-	for (const auto& request : ApiSystem::getInstance()->storageManagerPendingMerges())
-		window.processStorageRequest(request);
+	std::thread pendingMerges([&window]
+	{
+		for (const auto& request : ApiSystem::getInstance()->storageManagerPendingMerges())
+			window.postToUiThread([&window, request] { window.processStorageRequest(request); });
+	});
 #endif
 
 	// Play music
@@ -836,6 +838,9 @@ int main(int argc, char* argv[])
 	WatchersManager::stop();
 	ThreadedHasher::stop();
 	ThreadedScraper::stop();
+#ifdef HIPPOS
+	pendingMerges.join();
+#endif
 
 	ApiSystem::getInstance()->deinit();
 

@@ -673,10 +673,10 @@ void HttpServerThread::run()
 			return;
 		}
 
-		auto nl = req.body.find('\n');
+		auto nl = req.body.rfind('\n');
 		if (nl == std::string::npos)
 		{
-			res.set_content("400 bad request - body must be: message\\nshell_command", "text/plain");
+			res.set_content("400 bad request - body must be: message (one or more lines)\\nshell_command", "text/plain");
 			res.status = 400;
 			return;
 		}
