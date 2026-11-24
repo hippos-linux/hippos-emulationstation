@@ -17,6 +17,7 @@
 #include "guis/GuiRetroAchievements.h"
 #include "guis/GuiGamelistOptions.h"
 #include "guis/GuiImageViewer.h"
+#include "guis/GuiNetPlay.h"
 #include "guis/GuiNetPlaySettings.h"
 #include "guis/GuiRetroAchievementsSettings.h"
 #include "guis/GuiSystemInformation.h"
@@ -178,6 +179,9 @@ GuiMenu::GuiMenu(Window *window, bool animate) : GuiComponent(window), mMenu(win
 				if (!checkNetwork())
 					return;
 				GuiRetroAchievements::show(mWindow); }, "iconRetroachievements");
+
+	if (SystemData::isNetplayActivated() && SystemConf::getInstance()->getBool("global.netplay"))
+		addEntry(_("NETPLAY LOBBY").c_str(), true, [this] { GuiNetPlay::open(mWindow); }, "iconNetplay");
 	
 	if (isFullUI)
 	{

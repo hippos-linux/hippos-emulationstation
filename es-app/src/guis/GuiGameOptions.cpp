@@ -1,4 +1,5 @@
 #include "GuiGameOptions.h"
+#include "guis/GuiNetPlayHost.h"
 #include "guis/GuiGamelistFilter.h"
 #include "scrapers/Scraper.h"
 #include "views/gamelist/IGameListView.h"
@@ -245,14 +246,7 @@ GuiGameOptions::GuiGameOptions(Window* window, FileData* game) : GuiComponent(wi
 					msgBox->addGroup(_("START GAME"));
 					msgBox->addEntry(_U("\uF144 ") + _("HOST A NETPLAY GAME"), false, [window, msgBox, game]
 						{
-							if (ApiSystem::getInstance()->getIpAddress() == "NOT CONNECTED")
-							{
-								window->pushGui(new GuiMsgBox(window, _("YOU ARE NOT CONNECTED TO A NETWORK"), _("OK"), nullptr));
-								return;
-							}
-							LaunchGameOptions options;
-							options.netPlayMode = SERVER;
-							ViewController::get()->launch(game, options);
+							startNetplayHost(window, game);
 							msgBox->close();
 						});
 					msgBox->addGroup(_("OPTIONS"));

@@ -91,6 +91,9 @@ set(ES_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetworkSources.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlay.h # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlaySettings.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlayHost.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/NetPlayChat.h
+	${CMAKE_CURRENT_SOURCE_DIR}/src/DolphinGameId.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievements.h
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievementsSettings.h	
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiSystemInformation.h
@@ -204,6 +207,9 @@ set(ES_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetworkSources.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlay.cpp # batocera
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlaySettings.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiNetPlayHost.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/NetPlayChat.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/src/DolphinGameId.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievements.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiRetroAchievementsSettings.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/src/guis/GuiSystemInformation.cpp	

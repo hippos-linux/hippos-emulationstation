@@ -593,10 +593,14 @@ std::string FileData::getlaunchCommand(LaunchGameOptions& options, bool includeC
 
 	bool forceCore = false;
 
-	if (options.netPlayMode == CLIENT && !options.core.empty() && core != options.core)
+	bool emulatorDiffers = !options.emulator.empty() && emulator != options.emulator;
+	if (options.netPlayMode == CLIENT && !options.core.empty() && (core != options.core || emulatorDiffers))
 	{
 		for (auto& em : system->getEmulators())
 		{
+			if (!options.emulator.empty() && em.name != options.emulator)
+				continue;
+
 			for (auto& cr : em.cores)
 			{
 				if (cr.name == options.core)

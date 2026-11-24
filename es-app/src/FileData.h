@@ -64,6 +64,7 @@ struct LaunchGameOptions
 	int port;
 	std::string session;
 
+	std::string emulator;
 	std::string core;
 	std::string netplayClientPassword;
 
