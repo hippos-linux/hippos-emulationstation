@@ -4,6 +4,9 @@
 
 class Window;
 class FileData;
+struct LaunchGameOptions;
 
-void startNetplayHost(Window* window, FileData* game);
+bool startNetplayHost(Window* window, FileData* game);
+void closeNetplayMenus(Window* window);
+void launchFromNetplayLobby(Window* window, FileData* game, const LaunchGameOptions& options);
 void openNetplayHostPicker(Window* window, const std::function<void(FileData*)>& onGameChosen);

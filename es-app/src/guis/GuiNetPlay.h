@@ -74,6 +74,7 @@ struct LobbyAppEntry
 	std::string mitm_session;
 	std::string traversal_code;
 	std::string room_id;
+	bool		hippos = false;
 	bool		challenge = false;
 	bool		own = false;
 	bool		fixed = false;
@@ -111,6 +112,7 @@ private:
 	void populateFromLobbies(std::vector<std::pair<std::string, LobbyKind>> responses);
 	void populateFromJson(const std::string& json, bool hipposLobby, std::vector<LobbyAppEntry>& entries);
 	void populateFromDolphinJson(const std::string& json, std::vector<LobbyAppEntry>& entries);
+	void mergeHipposRetroArchRooms(std::vector<LobbyAppEntry>& entries);
 	bool populateFromLan();
 
 	bool populateList();
@@ -118,12 +120,15 @@ private:
 	void launchGame(LobbyAppEntry entry);
 	void lanLobbyRequest();
 	void chooseChatRoom();
-	void challengeHost(const LobbyAppEntry& entry);
-	void finishChallenge();
 	void hostGame(FileData* game);
-	void startChallenge(FileData* game);
+	void chooseChallengeOptions(FileData* game);
+	void startChallenge(FileData* game, bool autoAccept);
 	void confirmStopChallenge();
 	bool updateHostedChallenge(int deltaTime);
+	void askToAcceptChallenger(const std::string& username);
+	void changeNickname();
+	void toggleHipposOnly();
+	std::string listFilterSubtitle() const;
 
 	FileData* getFileData(const std::string& gameInfo, bool crc = true, const std::string& coreName = "");
 	bool coreExists(FileData* file, std::string core_name);
@@ -144,11 +149,10 @@ private:
 	std::shared_ptr<ComponentGrid>	mHeaderGrid;
 	std::shared_ptr<ComponentGrid>	mButtonGrid;
 
+
 	BusyComponent					mBusyAnim;
 
 	std::vector<LobbySource>		mLobbySources;
-	std::unique_ptr<HttpReq>		mChallengeRequest;
-	LobbyAppEntry					mChallengeEntry;
 	std::unique_ptr<NetPlayChallenge>	mHostedChallenge;
 	std::string						mListedChallengeRoom;
 

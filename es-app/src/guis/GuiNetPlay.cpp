@@ -15,6 +15,7 @@
 #include "ThemeData.h"
 #include "components/MenuComponent.h"
 #include "components/ButtonComponent.h"
+#include "components/SwitchComponent.h"
 #include "views/ViewController.h"
 #include "guis/GuiSettings.h"
 #include "guis/GuiTextEditPopup.h"
@@ -22,6 +23,7 @@
 #include "guis/GuiNetPlayHost.h"
 #include "guis/NetPlayChat.h"
 #include "guis/NetPlayChallenge.h"
+#include "guis/GuiNetPlayJoin.h"
 #include "ApiSystem.h"
 #include "DolphinGameId.h"
 #include "HipposLobby.h"
@@ -52,6 +54,8 @@
 static const std::string DOLPHIN_LOBBY_URL = "https://lobby.dolphin-emu.org";
 static const std::string DOLPHIN_EMULATOR = "dolphin-emu";
 static const int LOBBY_REFRESH_MS = 30000;
+static const std::string HIPPOS_ONLY_SETTING = "global.netplay.lobby.hipposonly";
+static const std::string AUTO_ACCEPT_SETTING = "global.netplay.autoaccept";
 
 // http://lobby.libretro.com/list/
 // Core list :
@@ -186,7 +190,7 @@ void GuiNetPlay::open(Window* window, FileData* challengeGame)
 	auto lobby = new GuiNetPlay(window);
 	window->pushGui(lobby);
 	if (challengeGame != nullptr)
-		lobby->startChallenge(challengeGame);
+		lobby->chooseChallengeOptions(challengeGame);
 }
 
 GuiNetPlay::GuiNetPlay(Window* window)
@@ -217,7 +221,7 @@ GuiNetPlay::GuiNetPlay(Window* window)
 	mHeaderGrid = std::make_shared<ComponentGrid>(mWindow, Vector2i(1, 5));
 
 	mTitle = std::make_shared<TextComponent>(mWindow, _("NETPLAY LOBBY"), theme->Title.font, theme->Title.color, ALIGN_CENTER);
-	mSubtitle = std::make_shared<TextComponent>(mWindow, _("Join a game, host your own or chat"), theme->TextSmall.font, theme->TextSmall.color, ALIGN_CENTER);
+	mSubtitle = std::make_shared<TextComponent>(mWindow, listFilterSubtitle(), theme->TextSmall.font, theme->TextSmall.color, ALIGN_CENTER);
 	
 	mHeaderGrid->setEntry(mTitle, Vector2i(0, 1), false, true);
 	mHeaderGrid->setEntry(mSubtitle, Vector2i(0, 3), false, true);
@@ -233,7 +237,9 @@ GuiNetPlay::GuiNetPlay(Window* window)
 	std::vector< std::shared_ptr<ButtonComponent> > buttons;
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("HOST A GAME"), _("HOST A GAME"), [this] { openNetplayHostPicker(mWindow, [this](FileData* game) { hostGame(game); }); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("SAY"), _("SAY"), [this] { mChat->say(); }));
+	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("NAME"), _("CHANGE YOUR NAME"), [this] { changeNickname(); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("CHAT ROOM"), _("CHAT ROOM"), [this] { chooseChatRoom(); }));
+	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("FILTER"), _("SHOW ALL GAMES OR HIPPOS GAMES ONLY"), [this] { toggleHipposOnly(); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("REFRESH"), _("REFRESH"), [this] { startRequest(); }));
 	buttons.push_back(std::make_shared<ButtonComponent>(mWindow, _("CLOSE"), _("CLOSE"), [this] { delete this; }));
 
@@ -367,12 +373,6 @@ void GuiNetPlay::update(int deltaTime)
 			delete mPopulateThread;
 			mPopulateThread = nullptr;
 		}
-		return;
-	}
-
-	if (mChallengeRequest && mChallengeRequest->status() != HttpReq::REQ_IN_PROGRESS)
-	{
-		finishChallenge();
 		return;
 	}
 
@@ -823,10 +823,12 @@ bool GuiNetPlay::populateList()
 
 	std::vector<LobbyAppEntry> owned;
 	std::vector<LobbyAppEntry> missing;
+	bool hipposOnly = SystemConf::getInstance()->getBool(HIPPOS_ONLY_SETTING);
 
 	for (auto& entries : { mLanEntries, mLobbyEntries })
 		for (auto& game : entries)
-			(game.fileData != nullptr && game.coreExists ? owned : missing).push_back(game);
+			if (game.hippos || !hipposOnly)
+				(game.fileData != nullptr && game.coreExists ? owned : missing).push_back(game);
 
 	std::stable_sort(owned.begin(), owned.end(), [](const LobbyAppEntry& a, const LobbyAppEntry& b)
 	{
@@ -917,12 +919,38 @@ void GuiNetPlay::populateFromLobbies(std::vector<std::pair<std::string, LobbyKin
 			populateFromJson(response.first, response.second == LobbyKind::Hippos, entries);
 	}
 
+	mergeHipposRetroArchRooms(entries);
+
 	std::sort(entries.begin(), entries.end(), [](const LobbyAppEntry& a, const LobbyAppEntry& b) {
 		return a.isCrcValid ? !b.isCrcValid : (a.coreExists && !b.coreExists);
 		});
 
 	mLobbyEntries = entries;
 	mThreadFinished = true;
+}
+
+static bool isSameHost(const LobbyAppEntry& a, const LobbyAppEntry& b)
+{
+	return a.ip == b.ip && a.port == b.port;
+}
+
+void GuiNetPlay::mergeHipposRetroArchRooms(std::vector<LobbyAppEntry>& entries)
+{
+	std::vector<LobbyAppEntry> hipposRooms;
+	std::vector<LobbyAppEntry> merged;
+	for (auto& entry : entries)
+		(entry.hippos ? hipposRooms : merged).push_back(entry);
+
+	for (auto& hipposRoom : hipposRooms)
+	{
+		auto retroArchRoom = std::find_if(merged.begin(), merged.end(), [&hipposRoom](const LobbyAppEntry& entry) { return !entry.hippos && isSameHost(entry, hipposRoom); });
+		if (retroArchRoom != merged.end())
+			retroArchRoom->hippos = true;
+		else
+			merged.push_back(hipposRoom);
+	}
+
+	entries = merged;
 }
 
 static std::map<std::string, FileData*> dolphinGamesById()
@@ -1032,6 +1060,8 @@ void GuiNetPlay::populateFromJson(const std::string& json, bool hipposLobby, std
 
 		if (hipposLobby && fields.HasMember("emulator") && fields["emulator"].IsString())
 			game.emulator = fields["emulator"].GetString();
+
+		game.hippos = hipposLobby;
 
 		if (hipposLobby && fields.HasMember("id") && fields["id"].IsString())
 			game.room_id = fields["id"].GetString();
@@ -1202,72 +1232,39 @@ void GuiNetPlay::render(const Transform4x4f &parentTrans)
 		mBusyAnim.render(parentTrans);
 }
 
-void GuiNetPlay::challengeHost(const LobbyAppEntry& entry)
-{
-	if (mChallengeRequest)
-		return;
-
-	rapidjson::StringBuffer buffer;
-	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-	writer.StartObject();
-	writer.Key("username");
-	writer.String(SystemConf::getInstance()->get("global.netplay.nickname").c_str());
-	writer.EndObject();
-
-	HttpReqOptions options;
-	options.dataToPost = buffer.GetString();
-	options.customHeaders.push_back("Content-Type: application/json");
-	mChallengeEntry = entry;
-	mChallengeRequest = std::unique_ptr<HttpReq>(new HttpReq(HipposLobby::url("/rooms/" + entry.room_id + "/challenge"), &options));
-}
-
-void GuiNetPlay::finishChallenge()
-{
-	auto status = mChallengeRequest->status();
-	std::string content = status == HttpReq::REQ_SUCCESS ? mChallengeRequest->getContent() : "";
-	mChallengeRequest.reset();
-
-	if (status == HttpReq::REQ_404_NOTFOUND || status == 409)
-	{
-		mWindow->pushGui(new GuiMsgBox(mWindow, _("SOMEONE ELSE ALREADY JOINED THIS GAME")));
-		startRequest();
-		return;
-	}
-
-	rapidjson::Document doc;
-	doc.Parse(content.c_str());
-	if (status != HttpReq::REQ_SUCCESS || doc.HasParseError() || !doc.IsObject() || !doc.HasMember("ip") || !doc["ip"].IsString())
-	{
-		mWindow->pushGui(new GuiMsgBox(mWindow, _("THE NETPLAY LOBBY CAN'T BE REACHED")));
-		return;
-	}
-
-	LaunchGameOptions options;
-	options.netPlayMode = CLIENT;
-	options.ip = doc["ip"].GetString();
-	options.port = doc.HasMember("port") && doc["port"].IsInt() ? doc["port"].GetInt() : mChallengeEntry.port;
-	options.core = mChallengeEntry.core_name;
-	options.emulator = mChallengeEntry.emulator;
-	ViewController::get()->launch(mChallengeEntry.fileData, options);
-	delete this;
-}
-
 void GuiNetPlay::hostGame(FileData* game)
 {
 	if (HipposLobby::takesChallenges(game->getEmulator()))
 	{
-		startChallenge(game);
+		chooseChallengeOptions(game);
 		return;
 	}
 
-	startNetplayHost(mWindow, game);
-	delete this;
+	if (startNetplayHost(mWindow, game))
+		closeNetplayMenus(mWindow);
 }
 
-void GuiNetPlay::startChallenge(FileData* game)
+void GuiNetPlay::chooseChallengeOptions(FileData* game)
+{
+	auto options = new GuiSettings(mWindow, _("HOST A GAME"));
+	options->setSubTitle(game->getName());
+	auto autoAccept = options->addSwitch(_("ACCEPT PLAYERS AUTOMATICALLY"), _("When off, you are asked before anyone joins."), AUTO_ACCEPT_SETTING, false, nullptr);
+	options->addEntry(_("START HOSTING"), false, [this, options, autoAccept, game]
+	{
+		GuiNetPlay* lobby = this;
+		FileData* hostedGame = game;
+		bool accept = autoAccept->getState();
+		options->close();
+		SystemConf::getInstance()->saveSystemConf();
+		lobby->startChallenge(hostedGame, accept);
+	});
+	mWindow->pushGui(options);
+}
+
+void GuiNetPlay::startChallenge(FileData* game, bool autoAccept)
 {
 	game->checkCrc32();
-	mHostedChallenge = std::make_unique<NetPlayChallenge>(game);
+	mHostedChallenge = std::make_unique<NetPlayChallenge>(game, autoAccept);
 	mWindow->displayNotificationMessage(_("WAITING FOR A CHALLENGER"));
 }
 
@@ -1299,22 +1296,74 @@ bool GuiNetPlay::updateHostedChallenge(int deltaTime)
 		startRequest();
 	}
 
+	std::string challenger = mHostedChallenge->takeNewChallenger();
+	if (!challenger.empty() && mHostedChallenge->acceptsAutomatically())
+		mHostedChallenge->answer(true);
+	else if (!challenger.empty())
+		askToAcceptChallenger(challenger);
+
+	ChallengeAnswer answer = mHostedChallenge->takeAnswerResult();
+	if (answer == ChallengeAnswer::CHALLENGER_LEFT)
+		mWindow->displayNotificationMessage(_("THE CHALLENGER HAS LEFT"));
+	if (answer != ChallengeAnswer::NONE)
+		startRequest();
+
 	if (mHostedChallenge->getChallengerIp().empty())
 		return false;
 
 	LaunchGameOptions options;
 	options.netPlayMode = SERVER;
 	options.ip = mHostedChallenge->getChallengerIp();
-	ViewController::get()->launch(mHostedChallenge->getGame(), options);
-	delete this;
+	launchFromNetplayLobby(mWindow, mHostedChallenge->getGame(), options);
 	return true;
+}
+
+std::string GuiNetPlay::listFilterSubtitle() const
+{
+	return SystemConf::getInstance()->getBool(HIPPOS_ONLY_SETTING) ? _("Showing HippOS games only") : _("Join a game, host your own or chat");
+}
+
+void GuiNetPlay::toggleHipposOnly()
+{
+	SystemConf::getInstance()->setBool(HIPPOS_ONLY_SETTING, !SystemConf::getInstance()->getBool(HIPPOS_ONLY_SETTING));
+	SystemConf::getInstance()->saveSystemConf();
+	mSubtitle->setText(listFilterSubtitle());
+	populateList();
+}
+
+void GuiNetPlay::changeNickname()
+{
+	auto save = [](const std::string& text)
+	{
+		std::string nickname = Utils::String::trim(text);
+		if (nickname.empty())
+			return;
+
+		SystemConf::getInstance()->set("global.netplay.nickname", nickname);
+		SystemConf::getInstance()->saveSystemConf();
+	};
+
+	std::string nickname = SystemConf::getInstance()->get("global.netplay.nickname");
+	if (Settings::getInstance()->getBool("UseOSK"))
+		mWindow->pushGui(new GuiTextEditPopupKeyboard(mWindow, _("YOUR NAME"), nickname, save, false));
+	else
+		mWindow->pushGui(new GuiTextEditPopup(mWindow, _("YOUR NAME"), nickname, save, false));
+}
+
+void GuiNetPlay::askToAcceptChallenger(const std::string& username)
+{
+	std::string text = Utils::String::format(_("%s WANTS TO PLAY %s").c_str(), username.c_str(), mHostedChallenge->getGame()->getName().c_str());
+	mWindow->pushGui(new GuiMsgBox(mWindow, text,
+		_("ACCEPT"), [this] { if (mHostedChallenge) mHostedChallenge->answer(true); },
+		_("DECLINE"), [this] { if (mHostedChallenge) mHostedChallenge->answer(false); },
+		ICON_QUESTION));
 }
 
 void GuiNetPlay::launchGame(LobbyAppEntry entry)
 {
 	if (entry.challenge)
 	{
-		challengeHost(entry);
+		mWindow->pushGui(new GuiNetPlayJoin(mWindow, entry));
 		return;
 	}
 
@@ -1352,25 +1401,18 @@ void GuiNetPlay::launchGame(LobbyAppEntry entry)
 	
 	std::shared_ptr<TextComponent> ed = nullptr;
 
-	msgBox->addEntry(_U("\uF144 ") + _("JOIN GAME"), false, [this, msgBox, entry, options, ed]
-	{		
-		LaunchGameOptions opts = options;
-		ViewController::get()->launch(entry.fileData, opts);
+	Window* window = mWindow;
 
-		auto pthis = this;
-		msgBox->close();
-		delete pthis;
+	msgBox->addEntry(_U("\uF144 ") + _("JOIN GAME"), false, [window, entry, options]
+	{
+		launchFromNetplayLobby(window, entry.fileData, options);
 	});
 
-	msgBox->addEntry(_U("\uF06E ") + _("WATCH GAME"), false, [this, msgBox, entry, options, ed]
+	msgBox->addEntry(_U("\uF06E ") + _("WATCH GAME"), false, [window, entry, options]
 	{
 		LaunchGameOptions opts = options;
 		opts.netPlayMode = NetPlayMode::SPECTATOR;
-		ViewController::get()->launch(entry.fileData, opts);
-
-		auto pthis = this;
-		msgBox->close();
-		delete pthis;
+		launchFromNetplayLobby(window, entry.fileData, opts);
 	});
 	
 	mWindow->pushGui(msgBox);
