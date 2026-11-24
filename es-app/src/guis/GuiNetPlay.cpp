@@ -1240,7 +1240,7 @@ void GuiNetPlay::hostGame(FileData* game)
 		return;
 	}
 
-	if (startNetplayHost(mWindow, game))
+	if (startNetplayHost(mWindow, game, true))
 		closeNetplayMenus(mWindow);
 }
 

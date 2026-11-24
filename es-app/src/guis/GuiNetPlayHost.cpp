@@ -24,7 +24,7 @@ void launchFromNetplayLobby(Window* window, FileData* game, const LaunchGameOpti
 	closeNetplayMenus(window);
 }
 
-bool startNetplayHost(Window* window, FileData* game)
+bool startNetplayHost(Window* window, FileData* game, bool listInLobby)
 {
 	if (ApiSystem::getInstance()->getIpAddress() == "NOT CONNECTED")
 	{
@@ -35,6 +35,7 @@ bool startNetplayHost(Window* window, FileData* game)
 	game->checkCrc32();
 	LaunchGameOptions options;
 	options.netPlayMode = SERVER;
+	options.listInLobby = listInLobby;
 	ViewController::get()->launch(game, options);
 	return true;
 }

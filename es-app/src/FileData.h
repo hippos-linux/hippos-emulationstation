@@ -67,6 +67,7 @@ struct LaunchGameOptions
 	std::string emulator;
 	std::string core;
 	std::string netplayClientPassword;
+	bool listInLobby = false;
 
 	SaveState*	saveStateInfo;
 	bool isSaveStateInfoTemporary;
