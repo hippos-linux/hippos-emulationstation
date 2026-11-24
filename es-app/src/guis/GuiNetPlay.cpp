@@ -30,6 +30,7 @@
 #include "Paths.h"
 #include "utils/FileSystemUtil.h"
 
+#include <functional>
 #include <map>
 
 #include <rapidjson/rapidjson.h>
@@ -53,6 +54,41 @@
 
 static const std::string DOLPHIN_LOBBY_URL = "https://lobby.dolphin-emu.org";
 static const std::string DOLPHIN_EMULATOR = "dolphin-emu";
+static const std::string RIVERHORSE_EMULATOR = "riverhorse";
+static const std::string RIVERHORSE_VERSION_BEFORE_VERSION_FIELD = "v1.2.0";
+
+static std::map<std::string, FileData*> gamesForEmulator(const std::string& emulator, const std::function<std::string(FileData*)>& gameKey)
+{
+	std::map<std::string, FileData*> games;
+	for (auto sys : SystemData::sSystemVector)
+	{
+		if (sys->isCollection())
+			continue;
+
+		auto emulators = sys->getEmulators();
+		if (std::none_of(emulators.cbegin(), emulators.cend(), [&emulator](const EmulatorData& emul) { return emul.name == emulator; }))
+			continue;
+
+		for (auto file : sys->getRootFolder()->getFilesRecursive(GAME, false, sys))
+		{
+			std::string key = gameKey(file);
+			if (!key.empty())
+				games.emplace(key, file);
+		}
+	}
+	return games;
+}
+
+static std::string installedVersion(const std::string& emulator)
+{
+	std::string versionFile = Paths::getRootPath() + "/emulators/" + emulator + "/version";
+	return Utils::FileSystem::exists(versionFile) ? Utils::String::trim(Utils::FileSystem::readAllText(versionFile)) : "";
+}
+
+static std::string riverhorseTitleKey(const std::string& title)
+{
+	return Utils::String::toLower(Utils::String::trim(title));
+}
 static const int LOBBY_REFRESH_MS = 30000;
 static const std::string HIPPOS_ONLY_SETTING = "global.netplay.lobby.hipposonly";
 static const std::string AUTO_ACCEPT_SETTING = "global.netplay.autoaccept";
@@ -339,14 +375,22 @@ void GuiNetPlay::startRequest()
 		mLobbySources.push_back(std::move(hipposLobby));
 	}
 
-	std::string dolphinVersionFile = Paths::getRootPath() + "/emulators/" + DOLPHIN_EMULATOR + "/version";
-	std::string dolphinVersion = Utils::FileSystem::exists(dolphinVersionFile) ? Utils::String::trim(Utils::FileSystem::readAllText(dolphinVersionFile)) : "";
+	std::string dolphinVersion = installedVersion(DOLPHIN_EMULATOR);
 	if (!dolphinVersion.empty())
 	{
 		LobbySource dolphinLobby;
 		dolphinLobby.request = std::unique_ptr<HttpReq>(new HttpReq(DOLPHIN_LOBBY_URL + "/v0/list?version=" + HttpReq::urlEncode(dolphinVersion) + "&password=0&in_game=0"));
 		dolphinLobby.kind = LobbyKind::Dolphin;
 		mLobbySources.push_back(std::move(dolphinLobby));
+	}
+
+	std::string riverhorseSessions = SystemConf::getInstance()->get("global.netplay.riverhorsesessions");
+	if (!riverhorseSessions.empty() && !installedVersion(RIVERHORSE_EMULATOR).empty())
+	{
+		LobbySource riverhorseLobby;
+		riverhorseLobby.request = std::unique_ptr<HttpReq>(new HttpReq(riverhorseSessions));
+		riverhorseLobby.kind = LobbyKind::Riverhorse;
+		mLobbySources.push_back(std::move(riverhorseLobby));
 	}
 }
 
@@ -915,6 +959,8 @@ void GuiNetPlay::populateFromLobbies(std::vector<std::pair<std::string, LobbyKin
 	{
 		if (response.second == LobbyKind::Dolphin)
 			populateFromDolphinJson(response.first, entries);
+		else if (response.second == LobbyKind::Riverhorse)
+			populateFromRiverhorseJson(response.first, entries);
 		else
 			populateFromJson(response.first, response.second == LobbyKind::Hippos, entries);
 	}
@@ -953,27 +999,6 @@ void GuiNetPlay::mergeHipposRetroArchRooms(std::vector<LobbyAppEntry>& entries)
 	entries = merged;
 }
 
-static std::map<std::string, FileData*> dolphinGamesById()
-{
-	std::map<std::string, FileData*> games;
-	for (auto sys : SystemData::sSystemVector)
-	{
-		if (sys->isCollection())
-			continue;
-
-		auto emulators = sys->getEmulators();
-		if (std::none_of(emulators.cbegin(), emulators.cend(), [](const EmulatorData& emul) { return emul.name == DOLPHIN_EMULATOR; }))
-			continue;
-
-		for (auto file : sys->getRootFolder()->getFilesRecursive(GAME, false, sys))
-		{
-			std::string id = readDolphinGameId(file->getPath());
-			if (!id.empty())
-				games.emplace(id, file);
-		}
-	}
-	return games;
-}
 
 void GuiNetPlay::populateFromDolphinJson(const std::string& json, std::vector<LobbyAppEntry>& entries)
 {
@@ -986,7 +1011,7 @@ void GuiNetPlay::populateFromDolphinJson(const std::string& json, std::vector<Lo
 		return;
 	}
 
-	auto games = dolphinGamesById();
+	auto games = gamesForEmulator(DOLPHIN_EMULATOR, [](FileData* file) { return readDolphinGameId(file->getPath()); });
 
 	for (auto& session : doc["sessions"].GetArray())
 	{
@@ -1017,6 +1042,57 @@ void GuiNetPlay::populateFromDolphinJson(const std::string& json, std::vector<Lo
 		{
 			game.fileData = file->second;
 			game.isCrcValid = true;
+			game.coreExists = true;
+		}
+
+		entries.push_back(std::move(game));
+	}
+}
+
+void GuiNetPlay::populateFromRiverhorseJson(const std::string& json, std::vector<LobbyAppEntry>& entries)
+{
+	rapidjson::Document doc;
+	doc.Parse(json.c_str());
+
+	if (doc.HasParseError() || !doc.IsObject() || !doc.HasMember("sessions") || !doc["sessions"].IsArray())
+	{
+		LOG(LogError) << "GuiNetPlay - Error parsing Riverhorse session list JSON";
+		return;
+	}
+
+	std::string version = installedVersion(RIVERHORSE_EMULATOR);
+	auto games = gamesForEmulator(RIVERHORSE_EMULATOR, [](FileData* file) { return riverhorseTitleKey(Utils::FileSystem::getStem(file->getPath())); });
+
+	for (auto& session : doc["sessions"].GetArray())
+	{
+		if (!session.HasMember("code") || !session["code"].IsNumber() || !session.HasMember("title") || !session["title"].IsString() ||
+			!session.HasMember("joinable") || !session["joinable"].IsBool() || !session["joinable"].GetBool() ||
+			!session.HasMember("password") || !session["password"].IsBool() || session["password"].GetBool())
+			continue;
+
+		std::string hostVersion = session.HasMember("version") && session["version"].IsString() ? session["version"].GetString() : "";
+		if (hostVersion.empty())
+			hostVersion = RIVERHORSE_VERSION_BEFORE_VERSION_FIELD;
+		if (hostVersion != version)
+			continue;
+
+		LobbyAppEntry game;
+		game.game_name = session["title"].GetString();
+		game.traversal_code = std::to_string(session["code"].GetInt64());
+		game.ip = game.traversal_code;
+		game.retroarch_version = hostVersion;
+		if (session.HasMember("nickname") && session["nickname"].IsString())
+			game.username = session["nickname"].GetString();
+
+		game.frontend = "Riverhorse";
+		game.game_crc = "00000000";
+		game.emulator = RIVERHORSE_EMULATOR;
+		game.core_name = RIVERHORSE_EMULATOR;
+
+		auto file = games.find(riverhorseTitleKey(game.game_name));
+		if (file != games.cend())
+		{
+			game.fileData = file->second;
 			game.coreExists = true;
 		}
 

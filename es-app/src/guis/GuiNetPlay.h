@@ -41,7 +41,8 @@ enum class LobbyKind
 {
 	Libretro,
 	Hippos,
-	Dolphin
+	Dolphin,
+	Riverhorse
 };
 
 struct LobbySource
@@ -112,6 +113,7 @@ private:
 	void populateFromLobbies(std::vector<std::pair<std::string, LobbyKind>> responses);
 	void populateFromJson(const std::string& json, bool hipposLobby, std::vector<LobbyAppEntry>& entries);
 	void populateFromDolphinJson(const std::string& json, std::vector<LobbyAppEntry>& entries);
+	void populateFromRiverhorseJson(const std::string& json, std::vector<LobbyAppEntry>& entries);
 	void mergeHipposRetroArchRooms(std::vector<LobbyAppEntry>& entries);
 	bool populateFromLan();
 

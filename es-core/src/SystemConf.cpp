@@ -44,6 +44,7 @@ static std::map<std::string, std::string> defaults =
 	{ "global.retroachievements.password", "" },
 	{ "global.netplay_public_announce", "0" },
 	{ "global.netplay.hipposlobby", "https://lobby.hippos-linux.org" },
+	{ "global.netplay.riverhorsesessions", "https://relay.hippos-linux.org/v1/sessions" },
 	{ "global.ai_service_enabled", "0" },
 	{ "global.use_guns", "1" },
 	{ "global.use_wheels", "1" },
