@@ -662,6 +662,13 @@ bool ApiSystem::disableWifi()
 	return executeScript("hippos-wifi disable");
 }
 
+bool ApiSystem::isWifiEnabled()
+{
+	bool enabled = false;
+	executeScript("nmcli radio wifi 2>/dev/null", [&enabled](const std::string line) { enabled = line == "enabled"; });
+	return enabled;
+}
+
 std::string ApiSystem::getIpAddress()
 {
 	LOG(LogDebug) << "ApiSystem::getIpAddress";

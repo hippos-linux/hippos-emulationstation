@@ -253,6 +253,7 @@ public:
 	bool enableWifi(std::string ssid, std::string key);
 #endif
     bool disableWifi();
+    bool isWifiEnabled();
 
 	virtual std::string getIpAddress();
 
