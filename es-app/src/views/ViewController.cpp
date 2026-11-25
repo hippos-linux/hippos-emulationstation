@@ -1490,7 +1490,8 @@ void ViewController::reloadAllGames(Window* window, bool deleteCurrentGui, bool 
 	Utils::FileSystem::FileSystemCache::reset();
 
 	auto viewMode = ViewController::get()->getViewMode();
-	auto systemName = ViewController::get()->getSelectedSystem()->getName();
+	SystemData* selectedSystem = ViewController::get()->getSelectedSystem();
+	std::string systemName = selectedSystem != nullptr ? selectedSystem->getName() : "";
 
 	window->closeSplashScreen();
 	window->renderSplashScreen(_("Loading..."));
@@ -1521,12 +1522,23 @@ void ViewController::reloadAllGames(Window* window, bool deleteCurrentGui, bool 
 
 	CollectionSystemManager::init(window);		
 	SystemData::loadConfig(window);
-	
-	ViewController::get()->goToSystemView(systemName, true, viewMode);	
-	ViewController::get()->reloadAll(nullptr, false); // Avoid reloading themes a second time
+
+	bool hasSystems = !SystemData::sSystemVector.empty();
+	if (hasSystems)
+	{
+		if (SystemData::getSystem(systemName) != nullptr)
+			ViewController::get()->goToSystemView(systemName, true, viewMode);
+		else
+			ViewController::get()->goToStart(true);
+		ViewController::get()->reloadAll(nullptr, false); // Avoid reloading themes a second time
+	}
 
 	window->closeSplashScreen();
 	window->pushGui(ViewController::get());
+
+	if (!hasSystems)
+		window->pushGui(new GuiMsgBox(window, _("NO GAMES WERE FOUND.\nIF YOUR GAMES ARE ON A CARD OR DRIVE, CHECK THAT IT IS CONNECTED, THEN RELOAD."),
+			_("RELOAD"), [window] { ViewController::reloadAllGames(window, true); }));
 
 	if (updateGameLists)
 	{

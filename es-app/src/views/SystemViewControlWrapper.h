@@ -87,8 +87,8 @@ public:
 	bool input(InputConfig* config, Input input) { return mComp->input(config, input); }
 	void update(int deltaTime) { mComp->update(deltaTime); }
 	void render(const Transform4x4f& parentTrans) { mComp->render(parentTrans); }
-	void onShow() { mComp->onShow(); }
-	void onHide() { mComp->onHide(); }
+	void onShow() { if (mComp) mComp->onShow(); }
+	void onHide() { if (mComp) mComp->onHide(); }
 	bool onMouseClick(int button, bool pressed, int x, int y) { return mComp->onMouseClick(button, pressed, x, y); }
 	void onMouseMove(int x, int y) { mComp->onMouseMove(x, y); }
 	bool onMouseWheel(int delta) { return mComp->onMouseWheel(delta); }
