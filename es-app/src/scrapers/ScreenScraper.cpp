@@ -946,6 +946,9 @@ ScreenScraperUser ScreenScraperRequest::processUserInfo(const pugi::xml_document
 
 int ScreenScraperScraper::getThreadCount(std::string &result)
 {
+	if (Settings::getInstance()->getString("ScreenScraperUser").empty() || Settings::getInstance()->getString("ScreenScraperPass").empty())
+		return 1;
+
 	ScreenScraperRequest::ScreenScraperConfig ssConfig;
 	std::string url = ssConfig.getUserInfoUrl();
 
