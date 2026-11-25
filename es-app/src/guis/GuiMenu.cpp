@@ -1771,9 +1771,9 @@ void GuiMenu::openSystemSettings()
 				SystemConf::getInstance()->set("global.videooutput", selected);
 				SystemConf::getInstance()->saveSystemConf();
 				if (selected == "all")
-					system("xrandr --auto 2>/dev/null; hippos-settings set display.output \"\" 2>/dev/null || true");
+					system("hippos-resolution enableAllOutputs");
 				else if (selected != "none")
-					system(("xrandr --output \"" + selected + "\" --primary 2>/dev/null; hippos-settings set display.output \"" + selected + "\" 2>/dev/null || true").c_str());
+					system(("hippos-resolution setPrimaryOutput \"" + selected + "\"").c_str());
 			}
 		});
 	}
