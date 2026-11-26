@@ -178,7 +178,7 @@ void Settings::setDefaults()
     mStringMap["Overclock"] = "none";
 
 	mBoolMap["VSync"] = Settings::_VSync;
-	mStringMap["FolderViewMode"] = "never";
+	mStringMap["FolderViewMode"] = "always";
 	mStringMap["HiddenSystems"] = "";
 
 	mBoolMap["PublicWebAccess"] = false;	
