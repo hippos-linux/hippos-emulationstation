@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: emulationstation\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-26 00:00+0100\n"
-"PO-Revision-Date: 2026-02-04 00:00+0100\n"
+"PO-Revision-Date: 2026-09-23 00:00+0100\n"
 "Last-Translator: roliverosc\n"
 "Language-Team: spanish\n"
 "Language: es\n"
@@ -61,7 +61,7 @@ msgid "Full"
 msgstr "Completo"
 
 msgid "Kiosk"
-msgstr "Restringido"
+msgstr "Kiosko"
 
 msgid "Kid"
 msgstr "Para niños"
@@ -103,7 +103,7 @@ msgid "Loading gamelists"
 msgstr "Cargando listas de juegos"
 
 msgid "Loading..."
-msgstr "Cargando..."
+msgstr "Cargando…"
 
 msgid "MENU"
 msgstr "MENÚ"
@@ -213,7 +213,7 @@ msgstr "ELEGIR"
 msgid "BACK"
 msgstr "VOLVER"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "PARTIDAS GUARDADAS (MANTENER)"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -228,7 +228,7 @@ msgstr "OPCIONES DE JUEGO"
 msgid "FAVORITE"
 msgstr "FAVORITO"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "PARTIDAS GUARDADAS"
 
 #, c-format
@@ -295,7 +295,7 @@ msgstr "¿GUARDAR CAMBIOS?"
 msgid "ARE YOU SURE?"
 msgstr "¿ESTÁS SEGURO?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr "AJUSTES DE RETROACHIEVEMENTS"
 
 msgid "SETTINGS"
@@ -365,7 +365,7 @@ msgstr "LOGROS NO OFICIALES"
 msgid "Enable unlocking of unofficial achievements."
 msgstr "Activa el desbloqueo de logros no oficiales."
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr "SONIDO DE DESBLOQUEO DE LOGROS"
 
 msgid "none"
@@ -377,7 +377,7 @@ msgstr "SONIDO DE DESBLOQUEO"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "MOSTRAR ENTRADA EN EL MENÚ PRINCIPAL"
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr ""
 "¡Visualiza tus estadísticas de logros directamente desde el menú principal!"
 
@@ -481,13 +481,13 @@ msgid "VOLUME MUTE"
 msgstr "SILENCIAR VOLUMEN"
 
 msgid "START RECORDING"
-msgstr ""
+msgstr "INICIAR GRABACIÓN"
 
 msgid "STOP RECORDING"
-msgstr ""
+msgstr "DETENER GRABACIÓN"
 
 msgid "KEYBOARD TOGGLE"
-msgstr ""
+msgstr "CAMBIAR TECLADO"
 
 msgid "KEY ASSIGNED TWICE"
 msgstr "TECLA ASIGNADA DOS VECES"
@@ -505,7 +505,7 @@ msgid "ZOOM"
 msgstr "ZOOM"
 
 msgid "PLEASE WAIT"
-msgstr "POR FAVOR, ESPERE..."
+msgstr "POR FAVOR, ESPERE…"
 
 #, c-format
 msgid "%d of %d softcore points"
@@ -592,16 +592,6 @@ msgstr "SISTEMAS INCLUIDOS"
 msgid "START"
 msgstr "INICIAR"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "ACTUALIZANDO %s"
-
-msgid "UPDATE IS READY"
-msgstr "LA ACTUALIZACIÓN ESTÁ LISTA"
-
-msgid "REBOOT TO APPLY"
-msgstr "REINICIAR PARA APLICAR LOS CAMBIOS"
-
 msgid "REALLY UPDATE?"
 msgstr "¿ESTÁS SEGURO DE ACTUALIZAR?"
 
@@ -628,6 +618,16 @@ msgstr "ES NECESARIA UNA CONEXIÓN DE RED"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "NO HAY ACTUALIZACIONES DISPONIBLES"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "ACTUALIZANDO %s"
+
+msgid "UPDATE IS READY"
+msgstr "LA ACTUALIZACIÓN ESTÁ LISTA"
+
+msgid "REBOOT TO APPLY"
+msgstr "REINICIAR PARA APLICAR LOS CAMBIOS"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "CONECTAR A NETPLAY"
@@ -891,7 +891,7 @@ msgid "VIEWER PASSWORD"
 msgstr "CONTRASEÑA PARA ESPECTADORES"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "BUSCAR JUEGOS SIMILARES..."
+msgstr "BUSCAR JUEGOS SIMILARES…"
 
 msgid "DELETE ITEM"
 msgstr "ELIMINAR ELEMENTO"
@@ -943,7 +943,7 @@ msgid "FAVORITES"
 msgstr "FAVORITOS"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "AÑADIR A COLECCIÓN PERSONALIZADA..."
+msgstr "AÑADIR A COLECCIÓN PERSONALIZADA…"
 
 msgid "SCRAPE"
 msgstr "ESCRAPEAR JUEGO"
@@ -1097,6 +1097,33 @@ msgstr "MANDO #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "MANDO DE JUGADOR %i"
 
+msgid "RED"
+msgstr "ROJO"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "VERDE"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "AZUL"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "BLANCO"
+
 msgid "CONTROLLER MAPPING"
 msgstr "CONFIGURAR UN MANDO"
 
@@ -1151,7 +1178,7 @@ msgid "SHOW CONTROLLER BATTERY LEVEL"
 msgstr "MOSTRAR NIVEL DE BATERÍA"
 
 msgid "SHOW GUN NOTIFICATIONS"
-msgstr ""
+msgstr "MOSTRAR NOTIFICACIONES DEL ARMA"
 
 msgid "DRAW GUN CROSSHAIR"
 msgstr "DIBUJAR PUNTO DE MIRA DE ARMA"
@@ -1168,11 +1195,99 @@ msgstr "RESTRINGIR TECLAS DE ACCESO RÁPIDO DE LOS JOYSTICKS PARA SALIR"
 msgid "GLOBAL HOTKEYS"
 msgstr "TECLAS DE ACCESO RÁPIDO GLOBALES"
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "LEDS"
+
+msgid "ENABLE LED"
+msgstr "ACTIVAR LED"
+
+msgid "LED MODE"
+msgstr "MODO DE LED"
+
+msgid "STATIC"
+msgstr "ESTÁTICO"
+
+msgid "RAINBOW"
+msgstr "MULTICOLOR"
+
+msgid "CHROMA"
+msgstr "CROMA"
+
+msgid "PULSE"
+msgstr "PULSO"
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "PERSONALIZAR"
+
+msgid "LED BRIGHTNESS"
+msgstr "BRILLO DE LOS LEDS"
+
 msgid "default"
 msgstr "defecto"
 
 msgid "NOT CONNECTED"
 msgstr "NO CONECTADO"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr "SUR"
@@ -1222,8 +1337,8 @@ msgstr "TECLA DE ACCESO RÁPIDO"
 msgid "DEFAULT"
 msgstr "POR DEFECTO"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
-msgstr "NO SE ENCONTRÓ NINGÚN DISPOSITIVO (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
+msgstr "NO SE ENCONTRÓ NINGÚN DISPOSITIVO (JAMMASD, IPAC…)"
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
 msgstr "DECLARAR UNA NUEVA TECLA DE ACCESO RÁPIDO GLOBAL"
@@ -1238,6 +1353,30 @@ msgstr "NO SE DETECTÓ NINGUNA TECLA DE ACCESO RÁPIDO GLOBAL"
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
 msgstr "SE DETECTÓ MÁS DE UNA TECLA DE ACCESO RÁPIDO GLOBAL"
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
+msgstr ""
 
 msgid "BORDER SIZE"
 msgstr "TAMAÑO DEL BORDE"
@@ -1268,18 +1407,6 @@ msgstr "OCULTO"
 
 msgid "BORDER COLOR"
 msgstr "COLOR DEL BORDE"
-
-msgid "WHITE"
-msgstr "BLANCO"
-
-msgid "RED"
-msgstr "ROJO"
-
-msgid "GREEN"
-msgstr "VERDE"
-
-msgid "BLUE"
-msgstr "AZUL"
 
 msgid "BORDER RATIO"
 msgstr "RELACIÓN BORDE"
@@ -1392,6 +1519,12 @@ msgstr "ENTRADA MANUALMENTE"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "NO SE ENCONTRARON REDES INALÁMBRICAS"
 
+msgid "CONNECTED"
+msgstr "CONECTADO"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "BUSCANDO REDES INALÁMBRICAS"
 
@@ -1450,9 +1583,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAO PAULO"
-
-msgid "CUSTOM"
-msgstr "PERSONALIZAR"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "PERSONALIZAR SERVIDOR DE RETRANSMISIÓN"
@@ -2028,6 +2158,12 @@ msgstr ""
 msgid "VSYNC"
 msgstr "SINCRONIZACIÓN VERTICAL (VSYNC)"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr "ANTI-ALIASING (MSAA)"
+
+msgid "FPS LIMIT"
+msgstr "LÍMITE DE FPS"
+
 msgid "OVERSCAN"
 msgstr "SOBREESCALADO (OVERSCAN)"
 
@@ -2200,6 +2336,14 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "CONTROLAR SISTEMA SOLO CON EL MANDO PRINCIPAL"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr "EL STICK ANALÓGICO DERECHO CAMBIA EL VOLUMEN"
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+"Mueva el joystick derecho hacia arriba o hacia abajo para subir o bajar el "
+"volumen del audio."
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "TOLERANCIA AL MOVIMIENTO DEL ARMA"
 
@@ -2237,6 +2381,17 @@ msgstr ""
 "Reduce el retraso al desplazarse por las listas de juegos, aumenta el tiempo "
 "de arranque."
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+
 msgid "THREADED LOADING"
 msgstr "ACELERAR CARGA DEL SISTEMA"
 
@@ -2250,7 +2405,7 @@ msgid "OPTIMIZE VIDEO VRAM USAGE"
 msgstr "OPTIMIZAR USO DE VRAM PARA VÍDEOS"
 
 msgid "USE FILESYSTEM CACHE"
-msgstr ""
+msgstr "USAR CACHE SISTEMA DE ARCHIVOS"
 
 msgid "REBOOT REQUIRED TO APPLY THE NEW CONFIGURATION"
 msgstr "ES NECESARIO REINICIAR PARA APLICAR LA NUEVA CONFIGURACIÓN"
@@ -2270,6 +2425,9 @@ msgstr "BUSCAR ACTUALIZACIONES"
 msgid "UPDATE TYPE"
 msgstr "TIPO DE ACTUALIZACIÓN"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr "ARQUITECTURA DE ACTUALIZACIÓN"
+
 msgid "APPLY UPDATE"
 msgstr "APLICAR ACTUALIZACIÓN"
 
@@ -2278,6 +2436,33 @@ msgstr "INICIAR ACTUALIZACIÓN"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "ACTUALIZACIÓN EN MARCHA"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr "INICIAR ACTUALIZACIÓN DESDE MEDIOS LOCALES"
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr "¿ESTÁS SEGURO DE ACTUALIZAR DESDE MEDIOS LOCALES?"
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr "ACTUALIZACIONES DE SOFTWARE MEDIANTE TORRENT"
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr "COMPARTIR ACTUALIZACIONES MEDIANTE TORRENT"
+
+msgid "Torrent update service started"
+msgstr "Servicio de actualización por torrent iniciado"
+
+msgid "Torrent update service stopped"
+msgstr "Servicio de actualización por torrent detenido"
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr "INICIAR ACTUALIZACIÓN DESDE ARCHIVO TORRENT"
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr "¿ESTÁS SEGURO DE ACTUALIZAR DESDE ARCHIVO TORRENT?"
+
+msgid "DOWNLOAD STATUS"
+msgstr "ESTADO DE DESCARGA"
 
 msgid "LANGUAGE"
 msgstr "IDIOMA"
@@ -2367,6 +2552,19 @@ msgid "Available options can change depending on current audio output."
 msgstr ""
 "Las opciones disponibles pueden cambiar según la salida de audio actual."
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "FRECUENCIA DE ACTUALIZACIÓN VARIABLE"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "PANTALLA DE ARRANQUE"
 
@@ -2433,15 +2631,6 @@ msgstr "on"
 msgid "OVERCLOCK"
 msgstr "OVERCLOCK"
 
-msgid "LED HARDWARE"
-msgstr "LEDS"
-
-msgid "ENABLE LED"
-msgstr "ACTIVAR LED"
-
-msgid "LED BRIGHTNESS"
-msgstr "BRILLO DE LOS LEDS"
-
 msgid "STORAGE"
 msgstr "ALMACENAMIENTO"
 
@@ -2468,6 +2657,17 @@ msgstr "Requerir una contraseña para acceder al recurso compartido de red."
 
 msgid "ROOT PASSWORD"
 msgstr "CONTRASEÑA ROOT"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr "MEDIDAS DE MITIGACIÓN DE SEGURIDAD DE CPU"
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
+"Deshabilitar las medidas de mitigación puede mejorar el rendimiento en "
+"algunos sistemas a costa de una menor protección contra ciertas "
+"vulnerabilidades de la CPU."
 
 msgid "LATENCY REDUCTION"
 msgstr "REDUCCIÓN DE LATENCIA"
@@ -2500,9 +2700,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "FRECUENCIA DE ACTUALIZACIÓN VARIABLE (G-SYNC, FREESYNC)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "FRECUENCIA DE ACTUALIZACIÓN VARIABLE"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2518,16 +2715,12 @@ msgstr "Configuración actual"
 msgid "BIOS SETTINGS"
 msgstr "AJUSTES DE BIOS"
 
-msgid "SAVESTATES"
-msgstr "PARTIDAS GUARDADAS"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "CARGAR/GUARDAR AUTOMÁTICAMENTE"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
-"Carga la partida guardada más reciente al iniciar un juego y la guarda al "
-"salir."
+"Carga la última partida guardada al iniciar un juego y la guarda al salir."
 
 msgid "INCREMENTAL SAVESTATES"
 msgstr "GUARDADO DE PARTIDAS INCREMENTALES"
@@ -2860,11 +3053,34 @@ msgstr "ACTIVAR SONIDOS DE NAVEGACIÓN"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "ACTIVAR AUDIO EN LOS VÍDEOS"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "SSID O NOMBRE DE LA RED WI-FI"
+
+msgid "WI-FI KEY"
+msgstr "CLAVE WI-FI"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr "OLVIDAR"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "¿ESTÁS SEGURO QUE QUIERES OLVIDAR '%s' ?"
+
 msgid "IP ADDRESS"
 msgstr "DIRECCIÓN IP"
-
-msgid "CONNECTED"
-msgstr "CONECTADO"
 
 msgid "INTERNET STATUS"
 msgstr "ESTADO DE LA RED"
@@ -2872,26 +3088,20 @@ msgstr "ESTADO DE LA RED"
 msgid "HOSTNAME"
 msgstr "NOMBRE DEL EQUIPO (HOSTNAME)"
 
-msgid "ENABLE WIFI"
-msgstr "ACTIVAR WIFI"
+msgid "ENABLE WI-FI"
+msgstr "ACTIVAR WI-FI"
 
-msgid "WIFI SSID"
-msgstr "SSID O NOMBRE DE LA RED WIFI"
-
-msgid "WIFI KEY"
-msgstr "CLAVE WIFI"
-
-msgid "WIFI COUNTRY"
-msgstr "PAÍS WIFI"
+msgid "WI-FI COUNTRY"
+msgstr "PAÍS WI-FI"
 
 msgid "N/A"
 msgstr "N/D"
 
-msgid "WIFI ENABLED"
-msgstr "WIFI ACTIVADO"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI ACTIVADO"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "ERROR EN LA CONFIGURACIÓN WIFI"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "ERROR EN LA CONFIGURACIÓN WI-FI"
 
 msgid "QUICK ACCESS"
 msgstr "ACCESO RÁPIDO"
@@ -2955,10 +3165,6 @@ msgstr "¿REALMENTE QUIERES SALIR?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "CARGAR/GUARDAR AUTOMÁTICAMENTE AL INICIAR JUEGO"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
-"Carga la última partida guardada al iniciar un juego y la guarda al salir."
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "MOSTRAR SUPERPOSICIONES DEL MANDO"
@@ -3027,7 +3233,7 @@ msgid "NO DRIVE SELECTED"
 msgstr "NO HAY UNIDAD SELECCIONADA"
 
 msgid "Ejecting..."
-msgstr "Expulsando..."
+msgstr "Expulsando…"
 
 msgid "EDIT METADATA"
 msgstr "EDITAR METADATOS"
@@ -3063,13 +3269,6 @@ msgstr "DESCONECTAR"
 
 msgid "CONNECT"
 msgstr "CONECTAR"
-
-msgid "FORGET"
-msgstr "OLVIDAR"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "¿ESTÁS SEGURO QUE QUIERES OLVIDAR '%s' ?"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3425,13 +3624,13 @@ msgid "Screenscraper Game ID"
 msgstr "ID DE JUEGO EN SCREENSCRAPER"
 
 msgid "MultiDisk"
-msgstr ""
+msgstr "Multidisco"
 
 msgid "Loading system config..."
-msgstr "Cargando configuración del sistema..."
+msgstr "Cargando configuración del sistema…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "GUARDANDO METADATO. POR FAVOR, ESPERA..."
+msgstr "GUARDANDO METADATO. POR FAVOR, ESPERA…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "¿QUIERES CAMBIAR LA PANTALLA?"
@@ -3454,8 +3653,8 @@ msgstr "4 jugadores"
 msgid "never played"
 msgstr "nunca jugado"
 
-msgid "retroachievements"
-msgstr "retroachievements (logros)"
+msgid "RetroAchievements"
+msgstr "RetroAchievements (logros)"
 
 msgid "arcade"
 msgstr "arcade"
@@ -3499,8 +3698,8 @@ msgstr "Varios"
 #, c-format
 msgid "This collection contains %i game: %s"
 msgid_plural "This collection contains %i games, including: %s"
-msgstr[0] "Esta colección contiene %i juego:%s"
-msgstr[1] "Esta colección contiene %i juegos, incluyendo:%s"
+msgstr[0] "Esta colección contiene %i juego: %s"
+msgstr[1] "Esta colección contiene %i juegos, incluyendo: %s"
 
 msgid "INVALID CONTENT"
 msgstr "CONTENIDO NO VÁLIDO"
@@ -3551,11 +3750,14 @@ msgstr "FALTA EL NÚCLEO"
 msgid "UKNOWN ERROR"
 msgstr "ERROR DESCONOCIDO"
 
+msgid "Checking for latest upgrade script..."
+msgstr "Comprobando si hay un script de actualización más reciente..."
+
 msgid "Collections"
 msgstr "Colecciones"
 
 msgid "Searching for devices..."
-msgstr "Buscando dispositivos..."
+msgstr "Buscando dispositivos…"
 
 msgid "FORMATTING DEVICE"
 msgstr "FORMATEANDO DISPOSITIVO"
@@ -3641,11 +3843,8 @@ msgstr "LECTOR DE PANTALLA DESACTIVADO"
 msgid "ENABLED"
 msgstr "ACTIVADO"
 
-msgid "up/down"
-msgstr "arriba/abajo"
-
 msgid "WORKING..."
-msgstr "EN CURSO..."
+msgstr "EN CURSO…"
 
 msgid "accept"
 msgstr "aceptar"
@@ -3869,8 +4068,6 @@ msgid ""
 "CALIBRATING GUN\n"
 "Fire on targets to calibrate"
 msgstr ""
-"CALIBRANDO PISTOLA\n"
-"Dispara a los objetivos para calibrar"
 
 msgid "Reloaded the games list..."
 msgstr "Recargada la lista de juegos..."
@@ -3897,7 +4094,7 @@ msgid "(This will also apply on future boots)"
 msgstr "(Esto también se aplicará en futuros arranques)"
 
 msgid "Merge requested... Please wait."
-msgstr "Fusión solicitada...Por favor, espere."
+msgstr "Fusión solicitada… Por favor, espere."
 
 msgid "MERGE FAILED"
 msgstr "FUSIÓN FALLIDA"
@@ -3912,10 +4109,10 @@ msgid "NO, IGNORE FOREVER"
 msgstr "NO, IGNORAR PARA SIEMPRE"
 
 msgid "Adding drive to ignore list..."
-msgstr "Agregando unidad a la lista de ignorados..."
+msgstr "Agregando unidad a la lista de ignorados…"
 
 msgid "YES, MERGE DRIVE"
-msgstr ""
+msgstr "SÍ, UNIDAD FUSIONADA"
 
 msgid "NEW DRIVE DETECTED"
 msgstr "NUEVA UNIDAD DETECTADA"
@@ -3927,7 +4124,7 @@ msgid "(ALL EXISTING DATA WILL BE ERASED)"
 msgstr "(TODOS LOS DATOS EXISTENTES SERÁN BORRADOS)"
 
 msgid "Starting format process..."
-msgstr "Iniciando proceso de formato..."
+msgstr "Iniciando proceso de formato…"
 
 msgid "FORMAT FAILED"
 msgstr "FORMATEADO FALLIDO"
@@ -3984,6 +4181,25 @@ msgid_plural "%d seconds ago"
 msgstr[0] "hace %d segundo"
 msgstr[1] "hace %d segundos"
 
+#~ msgid "up/down"
+#~ msgstr "arriba/abajo"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "Carga la partida guardada más reciente al iniciar un juego y la guarda al "
+#~ "salir."
+
+#~ msgid ""
+#~ "CALIBRATING GUN\n"
+#~ "Fire on targets to calibrate\n"
+#~ msgstr ""
+#~ "CALIBRANDO PISTOLA\n"
+#~ "Dispara a los objetivos para calibrar\n"
+
+#~ msgid "FANART"
+#~ msgstr "FANART"
+
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "CREAR CACHÉ DE IMÁGENES"
 
@@ -4000,12 +4216,12 @@ msgstr[1] "hace %d segundos"
 #~ msgstr "¿Fusionar juegos de esta unidad ahora?"
 
 #~ msgid "Merging drive... Please wait."
-#~ msgstr "Fusionando unidad... Por favor, espere."
+#~ msgstr "Fusionando unidad… Por favor, espere."
 
 #~ msgid "New drive content will be available after games list is refreshed..."
 #~ msgstr ""
 #~ "El nuevo contenido de la unidad estará disponible después de que se "
-#~ "actualice la lista de juegos..."
+#~ "actualice la lista de juegos…"
 
 #~ msgid "BY HARDWARE TYPE"
 #~ msgstr "POR HARDWARE"
@@ -4052,7 +4268,7 @@ msgstr[1] "hace %d segundos"
 #~ "PlayCount (Recuento de partidas) y LastPlayed (Jugado por última vez)."
 
 #~ msgid "SAVING METADATAS. PLEASE WAIT..."
-#~ msgstr "GUARDANDO METADATOS. POR FAVOR, ESPERE..."
+#~ msgstr "GUARDANDO METADATOS. POR FAVOR, ESPERE…"
 
 #~ msgid "NEVER"
 #~ msgstr "NUNCA"

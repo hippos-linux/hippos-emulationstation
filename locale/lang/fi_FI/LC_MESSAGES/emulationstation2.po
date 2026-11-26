@@ -108,7 +108,7 @@ msgid "Loading gamelists"
 msgstr "Ladataan pelilistaa"
 
 msgid "Loading..."
-msgstr "Ladataan..."
+msgstr "Ladataan…"
 
 msgid "MENU"
 msgstr "VALIKKO"
@@ -220,7 +220,7 @@ msgstr "VALITSE"
 msgid "BACK"
 msgstr "TAKAISIN"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr ""
 
 msgid "GAME OPTIONS (HOLD)"
@@ -235,8 +235,8 @@ msgstr "PELIN ASETUKSET"
 msgid "FAVORITE"
 msgstr "SUOSIKKI"
 
-msgid "SAVE STATES"
-msgstr "PELITILA TALLENNUKSET"
+msgid "SAVESTATES"
+msgstr "TILATALLENNUKSET"
 
 #, c-format
 msgid "Back to %s"
@@ -302,8 +302,8 @@ msgstr "TALLENNA MUUTOKSET?"
 msgid "ARE YOU SURE?"
 msgstr "OLETKO VARMA?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
-msgstr "RETROACHIEVEMENT-ASETUKSET"
+msgid "RETROACHIEVEMENTS SETTINGS"
+msgstr "RETROACHIEVEMENTS-ASETUKSET"
 
 msgid "SETTINGS"
 msgstr "ASETUKSET"
@@ -366,7 +366,7 @@ msgstr ""
 msgid "Enable unlocking of unofficial achievements."
 msgstr ""
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr ""
 
 msgid "none"
@@ -378,7 +378,7 @@ msgstr ""
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr ""
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr ""
 
 msgid "GAME INDEXES"
@@ -592,16 +592,6 @@ msgstr "SISÄLLETYT JÄRJESTELMÄT"
 msgid "START"
 msgstr "KÄYNNISTÄ"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "PÄIVITETÄÄN %s"
-
-msgid "UPDATE IS READY"
-msgstr "PÄIVITYS ON VALMIS"
-
-msgid "REBOOT TO APPLY"
-msgstr "UUDELLEENKÄYNNISTÄ VIIMEISTELLÄKSESI"
-
 msgid "REALLY UPDATE?"
 msgstr "HALUATKO VARMASTI PÄIVITTÄÄ?"
 
@@ -628,6 +618,16 @@ msgstr "VERKKOYHTEYS VAADITAAN"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "PÄIVITYKSIÄ EI SAATAVILLA"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "PÄIVITETÄÄN %s"
+
+msgid "UPDATE IS READY"
+msgstr "PÄIVITYS ON VALMIS"
+
+msgid "REBOOT TO APPLY"
+msgstr "UUDELLEENKÄYNNISTÄ VIIMEISTELLÄKSESI"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "YHDISTÄ VERKKOPELIIN"
@@ -891,7 +891,7 @@ msgid "VIEWER PASSWORD"
 msgstr "KATSELIJAN SALASANA"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "ETSI SAMANKALTAISIA PELEJÄ..."
+msgstr "ETSI SAMANKALTAISIA PELEJÄ…"
 
 msgid "DELETE ITEM"
 msgstr "POISTA KOHDE"
@@ -940,7 +940,7 @@ msgid "FAVORITES"
 msgstr "SUOSIKIT"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "LISÄÄ MUKAUTETTUUN KOKOELMAAN..."
+msgstr "LISÄÄ MUKAUTETTUUN KOKOELMAAN…"
 
 msgid "SCRAPE"
 msgstr "ETSI TIETOA"
@@ -1094,6 +1094,33 @@ msgstr ""
 msgid "P%i'S CONTROLLER"
 msgstr "P%i OHJAIN"
 
+msgid "RED"
+msgstr "PUNAINEN"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "VIHREÄ"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "SININEN"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "VALKOINEN"
+
 msgid "CONTROLLER MAPPING"
 msgstr "OHJAIMEN KARTOITUKSET"
 
@@ -1158,11 +1185,99 @@ msgstr ""
 msgid "GLOBAL HOTKEYS"
 msgstr ""
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr ""
+
+msgid "ENABLE LED"
+msgstr ""
+
+msgid "LED MODE"
+msgstr ""
+
+msgid "STATIC"
+msgstr ""
+
+msgid "RAINBOW"
+msgstr ""
+
+msgid "CHROMA"
+msgstr ""
+
+msgid "PULSE"
+msgstr ""
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr ""
+
+msgid "LED BRIGHTNESS"
+msgstr ""
+
 msgid "default"
 msgstr "oletus"
 
 msgid "NOT CONNECTED"
 msgstr "EI YHDISTETTY"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr ""
@@ -1212,7 +1327,7 @@ msgstr ""
 msgid "DEFAULT"
 msgstr "OLETUS"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
 msgstr ""
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
@@ -1225,6 +1340,30 @@ msgid "NO GLOBAL HOTKEY DETECTED"
 msgstr ""
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
+msgstr ""
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
 msgstr ""
 
 msgid "BORDER SIZE"
@@ -1256,18 +1395,6 @@ msgstr "PIILOTETTU"
 
 msgid "BORDER COLOR"
 msgstr ""
-
-msgid "WHITE"
-msgstr "VALKOINEN"
-
-msgid "RED"
-msgstr "PUNAINEN"
-
-msgid "GREEN"
-msgstr "VIHREÄ"
-
-msgid "BLUE"
-msgstr "SININEN"
 
 msgid "BORDER RATIO"
 msgstr ""
@@ -1380,6 +1507,12 @@ msgstr "SYÖTÄ MANUAALISESTI"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "WI-FI VERKKOJA EI LÖYTYNYT"
 
+msgid "CONNECTED"
+msgstr "YHDISTETTY"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "ETSITÄÄN WI-FI VERKKOJA"
 
@@ -1436,9 +1569,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAO PAULO"
-
-msgid "CUSTOM"
-msgstr ""
 
 msgid "CUSTOM RELAY SERVER"
 msgstr ""
@@ -2010,6 +2140,12 @@ msgstr ""
 msgid "VSYNC"
 msgstr "VSYNC"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr ""
+
+msgid "FPS LIMIT"
+msgstr ""
+
 msgid "OVERSCAN"
 msgstr "YLISKANNAUS"
 
@@ -2168,6 +2304,12 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "OHJAA EMULATIONSTATIONIA PELKÄLLÄ OHJAUSSAUVALLA"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr ""
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+
 msgid "GUN MOVE TOLERENCE"
 msgstr ""
 
@@ -2203,6 +2345,17 @@ msgid ""
 "time"
 msgstr ""
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+
 msgid "THREADED LOADING"
 msgstr "SÄIKEYTETTY LATAAMINEN"
 
@@ -2236,6 +2389,9 @@ msgstr "TARKISTA SAATAVAT PÄIVITYKSET"
 msgid "UPDATE TYPE"
 msgstr "PÄIVITYKSEN TYYPPI"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr ""
+
 msgid "APPLY UPDATE"
 msgstr "SUORITA PÄIVITYS"
 
@@ -2244,6 +2400,33 @@ msgstr "ALOITA PÄIVITYS"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "PÄIVITYS ON JO KÄYNNISSÄ"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr ""
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "Torrent update service started"
+msgstr ""
+
+msgid "Torrent update service stopped"
+msgstr ""
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr ""
+
+msgid "DOWNLOAD STATUS"
+msgstr ""
 
 msgid "LANGUAGE"
 msgstr "KIELI"
@@ -2332,6 +2515,19 @@ msgstr ""
 "Saatavilla olevat asetukset voivat muuttua riippuen nykyisestä äänen "
 "ulostulosta."
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr ""
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "KÄYNNISTYKSEN ANIMAATIO"
 
@@ -2398,15 +2594,6 @@ msgstr "päällä"
 msgid "OVERCLOCK"
 msgstr "YLIKELLOTUS"
 
-msgid "LED HARDWARE"
-msgstr ""
-
-msgid "ENABLE LED"
-msgstr ""
-
-msgid "LED BRIGHTNESS"
-msgstr ""
-
 msgid "STORAGE"
 msgstr "TALLENUSTILA"
 
@@ -2433,6 +2620,14 @@ msgstr "Vaadi salasana verkkojaon käyttämiseen."
 
 msgid "ROOT PASSWORD"
 msgstr "PÄÄKÄYTTÄJÄN SALASANA"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr ""
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
 
 msgid "LATENCY REDUCTION"
 msgstr "VIIVEEN VÄHENTÄMINEN"
@@ -2465,9 +2660,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr ""
 
-msgid "VARIABLE REFRESH RATE"
-msgstr ""
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2481,16 +2673,13 @@ msgstr "Nykyinen asetus"
 msgid "BIOS SETTINGS"
 msgstr ""
 
-msgid "SAVESTATES"
-msgstr "TILATALLENNUKSET"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "AUTOMAATTINEN TALLENNUS/LATAUS"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
-"Lataa viimeisin tilatallennus, kun avaat pelin, ja tallenna tila kun poistut "
-"pelistä."
+"Lataa viimeisin tilatallennus käynnistyksessä ja tallenna tilatallennus "
+"poistuttaessa pelistä."
 
 msgid "INCREMENTAL SAVESTATES"
 msgstr ""
@@ -2819,11 +3008,34 @@ msgstr ""
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "OTA KÄYTTÖÖN VIDEOIDEN ESIKATSELUN ÄÄNI"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "WI-FI:N SSID"
+
+msgid "WI-FI KEY"
+msgstr "WI-FI:N SALASANA"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr ""
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr ""
+
 msgid "IP ADDRESS"
 msgstr "IP-OSOITE"
-
-msgid "CONNECTED"
-msgstr "YHDISTETTY"
 
 msgid "INTERNET STATUS"
 msgstr "INTERNET-YHTEYDEN TILA"
@@ -2831,26 +3043,20 @@ msgstr "INTERNET-YHTEYDEN TILA"
 msgid "HOSTNAME"
 msgstr "ISÄNTÄNIMI"
 
-msgid "ENABLE WIFI"
-msgstr "OTA WIFI KÄYTTÖÖN"
+msgid "ENABLE WI-FI"
+msgstr "OTA WI-FI KÄYTTÖÖN"
 
-msgid "WIFI SSID"
-msgstr "WIFI:N SSID"
-
-msgid "WIFI KEY"
-msgstr "WIFI:N SALASANA"
-
-msgid "WIFI COUNTRY"
+msgid "WI-FI COUNTRY"
 msgstr ""
 
 msgid "N/A"
 msgstr ""
 
-msgid "WIFI ENABLED"
-msgstr "WIFI KÄYTÖSSÄ"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI KÄYTÖSSÄ"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "VIRHE WIFI:N ASETUKSISSA"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "VIRHE WI-FI:N ASETUKSISSA"
 
 msgid "QUICK ACCESS"
 msgstr ""
@@ -2914,11 +3120,6 @@ msgstr "LOPETETAANKO?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "TALLENNA/LATAA PELI AUTOMAATTISESTI KÄYNNISTYKSESSÄ"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
-"Lataa viimeisin tilatallennus käynnistyksessä ja tallenna tilatallennus "
-"poistuttaessa pelistä."
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr ""
@@ -3022,13 +3223,6 @@ msgid "DISCONNECT"
 msgstr ""
 
 msgid "CONNECT"
-msgstr ""
-
-msgid "FORGET"
-msgstr ""
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
 msgstr ""
 
 #, c-format
@@ -3414,8 +3608,8 @@ msgstr "4 pelaajaa"
 msgid "never played"
 msgstr "ei koskaan pelattu"
 
-msgid "retroachievements"
-msgstr "retroachievements"
+msgid "RetroAchievements"
+msgstr "RetroAchievements"
 
 msgid "arcade"
 msgstr ""
@@ -3509,11 +3703,14 @@ msgstr "YDIN PUUTTUU"
 msgid "UKNOWN ERROR"
 msgstr "TUNTEMATON VIRHE"
 
+msgid "Checking for latest upgrade script..."
+msgstr ""
+
 msgid "Collections"
 msgstr ""
 
 msgid "Searching for devices..."
-msgstr "Etsitään laitteita..."
+msgstr "Etsitään laitteita…"
 
 msgid "FORMATTING DEVICE"
 msgstr "ALUSTETAAN LAITETTA"
@@ -3597,9 +3794,6 @@ msgid "SCREEN READER DISABLED"
 msgstr "NÄYTÖNSÄÄSTÄJÄ POISTETTU KÄYTÖSTÄ"
 
 msgid "ENABLED"
-msgstr ""
-
-msgid "up/down"
 msgstr ""
 
 msgid "WORKING..."
@@ -3937,6 +4131,15 @@ msgid "%d second ago"
 msgid_plural "%d seconds ago"
 msgstr[0] "%d sekuntti sitten"
 msgstr[1] "%d sekunttia sitten"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "Lataa viimeisin tilatallennus, kun avaat pelin, ja tallenna tila kun "
+#~ "poistut pelistä."
+
+#~ msgid "FANART"
+#~ msgstr "FANITAIDE"
 
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "LUO KUVAVÄLIMUISTI"

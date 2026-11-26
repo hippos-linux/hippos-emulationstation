@@ -111,6 +111,14 @@ struct GlobalHotkey
   std::string action;
 };
 
+struct TrackballSpinner
+{
+  std::string name;
+  std::string type;
+  std::string source;
+  std::string key;
+};
+
 struct Pad2key
 {
   std::string name;
@@ -202,7 +210,12 @@ public:
 
     bool setOverclock(std::string mode);
 
-    virtual std::pair<std::string, int> updateSystem(const std::function<void(const std::string)>& func = nullptr);
+#ifdef HIPPOS
+    bool areCpuMitigationsEnabled();
+    bool setCpuMitigationsEnabled(bool enabled);
+#endif
+
+    virtual std::pair<std::string, int> updateSystem(const std::function<void(const std::string)>& func = nullptr, bool fromlocalmedia = false);
     virtual std::vector<std::string> getAvailableDeployments();
     virtual std::pair<std::string, int> rollbackToDeployment(const std::string& subvol, const std::function<void(const std::string)>& func = nullptr);
 
@@ -224,9 +237,11 @@ public:
     std::pair<std::string, int> scrape(BusyComponent* ui);
 
     virtual bool ping();
+    void launchControlcenter();
     virtual bool canUpdate(std::vector<std::string>& output);
 	virtual void setReadyFlag(bool ready = true);
 	virtual bool isReadyFlagSet();
+
 
     virtual bool launchMediaCenter(Window *window);
     bool launchFileManager(Window *window);
@@ -251,6 +266,10 @@ public:
 	bool enableWifi(std::string ssid, std::string key, std::string country);
 #else
 	bool enableWifi(std::string ssid, std::string key);
+#endif
+#if !WIN32
+	bool configureWifi();
+	bool connectWifi(const std::string& ssid);
 #endif
     bool disableWifi();
     bool isWifiEnabled();
@@ -286,6 +305,9 @@ public:
     std::vector<std::string> getAvailableOverclocking();
     std::vector<BiosSystem> getBiosInformations(const std::string system = "");
     virtual std::vector<std::string> getVideoModes(const std::string output = "");
+#ifdef HIPPOS
+    bool isHdrSupported();
+#endif
 	std::vector<std::string> getCustomRunners();
 
 	virtual std::vector<std::string> getAvailableStorageDevices();
@@ -331,6 +353,10 @@ public:
 	bool setButtonColorGameForce(std::string basic_string);
 
 	bool setPowerLedGameForce(std::string basic_string);    
+
+	bool setButtonColorR36Ultra(const std::string& basic_string);
+
+	bool setPowerLedR36(const std::string& basic_string);
 
     /* audio card */
     bool setAudioOutputDevice(std::string device);
@@ -389,10 +415,17 @@ public:
 	bool getLEDBrightness(int& value);
 	void setLEDBrightness(int value);
 
+	bool isLEDMonochrome();
+
 	// Re-apply the saved led.* settings
 	void restoreLEDs();
 
+	// LED Mode
+	void setLEDMode(const std::string& mode);
+	std::vector<std::string> getLEDBatteryProfile();
+
 	std::vector<std::string> getWifiNetworks(bool scan = false);
+	std::string getConnectedWifiSsid();
 
 	bool downloadFile(const std::string url, const std::string fileName, const std::string label = "", const std::function<void(const std::string)>& func = nullptr);
 	
@@ -436,6 +469,10 @@ public:
     	virtual std::vector<GlobalHotkey> getGlobalHotkeys();
       	virtual void removeGlobalHotkey(const std::string& config, const std::string& key);
     	virtual void setGlobalHotkey(const std::string& config, const std::string& key, const std::string& action);
+
+    	virtual void detectTrackballSpinners(const std::string& type);
+    	virtual std::vector<TrackballSpinner> getTrackballSpinners();
+    	virtual void removeTrackballSpinners(const std::string& key);
 
       	virtual std::vector<Pad2key> getPad2keys();
       	virtual std::vector<Pad2keyDevice> getPad2keyDevices(std::string config);

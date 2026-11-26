@@ -99,7 +99,7 @@ msgid "Loading gamelists"
 msgstr "Llwytho rhestr gemau"
 
 msgid "Loading..."
-msgstr "Llwytho..."
+msgstr "Llwytho…"
 
 msgid "MENU"
 msgstr "DEWISLEN"
@@ -225,7 +225,7 @@ msgstr "DEWIS"
 msgid "BACK"
 msgstr "NÔL"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr ""
 
 msgid "GAME OPTIONS (HOLD)"
@@ -240,7 +240,7 @@ msgstr "OPSIYNAU GÊM"
 msgid "FAVORITE"
 msgstr ""
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr ""
 
 #, c-format
@@ -307,7 +307,7 @@ msgstr "ARBED NEWIDIADAU?"
 msgid "ARE YOU SURE?"
 msgstr "WYT TI'N SIWR ?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr ""
 
 msgid "SETTINGS"
@@ -369,7 +369,7 @@ msgstr ""
 msgid "Enable unlocking of unofficial achievements."
 msgstr ""
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr ""
 
 msgid "none"
@@ -381,7 +381,7 @@ msgstr ""
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr ""
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr ""
 
 msgid "GAME INDEXES"
@@ -595,16 +595,6 @@ msgstr ""
 msgid "START"
 msgstr "DECHRAU"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr ""
-
-msgid "UPDATE IS READY"
-msgstr "MAE'R DIWEDDARIAD YN BAROD"
-
-msgid "REBOOT TO APPLY"
-msgstr ""
-
 msgid "REALLY UPDATE?"
 msgstr "IAWN I DDIWEDDARU?"
 
@@ -626,6 +616,16 @@ msgstr "ANGEN CYSWLLT RHWYDWAITH"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "DIM DIWEDDARIAD AR GAEL"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr ""
+
+msgid "UPDATE IS READY"
+msgstr "MAE'R DIWEDDARIAD YN BAROD"
+
+msgid "REBOOT TO APPLY"
+msgstr ""
 
 msgid "CONNECT TO NETPLAY"
 msgstr "CYSYLLTWCH Â RHWYDWAITH"
@@ -889,7 +889,7 @@ msgid "VIEWER PASSWORD"
 msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "DOD O HYD I GEMAU TEBYG ..."
+msgstr "DOD O HYD I GEMAU TEBYG…"
 
 msgid "DELETE ITEM"
 msgstr ""
@@ -1092,6 +1092,33 @@ msgstr ""
 msgid "P%i'S CONTROLLER"
 msgstr ""
 
+msgid "RED"
+msgstr ""
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr ""
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr ""
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr ""
+
 msgid "CONTROLLER MAPPING"
 msgstr ""
 
@@ -1156,11 +1183,99 @@ msgstr ""
 msgid "GLOBAL HOTKEYS"
 msgstr ""
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr ""
+
+msgid "ENABLE LED"
+msgstr ""
+
+msgid "LED MODE"
+msgstr ""
+
+msgid "STATIC"
+msgstr ""
+
+msgid "RAINBOW"
+msgstr ""
+
+msgid "CHROMA"
+msgstr ""
+
+msgid "PULSE"
+msgstr ""
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr ""
+
+msgid "LED BRIGHTNESS"
+msgstr ""
+
 msgid "default"
 msgstr "rhagosodiad"
 
 msgid "NOT CONNECTED"
 msgstr "HEB EI GYSYLLTU"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr ""
@@ -1210,7 +1325,7 @@ msgstr "BYSELL FRYS"
 msgid "DEFAULT"
 msgstr ""
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
 msgstr ""
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
@@ -1223,6 +1338,30 @@ msgid "NO GLOBAL HOTKEY DETECTED"
 msgstr ""
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
+msgstr ""
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
 msgstr ""
 
 msgid "BORDER SIZE"
@@ -1253,18 +1392,6 @@ msgid "HIDDEN"
 msgstr ""
 
 msgid "BORDER COLOR"
-msgstr ""
-
-msgid "WHITE"
-msgstr ""
-
-msgid "RED"
-msgstr ""
-
-msgid "GREEN"
-msgstr ""
-
-msgid "BLUE"
 msgstr ""
 
 msgid "BORDER RATIO"
@@ -1376,10 +1503,16 @@ msgid "INPUT MANUALLY"
 msgstr ""
 
 msgid "NO WI-FI NETWORKS FOUND"
-msgstr "HEB FFEINDIO RHWYDWEITHIAU WIFI"
+msgstr "HEB FFEINDIO RHWYDWEITHIAU WI-FI"
+
+msgid "CONNECTED"
+msgstr "WEDI CYSYLLTU"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
 
 msgid "SEARCHING WI-FI NETWORKS"
-msgstr "CHWILIO RHWYDWEITHIAU WIFI"
+msgstr "CHWILIO RHWYDWEITHIAU WI-FI"
 
 msgid "PARIS"
 msgstr ""
@@ -1433,9 +1566,6 @@ msgid "MONTREAL"
 msgstr ""
 
 msgid "SAO PAULO"
-msgstr ""
-
-msgid "CUSTOM"
 msgstr ""
 
 msgid "CUSTOM RELAY SERVER"
@@ -2007,6 +2137,12 @@ msgstr ""
 msgid "VSYNC"
 msgstr "VSYNC"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr ""
+
+msgid "FPS LIMIT"
+msgstr ""
+
 msgid "OVERSCAN"
 msgstr "OVERSCAN"
 
@@ -2163,6 +2299,12 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr ""
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr ""
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+
 msgid "GUN MOVE TOLERENCE"
 msgstr ""
 
@@ -2194,6 +2336,17 @@ msgstr ""
 msgid ""
 "Reduces lag when scrolling through a fully scraped gamelist, increases boot "
 "time"
+msgstr ""
+
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -2229,6 +2382,9 @@ msgstr "GWIRIO AM DDIWEDDARIADAU"
 msgid "UPDATE TYPE"
 msgstr "MATH O DDIWEDDARIAD"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr ""
+
 msgid "APPLY UPDATE"
 msgstr "YMGESIO DIWEDDARIAD"
 
@@ -2236,6 +2392,33 @@ msgid "START UPDATE"
 msgstr "DECHRAU DIWEDDARIAD"
 
 msgid "UPDATER IS ALREADY RUNNING"
+msgstr ""
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr ""
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "Torrent update service started"
+msgstr ""
+
+msgid "Torrent update service stopped"
+msgstr ""
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr ""
+
+msgid "DOWNLOAD STATUS"
 msgstr ""
 
 msgid "LANGUAGE"
@@ -2318,6 +2501,19 @@ msgstr ""
 msgid "Available options can change depending on current audio output."
 msgstr ""
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr ""
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr ""
 
@@ -2384,15 +2580,6 @@ msgstr ""
 msgid "OVERCLOCK"
 msgstr "TROSGLOCIO"
 
-msgid "LED HARDWARE"
-msgstr ""
-
-msgid "ENABLE LED"
-msgstr ""
-
-msgid "LED BRIGHTNESS"
-msgstr ""
-
 msgid "STORAGE"
 msgstr "STORFA"
 
@@ -2419,6 +2606,14 @@ msgstr ""
 
 msgid "ROOT PASSWORD"
 msgstr "CYFINAIR GWREIDDIO"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr ""
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
 
 msgid "LATENCY REDUCTION"
 msgstr "LLEIHAU HWYRNI"
@@ -2449,9 +2644,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr ""
 
-msgid "VARIABLE REFRESH RATE"
-msgstr ""
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2465,13 +2657,10 @@ msgstr ""
 msgid "BIOS SETTINGS"
 msgstr ""
 
-msgid "SAVESTATES"
-msgstr ""
-
 msgid "AUTO SAVE/LOAD"
 msgstr ""
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
 
 msgid "INCREMENTAL SAVESTATES"
@@ -2799,11 +2988,34 @@ msgstr "GALLUOGI SEINIAU MORDWYO"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "GALLUOGI SAIN FIDEO"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "SSID WI-FI"
+
+msgid "WI-FI KEY"
+msgstr "ALLWEDD WI-FI"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr ""
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr ""
+
 msgid "IP ADDRESS"
 msgstr "CYFEIRIAD IP"
-
-msgid "CONNECTED"
-msgstr "WEDI CYSYLLTU"
 
 msgid "INTERNET STATUS"
 msgstr "STATWS RHYNGRWYD"
@@ -2811,26 +3023,20 @@ msgstr "STATWS RHYNGRWYD"
 msgid "HOSTNAME"
 msgstr "ENW HOST"
 
-msgid "ENABLE WIFI"
-msgstr "GALLUOGI WIFI"
+msgid "ENABLE WI-FI"
+msgstr "GALLUOGI WI-FI"
 
-msgid "WIFI SSID"
-msgstr "SSID WIFI"
-
-msgid "WIFI KEY"
-msgstr "ALLWEDD WIFI"
-
-msgid "WIFI COUNTRY"
+msgid "WI-FI COUNTRY"
 msgstr ""
 
 msgid "N/A"
 msgstr ""
 
-msgid "WIFI ENABLED"
-msgstr "GALLUOGI WIFI"
+msgid "WI-FI ENABLED"
+msgstr "GALLUOGI WI-FI"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "GWALL TRAWSWEDDU WIFI"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "GWALL TRAWSWEDDU WI-FI"
 
 msgid "QUICK ACCESS"
 msgstr "MYNEDIAD CYFLYM"
@@ -2894,9 +3100,6 @@ msgstr "GADAEL GO IAWN?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "AWTO ARBED / LLWYTH"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr ""
@@ -2997,13 +3200,6 @@ msgid "DISCONNECT"
 msgstr ""
 
 msgid "CONNECT"
-msgstr ""
-
-msgid "FORGET"
-msgstr ""
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
 msgstr ""
 
 #, c-format
@@ -3363,7 +3559,7 @@ msgid "MultiDisk"
 msgstr ""
 
 msgid "Loading system config..."
-msgstr "Llwytho system ffurfweddu..."
+msgstr "Llwytho system ffurfweddu…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
 msgstr ""
@@ -3389,7 +3585,7 @@ msgstr "4 chwaraewyr"
 msgid "never played"
 msgstr "erioed wedi chwarae"
 
-msgid "retroachievements"
+msgid "RetroAchievements"
 msgstr "cyflawniadau-retro"
 
 msgid "arcade"
@@ -3489,11 +3685,14 @@ msgstr ""
 msgid "UKNOWN ERROR"
 msgstr ""
 
+msgid "Checking for latest upgrade script..."
+msgstr ""
+
 msgid "Collections"
 msgstr "Casgliadau"
 
 msgid "Searching for devices..."
-msgstr "Chwilio am rheolyddion..."
+msgstr "Chwilio am rheolyddion…"
 
 msgid "FORMATTING DEVICE"
 msgstr ""
@@ -3579,11 +3778,8 @@ msgstr ""
 msgid "ENABLED"
 msgstr ""
 
-msgid "up/down"
-msgstr "lan/lawr"
-
 msgid "WORKING..."
-msgstr "YN GWEITHIO..."
+msgstr "YN GWEITHIO…"
 
 msgid "accept"
 msgstr "derbyn"
@@ -3950,6 +4146,9 @@ msgstr[3] "%d eiliadau yn ôl"
 msgstr[4] "%d eiliadau yn ôl"
 msgstr[5] "%d eiliadau yn ôl"
 
+#~ msgid "up/down"
+#~ msgstr "lan/lawr"
+
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "ADEILADU DELWEDD COF DROS DRO"
 
@@ -3960,7 +4159,7 @@ msgstr[5] "%d eiliadau yn ôl"
 #~ msgstr "GAN Y FATH O GALEDWEDD"
 
 #~ msgid "SAVING METADATAS. PLEASE WAIT..."
-#~ msgstr "ARBED METADATAS. ARHOSWCH OS GWELWCH YN DDA..."
+#~ msgstr "ARBED METADATAS. ARHOSWCH OS GWELWCH YN DDA…"
 
 #~ msgid "Achievements won"
 #~ msgstr "Cyflawniadau a enillwyd"
@@ -4309,9 +4508,6 @@ msgstr[5] "%d eiliadau yn ôl"
 #~ "Bydd hyn yn cuddio'r mwyafrif o opsiynau dewislen i atal newidiadau i'r "
 #~ "system.\n"
 #~ "I ddatgloi a dychwelyd i'r UI llawn, rhowch y côd hwn:"
-
-#~ msgid "RETROACHIEVEMENTS SETTINGS"
-#~ msgstr "GOSODIADAU CYFLAWNIADAU-RETRO"
 
 #~ msgid "SHOW IN MAIN MENU"
 #~ msgstr "DANGOS YN Y BRIF DDEWISLEN"

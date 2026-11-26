@@ -1,5 +1,6 @@
 #include "SystemData.h"
 #include "MergedDrive.h"
+#include "romm/RommCatalog.h"
 
 #include "SystemConf.h"
 #include "utils/FileSystemUtil.h"
@@ -46,7 +47,7 @@ static std::map<std::string, std::function<BindableProperty(SystemData*)>> prope
 	{ "manufacturer",		[] (SystemData* sys) { return sys->getSystemMetadata().manufacturer; } },
 	{ "theme",				[] (SystemData* sys) { return sys->getThemeFolder(); } },
 	{ "releaseYear",		[] (SystemData* sys) { return sys->getSystemMetadata().releaseYear <= 0 ? std::string() : std::to_string(sys->getSystemMetadata().releaseYear); } },
-	{ "hardwareType",		[] (SystemData* sys) { return sys->getSystemMetadata().hardwareType; } },
+	{ "hardwareType",		[] (SystemData* sys) { return sys->getSystemMetadata().hardwareType.empty()?"system": sys->getSystemMetadata().hardwareType; } },
 	{ "command",			[] (SystemData* sys) { return sys->getSystemEnvData()->mLaunchCommand; } },
 	{ "group",				[] (SystemData* sys) { return sys->getSystemEnvData()->mGroup; } },		
 	{ "collection",			[] (SystemData* sys) { return sys->isCollection(); } },		
@@ -106,6 +107,10 @@ SystemData::SystemData(const SystemMetadata& meta, SystemEnvironmentData* envDat
 		{
 			populateFolder(mRootFolder, fileMap, 0, indexDepth);
 
+			// RomM games not present on disk (no-op unless RomM is enabled and synchronized)
+			if (Romm::RommCatalog::isActive())
+				Romm::RommCatalog::inject(this, fileMap, false);
+
 			if (!UIModeController::LoadEmptySystems())
 			{
 				// With a depth limit, games may only be known from gamelist.xml : check after parsing it
@@ -124,6 +129,10 @@ SystemData::SystemData(const SystemMetadata& meta, SystemEnvironmentData* envDat
 
 			parseGamelist(this, fileMap);
 		}
+
+		// ParseGamelistOnly mode : the disk is not scanned, add RomM games once gamelist.xml is known
+		if (Settings::ParseGamelistOnly() && Romm::RommCatalog::isActive())
+			Romm::RommCatalog::inject(this, fileMap, true);
 
     if (indexDepth > 0 && !Settings::ParseGamelistOnly() && !UIModeController::LoadEmptySystems() && mRootFolder->getChildren().size() == 0)
       return;
@@ -556,7 +565,7 @@ void SystemData::createGroupedSystems()
 				SystemData* syss = *item.second.cbegin();
 				md.manufacturer = syss->getSystemMetadata().manufacturer;
 				md.releaseYear = syss->getSystemMetadata().releaseYear;
-				md.hardwareType = "system";
+				md.hardwareType = syss->getSystemMetadata().hardwareType;
 			}
 
 			system = new SystemData(md, envData, nullptr, false, true);
@@ -930,6 +939,9 @@ bool SystemData::loadConfig(Window* window)
 
 	loadAdditionnalConfig(systemList);
 
+	// Reads the RomM settings and library snapshot (no-op unless RomM is enabled)
+	Romm::RommCatalog::prepare(systemList);
+
 	std::vector<std::string> systemsNames;
 
 	int systemCount = 0;
@@ -1207,7 +1219,8 @@ SystemData* SystemData::loadSystem(pugi::xml_node system, bool fullMode)
 		return nullptr;
 	}
 
-	if (fullMode && !UIModeController::LoadEmptySystems() && !Utils::FileSystem::exists(path))
+	// A missing folder is fine when RomM has games for this system: it is created by the first download
+	if (fullMode && !UIModeController::LoadEmptySystems() && !Utils::FileSystem::exists(path) && !Romm::RommCatalog::hasGamesFor(md.name))
 	{
 		LOG(LogError) << "System \"" << md.name << "\" path does not exist !";
 		return nullptr;
@@ -2332,6 +2345,15 @@ BindableProperty SystemData::getProperty(const std::string& name)
 			return BindableProperty(clockBuf, BindablePropertyType::String);
 		}
 
+		return BindableProperty::EmptyString;
+	}
+
+	if (name == "lastPlayedDateTime")
+	{
+		Utils::Time::DateTime dt = info->lastPlayedDate;
+		if (dt.getTime() != 0)
+			return info->lastPlayedDate;
+		
 		return BindableProperty::EmptyString;
 	}
 

@@ -1,6 +1,12 @@
 //EmulationStation, a graphical front-end for ROM browsing. Created by Alec "Aloshi" Lofquist.
 //http://www.aloshi.com
-
+#include "romm/RommSync.h"
+#include "romm/RommSaves.h"
+#include "romm/RommPlaySessions.h"
+#include "romm/RommMediaCache.h"
+#ifdef HIPPOS
+#include "controlcenter/ControlCenterApp.h"
+#endif
 #include "services/HttpServerThread.h"
 #include "guis/GuiDetectDevice.h"
 #include "guis/GuiMenu.h"
@@ -56,6 +62,12 @@
 static std::string gPlayVideo;
 static int gPlayVideoDuration = 0;
 static bool enable_startup_game = true;
+#ifdef HIPPOS
+static bool gControlCenter = false;
+static bool gControlCenterHidden = false;
+static std::string gControlCenterXml;
+static std::string gControlCenterScreen;
+#endif
 
 bool parseArgs(int argc, char* argv[])
 {
@@ -171,6 +183,21 @@ bool parseArgs(int argc, char* argv[])
 		}else if(strcmp(argv[i], "--exit-on-reboot-required") == 0)
 		{
 			Settings::getInstance()->setBool("ExitOnRebootRequired", true);
+#ifdef HIPPOS
+		}else if(strcmp(argv[i], "--controlcenter") == 0)
+		{
+			gControlCenter = true;
+			enable_startup_game = false;
+		}else if(strcmp(argv[i], "--controlcenter-hidden") == 0)
+		{
+			gControlCenterHidden = true;
+		}else if(strcmp(argv[i], "--controlcenter-xml") == 0 && i < argc - 1)
+		{
+			gControlCenterXml = argv[++i];
+		}else if(strcmp(argv[i], "--controlcenter-screen") == 0 && i < argc - 1)
+		{
+			gControlCenterScreen = argv[++i];
+#endif
 		}else if(strcmp(argv[i], "--no-startup-game") == 0)
 		{
 		        enable_startup_game = false;
@@ -486,8 +513,13 @@ static int waitEventIdle(SDL_Event* event, int timeoutMs)
 }
 
 int main(int argc, char* argv[])
-{	
+{
 	// Utils::MathExpr::performUnitTests();
+
+#ifdef WIN32
+	// Must run before any window/message-queue APIs are touched.
+	Utils::Platform::setDpiAwareness();
+#endif
 
 	// signal(SIGABRT, signalHandler);
 	signal(SIGFPE, signalHandler);
@@ -551,8 +583,12 @@ int main(int argc, char* argv[])
 		return 0;
 	}
 
-	//start the logger
-	Log::init();	
+	//start the logger, the control center keeps its own log
+#ifdef HIPPOS
+	Log::init(gControlCenter ? "es_controlcenter" : "es_log");
+#else
+	Log::init();
+#endif
 
 	LOG(LogInfo) << "EmulationStation - v" << PROGRAM_VERSION_STRING << ", built " << PROGRAM_BUILT_STRING;
 
@@ -561,6 +597,11 @@ int main(int argc, char* argv[])
 
 	// Set locale
 	setLocale(argv[0]);	
+
+#ifdef HIPPOS
+	if (gControlCenter)
+		return runControlCenter(argc, argv, gControlCenterXml, gControlCenterScreen, gControlCenterHidden);
+#endif
 
 #if !WIN32
 	if(enable_startup_game) {
@@ -657,6 +698,10 @@ int main(int argc, char* argv[])
 	NetworkThread* nthread = new NetworkThread(&window);
 	HttpServerThread httpServer(&window);
 
+	// RomM library synchronization in the background (no-op unless RomM is enabled and paired)
+	Romm::RommSync::start(&window);
+	Romm::RommSaves::recoverAsync(&window);
+
 	// tts
 	TextToSpeech::getInstance()->enable(Settings::getInstance()->getBool("TTS"), false);
 	
@@ -718,10 +763,12 @@ int main(int argc, char* argv[])
 
 	bool running = true;
 
+#ifdef HIPPOS
+	bool hotkeyPressed = false;
+#endif
+
 	while(running)
 	{
-		int processStart = SDL_GetTicks();
-
 		SDL_Event event;
 
 		int screenSaverTimeout = screensaver.getNextUpdateTimeout();
@@ -749,6 +796,44 @@ int main(int argc, char* argv[])
 
 			do
 			{
+#ifdef HIPPOS
+			  // global hotkeys
+			  bool eventTaken = false;
+			  if(event.type == SDL_JOYBUTTONDOWN || event.type == SDL_JOYBUTTONUP)
+			    {
+			      InputConfig* config = InputManager::getInstance()->getInputConfigByDevice(event.jbutton.which);
+			      if(config)
+				{
+				  // Find first player controller info
+				  auto playerDevices = InputManager::getInstance()->lastKnownPlayersDeviceIndexes();
+				  auto playerDevice = playerDevices.find(0);
+				  if (playerDevice != playerDevices.cend())
+				    {
+				      if (config->getDeviceIndex() == playerDevice->second.index)
+					{
+					  Input input = Input(event.jbutton.which, TYPE_BUTTON, event.jbutton.button, event.jbutton.state == SDL_PRESSED, false);
+					  if (config->isMappedTo("hotkey", input))
+					    hotkeyPressed = input.value != 0;
+
+					  if(hotkeyPressed && input.value != 0)
+					    {
+					      std::string hotkey_controlcenter = Settings::getInstance()->getString("HOTKEY_CONTROLCENTER");
+					      if (config->isMappedTo(hotkey_controlcenter, input))
+						{
+						  hotkeyPressed = false;
+						  if (!toggleControlCenterInProcess(&window))
+							  ApiSystem::getInstance()->launchControlcenter();
+						  eventTaken = true;
+						}
+					    }
+					}
+				    }
+				}
+			    }
+			  //
+			  if(eventTaken)
+			    continue;
+#endif
 
 				TRYCATCH("InputManager::parseEvent", InputManager::getInstance()->parseEvent(event, &window));
 
@@ -820,8 +905,8 @@ int main(int argc, char* argv[])
 		int fpsLimit = Settings::FpsLimit();
 		if (fpsLimit > 0)
 		{
-			int frameTime = 1000 / fpsLimit;
-			int processDuration = SDL_GetTicks() - processStart;
+			int frameTime = (1000 + fpsLimit / 2) / fpsLimit;
+			int processDuration = SDL_GetTicks() - curTime;
 			if (processDuration < frameTime)
 			{
 				int timeToWait = frameTime - processDuration;
@@ -837,6 +922,9 @@ int main(int argc, char* argv[])
 		Settings::getInstance()->setBool("IgnoreGamelist", true);
 
 	WatchersManager::stop();
+	Romm::RommSync::stop();
+	Romm::RommPlaySessions::stop();
+	Romm::stopOnDemand();
 	ThreadedHasher::stop();
 	ThreadedScraper::stop();
 #ifdef HIPPOS

@@ -103,7 +103,7 @@ msgid "Loading gamelists"
 msgstr "Načítání seznamu her"
 
 msgid "Loading..."
-msgstr "Načítání..."
+msgstr "Načítání…"
 
 msgid "MENU"
 msgstr "MENU"
@@ -217,7 +217,7 @@ msgstr "POHYB"
 msgid "BACK"
 msgstr "ZPĚT"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "ULOŽENÉ"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -232,7 +232,7 @@ msgstr "HERNÍ MOŽNOSTI"
 msgid "FAVORITE"
 msgstr "OBLÍBENÉ"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "ULOŽENÉ"
 
 #, c-format
@@ -299,7 +299,7 @@ msgstr "ULOŽIT ZMĚNY?"
 msgid "ARE YOU SURE?"
 msgstr "JSTE SI JISTI?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr "NASTAVENÍ RETROÚSPĚCHU"
 
 msgid "SETTINGS"
@@ -362,7 +362,7 @@ msgstr ""
 msgid "Enable unlocking of unofficial achievements."
 msgstr ""
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr "ODEMKNOUT ZVUK RETROÚSPĚCHU"
 
 msgid "none"
@@ -374,7 +374,7 @@ msgstr "ODEMKNOUT ZVUK"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "ZOBRAZIT POLOŽKU RETROÚSPĚCHY V HLAVNÍ NABÍDCE"
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr "Prohlédněte si své statistiky RetroÚspechu přímo z hlavního menu!"
 
 msgid "GAME INDEXES"
@@ -588,16 +588,6 @@ msgstr "OBSAŽENÉ SYSTÉMY"
 msgid "START"
 msgstr "START"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "PROBÍHÁ AKTUALIZACE %s"
-
-msgid "UPDATE IS READY"
-msgstr "AKTUALIZACE HOTOVÁ"
-
-msgid "REBOOT TO APPLY"
-msgstr "NUTNÝ RESTART"
-
 msgid "REALLY UPDATE?"
 msgstr "OPRAVDU AKTUALIZOVAT?"
 
@@ -624,6 +614,16 @@ msgstr "JE NUTNÉ PŘIPOJENÍ K SÍTI"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "NENÍ K DISPOZICI ŽÁDNÁ AKTUALIZACE"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "PROBÍHÁ AKTUALIZACE %s"
+
+msgid "UPDATE IS READY"
+msgstr "AKTUALIZACE HOTOVÁ"
+
+msgid "REBOOT TO APPLY"
+msgstr "NUTNÝ RESTART"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "PŘIPOJIT SE K SÍTI"
@@ -887,7 +887,7 @@ msgid "VIEWER PASSWORD"
 msgstr "HESLO PROHLÍŽEČE"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "NAJÍT PODOBNÉ HRY..."
+msgstr "NAJÍT PODOBNÉ HRY…"
 
 msgid "DELETE ITEM"
 msgstr "ODSTRANIT POLOŽKU"
@@ -936,7 +936,7 @@ msgid "FAVORITES"
 msgstr "OBLÍBENÉ"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "PŘIDAT DO VLASTNÍ SBÍRKY..."
+msgstr "PŘIDAT DO VLASTNÍ SBÍRKY…"
 
 msgid "SCRAPE"
 msgstr "VYHLEDÁVAČ"
@@ -1090,6 +1090,33 @@ msgstr "OVLADAČ #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "P%i'S HER.OVLADAČ"
 
+msgid "RED"
+msgstr "ČERVENÁ"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "ZELENÁ"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "MODRÁ"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "BÍLÁ"
+
 msgid "CONTROLLER MAPPING"
 msgstr "MAPOVÁNÍ HER. OVLADAČE"
 
@@ -1159,11 +1186,99 @@ msgstr ""
 msgid "GLOBAL HOTKEYS"
 msgstr ""
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "LED HARDWARE"
+
+msgid "ENABLE LED"
+msgstr ""
+
+msgid "LED MODE"
+msgstr ""
+
+msgid "STATIC"
+msgstr ""
+
+msgid "RAINBOW"
+msgstr ""
+
+msgid "CHROMA"
+msgstr ""
+
+msgid "PULSE"
+msgstr ""
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "VLASTNÍ"
+
+msgid "LED BRIGHTNESS"
+msgstr "JAS LED"
+
 msgid "default"
 msgstr "výchozí"
 
 msgid "NOT CONNECTED"
 msgstr "NEPŘIPOJEN"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr ""
@@ -1213,7 +1328,7 @@ msgstr ""
 msgid "DEFAULT"
 msgstr "VÝCHOZÍ"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
 msgstr ""
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
@@ -1226,6 +1341,30 @@ msgid "NO GLOBAL HOTKEY DETECTED"
 msgstr ""
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
+msgstr ""
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
 msgstr ""
 
 msgid "BORDER SIZE"
@@ -1257,18 +1396,6 @@ msgstr "SKRYTÝ"
 
 msgid "BORDER COLOR"
 msgstr "BARVA HRANICE"
-
-msgid "WHITE"
-msgstr "BÍLÁ"
-
-msgid "RED"
-msgstr "ČERVENÁ"
-
-msgid "GREEN"
-msgstr "ZELENÁ"
-
-msgid "BLUE"
-msgstr "MODRÁ"
 
 msgid "BORDER RATIO"
 msgstr "POMĚR OKRAJŮ"
@@ -1381,6 +1508,12 @@ msgstr "MANUÁLNÍ VSTUP"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "NEBYLY NALEZENY ŽÁDNÉ SÍTĚ WI-FI"
 
+msgid "CONNECTED"
+msgstr "PŘIPOJEN"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "VYHLEDÁVÁNÍ SÍTÍ WI-FI"
 
@@ -1437,9 +1570,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAO PAULO"
-
-msgid "CUSTOM"
-msgstr "VLASTNÍ"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "VLASTNÍ RELAY SERVER"
@@ -2013,6 +2143,12 @@ msgstr "Zapne také nativní čítač FPS emulátoru, pokud je k dispozici."
 msgid "VSYNC"
 msgstr "VSYNC"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr ""
+
+msgid "FPS LIMIT"
+msgstr ""
+
 msgid "OVERSCAN"
 msgstr "OVERSCAN"
 
@@ -2175,6 +2311,12 @@ msgstr "Obrátit horní tlačítko (uložit) a dlouhý stisk dolního (nastaven�
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "OVLÁDÁNÍ EMULÁTORU POUZE PRVNÍM JOYSTICKEM"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr ""
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "TOLERANCE POHYBU ZBRANĚ"
 
@@ -2212,6 +2354,17 @@ msgstr ""
 "Snížení zpoždění při procházení plně medializovaného seznamu her, prodlužuje "
 "dobu spouštění systému"
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+
 msgid "THREADED LOADING"
 msgstr "NAČÍST VLÁKNA"
 
@@ -2245,6 +2398,9 @@ msgstr "HLEDAT AKTUALIZACE"
 msgid "UPDATE TYPE"
 msgstr "TIP AKTUALIZACE"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr ""
+
 msgid "APPLY UPDATE"
 msgstr "APLIKOVAT AKTUALIZACE"
 
@@ -2253,6 +2409,33 @@ msgstr "AKTUALIZOVAT"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "AKTUALIZÁTOR JE JIŽ SPUŠTĚN"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr ""
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "Torrent update service started"
+msgstr ""
+
+msgid "Torrent update service stopped"
+msgstr ""
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr ""
+
+msgid "DOWNLOAD STATUS"
+msgstr ""
 
 msgid "LANGUAGE"
 msgstr "JAZYK"
@@ -2342,6 +2525,19 @@ msgid "Available options can change depending on current audio output."
 msgstr ""
 "Dostupné možnosti se mohou měnit v závislosti na aktuálním zvukovém výstupu."
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "PROMĚNLIVÁ OBNOVOVACÍ FREKVENCE"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "UVÍTÁNÍ"
 
@@ -2408,15 +2604,6 @@ msgstr "zapnout"
 msgid "OVERCLOCK"
 msgstr "PŘETAKTOVÁNÍ"
 
-msgid "LED HARDWARE"
-msgstr "LED HARDWARE"
-
-msgid "ENABLE LED"
-msgstr ""
-
-msgid "LED BRIGHTNESS"
-msgstr "JAS LED"
-
 msgid "STORAGE"
 msgstr "ULOŽIŠTĚ"
 
@@ -2443,6 +2630,14 @@ msgstr "Vyžadovat heslo pro přístup ke sdílené síťové složce."
 
 msgid "ROOT PASSWORD"
 msgstr "HESLO ADMINISTRÁTORA"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr ""
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
 
 msgid "LATENCY REDUCTION"
 msgstr "REDUKCE SPOŽDĚNÍ"
@@ -2475,9 +2670,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "PROMĚNLIVÁ OBNOVOVACÍ FREKVENCE (G-SYNC, FREESYNC)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "PROMĚNLIVÁ OBNOVOVACÍ FREKVENCE"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2493,14 +2685,13 @@ msgstr "Aktuální nastavení"
 msgid "BIOS SETTINGS"
 msgstr "NASTAVENÍ BIOSU"
 
-msgid "SAVESTATES"
-msgstr "ULOŽENÉ POZICE"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "AUTOMATICKY ULOŽIT/NAČÍST"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
-msgstr "Načíst nejnovější uložení při spuštění hry a uložení při ukončení hry."
+msgid "Load latest savestate on game launch and save state when exiting game."
+msgstr ""
+"Načtení poslední pozice uložení při spuštění hry a uložení pozice při "
+"ukončení hry."
 
 msgid "INCREMENTAL SAVESTATES"
 msgstr "PŘÍRUSTKY ULOŽENÝCH POZIC"
@@ -2829,11 +3020,34 @@ msgstr "POVOLIT NAVIGAČNÍ ZVUKY"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "POVOLIT NÁHLED VIDEA SE ZVUKEM"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "WI-FI SSID"
+
+msgid "WI-FI KEY"
+msgstr "HESLO WI-FI"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr "ZAPOMENOUT"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "JSTE SI JISTI, ŽE CHCETE ZAPOMENOUT '%s' ?"
+
 msgid "IP ADDRESS"
 msgstr "IP ADRESA"
-
-msgid "CONNECTED"
-msgstr "PŘIPOJEN"
 
 msgid "INTERNET STATUS"
 msgstr "STAV INTERNETU"
@@ -2841,26 +3055,20 @@ msgstr "STAV INTERNETU"
 msgid "HOSTNAME"
 msgstr "HOSTNAME"
 
-msgid "ENABLE WIFI"
-msgstr "POVOLIT WIFI"
+msgid "ENABLE WI-FI"
+msgstr "POVOLIT WI-FI"
 
-msgid "WIFI SSID"
-msgstr "WIFI SSID"
-
-msgid "WIFI KEY"
-msgstr "HESLO WIFI"
-
-msgid "WIFI COUNTRY"
+msgid "WI-FI COUNTRY"
 msgstr ""
 
 msgid "N/A"
 msgstr ""
 
-msgid "WIFI ENABLED"
-msgstr "WIFI POVOLENO"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI POVOLENO"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "CHYBA KONFIGURACE WIFI"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "CHYBA KONFIGURACE WI-FI"
 
 msgid "QUICK ACCESS"
 msgstr "RYCHLÝ PŘÍSTUP"
@@ -2924,11 +3132,6 @@ msgstr "OPRAVDU UKONČIT?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "AUTO. UKLÁDÁNÍ/NAČÍTÁNÍ PŘI STARTU HRY"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
-"Načtení poslední pozice uložení při spuštění hry a uložení pozice při "
-"ukončení hry."
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "ZOBRAZIT PŘEKRYTÍ HER.OVLADAČE"
@@ -3033,13 +3236,6 @@ msgstr "ODPOJIT"
 
 msgid "CONNECT"
 msgstr "PŘIPOJIT"
-
-msgid "FORGET"
-msgstr "ZAPOMENOUT"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "JSTE SI JISTI, ŽE CHCETE ZAPOMENOUT '%s' ?"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3398,7 +3594,7 @@ msgid "MultiDisk"
 msgstr ""
 
 msgid "Loading system config..."
-msgstr "Načítání konfigurace systému..."
+msgstr "Načítání konfigurace systému…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
 msgstr "UKLÁDÁNÍ METADAT, PROSÍM POČKEJTE."
@@ -3424,7 +3620,7 @@ msgstr "4 hráči"
 msgid "never played"
 msgstr "nikdy nepřehrál"
 
-msgid "retroachievements"
+msgid "RetroAchievements"
 msgstr "retroúspechy"
 
 msgid "arcade"
@@ -3469,9 +3665,9 @@ msgstr "Různé"
 #, c-format
 msgid "This collection contains %i game: %s"
 msgid_plural "This collection contains %i games, including: %s"
-msgstr[0] "Tato kolekce obsahuje %i hru:%s"
-msgstr[1] "Tato kolekce obsahuje %i hry, včetně:%s"
-msgstr[2] "Tato kolekce obsahuje %i her, včetně:%s"
+msgstr[0] "Tato kolekce obsahuje %i hru: %s"
+msgstr[1] "Tato kolekce obsahuje %i hry, včetně: %s"
+msgstr[2] "Tato kolekce obsahuje %i her, včetně: %s"
 
 msgid "INVALID CONTENT"
 msgstr "NEPLATNÝ OBSAH"
@@ -3522,11 +3718,14 @@ msgstr "CHYBÍ JÁDRO"
 msgid "UKNOWN ERROR"
 msgstr "NEZNÁMA CHYBA"
 
+msgid "Checking for latest upgrade script..."
+msgstr ""
+
 msgid "Collections"
 msgstr "Sbírka"
 
 msgid "Searching for devices..."
-msgstr "Vyhledávání zařízení..."
+msgstr "Vyhledávání zařízení…"
 
 msgid "FORMATTING DEVICE"
 msgstr "FORMÁTOVÁNÍ ZAŘÍZENÍ"
@@ -3612,11 +3811,8 @@ msgstr "VYPNUTÁ ČTEČKA OBRAZOVKY"
 msgid "ENABLED"
 msgstr "ZAPNUTO"
 
-msgid "up/down"
-msgstr "nahoru/dolů"
-
 msgid "WORKING..."
-msgstr "PRACUJI..."
+msgstr "PRACUJI…"
 
 msgid "accept"
 msgstr "přijmout"
@@ -3963,6 +4159,17 @@ msgstr[0] "%d před sekundou"
 msgstr[1] "%d před sekundami"
 msgstr[2] "%d před sekundami"
 
+#~ msgid "up/down"
+#~ msgstr "nahoru/dolů"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "Načíst nejnovější uložení při spuštění hry a uložení při ukončení hry."
+
+#~ msgid "FANART"
+#~ msgstr "UMĚNÍ FANOUŠKŮ"
+
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "VYTVOŘIT MEZIPAMĚŤ OBRÁZKU"
 
@@ -4013,7 +4220,7 @@ msgstr[2] "%d před sekundami"
 #~ "Obnovení hodnot metadat Herní čas, Počet přehrání a Naposledy hrané."
 
 #~ msgid "SAVING METADATAS. PLEASE WAIT..."
-#~ msgstr "UKLÁDÁJÍ SE MATEDATA. PROSÍM ČEKEJ..."
+#~ msgstr "UKLÁDÁJÍ SE MATEDATA. PROSÍM ČEKEJ…"
 
 #~ msgid "FORGET A BLUETOOTH DEVICE"
 #~ msgstr "ZAPOMENOUT NA ZAŘÍZENÍ BLUETOOTH"
@@ -4218,7 +4425,7 @@ msgstr[2] "%d před sekundami"
 #~ msgstr[2] "Sbírka obsahuje %i her, včetně: %s"
 
 #~ msgid "Searching controllers..."
-#~ msgstr "Hledání řadičů..."
+#~ msgstr "Hledání řadičů…"
 
 #~ msgid "BLUETOOTH SCANNING IS ALREADY RUNNING."
 #~ msgstr "SKENOVÁNÍ PŘES BLUETOOTH JE JIŽ SPUŠTĚNO."
@@ -4258,12 +4465,6 @@ msgstr[2] "%d před sekundami"
 
 #~ msgid "MANUAL INPUT"
 #~ msgstr "MANUALNÍ VSTUP"
-
-#~ msgid "NO WIFI NETWORKS FOUND"
-#~ msgstr "NENALEZENY SÍTĚ WIFI"
-
-#~ msgid "SEARCHING WIFI NETWORKS"
-#~ msgstr "HLEDÁNÍ WIFI SÍTĚ"
 
 #~ msgid "FORGET A BLUETOOTH CONTROLER"
 #~ msgstr "ZAPOMENOUT NA OVLADAČ BLUETOOTH"

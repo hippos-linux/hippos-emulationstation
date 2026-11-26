@@ -53,6 +53,7 @@ public:
 	bool setVideo(std::string path, bool checkFileExists = true);
 	// Loads a static image that is displayed if the video cannot be played
 	void setImage(std::string path, bool tile = false, const MaxSizeInfo& maxSize = MaxSizeInfo::Empty);
+	const std::string& getImagePath() const { return mStaticImagePath; } // the still image (snapshot)
 
 	// Configures the component to show the default video
 	void setDefaultVideo();
@@ -100,6 +101,13 @@ public:
 	inline void setMinSize(const Vector2f& size) { setMinSize(size.x(), size.y()); }
 
 	Vector2f getVideoSize() { return Vector2f(mVideoWidth, mVideoHeight); }
+
+	// the snapshot is shown until the video plays
+	static GuiComponent* getShownMedia(GuiComponent* media)
+	{
+		auto video = dynamic_cast<VideoComponent*>(media);
+		return video != nullptr && !video->mIsPlaying && video->mStaticImage.hasImage() ? &video->mStaticImage : media;
+	}
 	bool isPlaying() {
 		return mIsPlaying;
 	}

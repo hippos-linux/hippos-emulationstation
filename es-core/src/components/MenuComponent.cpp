@@ -133,6 +133,9 @@ void MenuComponent::addMenuIcon(Window* window, ComponentListRow& row, const std
 	auto theme = ThemeData::getMenuTheme();
 
 	std::string iconPath = theme->getMenuIcon(iconName);
+	if (iconPath.empty() && iconName == "iconCloud")
+		iconPath = ":/cloud.svg"; // themes may set their own
+
 	if (!iconPath.empty())
 	{
 		// icon
@@ -212,8 +215,12 @@ void MenuComponent::addWithDescription(const std::string& label, const std::stri
 
 		row.addElement(std::make_shared<MultiLineMenuEntry>(mWindow, Utils::String::toUpper(label), description, multiLine), true);
 	}
-	else
-		row.addElement(std::make_shared<TextComponent>(mWindow, Utils::String::toUpper(label), theme->Text.font, theme->Text.color), true);
+	else {
+	  auto entry = std::make_shared<TextComponent>(mWindow, Utils::String::toUpper(label), theme->Text.font, theme->Text.color);
+	  if (EsLocale::isRTL())
+	    entry->setHorizontalAlignment(Alignment::ALIGN_RIGHT);
+	  row.addElement(entry, true);
+	}
 
 	if (comp != nullptr)
 		row.addElement(comp, false);

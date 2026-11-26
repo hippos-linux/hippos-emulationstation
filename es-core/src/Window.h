@@ -77,8 +77,12 @@ public:
 	void renderSplashScreen(float opacity = 1, bool swapBuffers = true);
 	void closeSplashScreen();
 
-	void renderHelpPromptsEarly(const Transform4x4f& transform); // used to render HelpPrompts before a fade
+	void renderHelpPromptsEarly(const Transform4x4f& transform, unsigned char opacity = 255); // used to render HelpPrompts before a fade
+#ifdef HIPPOS
+	void setHelpPrompts(const std::vector<HelpPrompt>& prompts, const HelpStyle& style, bool sortPrompts = true);
+#else
 	void setHelpPrompts(const std::vector<HelpPrompt>& prompts, const HelpStyle& style);
+#endif
 
 	void setScreenSaver(ScreenSaver* screenSaver) { mScreenSaver = screenSaver; }
 

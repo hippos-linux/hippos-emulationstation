@@ -1,4 +1,6 @@
 #include "HttpServerThread.h"
+#include "romm/RommConfig.h"
+#include "romm/RommSync.h"
 #include "httplib.h"
 #include "Log.h"
 
@@ -25,6 +27,9 @@
 #include "ThreadedHasher.h"
 #include "scrapers/ThreadedScraper.h"
 #include "guis/GuiUpdate.h"
+#ifdef HIPPOS
+#include "controlcenter/ControlCenterApp.h"
+#endif
 #include "ContentInstaller.h"
 #include "InputManager.h"
 
@@ -38,6 +43,7 @@ GET  /shutdown
 GET  /quit
 GET  /emukill
 GET  /reloadgames
+GET  /romm_sync                                                 -> RomM "SYNCHRONIZE NOW" (?full=1 : FULL RESYNC). 200 started, 409 already running, 503 RomM not enabled or not paired
 POST /messagebox												-> body must contain the message text as text/plain
 POST /confirm													-> body must be: message text\nshell command to run on YES
 POST /notify													-> body must contain the message text as text/plain
@@ -301,6 +307,25 @@ void HttpServerThread::run()
 		res.set_content(HttpApi::getSystemList(), "application/json");
 	});
 
+#ifdef HIPPOS
+	mHttpServer->Get("/controlcenter", [this](const httplib::Request& req, httplib::Response& res)
+	{
+		if (!isAllowed(req, res))
+			return;
+
+		if (FileData::GetRunningGame() != nullptr || !canShowControlCenterInProcess())
+		{
+			res.set_content("{\"msg\":\"NOT IN FRONT\"}", "application/json");
+			res.status = 409;
+			return;
+		}
+
+		Window* window = mWindow;
+		mWindow->postToUiThread([window]() { toggleControlCenterInProcess(window); });
+		res.set_content("{\"msg\":\"OK\"}", "application/json");
+	});
+#endif
+
 	mHttpServer->Get("/runningGame", [](const httplib::Request& req, httplib::Response& res)
 	{
 		if (!isAllowed(req, res))
@@ -315,6 +340,32 @@ void HttpServerThread::run()
 		else
 			res.set_content(ret, "application/json");
 	});
+
+#ifdef HIPPOS
+	mHttpServer->Get("/runningGame/savestates", [](const httplib::Request& req, httplib::Response& res)
+	{
+		if (!isAllowed(req, res))
+			return;
+
+		res.set_content(HttpApi::getRunningGameSaveStates(), "application/json");
+	});
+
+	// body: the slot to start again from, as listed above
+	mHttpServer->Post("/runningGame/savestates/load", [](const httplib::Request& req, httplib::Response& res)
+	{
+		if (!isAllowed(req, res))
+			return;
+
+		if (!FileData::restartRunningGameAtState(atoi(req.body.c_str())))
+		{
+			res.set_content("{\"msg\":\"NO SUCH STATE\"}", "application/json");
+			res.status = 404;
+			return;
+		}
+
+		res.set_content("{\"msg\":\"OK\"}", "application/json");
+	});
+#endif
 
 	mHttpServer->Get("/isIdle", [](const httplib::Request& req, httplib::Response& res)
 	{
@@ -629,6 +680,29 @@ void HttpServerThread::run()
 		});
 	});
 
+	mHttpServer->Get("/romm_sync", [this](const httplib::Request& req, httplib::Response& res)
+	{
+		if (!isAllowed(req, res))
+			return;
+
+		if (!Romm::RommConfig::load().isUsable())
+		{
+			res.set_content("RomM integration is not enabled or this device is not paired", "text/plain");
+			res.status = 503;
+			return;
+		}
+
+		bool full = req.has_param("full") && req.get_param_value("full") == "1";
+		if (!Romm::RommSync::requestSync(full))
+		{
+			res.set_content("A RomM synchronization is already running", "text/plain");
+			res.status = 409;
+			return;
+		}
+
+		res.set_content("OK", "text/plain");
+	});
+
 	mHttpServer->Post("/messagebox", [this](const httplib::Request& req, httplib::Response& res)
 	{
 		if (!isAllowed(req, res))
@@ -751,6 +825,33 @@ void HttpServerThread::run()
 			w->cancelScreenSaver();
 			ViewController::get()->launch(game);
 		});
+	});
+
+	mHttpServer->Post("/input", [this](const httplib::Request& req, httplib::Response& res)
+	{
+		if (!isAllowed(req, res))
+			return;
+
+		InputConfig* config = InputManager::getInstance()->getInputConfigByDevice(DEVICE_KEYBOARD);
+
+		Input input;
+		if (config == nullptr || !config->getInputByName(Utils::String::trim(req.body), &input))
+		{
+			res.set_content("400 bad request - unknown input", "text/plain");
+			res.status = 400;
+			return;
+		}
+
+		Window* w = mWindow;
+		mWindow->postToUiThread([w, config, input]()
+		{
+			Input event = input;
+			w->input(config, event);
+			event.value = 0;
+			w->input(config, event);
+		});
+
+		res.set_content("OK", "text/plain");
 	});
 
 	mHttpServer->Post("/input", [this](const httplib::Request& req, httplib::Response& res)

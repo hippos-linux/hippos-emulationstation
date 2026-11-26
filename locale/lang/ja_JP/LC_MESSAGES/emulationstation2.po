@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: batocera-es v43b(2026/02/05)\n"
+"Project-Id-Version: batocera-es v44b(2026/10/26)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-15 23:48+0100\n"
-"PO-Revision-Date: 2026-02-06 06:25+0900\n"
+"PO-Revision-Date: 2026-10-26 21:03+0900\n"
 "Last-Translator: mikakunin\n"
 "Language-Team: mikakunin\n"
 "Language: ja\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 msgid "Searching"
 msgstr "検索中"
@@ -156,7 +156,7 @@ msgstr[0] "%i 項目"
 #, c-format
 msgid "%i GAME"
 msgid_plural "%i GAMES"
-msgstr[0] "ゲーム数 :%i"
+msgstr[0] "ゲーム数 : %i"
 
 msgid "SELECT"
 msgstr "セレクト(選択)"
@@ -210,7 +210,7 @@ msgstr "移動選択"
 msgid "BACK"
 msgstr "戻る"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "セーブメニュー (長押し)"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -225,8 +225,8 @@ msgstr "ゲーム設定"
 msgid "FAVORITE"
 msgstr "お気に入り"
 
-msgid "SAVE STATES"
-msgstr "ステートマネージャ"
+msgid "SAVESTATES"
+msgstr "ステートセーブ"
 
 #, c-format
 msgid "Back to %s"
@@ -294,8 +294,8 @@ msgstr "変更を保存しますか？"
 msgid "ARE YOU SURE?"
 msgstr "確認チェック"
 
-msgid "RETROACHIEVEMENT SETTINGS"
-msgstr "RETROACHIEVEMENT 設定"
+msgid "RETROACHIEVEMENTS SETTINGS"
+msgstr "RETROACHIEVEMENTS 設定"
 
 msgid "SETTINGS"
 msgstr "設定"
@@ -357,7 +357,7 @@ msgstr "非公式アチーブメント"
 msgid "Enable unlocking of unofficial achievements."
 msgstr "非公式アチーブメントのロック解除を有効"
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr "RETROACHIEVEMENTロック解除効果音"
 
 msgid "none"
@@ -369,7 +369,7 @@ msgstr "ロック解除効果音"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "メインメニューにRETROACHIEVEMENTSエントリを表示"
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr "メニューにRETROACHIEVEMENTSの統計を表示します!"
 
 msgid "GAME INDEXES"
@@ -472,13 +472,13 @@ msgid "VOLUME MUTE"
 msgstr "音声ミュート"
 
 msgid "START RECORDING"
-msgstr ""
+msgstr "記録を開始"
 
 msgid "STOP RECORDING"
-msgstr ""
+msgstr "記録を停止"
 
 msgid "KEYBOARD TOGGLE"
-msgstr ""
+msgstr "キーボードの切り替え"
 
 msgid "KEY ASSIGNED TWICE"
 msgstr "キー割り当てが重複しています"
@@ -583,16 +583,6 @@ msgstr "スクレイプするシステム"
 msgid "START"
 msgstr "スタート"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "%s を更新しています"
-
-msgid "UPDATE IS READY"
-msgstr "更新準備完了"
-
-msgid "REBOOT TO APPLY"
-msgstr "再起動すると適用されます"
-
 msgid "REALLY UPDATE?"
 msgstr "更新しますか？"
 
@@ -622,6 +612,16 @@ msgstr "ネットワーク接続が必要です"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "更新はありません"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "%s を更新しています"
+
+msgid "UPDATE IS READY"
+msgstr "更新準備完了"
+
+msgid "REBOOT TO APPLY"
+msgstr "再起動すると適用されます"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "ネットプレイの接続"
@@ -885,7 +885,7 @@ msgid "VIEWER PASSWORD"
 msgstr "ウォッチパスワード"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "類似のゲームを探す..."
+msgstr "類似のゲームを探す…"
 
 msgid "DELETE ITEM"
 msgstr "ファイルを削除"
@@ -920,7 +920,7 @@ msgid "WRITE"
 msgstr "書き込み"
 
 msgid "PLACE A TAG ON THE WRITER..."
-msgstr "NFCタグを書き込みしています..."
+msgstr "NFCタグを書き込みしています…"
 
 msgid "THE TAG WAS WRITTEN SUCCESSFULLY"
 msgstr "タグは正常に書き込まれました"
@@ -937,7 +937,7 @@ msgid "FAVORITES"
 msgstr "お気に入り"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "コレクションに追加..."
+msgstr "コレクションに追加…"
 
 msgid "SCRAPE"
 msgstr "スクレイプ"
@@ -1091,6 +1091,33 @@ msgstr "コントローラー #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "プレイヤー %i コントローラー"
 
+msgid "RED"
+msgstr "赤"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "緑"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "青"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "白"
+
 msgid "CONTROLLER MAPPING"
 msgstr "ボタン設定"
 
@@ -1143,7 +1170,7 @@ msgid "SHOW CONTROLLER BATTERY LEVEL"
 msgstr "コントローラーバッテリーレベルを表示"
 
 msgid "SHOW GUN NOTIFICATIONS"
-msgstr ""
+msgstr "銃に関する通知を表示する"
 
 msgid "DRAW GUN CROSSHAIR"
 msgstr "銃のクロスへア(照準)表示"
@@ -1160,11 +1187,99 @@ msgstr "ジョイスティックの終了用のホットキーを制限"
 msgid "GLOBAL HOTKEYS"
 msgstr "グローバルホットキー"
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "LED ハードウェア"
+
+msgid "ENABLE LED"
+msgstr " LED 有効"
+
+msgid "LED MODE"
+msgstr "LEDモード"
+
+msgid "STATIC"
+msgstr "スタティック"
+
+msgid "RAINBOW"
+msgstr "レインボー"
+
+msgid "CHROMA"
+msgstr "彩度"
+
+msgid "PULSE"
+msgstr "パルス"
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "カスタム"
+
+msgid "LED BRIGHTNESS"
+msgstr "LED 輝度"
+
 msgid "default"
 msgstr "標準"
 
 msgid "NOT CONNECTED"
 msgstr "未接続"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr "S ボタン / 下位置"
@@ -1214,8 +1329,8 @@ msgstr "ホットキー"
 msgid "DEFAULT"
 msgstr "標準"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
-msgstr "デバイスが見つかりません (JAMMASD, IPAC , ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
+msgstr "デバイスが見つかりません (JAMMASD, IPAC…)"
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
 msgstr "新しいグローバルホットキーを設定"
@@ -1228,6 +1343,30 @@ msgstr "グローバルホットキーが認識できません"
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
 msgstr "重複したグローバルホットキーです"
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
+msgstr ""
 
 msgid "BORDER SIZE"
 msgstr "境界サイズ"
@@ -1258,18 +1397,6 @@ msgstr "非表示"
 
 msgid "BORDER COLOR"
 msgstr "境界色"
-
-msgid "WHITE"
-msgstr "白"
-
-msgid "RED"
-msgstr "赤"
-
-msgid "GREEN"
-msgstr "緑"
-
-msgid "BLUE"
-msgstr "青"
 
 msgid "BORDER RATIO"
 msgstr "境界サイズ"
@@ -1382,8 +1509,14 @@ msgstr "手動 入力"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "WI-FI ネットワークが見つかりません"
 
+msgid "CONNECTED"
+msgstr "接続中"
+
+msgid "ALREADY CONNECTED"
+msgstr "すでに接続済み"
+
 msgid "SEARCHING WI-FI NETWORKS"
-msgstr "WIFIネットワークの検索"
+msgstr "WI-FIネットワークの検索"
 
 msgid "PARIS"
 msgstr "パリ"
@@ -1438,9 +1571,6 @@ msgstr "モントリオール"
 
 msgid "SAO PAULO"
 msgstr "サンパウロ"
-
-msgid "CUSTOM"
-msgstr "カスタム"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "カスタムリレーサーバー"
@@ -2014,6 +2144,12 @@ msgstr "可能な場合は、エミュレータ内のFPSカウンターも表示
 msgid "VSYNC"
 msgstr "VSYNC(垂直同期)有効"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr "アンチエイリアシング (MSAA)"
+
+msgid "FPS LIMIT"
+msgstr "FPS 制限"
+
 msgid "OVERSCAN"
 msgstr "オーバースキャン"
 
@@ -2179,6 +2315,12 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "最初のコントローラだけでESメニューを操作する"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr "右アナログスティックで音量調整をします"
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr "右スティックを上下に動かして、音量を上げ下げします"
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "ガンコン移動公差(許容誤差範囲)"
 
@@ -2214,6 +2356,19 @@ msgstr ""
 "スクレイプ済みゲームリストのスクロール時のラグを減少\n"
 "(起動時間が長くなります)"
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr "インデックスを生成するフォルダ階層"
+
+msgid "UNLIMITED"
+msgstr "無制限"
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+"各ROMフォルダ内でスキャンする最大階層を設定し、多数のファイルを含むサブフォル"
+"ダは無視します"
+
 msgid "THREADED LOADING"
 msgstr "スレッド読み込み(CPUコアが複数ある場合)"
 
@@ -2227,7 +2382,7 @@ msgid "OPTIMIZE VIDEO VRAM USAGE"
 msgstr "動画再生にVRAMを使用"
 
 msgid "USE FILESYSTEM CACHE"
-msgstr ""
+msgstr "ファイルシステムキャッシュを使用"
 
 msgid "REBOOT REQUIRED TO APPLY THE NEW CONFIGURATION"
 msgstr "新しい構成を適用するには、再起動が必要です"
@@ -2247,6 +2402,9 @@ msgstr "更新を確認"
 msgid "UPDATE TYPE"
 msgstr "更新データ種類"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr "アーキテクチャ 更新"
+
 msgid "APPLY UPDATE"
 msgstr "更新を適用"
 
@@ -2255,6 +2413,33 @@ msgstr "更新 開始"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "更新は既に実行中です"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr "ローカルメディア更新 開始"
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr "ローカルメディアの更新をしますか?"
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr "トレント経由のソフトウェア更新"
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr "トレント経由でアップデートを共有"
+
+msgid "Torrent update service started"
+msgstr "Torrent更新サービスを開始しました"
+
+msgid "Torrent update service stopped"
+msgstr "Torrent 更新サービスを停止しました"
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr "トレントファイルからアップデートを開始"
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr "本当にトレントファイルから更新しますか？"
+
+msgid "DOWNLOAD STATUS"
+msgstr "ダウンロード状況"
 
 msgid "LANGUAGE"
 msgstr "言語"
@@ -2344,6 +2529,22 @@ msgstr "音声プロファイル"
 msgid "Available options can change depending on current audio output."
 msgstr "現在の音声出力設定に応じて設定項目が変わる場合があります"
 
+msgid "HDR"
+msgstr "HDR"
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+"Moonlight HDR などのHDRコンテンツをディスプレイにストリーミング配信できます"
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "可変リフレッシュレート"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+"画面表示をフレームレートに追従させます。画面がちらつく場合はオフにしてくださ"
+"い"
+
 msgid "BOOT SPLASH"
 msgstr "ブートスプラッシュ映像"
 
@@ -2410,15 +2611,6 @@ msgstr "オン"
 msgid "OVERCLOCK"
 msgstr "オーバークロック"
 
-msgid "LED HARDWARE"
-msgstr "LED ハードウェア"
-
-msgid "ENABLE LED"
-msgstr " LED 有効"
-
-msgid "LED BRIGHTNESS"
-msgstr "LED 輝度"
-
 msgid "STORAGE"
 msgstr "ストレージ"
 
@@ -2445,6 +2637,16 @@ msgstr "ネットワーク共有にアクセスするにはパスワードが必
 
 msgid "ROOT PASSWORD"
 msgstr "ルートパスワード"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr "CPUセキュリティ対策"
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
+"緩和策を無効にすると、一部のシステムではパフォーマンスが向上する可能性がある"
+"一方で、特定のCPUの脆弱性に対する保護機能が低下することになります。"
 
 msgid "LATENCY REDUCTION"
 msgstr "ちらつき軽減"
@@ -2477,9 +2679,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "可変リフレッシュレート（G-SYNC、FREESYNC）"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "可変リフレッシュレート"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr "コア要求のタイミングを調整(G-Sync、FreeSync、HDMI2.1VRR)"
@@ -2493,16 +2692,11 @@ msgstr "現在の設定"
 msgid "BIOS SETTINGS"
 msgstr "BIOS 設定"
 
-msgid "SAVESTATES"
-msgstr "ステートセーブ"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "自動ステートセーブ/読込み"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
-msgstr ""
-"ゲームの起動時に最新のステートセーブを読込み、\n"
-"終了時にステートセーブを保存します"
+msgid "Load latest savestate on game launch and save state when exiting game."
+msgstr "ゲーム開始時にステートを読込み、終了時にステートセーブします"
 
 msgid "INCREMENTAL SAVESTATES"
 msgstr "ステートセーブの方法"
@@ -2829,11 +3023,34 @@ msgstr "操作音を有効"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "デモ動画のBGMを有効"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr "'%s' に接続できません"
+
+msgid "WI-FI NETWORKS"
+msgstr "Wi-Fiネットワーク"
+
+msgid "ADD A WI-FI NETWORK"
+msgstr "Wi-Fiネットワークを追加"
+
+msgid "WI-FI SSID"
+msgstr "WI-FI SSID"
+
+msgid "WI-FI KEY"
+msgstr "WI-FI キー"
+
+msgid "USE"
+msgstr "使用"
+
+msgid "FORGET"
+msgstr "削除"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "'%s' を削除しますか？"
+
 msgid "IP ADDRESS"
 msgstr "IP アドレス"
-
-msgid "CONNECTED"
-msgstr "接続中"
 
 msgid "INTERNET STATUS"
 msgstr "接続状態"
@@ -2841,26 +3058,20 @@ msgstr "接続状態"
 msgid "HOSTNAME"
 msgstr "ホスト名"
 
-msgid "ENABLE WIFI"
+msgid "ENABLE WI-FI"
 msgstr "WI-FI 有効"
 
-msgid "WIFI SSID"
-msgstr "WIFI SSID"
-
-msgid "WIFI KEY"
-msgstr "WIFI キー"
-
-msgid "WIFI COUNTRY"
-msgstr "WIFI 使用国"
+msgid "WI-FI COUNTRY"
+msgstr "WI-FI 使用国"
 
 msgid "N/A"
 msgstr "該当なし"
 
-msgid "WIFI ENABLED"
-msgstr "WIFI が有効になりました"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI が有効になりました"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "WIFI 設定エラー"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "WI-FI 設定エラー"
 
 msgid "QUICK ACCESS"
 msgstr "クイック アクセス"
@@ -2924,9 +3135,6 @@ msgstr "本当に終了しますか？"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "自動ステート読込みでゲームを開始"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr "ゲーム開始時にステートを読込み、終了時にステートセーブします"
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "コントローラーイメージを表示"
@@ -2995,7 +3203,7 @@ msgid "NO DRIVE SELECTED"
 msgstr "ドライブが選択されていません"
 
 msgid "Ejecting..."
-msgstr "取り出し中..."
+msgstr "取り出し中…"
 
 msgid "EDIT METADATA"
 msgstr "メタ情報を編集"
@@ -3031,13 +3239,6 @@ msgstr "接続解除"
 
 msgid "CONNECT"
 msgstr "接続"
-
-msgid "FORGET"
-msgstr "削除"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "'%s' を削除しますか？"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3393,13 +3594,13 @@ msgid "Screenscraper Game ID"
 msgstr "スクリーンスクレイパー ゲームID"
 
 msgid "MultiDisk"
-msgstr ""
+msgstr "マルチディスク"
 
 msgid "Loading system config..."
-msgstr "システム設定を読み込んでいます..."
+msgstr "システム設定を読み込んでいます…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "メタ情報の保存中。 お待ちください..."
+msgstr "メタ情報の保存中。 お待ちください…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "画面を切り替えますか？"
@@ -3422,8 +3623,8 @@ msgstr "4 プレイヤー"
 msgid "never played"
 msgstr "未プレイ"
 
-msgid "retroachievements"
-msgstr "retroachievements"
+msgid "RetroAchievements"
+msgstr "RetroAchievements"
 
 msgid "arcade"
 msgstr "アーケード"
@@ -3520,11 +3721,14 @@ msgstr "コアがありません"
 msgid "UKNOWN ERROR"
 msgstr "不明なエラー"
 
+msgid "Checking for latest upgrade script..."
+msgstr "最新の更新スクリプトを確認中…"
+
 msgid "Collections"
 msgstr "コレクション"
 
 msgid "Searching for devices..."
-msgstr "機器を検出中..."
+msgstr "機器を検出中…"
 
 msgid "FORMATTING DEVICE"
 msgstr "デバイスのフォーマット"
@@ -3610,11 +3814,8 @@ msgstr "スクリーンリーダー無効"
 msgid "ENABLED"
 msgstr "有効"
 
-msgid "up/down"
-msgstr "上 / 下"
-
 msgid "WORKING..."
-msgstr "処理中..."
+msgstr "処理中…"
 
 msgid "accept"
 msgstr "了解"
@@ -3839,7 +4040,7 @@ msgstr ""
 "ターゲットに発射して較正"
 
 msgid "Reloaded the games list..."
-msgstr "ゲームリストを再読み込みしました..."
+msgstr "ゲームリストを再読み込みしました…"
 
 msgid "GAME DRIVE DETECTED"
 msgstr "ゲームドライブ検出"
@@ -3863,7 +4064,7 @@ msgid "(This will also apply on future boots)"
 msgstr "（これは将来のブートにも適用されます）"
 
 msgid "Merge requested... Please wait."
-msgstr "ゲームを結合しています...お待ちください"
+msgstr "ゲームを結合しています…お待ちください"
 
 msgid "MERGE FAILED"
 msgstr "マージに失敗"
@@ -3878,10 +4079,10 @@ msgid "NO, IGNORE FOREVER"
 msgstr "いいえ、永遠に無視します"
 
 msgid "Adding drive to ignore list..."
-msgstr "無視リストにドライブを追加しています..."
+msgstr "無視リストにドライブを追加しています…"
 
 msgid "YES, MERGE DRIVE"
-msgstr ""
+msgstr "はい、ドライブを結合します"
 
 msgid "NEW DRIVE DETECTED"
 msgstr "ゲームドライブ検出"
@@ -3893,7 +4094,7 @@ msgid "(ALL EXISTING DATA WILL BE ERASED)"
 msgstr "（既存のデータはすべて消去されます）"
 
 msgid "Starting format process..."
-msgstr "フォーマット処理を開始しています..."
+msgstr "フォーマット処理を開始しています…"
 
 msgid "FORMAT FAILED"
 msgstr "フォーマットに失敗"
@@ -3945,6 +4146,18 @@ msgid "%d second ago"
 msgid_plural "%d seconds ago"
 msgstr[0] "%d 秒前"
 
+#~ msgid "up/down"
+#~ msgstr "上 / 下"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "ゲームの起動時に最新のステートセーブを読込み、\n"
+#~ "終了時にステートセーブを保存します"
+
+#~ msgid "FANART"
+#~ msgstr "ファンアート画像<fanart>"
+
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "追加したメタ情報ファイルを保存"
 
@@ -3961,9 +4174,9 @@ msgstr[0] "%d 秒前"
 #~ msgstr "今すぐこのドライブからゲームをマージ(結合)しますか?"
 
 #~ msgid "Merging drive... Please wait."
-#~ msgstr "ドライブをマージしています...お待ちください"
+#~ msgstr "ドライブをマージしています…お待ちください"
 
 #~ msgid "New drive content will be available after games list is refreshed..."
 #~ msgstr ""
 #~ "ゲーム リストが更新されると、新しいドライブ コンテンツが利用できるようにな"
-#~ "ります..."
+#~ "ります…"

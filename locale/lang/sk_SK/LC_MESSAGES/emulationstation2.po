@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: Batocera\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-05 13:13+0100\n"
-"PO-Revision-Date: 2026-03-25 08:42+0100\n"
+"PO-Revision-Date: 2026-05-15 15:07+0200\n"
 "Last-Translator: Roman Paholík <wizzardsk@gmail.com>\n"
 "Language-Team: Slovak <kde-sk@linux.sk>\n"
 "Language: sk_SK\n"
@@ -107,7 +107,7 @@ msgid "Loading gamelists"
 msgstr "Načítavam zoznamy hier"
 
 msgid "Loading..."
-msgstr "Načítavam..."
+msgstr "Načítavam…"
 
 msgid "MENU"
 msgstr "Ponuka"
@@ -202,9 +202,9 @@ msgstr "Obľúbené"
 #, c-format
 msgid "This folder contains %i game, including: %s"
 msgid_plural "This folder contains %i games, including: %s"
-msgstr[0] "Tento priečinok obsahuje %i hru, vrátane:%s"
-msgstr[1] "Tento priečinok obsahuje %i hry, vrátane:%s"
-msgstr[2] "Tento priečinok obsahuje %i hier, vrátane:%s"
+msgstr[0] "Tento priečinok obsahuje %i hru, vrátane: %s"
+msgstr[1] "Tento priečinok obsahuje %i hry, vrátane: %s"
+msgstr[2] "Tento priečinok obsahuje %i hier, vrátane: %s"
 
 msgid "FILTER GAMES BY TEXT"
 msgstr "Filtrovať hry podľa textu"
@@ -221,7 +221,7 @@ msgstr "Vybrať"
 msgid "BACK"
 msgstr "Späť"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "Uložiť stavy (podržať)"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -236,7 +236,7 @@ msgstr "Herné voľby"
 msgid "FAVORITE"
 msgstr "Obľúbené"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "Uložené pozície"
 
 #, c-format
@@ -303,7 +303,7 @@ msgstr "Uložiť zmeny?"
 msgid "ARE YOU SURE?"
 msgstr "Ste si istí?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr "Nastavenia Retroachievements"
 
 msgid "SETTINGS"
@@ -365,8 +365,8 @@ msgstr "Neoficiálne úspechy"
 msgid "Enable unlocking of unofficial achievements."
 msgstr "Povoliť odomknutie vlastných úspechov."
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
-msgstr "RetroAchievement odomknúť zvuk"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
+msgstr "RetroAchievements odomknúť zvuk"
 
 msgid "none"
 msgstr "žiadne"
@@ -377,8 +377,8 @@ msgstr "Odomknúť zvuk"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "Zobraziť položku Retroachievements v hlavnej ponuke"
 
-msgid "View your RetroAchievement stats right from the main menu!"
-msgstr "Zobraziť vaše RetroAchievement štatistiky z hlavnej ponuky!"
+msgid "View your RetroAchievements stats right from the main menu!"
+msgstr "Zobraziť vaše RetroAchievements štatistiky z hlavnej ponuky!"
 
 msgid "GAME INDEXES"
 msgstr "Herné indexy"
@@ -480,13 +480,13 @@ msgid "VOLUME MUTE"
 msgstr "Stlmiť zvuk"
 
 msgid "START RECORDING"
-msgstr ""
+msgstr "Spustiť záznam"
 
 msgid "STOP RECORDING"
-msgstr ""
+msgstr "Zastaviť záznam"
 
 msgid "KEYBOARD TOGGLE"
-msgstr ""
+msgstr "Prepnúť klávesnicu"
 
 msgid "KEY ASSIGNED TWICE"
 msgstr "Klávesa priradená dvakrát"
@@ -591,16 +591,6 @@ msgstr "Systémy zahrnuté"
 msgid "START"
 msgstr "Spustiť"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "Aktualizujem %s"
-
-msgid "UPDATE IS READY"
-msgstr "Aktualizácia je pripradená"
-
-msgid "REBOOT TO APPLY"
-msgstr "Reštartujte na použitie"
-
 msgid "REALLY UPDATE?"
 msgstr "Vykonať aktualizáciu systému?"
 
@@ -627,6 +617,16 @@ msgstr "Vyžaduje sa sieťové pripojenie"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "Nie je dostupná aktualizácia"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "Aktualizujem %s"
+
+msgid "UPDATE IS READY"
+msgstr "Aktualizácia je pripradená"
+
+msgid "REBOOT TO APPLY"
+msgstr "Reštartujte na použitie"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "Pripojiť k sieťovej hre"
@@ -890,7 +890,7 @@ msgid "VIEWER PASSWORD"
 msgstr "Heslo prezerača"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "Nájsť podobné hry..."
+msgstr "Nájsť podobné hry…"
 
 msgid "DELETE ITEM"
 msgstr "Vymazať položku"
@@ -925,7 +925,7 @@ msgid "WRITE"
 msgstr "Zápis"
 
 msgid "PLACE A TAG ON THE WRITER..."
-msgstr "Umiestniť značku na zapisovač..."
+msgstr "Umiestniť značku na zapisovač…"
 
 msgid "THE TAG WAS WRITTEN SUCCESSFULLY"
 msgstr "Značka bola úspešne zapísaná"
@@ -942,7 +942,7 @@ msgid "FAVORITES"
 msgstr "Obľúbené"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "Pridať do vlastnej kolekcie..."
+msgstr "Pridať do vlastnej kolekcie…"
 
 msgid "SCRAPE"
 msgstr "Vyhľadať"
@@ -1096,6 +1096,33 @@ msgstr "Ovládač #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "Ovládač P%i"
 
+msgid "RED"
+msgstr "červená"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "zelená"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "modrá"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "biela"
+
 msgid "CONTROLLER MAPPING"
 msgstr "Mapovanie ovládača"
 
@@ -1147,7 +1174,7 @@ msgid "SHOW CONTROLLER BATTERY LEVEL"
 msgstr "Zobraziť úroveň batérie ovládača"
 
 msgid "SHOW GUN NOTIFICATIONS"
-msgstr ""
+msgstr "Zobraziť upozornenia zbraní"
 
 msgid "DRAW GUN CROSSHAIR"
 msgstr "Kresliť nitkový kríž zbrane"
@@ -1164,11 +1191,99 @@ msgstr "Obmedziť ukončenie tlačidlami joysticku"
 msgid "GLOBAL HOTKEYS"
 msgstr "Globálne hotkey"
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "LED hardvér"
+
+msgid "ENABLE LED"
+msgstr "Povoliť LED"
+
+msgid "LED MODE"
+msgstr ""
+
+msgid "STATIC"
+msgstr ""
+
+msgid "RAINBOW"
+msgstr ""
+
+msgid "CHROMA"
+msgstr ""
+
+msgid "PULSE"
+msgstr ""
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "Vlastné"
+
+msgid "LED BRIGHTNESS"
+msgstr "LED jasnosť"
+
 msgid "default"
 msgstr "predvolené"
 
 msgid "NOT CONNECTED"
 msgstr "Nepripojené"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr "Juh"
@@ -1218,7 +1333,7 @@ msgstr "Hotkey"
 msgid "DEFAULT"
 msgstr "Predvolené"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
 msgstr "Nenašlo sa zariadenie (JammaSD, IPAC)"
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
@@ -1232,6 +1347,30 @@ msgstr "Nezistil sa globálny hotkey"
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
 msgstr "Zistil sa viac ako jeden globálny hotkey"
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
+msgstr ""
 
 msgid "BORDER SIZE"
 msgstr "Veľkosť okraja"
@@ -1262,18 +1401,6 @@ msgstr "Skryté"
 
 msgid "BORDER COLOR"
 msgstr "Farba okraja"
-
-msgid "WHITE"
-msgstr "biela"
-
-msgid "RED"
-msgstr "červená"
-
-msgid "GREEN"
-msgstr "zelená"
-
-msgid "BLUE"
-msgstr "modrá"
 
 msgid "BORDER RATIO"
 msgstr "Percento okraja"
@@ -1386,6 +1513,12 @@ msgstr "Zadať ručne"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "Nenašli sa žiadne Wi-Fi siete"
 
+msgid "CONNECTED"
+msgstr "Pripojené"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "Hľadám Wi-Fi siete"
 
@@ -1442,9 +1575,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAO PAULO"
-
-msgid "CUSTOM"
-msgstr "Vlastné"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "Vlastný relay server"
@@ -2018,6 +2148,12 @@ msgstr "Tiež zapne natívne počítanie FPS emulátora, ak je dostupné."
 msgid "VSYNC"
 msgstr "Vsync"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr ""
+
+msgid "FPS LIMIT"
+msgstr ""
+
 msgid "OVERSCAN"
 msgstr "Overscan"
 
@@ -2182,6 +2318,12 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "Ovládať EmulationStation iba prvým joystickom"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr ""
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "Tolerancia pohybu zbrane"
 
@@ -2219,6 +2361,17 @@ msgstr ""
 "Znižuje oneskorenie pri prechádzaní vyhľadaným zoznamom hier, predlžuje čas "
 "spustenia"
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+
 msgid "THREADED LOADING"
 msgstr "Súčasné načítavanie"
 
@@ -2232,7 +2385,7 @@ msgid "OPTIMIZE VIDEO VRAM USAGE"
 msgstr "Optimalizovať využitie video VRAM"
 
 msgid "USE FILESYSTEM CACHE"
-msgstr ""
+msgstr "Použiť cache filesystému"
 
 msgid "REBOOT REQUIRED TO APPLY THE NEW CONFIGURATION"
 msgstr "Na použitie zmien je potrebný reštart"
@@ -2252,6 +2405,9 @@ msgstr "Skontrolovať aktualizácie"
 msgid "UPDATE TYPE"
 msgstr "Typ aktualizácie"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr ""
+
 msgid "APPLY UPDATE"
 msgstr "Použiť aktualizáciu"
 
@@ -2260,6 +2416,33 @@ msgstr "Spustiť aktualizáciu"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "Aktualizátor už beží"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr ""
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "Torrent update service started"
+msgstr ""
+
+msgid "Torrent update service stopped"
+msgstr ""
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr ""
+
+msgid "DOWNLOAD STATUS"
+msgstr ""
 
 msgid "LANGUAGE"
 msgstr "Jazyk"
@@ -2344,6 +2527,19 @@ msgstr "Zvukový profil"
 msgid "Available options can change depending on current audio output."
 msgstr "Dostupné voľby sa môžu zmeniť podľa aktuálneho audio výstupu."
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "Premenlivá obnovovacia frekvencia"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "Obrázok pri spustení"
 
@@ -2410,15 +2606,6 @@ msgstr "zapnuté"
 msgid "OVERCLOCK"
 msgstr "Pretaktovanie"
 
-msgid "LED HARDWARE"
-msgstr "LED hardvér"
-
-msgid "ENABLE LED"
-msgstr "Povoliť LED"
-
-msgid "LED BRIGHTNESS"
-msgstr "LED jasnosť"
-
 msgid "STORAGE"
 msgstr "Úložisko"
 
@@ -2445,6 +2632,14 @@ msgstr "Vyžadovať heslo na prístup k sieťovému zdieľaniu."
 
 msgid "ROOT PASSWORD"
 msgstr "Heslo roota"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr ""
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
 
 msgid "LATENCY REDUCTION"
 msgstr "Redukcia latencie"
@@ -2477,9 +2672,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "Premenlivá obnovovacia frekvencia (G-sync, freesync)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "Premenlivá obnovovacia frekvencia"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2495,16 +2687,12 @@ msgstr "Aktuálne nastavenie"
 msgid "BIOS SETTINGS"
 msgstr "Nastavenia BIOSu"
 
-msgid "SAVESTATES"
-msgstr "Uložené pozície"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "Automaticky uložiť/načítať"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
-"Načítať posledný uložený stav pri spustení hry a uložiť stav pri ukončení "
-"hry."
+"Načítať najnovší uložený stav pri spustení hry a uložiť stav pri ukočení hry."
 
 msgid "INCREMENTAL SAVESTATES"
 msgstr "Inkrementálne stavy uloženia"
@@ -2832,11 +3020,34 @@ msgstr "Povoliť zvuky navigácie"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "Povoliť zvuk pri video náhľade"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "Názov siete"
+
+msgid "WI-FI KEY"
+msgstr "Wi-Fi heslo"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr "Zabudnúť"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "Určite chcete zabudnúť '%s' ?"
+
 msgid "IP ADDRESS"
 msgstr "IP adresa"
-
-msgid "CONNECTED"
-msgstr "Pripojené"
 
 msgid "INTERNET STATUS"
 msgstr "Stav internetu"
@@ -2844,25 +3055,19 @@ msgstr "Stav internetu"
 msgid "HOSTNAME"
 msgstr "Názov hostiteľa"
 
-msgid "ENABLE WIFI"
+msgid "ENABLE WI-FI"
 msgstr "Povoliť Wi-Fi"
 
-msgid "WIFI SSID"
-msgstr "Názov siete"
-
-msgid "WIFI KEY"
-msgstr "Wi-Fi heslo"
-
-msgid "WIFI COUNTRY"
-msgstr "Krajina WIFI"
+msgid "WI-FI COUNTRY"
+msgstr "Krajina WI-FI"
 
 msgid "N/A"
 msgstr "N/A"
 
-msgid "WIFI ENABLED"
+msgid "WI-FI ENABLED"
 msgstr "Wi-Fi povolené"
 
-msgid "WIFI CONFIGURATION ERROR"
+msgid "WI-FI CONFIGURATION ERROR"
 msgstr "Chyba konfigurácie Wi-Fi"
 
 msgid "QUICK ACCESS"
@@ -2927,10 +3132,6 @@ msgstr "Naozaj ukončiť?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "Automaticky uložiť/načítať pri spustení hry"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
-"Načítať najnovší uložený stav pri spustení hry a uložiť stav pri ukočení hry."
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "Zobraziť prekrytia ovládačov"
@@ -2999,7 +3200,7 @@ msgid "NO DRIVE SELECTED"
 msgstr "Nevybraný disk"
 
 msgid "Ejecting..."
-msgstr "Vysúvam..."
+msgstr "Vysúvam…"
 
 msgid "EDIT METADATA"
 msgstr "Upraviť metadáta"
@@ -3035,13 +3236,6 @@ msgstr "Odpojiť"
 
 msgid "CONNECT"
 msgstr "Pripojiť"
-
-msgid "FORGET"
-msgstr "Zabudnúť"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "Určite chcete zabudnúť '%s' ?"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3397,13 +3591,13 @@ msgid "Screenscraper Game ID"
 msgstr "ID hry Screenscrapera"
 
 msgid "MultiDisk"
-msgstr ""
+msgstr "MultiDisk"
 
 msgid "Loading system config..."
-msgstr "Načítavam systémové nastavenie..."
+msgstr "Načítavam systémové nastavenie…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "Ukladám metadáta, počkajte prosím..."
+msgstr "Ukladám metadáta, počkajte prosím…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "Chcete prepnúť obrazovku?"
@@ -3426,8 +3620,8 @@ msgstr "4 hráči"
 msgid "never played"
 msgstr "nikdy nehrané"
 
-msgid "retroachievements"
-msgstr "retroachievements"
+msgid "RetroAchievements"
+msgstr "RetroAchievements"
 
 msgid "arcade"
 msgstr "arkáda"
@@ -3471,9 +3665,9 @@ msgstr "Rôzne"
 #, c-format
 msgid "This collection contains %i game: %s"
 msgid_plural "This collection contains %i games, including: %s"
-msgstr[0] "Táto kolekcia obsahuje %i hru:%s"
-msgstr[1] "Táto kolekcia obsahuje %i hry, vrátane:%s"
-msgstr[2] "Táto kolekcia obsahuje %i hier, vrátane:%s"
+msgstr[0] "Táto kolekcia obsahuje %i hru: %s"
+msgstr[1] "Táto kolekcia obsahuje %i hry, vrátane: %s"
+msgstr[2] "Táto kolekcia obsahuje %i hier, vrátane: %s"
 
 msgid "INVALID CONTENT"
 msgstr "Neplatný obsah"
@@ -3524,11 +3718,14 @@ msgstr "Jadro chýba"
 msgid "UKNOWN ERROR"
 msgstr "Neznáma chyba"
 
+msgid "Checking for latest upgrade script..."
+msgstr ""
+
 msgid "Collections"
 msgstr "Kolekcie"
 
 msgid "Searching for devices..."
-msgstr "Hľadám zariadenia..."
+msgstr "Hľadám zariadenia…"
 
 msgid "FORMATTING DEVICE"
 msgstr "Formátujem zariadenie"
@@ -3614,11 +3811,8 @@ msgstr "Čítačka obrazovky zakázaná"
 msgid "ENABLED"
 msgstr "Povolené"
 
-msgid "up/down"
-msgstr "hore/dolu"
-
 msgid "WORKING..."
-msgstr "Pracujem..."
+msgstr "Pracujem…"
 
 msgid "accept"
 msgstr "prijať"
@@ -3849,7 +4043,7 @@ msgstr ""
 "Vystreľte na cieľ na kalibráciu"
 
 msgid "Reloaded the games list..."
-msgstr "Znovu načítaný zoznam hier..."
+msgstr "Znovu načítaný zoznam hier…"
 
 msgid "GAME DRIVE DETECTED"
 msgstr "Zistil sa disk s hrou"
@@ -3873,7 +4067,7 @@ msgid "(This will also apply on future boots)"
 msgstr "(Toto sa použije aj pri ďalších spusteniach)"
 
 msgid "Merge requested... Please wait."
-msgstr "Požadované zlúčenie... prosím čakajte."
+msgstr "Požadované zlúčenie… prosím čakajte."
 
 msgid "MERGE FAILED"
 msgstr "Zlúčenie zlyhalo"
@@ -3888,10 +4082,10 @@ msgid "NO, IGNORE FOREVER"
 msgstr "Nie, ignorovať navždy"
 
 msgid "Adding drive to ignore list..."
-msgstr "Pridávam disk do ignore listu..."
+msgstr "Pridávam disk do ignore listu…"
 
 msgid "YES, MERGE DRIVE"
-msgstr ""
+msgstr "Áno, zlúčiť disk"
 
 msgid "NEW DRIVE DETECTED"
 msgstr "Zistil sa nový disk"
@@ -3903,7 +4097,7 @@ msgid "(ALL EXISTING DATA WILL BE ERASED)"
 msgstr "(všetky existujúce dáta budú vymazané)"
 
 msgid "Starting format process..."
-msgstr "Spúšťam proces formátovania..."
+msgstr "Spúšťam proces formátovania…"
 
 msgid "FORMAT FAILED"
 msgstr "Formátovanie zlyhalo"
@@ -3965,6 +4159,18 @@ msgstr[0] "Pred %d sekundou"
 msgstr[1] "Pred %d sekundami"
 msgstr[2] "Pred %d sekundami"
 
+#~ msgid "up/down"
+#~ msgstr "hore/dolu"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "Načítať posledný uložený stav pri spustení hry a uložiť stav pri ukončení "
+#~ "hry."
+
+#~ msgid "FANART"
+#~ msgstr "Fanart"
+
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "Vytvoriť pamäť obrázkov"
 
@@ -3981,10 +4187,10 @@ msgstr[2] "Pred %d sekundami"
 #~ msgstr "Zlúčiť hry z tohto disku?"
 
 #~ msgid "Merging drive... Please wait."
-#~ msgstr "Zlučujem disk... Prosím, čakajte."
+#~ msgstr "Zlučujem disk… Prosím, čakajte."
 
 #~ msgid "New drive content will be available after games list is refreshed..."
-#~ msgstr "Nový obsah disku bude dostupný po obnovení zoznamu hier..."
+#~ msgstr "Nový obsah disku bude dostupný po obnovení zoznamu hier…"
 
 #~ msgid "BY HARDWARE TYPE"
 #~ msgstr "Podľa typu hardvéru"
@@ -4027,7 +4233,7 @@ msgstr[2] "Pred %d sekundami"
 #~ "Vynulovať hodnoty metadát hracieho času, počtu hraní a poslednej hry."
 
 #~ msgid "SAVING METADATAS. PLEASE WAIT..."
-#~ msgstr "Ukladanie metadát. Prosím, čakajte..."
+#~ msgstr "Ukladanie metadát. Prosím, čakajte…"
 
 #~ msgid "FORGET A BLUETOOTH DEVICE"
 #~ msgstr "Zabudnúť bluetooth zariadenie"

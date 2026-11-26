@@ -37,8 +37,12 @@ private:
 	void openControllersHotkeys();
   	void openGlobalHotkeys();
   	void openPad2key();
+    	void openTrackballSpinners();
+  	void openLEDBatteryLevels();
   	void initializeGlobalHotkeys(Window* window, GuiSettings* s);
   	void declareGlobalHotkey(Window* window, GuiSettings* s);
+  	void initializeTrackballSpinners(Window* window, GuiSettings* s);
+  	void declareTrackballSpinners(Window* window, GuiSettings* s, const std::string& type);
 
 	std::vector<InputConfigInfo*> mLoadedInput;
 	void clearLoadedInput();

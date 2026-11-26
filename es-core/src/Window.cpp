@@ -403,7 +403,8 @@ void Window::layoutNotificationPopups()
 
 void Window::processSongTitleNotifications()
 {
-	if (AudioManager::getInstance()->songNameChanged())
+	// getInstance() opens the audio device, the control center has none
+	if (AudioManager::isInitialized() && AudioManager::getInstance()->songNameChanged())
 	{
 		if (Settings::getInstance()->getBool("audio.display_titles"))
 		{
@@ -982,13 +983,26 @@ void Window::closeSplashScreen()
 	mSplash = nullptr;
 }
 
-void Window::renderHelpPromptsEarly(const Transform4x4f& transform)
+void Window::renderHelpPromptsEarly(const Transform4x4f& transform, unsigned char opacity)
 {
-	mHelp->render(transform);
+	if (opacity == 255)
+		mHelp->render(transform);
+	else if (opacity > 0)
+	{
+		auto previous = mHelp->getOpacity();
+		mHelp->setOpacity(opacity);
+		mHelp->render(transform);
+		mHelp->setOpacity(previous);
+	}
+
 	mRenderedHelpPrompts = true;
 }
 
+#ifdef HIPPOS
+void Window::setHelpPrompts(const std::vector<HelpPrompt>& prompts, const HelpStyle& style, bool sortPrompts)
+#else
 void Window::setHelpPrompts(const std::vector<HelpPrompt>& prompts, const HelpStyle& style)
+#endif
 {
 	// Keep a temporary reference to the previous grid.
 	// It avoids unloading/reloading images if they are the same, and avoids flickerings
@@ -1034,6 +1048,9 @@ void Window::setHelpPrompts(const std::vector<HelpPrompt>& prompts, const HelpSt
 	}
 
 	// sort prompts so it goes [dpad_all] [dpad_u/d] [dpad_l/r] [a/b/x/y/l/r] [start/select]
+#ifdef HIPPOS
+	if (sortPrompts)
+#endif
 	std::sort(addPrompts.begin(), addPrompts.end(), [](const HelpPrompt& a, const HelpPrompt& b) -> bool {
 
 		static const char* map[] = {
@@ -1547,6 +1564,7 @@ void Window::processStorageRequest(std::string line)
 				},
 				_("YES, MERGE DRIVE"), mergeLambda
 			);
+			msg->setBackButton(0);
 			pushGui(msg);
 		}
 		else
@@ -1555,6 +1573,7 @@ void Window::processStorageRequest(std::string line)
 				_("YES"), mergeLambda, 
 				_("NO"), [processNext] { processNext(); }
 			);
+			msg->setBackButton(0);
 			pushGui(msg);
 		}
 	}
@@ -1592,7 +1611,7 @@ void Window::processStorageRequest(std::string line)
 			}).detach();
 		};
 
-		pushGui(new GuiMsgBox(this, message,
+		auto* msg = new GuiMsgBox(this, message,
 			_("NO, IGNORE THIS TIME"), [processNext] { processNext(); },
 			_("NO, IGNORE FOREVER"), [this, uri, processNext] {
 				this->displayNotificationMessage(_("Adding share to ignore list..."));
@@ -1601,7 +1620,9 @@ void Window::processStorageRequest(std::string line)
 					this->postToUiThread([processNext] { processNext(); });
 				}).detach();
 			},
-			_("YES, MERGE SHARE"), mergeLambda));
+			_("YES, MERGE SHARE"), mergeLambda);
+		msg->setBackButton(0);
+		pushGui(msg);
 	}
 	else if (type == "REQUEST_FORMAT" && parts.size() >= 2)
 	{
@@ -1654,6 +1675,7 @@ void Window::processStorageRequest(std::string line)
 				},
 				_("YES, FORMAT & MERGE"), confirmLambda
 			);
+			msg->setBackButton(0);
 			pushGui(msg);
 		}
 		else
@@ -1662,6 +1684,7 @@ void Window::processStorageRequest(std::string line)
 				_("NO, IGNORE"), [processNext] { processNext(); },
 				_("YES, FORMAT & MERGE"), confirmLambda
 			);
+			msg->setBackButton(0);
 			pushGui(msg);
 		}
 	}

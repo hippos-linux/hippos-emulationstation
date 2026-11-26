@@ -178,7 +178,7 @@ void Settings::setDefaults()
     mStringMap["Overclock"] = "none";
 
 	mBoolMap["VSync"] = Settings::_VSync;
-	mStringMap["FolderViewMode"] = "never";
+	mStringMap["FolderViewMode"] = "always";
 	mStringMap["HiddenSystems"] = "";
 
 	mBoolMap["PublicWebAccess"] = false;	
@@ -302,6 +302,7 @@ void Settings::setDefaults()
 	mBoolMap["ScreenSaverVideoMute"] = false;
 	mBoolMap["VideoLowersMusic"] = true;
 	mBoolMap["VolumePopup"] = Settings::_VolumePopup;
+	mBoolMap["RightStickVolume"] = true;
 
 	mIntMap["MusicVolume"] = 128;
 
@@ -352,10 +353,11 @@ void Settings::setDefaults()
 
 	mBoolMap["ShowFilenames"] = false;
 
-#if defined(_WIN32) || defined(X86) || defined(X86_64)
-	mBoolMap["HideWindow"] = false;
-#else
+#if defined(RK3128)
+	// no compositor, so the emulator needs the display ES would keep
 	mBoolMap["HideWindow"] = true;
+#else
+	mBoolMap["HideWindow"] = false;
 #endif
 
 	mBoolMap["HideWindowFullReinit"] = false;
@@ -377,7 +379,8 @@ void Settings::setDefaults()
 	mStringMap["INPUT P7NAME"] = "DEFAULT";
 	mStringMap["INPUT P8NAME"] = "DEFAULT";
 
-#ifdef HIPPOS
+#ifdef BATOCERA
+	mStringMap["HOTKEY_CONTROLCENTER"] = "a";
 #endif
 
 	// Audio settings

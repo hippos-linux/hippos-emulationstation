@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2026-05-04 22:10+0300\n"
+"PO-Revision-Date: 2026-10-30 11:48+0200\n"
 "Last-Translator: Mihai Vasiliu <mihai.vasiliu.93@gmail.com>\n"
 "Language-Team: \n"
 "Language: ro_RO\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n!=1 && n%100>=1 && "
 "n%100<=19) ? 1 : 2);\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.10\n"
 
 msgid "Searching"
 msgstr "Se caută"
@@ -105,7 +105,7 @@ msgid "Loading gamelists"
 msgstr "Se încarcă listele de jocuri"
 
 msgid "Loading..."
-msgstr "Se încarcă..."
+msgstr "Se încarcă…"
 
 msgid "MENU"
 msgstr "MENIU"
@@ -219,7 +219,7 @@ msgstr "ALEGE"
 msgid "BACK"
 msgstr "ÎNAPOI"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "STĂRI SALVATE (ȚINE APĂSAT)"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -234,7 +234,7 @@ msgstr "OPȚIUNI JOC"
 msgid "FAVORITE"
 msgstr "FAVORITE"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "STĂRI SALVATE"
 
 #, c-format
@@ -301,7 +301,7 @@ msgstr "SALVEZI MODIFICĂRILE?"
 msgid "ARE YOU SURE?"
 msgstr "EȘTI SIGUR?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr "SETĂRI RETROREALIZĂRI"
 
 msgid "SETTINGS"
@@ -370,7 +370,7 @@ msgstr "REALIZĂRI NEOFICIALE"
 msgid "Enable unlocking of unofficial achievements."
 msgstr "Permite deblocarea de realizări neoficiale."
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr "SUNET DEBLOCARE RETROREALIZARE"
 
 msgid "none"
@@ -382,7 +382,7 @@ msgstr "SUNET DEBLOCARE"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "AFIȘEAZĂ RETROREALIZĂRI ÎN MENIUL PRINCIPAL"
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr "Vezi statisticile RetroRealizări direct din meniul principal!"
 
 msgid "GAME INDEXES"
@@ -485,13 +485,13 @@ msgid "VOLUME MUTE"
 msgstr "OPRIRE VOLUM"
 
 msgid "START RECORDING"
-msgstr ""
+msgstr "ÎNCEPE ÎNREGISTRAREA"
 
 msgid "STOP RECORDING"
-msgstr ""
+msgstr "OPREȘTE ÎNREGISTRAREA"
 
 msgid "KEYBOARD TOGGLE"
-msgstr ""
+msgstr "COMUTARE TASTATURĂ"
 
 msgid "KEY ASSIGNED TWICE"
 msgstr "TASTĂ ASOCIATĂ DE 2 ORI"
@@ -596,18 +596,8 @@ msgstr "SISTEME INCLUSE"
 msgid "START"
 msgstr "ÎNCEPE"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "SE ACTUALIZEAZĂ %s"
-
-msgid "UPDATE IS READY"
-msgstr "ACTUALIZAREA ESTE PREGĂTITĂ"
-
-msgid "REBOOT TO APPLY"
-msgstr "REPORNEȘTE PENTRU A APLICA"
-
 msgid "REALLY UPDATE?"
-msgstr "SIGUR ACTUALIZEZI?"
+msgstr "DOREȘTI SĂ ACTUALIZEZI?"
 
 #, c-format
 msgid ""
@@ -632,6 +622,16 @@ msgstr "O CONEXIUNE LA REȚEA ESTE NECESARĂ"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "NICIO ACTUALIZARE DISPONIBILĂ"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "SE ACTUALIZEAZĂ %s"
+
+msgid "UPDATE IS READY"
+msgstr "ACTUALIZAREA ESTE PREGĂTITĂ"
+
+msgid "REBOOT TO APPLY"
+msgstr "REPORNEȘTE PENTRU A APLICA"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "CONECTEAZĂ-TE LA NETPLAY"
@@ -895,7 +895,7 @@ msgid "VIEWER PASSWORD"
 msgstr "PAROLĂ SPECTATORI"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "GĂSEȘTE JOCURI SIMILARE..."
+msgstr "GĂSEȘTE JOCURI SIMILARE…"
 
 msgid "DELETE ITEM"
 msgstr "ȘTERGE ELEMENT"
@@ -930,7 +930,7 @@ msgid "WRITE"
 msgstr "SCRIE"
 
 msgid "PLACE A TAG ON THE WRITER..."
-msgstr "AȘAZĂ UN TAG PE SCRIITOR..."
+msgstr "AȘAZĂ UN TAG PE SCRIITOR…"
 
 msgid "THE TAG WAS WRITTEN SUCCESSFULLY"
 msgstr "TAG-UL A FOST SCRIS CU SUCCES"
@@ -947,7 +947,7 @@ msgid "FAVORITES"
 msgstr "FAVORITE"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "ADAUGĂ LA O COLECȚIE PERSONALIZATĂ..."
+msgstr "ADAUGĂ LA O COLECȚIE PERSONALIZATĂ…"
 
 msgid "SCRAPE"
 msgstr "PREIA DATE"
@@ -1101,6 +1101,33 @@ msgstr "CONTROLER #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "CONTROLERUL JUCĂTORULUI %i"
 
+msgid "RED"
+msgstr "ROȘU"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "VERDE"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "ALBASTRU"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "ALBĂ"
+
 msgid "CONTROLLER MAPPING"
 msgstr "ASOCIAZĂ BUTOANELE CONTROLERULUI"
 
@@ -1153,7 +1180,7 @@ msgid "SHOW CONTROLLER BATTERY LEVEL"
 msgstr "AFIȘEAZĂ NIVELUL BATERIEI CONTROLERELOR"
 
 msgid "SHOW GUN NOTIFICATIONS"
-msgstr ""
+msgstr "AFIȘEAZĂ NOTIFICĂRI PISTOL"
 
 msgid "DRAW GUN CROSSHAIR"
 msgstr "DESENEAZĂ ȚINTĂ PISTOL"
@@ -1170,11 +1197,99 @@ msgstr "RESTRICȚIONEAZĂ SCURTĂTURILE JOYSTICK LA IEȘIRE"
 msgid "GLOBAL HOTKEYS"
 msgstr "SCURTĂTURI GLOBALE"
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "LED HARDWARE"
+
+msgid "ENABLE LED"
+msgstr "ACTIVEAZĂ LED"
+
+msgid "LED MODE"
+msgstr "MOD LED"
+
+msgid "STATIC"
+msgstr "STATIC"
+
+msgid "RAINBOW"
+msgstr "CURCUBEU"
+
+msgid "CHROMA"
+msgstr "CROMATIC"
+
+msgid "PULSE"
+msgstr "PULSATORIU"
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "PERSONALIZAT"
+
+msgid "LED BRIGHTNESS"
+msgstr "LUMINOZITATE LED"
+
 msgid "default"
 msgstr "implicit"
 
 msgid "NOT CONNECTED"
 msgstr "DECONECTAT"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr "SUD"
@@ -1224,8 +1339,8 @@ msgstr "TASTĂ RAPIDĂ"
 msgid "DEFAULT"
 msgstr "IMPLICIT"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
-msgstr "NICIUN DISPOZITIV GĂSIT (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
+msgstr "NICIUN DISPOZITIV GĂSIT (JAMMASD, IPAC…)"
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
 msgstr "DECLARĂ O SCURTĂTURĂ GLOBALĂ"
@@ -1238,6 +1353,30 @@ msgstr "NICIO SCURTĂTURĂ GLOBALĂ DETECTATĂ"
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
 msgstr "MAI MULT DE O SCURTĂTURĂ GLOBALĂ DETECTATĂ"
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
+msgstr ""
 
 msgid "BORDER SIZE"
 msgstr "MĂRIME CHENAR"
@@ -1268,18 +1407,6 @@ msgstr "ASCUNSĂ"
 
 msgid "BORDER COLOR"
 msgstr "CULOARE CHENAR"
-
-msgid "WHITE"
-msgstr "ALBĂ"
-
-msgid "RED"
-msgstr "ROȘU"
-
-msgid "GREEN"
-msgstr "VERDE"
-
-msgid "BLUE"
-msgstr "ALBASTRU"
 
 msgid "BORDER RATIO"
 msgstr "RAPORT CHENAR"
@@ -1392,6 +1519,12 @@ msgstr "INTRODU MANUAL"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "NU S-AU GĂSIT REȚELE WI-FI"
 
+msgid "CONNECTED"
+msgstr "CONECTAT"
+
+msgid "ALREADY CONNECTED"
+msgstr "DEJA CONECTAT"
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "SE CAUTĂ REȚELE WI-FI"
 
@@ -1450,9 +1583,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAO PAULO"
-
-msgid "CUSTOM"
-msgstr "PERSONALIZAT"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "SERVER RETRANSLAȚIE PERSONALIZAT"
@@ -2028,6 +2158,12 @@ msgstr ""
 msgid "VSYNC"
 msgstr "VSYNC"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr "ANTI-ALIASING (MSAA)"
+
+msgid "FPS LIMIT"
+msgstr "LIMITĂ FPS"
+
 msgid "OVERSCAN"
 msgstr "OVERSCAN"
 
@@ -2195,6 +2331,13 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "CONTROLEAZĂ ES DOAR CU PRIMUL JOYSTICK"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr "JOYSTICK-UL ANALOGIC DREPT AJUSTEAZĂ VOLUMUL"
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+"Mișcă joystick-ul drept sus/jos pentru a crește sau scădea volumul audio."
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "TOLERANȚA LA MIȘCAREA PUȘTII"
 
@@ -2232,6 +2375,19 @@ msgstr ""
 "Micșorează latența când se derulează o listă de jocuri completă cu metadate, "
 "dar mărește timpul de boot"
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr "ADÂNCIMEA DOSARELOR DE INDEXAT"
+
+msgid "UNLIMITED"
+msgstr "NELIMITATĂ"
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+"Adâncimea maximă de scanat în interiorul fiecărui dosar ROM, pentru a ignora "
+"subdosarele cu multe fișiere."
+
 msgid "THREADED LOADING"
 msgstr "ÎNCĂRCARE PE FIRE DE EXECUȚIE"
 
@@ -2245,7 +2401,7 @@ msgid "OPTIMIZE VIDEO VRAM USAGE"
 msgstr "OPTIMIZEAZĂ NECESARUL DE VRAM PENTRU VIDEO"
 
 msgid "USE FILESYSTEM CACHE"
-msgstr ""
+msgstr "FOLOSEȘTE CACHE SISTEM DE FIȘIERE"
 
 msgid "REBOOT REQUIRED TO APPLY THE NEW CONFIGURATION"
 msgstr "ESTE NECESARĂ O REPORNIRE PENTRU A APLICA NOUA CONFIGURAȚIE"
@@ -2265,6 +2421,9 @@ msgstr "VERIFICĂ PENTRU ACTUALIZĂRI"
 msgid "UPDATE TYPE"
 msgstr "TIP ACTUALIZARE"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr "ACTUALIZARE ARHITECTURĂ"
+
 msgid "APPLY UPDATE"
 msgstr "APLICĂ ACTUALIZAREA"
 
@@ -2273,6 +2432,33 @@ msgstr "ÎNCEPE ACTUALIZAREA"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "ACTUALIZATORUL DEJA RULEAZĂ"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr "ÎNCEPE ACTUALIZAREA DIN FIȘIER LOCAL"
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr "DOREȘTI SĂ ACTUALIZEZI DIN FIȘIER LOCAL?"
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr "ACTUALIZĂRI SOFTWARE VIA TORRENT"
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr "PARTAJEAZĂ ACTUALIZĂRILE VIA TORRENT"
+
+msgid "Torrent update service started"
+msgstr "Serviciu de actualizare via torrent pornit"
+
+msgid "Torrent update service stopped"
+msgstr "Serviciu de actualizare via torrent oprit"
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr "ÎNCEPE ACTUALIZAREA DIN FIȘIER TORRENT"
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr "DOREȘTI SĂ ACTUALIZEZI DIN FIȘIER TORRENT?"
+
+msgid "DOWNLOAD STATUS"
+msgstr "STARE DESCĂRCARE"
 
 msgid "LANGUAGE"
 msgstr "LIMBĂ"
@@ -2365,6 +2551,21 @@ msgid "Available options can change depending on current audio output."
 msgstr ""
 "Opțiunile disponibile se pot schimba în funcție de ieșirea audio curentă."
 
+msgid "HDR"
+msgstr "HDR"
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr "Permite conținut HDR cum ar fi fluxurile Moonlight HDR către ecran."
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "RATĂ DE REÎMPROSPĂTARE VARIABILĂ"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+"Lasă ecranul să urmeze rata de reîmprospătare. Dezactivează dacă ecranul "
+"manifestă pâlpâiri."
+
 msgid "BOOT SPLASH"
 msgstr "ECRAN DE PORNIRE"
 
@@ -2431,15 +2632,6 @@ msgstr "pornit"
 msgid "OVERCLOCK"
 msgstr "OVERCLOCK"
 
-msgid "LED HARDWARE"
-msgstr "LED HARDWARE"
-
-msgid "ENABLE LED"
-msgstr "ACTIVEAZĂ LED"
-
-msgid "LED BRIGHTNESS"
-msgstr "LUMINOZITATE LED"
-
 msgid "STORAGE"
 msgstr "STOCARE"
 
@@ -2466,6 +2658,17 @@ msgstr "Necesită o parolă pentru a accesa datele din rețea."
 
 msgid "ROOT PASSWORD"
 msgstr "PAROLĂ ROOT"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr "SLĂBIRE SECURITATE CPU"
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
+"Slăbind securitatea procesorului poate îmbunătăți performanța pe unele "
+"sisteme cu costul protecției mai reduse împotriva unor vulnerabilități ale "
+"procesorului."
 
 msgid "LATENCY REDUCTION"
 msgstr "REDUCEREA LATENȚEI"
@@ -2498,9 +2701,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "RATĂ DE REÎMPROSPĂTARE VARIABILĂ (G-SYNC, FREESYNC)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "RATĂ DE REÎMPROSPĂTARE VARIABILĂ"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2515,16 +2715,13 @@ msgstr "Setare curentă"
 msgid "BIOS SETTINGS"
 msgstr "SETĂRI BIOS"
 
-msgid "SAVESTATES"
-msgstr "STĂRI SALVATE"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "SALVEAZĂ/ÎNCARCĂ AUTOMAT"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
 "Încarcă ultima stare salvată la lansarea jocului și salvează starea la "
-"închiderea lui."
+"închiderea acestuia."
 
 msgid "INCREMENTAL SAVESTATES"
 msgstr "INCREMENTARE"
@@ -2660,7 +2857,7 @@ msgid "GAME HASHING IS RUNNING. DO YOU WANT TO STOP IT?"
 msgstr "SE CALCULEAZĂ HASH-URILE JOCURILOR. DOREȘTI SĂ OPREȘTI PROCESUL?"
 
 msgid "REALLY UPDATE GAMELISTS?"
-msgstr "CHIAR DOREȘTI ACTUALIZAREA LISTELOR DE JOCURI?"
+msgstr "DOREȘTI ACTUALIZAREA LISTELOR DE JOCURI?"
 
 msgid "Emulator"
 msgstr "Emulator"
@@ -2854,11 +3051,34 @@ msgstr "ACTIVEAZĂ SUNETELE ÎN NAVIGARE"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "ACTIVEAZĂ PREVIZUALIZARE VIDEO CU SUNET"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr "NU SE POATE CONECTA LA '%s'"
+
+msgid "WI-FI NETWORKS"
+msgstr "REȚELE WI-FI"
+
+msgid "ADD A WI-FI NETWORK"
+msgstr "ADAUGĂ O REȚEA WI-FI"
+
+msgid "WI-FI SSID"
+msgstr "SSID WI-FI"
+
+msgid "WI-FI KEY"
+msgstr "CHEIE WI-FI"
+
+msgid "USE"
+msgstr "FOLOSEȘTE"
+
+msgid "FORGET"
+msgstr "UITĂ"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "EȘTI SIGUR CĂ VREI SĂ UIȚI „%s”?"
+
 msgid "IP ADDRESS"
 msgstr "ADRESĂ IP"
-
-msgid "CONNECTED"
-msgstr "CONECTAT"
 
 msgid "INTERNET STATUS"
 msgstr "STARE INTERNET"
@@ -2866,26 +3086,20 @@ msgstr "STARE INTERNET"
 msgid "HOSTNAME"
 msgstr "NUME SISTEM"
 
-msgid "ENABLE WIFI"
-msgstr "ACTIVEAZĂ WIFI"
+msgid "ENABLE WI-FI"
+msgstr "ACTIVEAZĂ WI-FI"
 
-msgid "WIFI SSID"
-msgstr "SSID WIFI"
-
-msgid "WIFI KEY"
-msgstr "CHEIE WIFI"
-
-msgid "WIFI COUNTRY"
-msgstr "ȚARĂ WIFI"
+msgid "WI-FI COUNTRY"
+msgstr "ȚARĂ WI-FI"
 
 msgid "N/A"
 msgstr "N/A"
 
-msgid "WIFI ENABLED"
-msgstr "WIFI ACTIVAT"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI ACTIVAT"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "EROARE DE CONFIGURARE WIFI"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "EROARE DE CONFIGURARE WI-FI"
 
 msgid "QUICK ACCESS"
 msgstr "ACCES RAPID"
@@ -2918,19 +3132,19 @@ msgid "RESTART SYSTEM"
 msgstr "REPORNEȘTE SISTEMUL"
 
 msgid "REALLY RESTART?"
-msgstr "CHIAR REPORNEȘTI?"
+msgstr "DOREȘTI REPORNIREA?"
 
 msgid "SUSPEND SYSTEM"
 msgstr "SUSPENDĂ SISTEMUL"
 
 msgid "REALLY SUSPEND ?"
-msgstr "CHIAR SUSPENZI?"
+msgstr "DOREȘTI SUSPENDAREA?"
 
 msgid "SHUTDOWN SYSTEM"
 msgstr "ÎNCHIDE SISTEMUL"
 
 msgid "REALLY SHUTDOWN?"
-msgstr "CHIAR ÎNCHIZI?"
+msgstr "DOREȘTI ÎNCHIDEREA?"
 
 msgid "FAST SHUTDOWN SYSTEM"
 msgstr "ÎNCHIDE SISTEMUL RAPID"
@@ -2939,21 +3153,16 @@ msgid "Shutdown without saving metadata."
 msgstr "Închide fără să salvezi metadatele."
 
 msgid "REALLY SHUTDOWN WITHOUT SAVING METADATA?"
-msgstr "CHIAR ÎNCHIZI FĂRĂ SĂ SALVEZI METADATELE?"
+msgstr "DOREȘTI SĂ ÎNCHIZI FĂRĂ SĂ SALVEZI METADATELE?"
 
 msgid "QUIT EMULATIONSTATION"
 msgstr "ÎNCHIDE EMULATIONSTATION"
 
 msgid "REALLY QUIT?"
-msgstr "CHIAR ÎNCHIZI?"
+msgstr "DOREȘTI SĂ ÎNCHIZI?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "SALVEAZĂ/ÎNCARCĂ AUTOMAT LA LANSARE"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
-"Încarcă ultima stare salvată la lansarea jocului și salvează starea la "
-"închiderea acestuia."
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "AFIȘEAZĂ GHIDUL CONTROLERULUI"
@@ -3022,7 +3231,7 @@ msgid "NO DRIVE SELECTED"
 msgstr "NICIO UNITATE SELECTATĂ"
 
 msgid "Ejecting..."
-msgstr "Se scoate..."
+msgstr "Se scoate…"
 
 msgid "EDIT METADATA"
 msgstr "EDITEAZĂ METADATELE"
@@ -3057,13 +3266,6 @@ msgstr "DECONECTEAZĂ"
 
 msgid "CONNECT"
 msgstr "CONECTEAZĂ"
-
-msgid "FORGET"
-msgstr "UITĂ"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "EȘTI SIGUR CĂ VREI SĂ UIȚI „%s”?"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3419,13 +3621,13 @@ msgid "Screenscraper Game ID"
 msgstr "ID joc Screenscraper"
 
 msgid "MultiDisk"
-msgstr ""
+msgstr "MultiDisk"
 
 msgid "Loading system config..."
-msgstr "Se încarcă configurația de sistem..."
+msgstr "Se încarcă configurația de sistem…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "SE SALVEAZĂ METADATELE. TE ROG AȘTEAPTĂ..."
+msgstr "SE SALVEAZĂ METADATELE. TE ROG AȘTEAPTĂ…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "DOREȘTI SĂ COMUȚI ECRANUL?"
@@ -3448,8 +3650,8 @@ msgstr "4 jucători"
 msgid "never played"
 msgstr "jucat niciodată"
 
-msgid "retroachievements"
-msgstr "retrorealizări"
+msgid "RetroAchievements"
+msgstr "RetroRealizări"
 
 msgid "arcade"
 msgstr "arcade"
@@ -3546,11 +3748,14 @@ msgstr "NUCLEUL LIPSEȘTE"
 msgid "UKNOWN ERROR"
 msgstr "EROARE NECUNOSCUTĂ"
 
+msgid "Checking for latest upgrade script..."
+msgstr "Se verifică pentru cel mai recent script de actualizare…"
+
 msgid "Collections"
 msgstr "Colecții"
 
 msgid "Searching for devices..."
-msgstr "Se caută dispozitive..."
+msgstr "Se caută dispozitive…"
 
 msgid "FORMATTING DEVICE"
 msgstr "SE FORMATEAZĂ DISPOZITIVUL"
@@ -3636,11 +3841,8 @@ msgstr "CITITOR DE ECRAN DEZACTIVAT"
 msgid "ENABLED"
 msgstr "ACTIVAT"
 
-msgid "up/down"
-msgstr "sus/jos"
-
 msgid "WORKING..."
-msgstr "SE LUCREAZĂ..."
+msgstr "SE LUCREAZĂ…"
 
 msgid "accept"
 msgstr "accept"
@@ -3872,7 +4074,7 @@ msgstr ""
 "Trage în ținte pentru a-l calibra"
 
 msgid "Reloaded the games list..."
-msgstr "S-a reîncărcat lista de jocuri..."
+msgstr "S-a reîncărcat lista de jocuri…"
 
 msgid "GAME DRIVE DETECTED"
 msgstr "UNITATE CU JOCURI DETECTATĂ"
@@ -3896,7 +4098,7 @@ msgid "(This will also apply on future boots)"
 msgstr "(Acest lucru va fi aplicat și la pornirile ulterioare)"
 
 msgid "Merge requested... Please wait."
-msgstr "Combinare solicitată... Te rog așteaptă."
+msgstr "Combinare solicitată… Te rog așteaptă."
 
 msgid "MERGE FAILED"
 msgstr "COMBINARE EȘUATĂ"
@@ -3911,10 +4113,10 @@ msgid "NO, IGNORE FOREVER"
 msgstr "NU, IGNORĂ ÎNTOTDEAUNA"
 
 msgid "Adding drive to ignore list..."
-msgstr "Se adaugă unitatea la lista de ignorate..."
+msgstr "Se adaugă unitatea la lista de ignorate…"
 
 msgid "YES, MERGE DRIVE"
-msgstr ""
+msgstr "DA, COMBINĂ UNITATEA"
 
 msgid "NEW DRIVE DETECTED"
 msgstr "UNITATE NOUĂ DETECTATĂ"
@@ -3926,7 +4128,7 @@ msgid "(ALL EXISTING DATA WILL BE ERASED)"
 msgstr "(TOATE DATELE EXISTENTE VOR FI ȘTERSE)"
 
 msgid "Starting format process..."
-msgstr "Se începe procesul de formatare..."
+msgstr "Se începe procesul de formatare…"
 
 msgid "FORMAT FAILED"
 msgstr "FORMATAREA A EȘUAT"
@@ -3988,6 +4190,18 @@ msgstr[0] "acum %d secundă"
 msgstr[1] "acum %d secunde"
 msgstr[2] "acum %d de secunde"
 
+#~ msgid "up/down"
+#~ msgstr "sus/jos"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "Încarcă ultima stare salvată la lansarea jocului și salvează starea la "
+#~ "închiderea lui."
+
+#~ msgid "FANART"
+#~ msgstr "FANART"
+
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "CONSTRUIEȘTE CACHE-UL DE IMAGINI"
 
@@ -4039,7 +4253,7 @@ msgstr[2] "acum %d de secunde"
 #~ "și jucat ultima dată."
 
 #~ msgid "SAVING METADATAS. PLEASE WAIT..."
-#~ msgstr "SE SALVEAZĂ METADATELE. TE ROG AȘTEAPTĂ..."
+#~ msgstr "SE SALVEAZĂ METADATELE. TE ROG AȘTEAPTĂ…"
 
 #~ msgid "FORGET A BLUETOOTH DEVICE"
 #~ msgstr "ELIMINĂ UN DISPOZITIV BLUETOOTH"

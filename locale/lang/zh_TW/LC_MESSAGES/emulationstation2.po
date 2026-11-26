@@ -104,7 +104,7 @@ msgid "Loading gamelists"
 msgstr "正在載入遊戲清單"
 
 msgid "Loading..."
-msgstr "載入中..."
+msgstr "載入中…"
 
 msgid "MENU"
 msgstr "主選單"
@@ -210,7 +210,7 @@ msgstr "瀏覽"
 msgid "BACK"
 msgstr "返回"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "即時存檔（按住）"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -225,7 +225,7 @@ msgstr "遊戲設定"
 msgid "FAVORITE"
 msgstr "我的最愛"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "即時存檔"
 
 #, c-format
@@ -292,8 +292,8 @@ msgstr "要儲存修改嗎？"
 msgid "ARE YOU SURE?"
 msgstr "您確定嗎？"
 
-msgid "RETROACHIEVEMENT SETTINGS"
-msgstr "RETROACHIEVEMENT 復古成就設定"
+msgid "RETROACHIEVEMENTS SETTINGS"
+msgstr "RETROACHIEVEMENTS 復古成就設定"
 
 msgid "SETTINGS"
 msgstr "設定"
@@ -354,8 +354,8 @@ msgstr ""
 msgid "Enable unlocking of unofficial achievements."
 msgstr ""
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
-msgstr "RETROACHIEVEMENT 解鎖音效"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
+msgstr "RETROACHIEVEMENTS 解鎖音效"
 
 msgid "none"
 msgstr "沒有"
@@ -364,10 +364,10 @@ msgid "UNLOCK SOUND"
 msgstr "解鎖音效"
 
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
-msgstr "顯示 RETROACHIEVEMENT 項目在主選單"
+msgstr "顯示 RETROACHIEVEMENTS 項目在主選單"
 
-msgid "View your RetroAchievement stats right from the main menu!"
-msgstr "從主選單直接檢視您的 RetroAchievement 狀態！"
+msgid "View your RetroAchievements stats right from the main menu!"
+msgstr "從主選單直接檢視您的 RetroAchievements 狀態！"
 
 msgid "GAME INDEXES"
 msgstr "遊戲索引"
@@ -580,16 +580,6 @@ msgstr "已包含的遊戲平台"
 msgid "START"
 msgstr "開始"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "正在更新 %s"
-
-msgid "UPDATE IS READY"
-msgstr "已準備好可以更新"
-
-msgid "REBOOT TO APPLY"
-msgstr "重開機套用更新"
-
 msgid "REALLY UPDATE?"
 msgstr "確定要更新嗎？"
 
@@ -616,6 +606,16 @@ msgstr "需要連線到網際網路"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "沒有可用的更新"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "正在更新 %s"
+
+msgid "UPDATE IS READY"
+msgstr "已準備好可以更新"
+
+msgid "REBOOT TO APPLY"
+msgstr "重開機套用更新"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "連線到多人遊戲"
@@ -879,7 +879,7 @@ msgid "VIEWER PASSWORD"
 msgstr "觀眾密碼"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "尋找相似的遊戲..."
+msgstr "尋找相似的遊戲…"
 
 msgid "DELETE ITEM"
 msgstr "刪除項目"
@@ -928,7 +928,7 @@ msgid "FAVORITES"
 msgstr "我的最愛"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "新增至自定義合輯..."
+msgstr "新增至自定義合輯…"
 
 msgid "SCRAPE"
 msgstr "資料搜刮"
@@ -1082,6 +1082,33 @@ msgstr "控制器 #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "玩家 %i 的控制器"
 
+msgid "RED"
+msgstr "紅色"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "綠色"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "藍色"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "白色"
+
 msgid "CONTROLLER MAPPING"
 msgstr "遊戲控制器按鍵對映"
 
@@ -1149,11 +1176,99 @@ msgstr ""
 msgid "GLOBAL HOTKEYS"
 msgstr ""
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "LED硬體"
+
+msgid "ENABLE LED"
+msgstr ""
+
+msgid "LED MODE"
+msgstr ""
+
+msgid "STATIC"
+msgstr ""
+
+msgid "RAINBOW"
+msgstr ""
+
+msgid "CHROMA"
+msgstr ""
+
+msgid "PULSE"
+msgstr ""
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "自訂"
+
+msgid "LED BRIGHTNESS"
+msgstr "LED亮度"
+
 msgid "default"
 msgstr "預設值"
 
 msgid "NOT CONNECTED"
 msgstr "尚未連線"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr ""
@@ -1203,7 +1318,7 @@ msgstr ""
 msgid "DEFAULT"
 msgstr "預設"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
 msgstr ""
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
@@ -1216,6 +1331,30 @@ msgid "NO GLOBAL HOTKEY DETECTED"
 msgstr ""
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
+msgstr ""
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
 msgstr ""
 
 msgid "BORDER SIZE"
@@ -1247,18 +1386,6 @@ msgstr "隱藏"
 
 msgid "BORDER COLOR"
 msgstr "邊框顏色"
-
-msgid "WHITE"
-msgstr "白色"
-
-msgid "RED"
-msgstr "紅色"
-
-msgid "GREEN"
-msgstr "綠色"
-
-msgid "BLUE"
-msgstr "藍色"
 
 msgid "BORDER RATIO"
 msgstr "邊框比例"
@@ -1371,6 +1498,12 @@ msgstr "手動輸入"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "沒有找到 WI-FI 網路"
 
+msgid "CONNECTED"
+msgstr "已連線"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "搜尋 WI-FI 網路"
 
@@ -1427,9 +1560,6 @@ msgstr "蒙特婁"
 
 msgid "SAO PAULO"
 msgstr "聖保羅"
-
-msgid "CUSTOM"
-msgstr "自訂"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "自訂中繼伺服器"
@@ -2002,6 +2132,12 @@ msgstr "如果可用的話，也打開模擬器原生的 FPS 計數器。"
 msgid "VSYNC"
 msgstr "垂直同步"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr ""
+
+msgid "FPS LIMIT"
+msgstr ""
+
 msgid "OVERSCAN"
 msgstr "過掃瞄 (OVERSCAN)"
 
@@ -2158,6 +2294,12 @@ msgstr "調換北功能鍵（即時存檔）與長按南功能鍵（遊戲選項
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "僅透過第一支遊戲搖桿操作 EMULATIONSTATION"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr ""
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "光槍移動容忍度"
 
@@ -2190,6 +2332,17 @@ msgid ""
 "Reduces lag when scrolling through a fully scraped gamelist, increases boot "
 "time"
 msgstr "藉由完全擷取遊戲清單來減少捲動時的卡頓，會增加啟動時間"
+
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
 
 msgid "THREADED LOADING"
 msgstr "多執行緒載入"
@@ -2224,6 +2377,9 @@ msgstr "檢查更新"
 msgid "UPDATE TYPE"
 msgstr "更新類型"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr ""
+
 msgid "APPLY UPDATE"
 msgstr "套用更新"
 
@@ -2232,6 +2388,33 @@ msgstr "開始更新"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "更新已經在進行了"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr ""
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "Torrent update service started"
+msgstr ""
+
+msgid "Torrent update service stopped"
+msgstr ""
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr ""
+
+msgid "DOWNLOAD STATUS"
+msgstr ""
 
 msgid "LANGUAGE"
 msgstr "語言"
@@ -2316,6 +2499,19 @@ msgstr "音訊設定檔"
 msgid "Available options can change depending on current audio output."
 msgstr "可用的選項會依目前的音訊輸出而改變。"
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "可變動更新率"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "開機畫面"
 
@@ -2382,15 +2578,6 @@ msgstr "開啟"
 msgid "OVERCLOCK"
 msgstr "超頻"
 
-msgid "LED HARDWARE"
-msgstr "LED硬體"
-
-msgid "ENABLE LED"
-msgstr ""
-
-msgid "LED BRIGHTNESS"
-msgstr "LED亮度"
-
 msgid "STORAGE"
 msgstr "儲存"
 
@@ -2417,6 +2604,14 @@ msgstr "需要一組密碼來存取網路共享。"
 
 msgid "ROOT PASSWORD"
 msgstr "ROOT 密碼"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr ""
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
 
 msgid "LATENCY REDUCTION"
 msgstr "降低延遲"
@@ -2447,9 +2642,6 @@ msgstr "自動地暫時性減少畫格延遲以防止畫面跳格。可能會使
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "可變動更新率 (G-SYNC, FREESYNC)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "可變動更新率"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr "不要偏離核心所要求的時間點。G-Sync, FreeSync, HDMI 2.1 VRR."
@@ -2463,14 +2655,11 @@ msgstr "目前設定"
 msgid "BIOS SETTINGS"
 msgstr "BIOS 設定"
 
-msgid "SAVESTATES"
-msgstr "即時存檔"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "自動儲存/載入"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
-msgstr "在遊戲啟動時載入最後的即時存檔，並在退出遊戲時儲存即時存檔。"
+msgid "Load latest savestate on game launch and save state when exiting game."
+msgstr "在遊戲啟動時載入最近的即時存檔，並在離開遊戲時儲存即時存檔。"
 
 msgid "INCREMENTAL SAVESTATES"
 msgstr "遞增即時存檔"
@@ -2797,11 +2986,34 @@ msgstr "啟動導覽音效"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "啟動影片音訊"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "WI-FI 連線名稱"
+
+msgid "WI-FI KEY"
+msgstr "WI-FI 連線金鑰"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr "忘記"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "你確定要忘記「%s」嗎？"
+
 msgid "IP ADDRESS"
 msgstr "IP 位址"
-
-msgid "CONNECTED"
-msgstr "已連線"
 
 msgid "INTERNET STATUS"
 msgstr "網路狀態"
@@ -2809,26 +3021,20 @@ msgstr "網路狀態"
 msgid "HOSTNAME"
 msgstr "主機名稱"
 
-msgid "ENABLE WIFI"
-msgstr "啟用 WIFI 無線網絡"
+msgid "ENABLE WI-FI"
+msgstr "啟用 WI-FI 無線網絡"
 
-msgid "WIFI SSID"
-msgstr "WIFI 連線名稱"
-
-msgid "WIFI KEY"
-msgstr "WIFI 連線金鑰"
-
-msgid "WIFI COUNTRY"
+msgid "WI-FI COUNTRY"
 msgstr ""
 
 msgid "N/A"
 msgstr ""
 
-msgid "WIFI ENABLED"
-msgstr "已啟用 WIFI 無線網路"
+msgid "WI-FI ENABLED"
+msgstr "已啟用 WI-FI 無線網路"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "WIFI 無線網路設定錯誤"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "WI-FI 無線網路設定錯誤"
 
 msgid "QUICK ACCESS"
 msgstr "快速存取"
@@ -2892,9 +3098,6 @@ msgstr "確定要退出？"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "遊戲啟動時自動儲存/讀取"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr "在遊戲啟動時載入最近的即時存檔，並在離開遊戲時儲存即時存檔。"
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "顯示遊戲控制器覆層"
@@ -2998,13 +3201,6 @@ msgstr "斷開連線"
 
 msgid "CONNECT"
 msgstr "連線"
-
-msgid "FORGET"
-msgstr "忘記"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "你確定要忘記「%s」嗎？"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3363,10 +3559,10 @@ msgid "MultiDisk"
 msgstr ""
 
 msgid "Loading system config..."
-msgstr "正在載入系統設定..."
+msgstr "正在載入系統設定…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "保存中繼資料。請稍等..."
+msgstr "保存中繼資料。請稍等…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "您想要切換畫面嗎？"
@@ -3389,8 +3585,8 @@ msgstr "四人遊戲"
 msgid "never played"
 msgstr "從未玩過"
 
-msgid "retroachievements"
-msgstr "retroachievements復古成就"
+msgid "RetroAchievements"
+msgstr "RetroAchievements復古成就"
 
 msgid "arcade"
 msgstr "街機"
@@ -3483,11 +3679,14 @@ msgstr "核心遺失"
 msgid "UKNOWN ERROR"
 msgstr "未知的錯誤"
 
+msgid "Checking for latest upgrade script..."
+msgstr ""
+
 msgid "Collections"
 msgstr "合輯"
 
 msgid "Searching for devices..."
-msgstr "搜尋遊戲控制器..."
+msgstr "搜尋遊戲控制器…"
 
 msgid "FORMATTING DEVICE"
 msgstr "格式化裝置"
@@ -3573,11 +3772,8 @@ msgstr "螢幕閱讀器已停用"
 msgid "ENABLED"
 msgstr "啟用"
 
-msgid "up/down"
-msgstr "上/下"
-
 msgid "WORKING..."
-msgstr "作業中..."
+msgstr "作業中…"
 
 msgid "accept"
 msgstr "確定"
@@ -3908,6 +4104,16 @@ msgid "%d second ago"
 msgid_plural "%d seconds ago"
 msgstr[0] "%d 幾秒前"
 
+#~ msgid "up/down"
+#~ msgstr "上/下"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr "在遊戲啟動時載入最後的即時存檔，並在退出遊戲時儲存即時存檔。"
+
+#~ msgid "FANART"
+#~ msgstr "粉絲繪圖"
+
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "建立圖片快取"
 
@@ -3930,7 +4136,7 @@ msgstr[0] "%d 幾秒前"
 #~ msgstr "使用者介面模式已經解鎖"
 
 #~ msgid "SAVING METADATAS. PLEASE WAIT..."
-#~ msgstr "正在儲存中繼資料。請稍後..."
+#~ msgstr "正在儲存中繼資料。請稍後…"
 
 #~ msgid "FORGET A BLUETOOTH DEVICE"
 #~ msgstr "忘記藍牙裝置"

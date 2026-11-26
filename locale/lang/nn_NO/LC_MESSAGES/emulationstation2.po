@@ -205,7 +205,7 @@ msgstr "VELG"
 msgid "BACK"
 msgstr "TILBAKE"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr ""
 
 msgid "GAME OPTIONS (HOLD)"
@@ -220,7 +220,7 @@ msgstr ""
 msgid "FAVORITE"
 msgstr ""
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr ""
 
 #, c-format
@@ -287,7 +287,7 @@ msgstr "LAGRE ENDRINGER?"
 msgid "ARE YOU SURE?"
 msgstr ""
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr ""
 
 msgid "SETTINGS"
@@ -349,7 +349,7 @@ msgstr ""
 msgid "Enable unlocking of unofficial achievements."
 msgstr ""
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr ""
 
 msgid "none"
@@ -361,7 +361,7 @@ msgstr ""
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr ""
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr ""
 
 msgid "GAME INDEXES"
@@ -575,16 +575,6 @@ msgstr ""
 msgid "START"
 msgstr "START"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr ""
-
-msgid "UPDATE IS READY"
-msgstr ""
-
-msgid "REBOOT TO APPLY"
-msgstr ""
-
 msgid "REALLY UPDATE?"
 msgstr "VIL DU VIRKELIG OPPDATERE?"
 
@@ -606,6 +596,16 @@ msgstr "NETTVERKSTILKOBLING PÅKREVET"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "SYSTEMET ER OPPDATERT"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr ""
+
+msgid "UPDATE IS READY"
+msgstr ""
+
+msgid "REBOOT TO APPLY"
+msgstr ""
 
 msgid "CONNECT TO NETPLAY"
 msgstr ""
@@ -1070,6 +1070,33 @@ msgstr ""
 msgid "P%i'S CONTROLLER"
 msgstr ""
 
+msgid "RED"
+msgstr ""
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr ""
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr ""
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr ""
+
 msgid "CONTROLLER MAPPING"
 msgstr ""
 
@@ -1134,11 +1161,99 @@ msgstr ""
 msgid "GLOBAL HOTKEYS"
 msgstr ""
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr ""
+
+msgid "ENABLE LED"
+msgstr ""
+
+msgid "LED MODE"
+msgstr ""
+
+msgid "STATIC"
+msgstr ""
+
+msgid "RAINBOW"
+msgstr ""
+
+msgid "CHROMA"
+msgstr ""
+
+msgid "PULSE"
+msgstr ""
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr ""
+
+msgid "LED BRIGHTNESS"
+msgstr ""
+
 msgid "default"
 msgstr ""
 
 msgid "NOT CONNECTED"
 msgstr "FRAKOBLET"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr ""
@@ -1188,7 +1303,7 @@ msgstr "HURTIGTAST"
 msgid "DEFAULT"
 msgstr ""
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
 msgstr ""
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
@@ -1201,6 +1316,30 @@ msgid "NO GLOBAL HOTKEY DETECTED"
 msgstr ""
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
+msgstr ""
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
 msgstr ""
 
 msgid "BORDER SIZE"
@@ -1231,18 +1370,6 @@ msgid "HIDDEN"
 msgstr ""
 
 msgid "BORDER COLOR"
-msgstr ""
-
-msgid "WHITE"
-msgstr ""
-
-msgid "RED"
-msgstr ""
-
-msgid "GREEN"
-msgstr ""
-
-msgid "BLUE"
 msgstr ""
 
 msgid "BORDER RATIO"
@@ -1356,6 +1483,12 @@ msgstr ""
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr ""
 
+msgid "CONNECTED"
+msgstr "TILKOBLET"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr ""
 
@@ -1411,9 +1544,6 @@ msgid "MONTREAL"
 msgstr ""
 
 msgid "SAO PAULO"
-msgstr ""
-
-msgid "CUSTOM"
 msgstr ""
 
 msgid "CUSTOM RELAY SERVER"
@@ -1985,6 +2115,12 @@ msgstr ""
 msgid "VSYNC"
 msgstr ""
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr ""
+
+msgid "FPS LIMIT"
+msgstr ""
+
 msgid "OVERSCAN"
 msgstr "OVERSKANN"
 
@@ -2141,6 +2277,12 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr ""
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr ""
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+
 msgid "GUN MOVE TOLERENCE"
 msgstr ""
 
@@ -2172,6 +2314,17 @@ msgstr ""
 msgid ""
 "Reduces lag when scrolling through a fully scraped gamelist, increases boot "
 "time"
+msgstr ""
+
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -2207,6 +2360,9 @@ msgstr ""
 msgid "UPDATE TYPE"
 msgstr ""
 
+msgid "ARCHITECTURE UPDATE"
+msgstr ""
+
 msgid "APPLY UPDATE"
 msgstr ""
 
@@ -2214,6 +2370,33 @@ msgid "START UPDATE"
 msgstr "START OPPDATERING"
 
 msgid "UPDATER IS ALREADY RUNNING"
+msgstr ""
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr ""
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "Torrent update service started"
+msgstr ""
+
+msgid "Torrent update service stopped"
+msgstr ""
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr ""
+
+msgid "DOWNLOAD STATUS"
 msgstr ""
 
 msgid "LANGUAGE"
@@ -2296,6 +2479,19 @@ msgstr ""
 msgid "Available options can change depending on current audio output."
 msgstr ""
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr ""
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr ""
 
@@ -2362,15 +2558,6 @@ msgstr ""
 msgid "OVERCLOCK"
 msgstr "OVERKLOKKING"
 
-msgid "LED HARDWARE"
-msgstr ""
-
-msgid "ENABLE LED"
-msgstr ""
-
-msgid "LED BRIGHTNESS"
-msgstr ""
-
 msgid "STORAGE"
 msgstr ""
 
@@ -2397,6 +2584,14 @@ msgstr ""
 
 msgid "ROOT PASSWORD"
 msgstr "ROOT PASSORD"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr ""
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
 
 msgid "LATENCY REDUCTION"
 msgstr ""
@@ -2427,9 +2622,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr ""
 
-msgid "VARIABLE REFRESH RATE"
-msgstr ""
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2443,13 +2635,10 @@ msgstr ""
 msgid "BIOS SETTINGS"
 msgstr ""
 
-msgid "SAVESTATES"
-msgstr ""
-
 msgid "AUTO SAVE/LOAD"
 msgstr ""
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
 
 msgid "INCREMENTAL SAVESTATES"
@@ -2777,11 +2966,34 @@ msgstr ""
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr ""
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "NETTVERKSNAVN"
+
+msgid "WI-FI KEY"
+msgstr "NETTVERKSPASSORD"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr ""
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr ""
+
 msgid "IP ADDRESS"
 msgstr "IP ADRESSE"
-
-msgid "CONNECTED"
-msgstr "TILKOBLET"
 
 msgid "INTERNET STATUS"
 msgstr ""
@@ -2789,26 +3001,20 @@ msgstr ""
 msgid "HOSTNAME"
 msgstr "ENHETSNAVN"
 
-msgid "ENABLE WIFI"
-msgstr "AKTIVER WIFI"
+msgid "ENABLE WI-FI"
+msgstr "AKTIVER WI-FI"
 
-msgid "WIFI SSID"
-msgstr "NETTVERKSNAVN"
-
-msgid "WIFI KEY"
-msgstr "NETTVERKSPASSORD"
-
-msgid "WIFI COUNTRY"
+msgid "WI-FI COUNTRY"
 msgstr ""
 
 msgid "N/A"
 msgstr ""
 
-msgid "WIFI ENABLED"
-msgstr "WIFI AKTIVERT"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI AKTIVERT"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "WIFI KONFIGURASJONSFEIL"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "WI-FI KONFIGURASJONSFEIL"
 
 msgid "QUICK ACCESS"
 msgstr ""
@@ -2872,9 +3078,6 @@ msgstr ""
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "AUTO LAGRE/LASTE"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr ""
@@ -2975,13 +3178,6 @@ msgid "DISCONNECT"
 msgstr ""
 
 msgid "CONNECT"
-msgstr ""
-
-msgid "FORGET"
-msgstr ""
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
 msgstr ""
 
 #, c-format
@@ -3367,7 +3563,7 @@ msgstr ""
 msgid "never played"
 msgstr ""
 
-msgid "retroachievements"
+msgid "RetroAchievements"
 msgstr ""
 
 msgid "arcade"
@@ -3462,6 +3658,9 @@ msgstr ""
 msgid "UKNOWN ERROR"
 msgstr ""
 
+msgid "Checking for latest upgrade script..."
+msgstr ""
+
 msgid "Collections"
 msgstr ""
 
@@ -3552,11 +3751,8 @@ msgstr ""
 msgid "ENABLED"
 msgstr ""
 
-msgid "up/down"
-msgstr ""
-
 msgid "WORKING..."
-msgstr "ARBEIDER..."
+msgstr "ARBEIDER…"
 
 msgid "accept"
 msgstr ""
@@ -3963,9 +4159,6 @@ msgstr[1] ""
 #~ msgid "GAMES SETTINGS"
 #~ msgstr "SPILL INNSTILLINGER"
 
-#~ msgid "RETROACHIEVEMENTS SETTINGS"
-#~ msgstr "RETROUTMERKELSES INNSTILLINGER"
-
 #~ msgid "GAME RATIO"
 #~ msgstr "SPILL FORHOLD"
 
@@ -4141,10 +4334,10 @@ msgstr[1] ""
 #~ msgstr "SIDE NED"
 
 #~ msgid "LOADING..."
-#~ msgstr "LASTER..."
+#~ msgstr "LASTER…"
 
 #~ msgid "PLEASE WAIT..."
-#~ msgstr "VENNLIGST VENT..."
+#~ msgstr "VENNLIGST VENT…"
 
 #~ msgid "just now"
 #~ msgstr "akkurat nå"

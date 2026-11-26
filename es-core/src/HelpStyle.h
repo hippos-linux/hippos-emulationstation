@@ -23,6 +23,9 @@ struct HelpStyle
 	
 	std::shared_ptr<Font> font;
 	std::map<std::string, std::string> iconMap;
+#ifdef HIPPOS
+	bool upperCase = true;
+#endif
 	
 	HelpStyle(); // default values
 	void applyTheme(const std::shared_ptr<ThemeData>& theme, const std::string& view);

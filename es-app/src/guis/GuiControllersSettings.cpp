@@ -2,6 +2,7 @@
 
 #include "components/SwitchComponent.h"
 #include "components/OptionListComponent.h"
+#include "components/SliderComponent.h"
 
 #include "guis/GuiDetectDevice.h"
 #include "guis/GuiBluetoothPair.h"
@@ -15,6 +16,14 @@
 #include "InputManager.h"
 #include "CustomFeatures.h"
 #include "SystemConf.h"
+#include "ApiSystem.h"
+#include "math/Misc.h"
+#include "renderers/Renderer.h"
+#include "resources/Font.h"
+#include "utils/StringUtil.h"
+
+#include <sstream>
+#include <algorithm>
 
 #define gettext_controllers_settings				_("CONTROLLER SETTINGS")
 #define gettext_controllers_and_bluetooth_settings  _("CONTROLLER & BLUETOOTH SETTINGS")
@@ -44,6 +53,88 @@ struct hotkeyTargetDefinition
 	std::string code;
 	std::string name;
 };
+
+// battery led mode levels (level=color lines from the led daemon), drawn as a 0-100 % bar
+class BatteryLedBar : public GuiComponent
+{
+public:
+	BatteryLedBar(Window* window, const std::vector<std::string>& profile) : GuiComponent(window), mTime(0)
+	{
+		auto font = ThemeData::getMenuTheme()->Text.font;
+		setSize(Renderer::getScreenWidth() * (Renderer::isSmallScreen() ? 0.25f : 0.15f), font->getLetterHeight());
+
+		int red, green, blue;
+		ApiSystem::getInstance()->getLEDColours(red, green, blue);
+
+		for (auto line : profile)
+		{
+			auto pair = Utils::String::split(line, '=');
+			if (pair.size() != 2 || pair[0].empty() || !isdigit(pair[0][0]))
+				continue;
+
+			// PULSE_RRGGBB and BLINK_RRGGBB blink on the bar, PULSE alone uses the EmulationStation colour
+			std::string colour = pair[1];
+			bool blink = Utils::String::startsWith(colour, "PULSE") || Utils::String::startsWith(colour, "BLINK");
+			if (blink)
+				colour = colour.size() > 6 ? colour.substr(6) : "ESCOLOR";
+
+			unsigned int rgba = 0x404040FF;
+			if (colour == "ESCOLOR")
+				rgba = (red << 24) | (green << 16) | (blue << 8) | 0xFF;
+			else if (colour.size() == 6)
+				rgba = ((unsigned int)strtoul(colour.c_str(), nullptr, 16) << 8) | 0xFF;
+
+			mLevels.push_back({ Utils::String::toInteger(pair[0]), rgba, blink });
+		}
+	}
+
+	void update(int deltaTime) override
+	{
+		mTime = (mTime + deltaTime) % 1000;
+		GuiComponent::update(deltaTime);
+	}
+
+	void render(const Transform4x4f& parentTrans) override
+	{
+		Transform4x4f trans = parentTrans * getTransform();
+		Renderer::setMatrix(trans);
+		Renderer::drawRect(0.0f, 0.0f, mSize.x(), mSize.y(), 0x404040FF);
+
+		for (size_t i = 0; i < mLevels.size(); i++)
+		{
+			int to = i + 1 < mLevels.size() ? mLevels[i + 1].level : 100;
+			unsigned int colour = mLevels[i].blink && mTime >= 500 ? (mLevels[i].colour & 0xFFFFFF00) | 0x40 : mLevels[i].colour;
+			Renderer::drawRect(mSize.x() * mLevels[i].level / 100.0f, 0.0f, mSize.x() * (to - mLevels[i].level) / 100.0f, mSize.y(), colour);
+		}
+	}
+
+private:
+	struct Level
+	{
+		int level;
+		unsigned int colour;
+		bool blink;
+	};
+
+	std::vector<Level> mLevels;
+	int mTime;
+};
+
+// colour presets of the led menus, as RRGGBB
+static std::vector<std::pair<std::string, std::string>> ledColourPresets()
+{
+	return {
+		{ _("RED"), "FF0000" },
+		{ _("ORANGE"), "FF5000" },
+		{ _("YELLOW"), "FFC800" },
+		{ _("GREEN"), "00FF00" },
+		{ _("CYAN"), "00FFFF" },
+		{ _("BLUE"), "0000FF" },
+		{ _("PURPLE"), "8000FF" },
+		{ _("PINK"), "FF00A5" },
+		{ _("WHITE"), "FFFFFF" }
+	};
+}
 
 std::string GuiControllersSettings::getControllersSettingsLabel()
 {
@@ -227,6 +318,180 @@ GuiControllersSettings::GuiControllersSettings(Window* wnd, int autoSel) : GuiSe
 
 	addEntry(_("GLOBAL HOTKEYS"), true, [this] { openGlobalHotkeys(); });
 	addEntry(_("PAD2KEY"), true, [this] { openPad2key(); });
+	addEntry(_("TRACKBALLS AND SPINNERS"), true, [this] { openTrackballSpinners(); });
+#endif
+
+#ifdef HIPPOS
+	// controller LEDs
+	int red, green, blue;
+	bool ledSupported = ApiSystem::getInstance()->getLED(red, green, blue);
+
+	if (ledSupported) {
+		addGroup(_("LED HARDWARE"));
+
+		auto led_enabled_switch = std::make_shared<SwitchComponent>(mWindow);
+		bool isEnabled = ApiSystem::getInstance()->isLEDEnabled();
+		led_enabled_switch->setState(isEnabled);
+		addWithLabel(_("ENABLE LED"), led_enabled_switch);
+		led_enabled_switch->setOnChangedCallback([led_enabled_switch]
+		{
+			// apply at once like LED MODE, the led daemon reads batocera.conf
+			ApiSystem::getInstance()->setLEDEnabled(led_enabled_switch->getState());
+			SystemConf::getInstance()->saveSystemConf();
+		});
+		
+		// Only display RGB color sliders and modes if the hardware is NOT monochrome
+		if (!ApiSystem::getInstance()->isLEDMonochrome()) {
+			// LED MODE Dropdown Component
+			std::string currentMode = SystemConf::getInstance()->get("led.mode");
+			if (currentMode.empty())
+				currentMode = "static";
+
+			auto ledMode = std::make_shared<OptionListComponent<std::string>>(mWindow, _("LED MODE"), false);
+			ledMode->addRange({
+				{ _("STATIC"), "static" },
+				{ _("RAINBOW"), "rainbow" },
+				{ _("CHROMA"), "chroma" },
+				{ _("PULSE"), "pulse" },
+				{ _("BATTERY"), "battery" }
+			}, currentMode);
+			addWithLabel(_("LED MODE"), ledMode, autoSel == 3);
+
+			// Track if sliders were adjusted so we can revert mode back to static
+			auto sliderChanged = std::make_shared<bool>(false);
+
+			// the battery mode shows its levels instead of the colour, reopen the menu to switch
+			ledMode->setSelectedChangedCallback([this, window, currentMode, sliderChanged](const std::string& mode)
+			{
+				if ((mode == "battery") == (currentMode == "battery"))
+					return;
+
+				*sliderChanged = false;
+				window->postToUiThread([this, window]
+				{
+					save();
+					delete this;
+					openControllersSettings(window, 3);
+				});
+			});
+
+			if (currentMode == "battery")
+			{
+				addWithLabel(_("BATTERY LEVELS"), std::make_shared<BatteryLedBar>(mWindow, ApiSystem::getInstance()->getLEDBatteryProfile()), false, [this] { openLEDBatteryLevels(); });
+				addEntry(_("EDIT BATTERY LEVELS"), true, [this] { openLEDBatteryLevels(); });
+			}
+			else
+			{
+				// RGB Configuration Colors
+				std::string colourString = SystemConf::getInstance()->get("led.colour");
+				if (colourString.empty())
+					colourString = "255 0 165";
+
+				std::stringstream ss(colourString);
+				ss >> red >> green >> blue; 
+
+				auto redLEDComponent = std::make_shared<SliderComponent>(mWindow, 0.f, 255.f, 1.f);
+				auto greenLEDComponent = std::make_shared<SliderComponent>(mWindow, 0.f, 255.f, 1.f);
+				auto blueLEDComponent = std::make_shared<SliderComponent>(mWindow, 0.f, 255.f, 1.f);
+
+				// presets on top of the sliders, which still give any colour
+				auto ledPreset = std::make_shared<OptionListComponent<std::string>>(mWindow, _("COLOR PRESET"), false);
+				ledPreset->add(_("CUSTOM"), "custom", false);
+				for (auto preset : ledColourPresets())
+				{
+					unsigned int rgb = strtoul(preset.second.c_str(), nullptr, 16);
+					std::string value = std::to_string(rgb >> 16) + " " + std::to_string((rgb >> 8) & 0xFF) + " " + std::to_string(rgb & 0xFF);
+					ledPreset->add(preset.first, value, value == colourString);
+				}
+				if (!ledPreset->hasSelection())
+					ledPreset->selectFirstItem();
+				ledPreset->setSelectedChangedCallback([redLEDComponent, greenLEDComponent, blueLEDComponent](const std::string& colour)
+				{
+					int r, g, b;
+					std::stringstream ss(colour);
+					if (ss >> r >> g >> b)
+					{
+						redLEDComponent->setValue(r);
+						greenLEDComponent->setValue(g);
+						blueLEDComponent->setValue(b);
+					}
+				});
+				addWithLabel(_("COLOR PRESET"), ledPreset);
+
+				redLEDComponent->setValue(red);
+				redLEDComponent->setOnValueChanged([greenLEDComponent, blueLEDComponent, sliderChanged](const float &newVal) {
+					int redInt = static_cast<int>(newVal);
+					int greenInt = static_cast<int>(greenLEDComponent->getValue());
+					int blueInt = static_cast<int>(blueLEDComponent->getValue());
+					*sliderChanged = true;
+					ApiSystem::getInstance()->setLEDColours(redInt, greenInt, blueInt);
+					std::string colourString = std::to_string(redInt) + " " + std::to_string(greenInt) + " " + std::to_string(blueInt);
+					SystemConf::getInstance()->set("led.colour", colourString);
+				});
+				addWithLabel(_("RED"), redLEDComponent);
+
+				greenLEDComponent->setValue(green);
+				greenLEDComponent->setOnValueChanged([redLEDComponent, blueLEDComponent, sliderChanged](const float &newVal) {
+					int redInt = static_cast<int>(redLEDComponent->getValue());
+					int greenInt = static_cast<int>(newVal);
+					int blueInt = static_cast<int>(blueLEDComponent->getValue());
+					*sliderChanged = true;
+					ApiSystem::getInstance()->setLEDColours(redInt, greenInt, blueInt);
+					std::string colourString = std::to_string(redInt) + " " + std::to_string(greenInt) + " " + std::to_string(blueInt);
+					SystemConf::getInstance()->set("led.colour", colourString);
+				});
+				addWithLabel(_("GREEN"), greenLEDComponent);
+
+				blueLEDComponent->setValue(blue);
+				blueLEDComponent->setOnValueChanged([redLEDComponent, greenLEDComponent, sliderChanged](const float &newVal) {
+					int redInt = static_cast<int>(redLEDComponent->getValue());
+					int greenInt = static_cast<int>(greenLEDComponent->getValue());
+					int blueInt = static_cast<int>(newVal);
+					*sliderChanged = true;
+					ApiSystem::getInstance()->setLEDColours(redInt, greenInt, blueInt);
+					std::string colourString = std::to_string(redInt) + " " + std::to_string(greenInt) + " " + std::to_string(blueInt);
+					SystemConf::getInstance()->set("led.colour", colourString);
+				});
+				addWithLabel(_("BLUE"), blueLEDComponent);
+			}
+
+			addSaveFunc([led_enabled_switch, ledMode, sliderChanged] {
+				bool state = led_enabled_switch->getState();
+				if (state != (SystemConf::getInstance()->get("led.enabled") != "0")) {
+					ApiSystem::getInstance()->setLEDEnabled(state);
+				}
+
+				std::string newMode = ledMode->getSelected();
+				if (*sliderChanged) {
+					newMode = "static";
+				}
+				if (newMode != SystemConf::getInstance()->get("led.mode")) {
+					ApiSystem::getInstance()->setLEDMode(newMode);
+				}
+			});
+		} else {
+			addSaveFunc([led_enabled_switch] {
+				bool state = led_enabled_switch->getState();
+				if (state != (SystemConf::getInstance()->get("led.enabled") != "0")) {
+					ApiSystem::getInstance()->setLEDEnabled(state);
+				}
+			});
+		}
+	}
+	
+	// LED brightness - Only display if the hardware is NOT monochrome
+	int ledBrightness;
+	if (!ApiSystem::getInstance()->isLEDMonochrome() && ApiSystem::getInstance()->getLEDBrightness(ledBrightness)) {
+		auto ledBrightnessComponent = std::make_shared<SliderComponent>(mWindow, 0.f, 100.f, 1.f, "%");
+		ledBrightnessComponent->setValue(ledBrightness);
+		ledBrightnessComponent->setOnValueChanged([](const float &newVal)
+		{
+			ApiSystem::getInstance()->setLEDBrightness((int)Math::round(newVal));
+			SystemConf::getInstance()->set("led.brightness", std::to_string((int)Math::round(newVal)));
+		});
+
+		addWithLabel(_("LED BRIGHTNESS"), ledBrightnessComponent);
+	}
 #endif
 
 	addGroup(controllers_group_label);
@@ -265,18 +530,22 @@ GuiControllersSettings::GuiControllersSettings(Window* wnd, int autoSel) : GuiSe
 			InputConfigInfo* newInputConfig = new InputConfigInfo(configuratedName, configuratedGuid, configuratedPath);
 			mLoadedInput.push_back(newInputConfig);
 
-			auto it = std::find_if(configList.cbegin(), configList.cend(), [configuratedPath](InputConfig* x) { return x->getSortDevicePath() == configuratedPath; });
+			auto it = std::find_if(configList.cbegin(), configList.cend(), [&configuratedPath, &alreadyTaken](InputConfig* x)
+			{
+				return x->getSortDevicePath() == configuratedPath
+					&& std::find(alreadyTaken.begin(), alreadyTaken.end(), x->getDeviceId()) == alreadyTaken.end();
+			});
+			
 			if (it != configList.cend())
 			{
-				if (std::find(alreadyTaken.begin(), alreadyTaken.end(), (*it)->getDeviceId()) == alreadyTaken.end())
-				{
-					inputOptionList->addEx(configuratedName, configuratedPath, newInputConfig, true, false, false);
-					alreadyTaken.push_back((*it)->getDeviceId());
-					defaultInputConfig = newInputConfig;
-				}
+				inputOptionList->addEx(configuratedName, configuratedPath, newInputConfig, true, false, false);
+				alreadyTaken.push_back((*it)->getDeviceId());
+				defaultInputConfig = newInputConfig;
 			}
-			else
+			else if (std::find_if(configList.cbegin(), configList.cend(), [&configuratedPath](InputConfig* x) { return x->getSortDevicePath() == configuratedPath; }) == configList.cend())
+			{
 				inputOptionList->addEx(configuratedName + " (" + _("NOT CONNECTED") + ")", configuratedPath, newInputConfig, true, false, false);
+			}
 
 			found = true;
 		}
@@ -287,7 +556,10 @@ GuiControllersSettings::GuiControllersSettings(Window* wnd, int autoSel) : GuiSe
 			if (defaultInputConfig != nullptr && defaultInputConfig->name == config->getDeviceName() && defaultInputConfig->guid == config->getDeviceGUIDString() && defaultInputConfig->path == config->getSortDevicePath())
 				continue;
 
-			std::string displayName = config->getDeviceName();
+			// Prefix with the device index, like the non Windows branch does: two boards of the
+			// same model, or the two halves of a 2-players arcade encoder, are otherwise shown
+			// as two strictly identical lines and cannot be told apart.
+			std::string displayName = "#" + std::to_string(config->getDeviceIndex()) + " " + config->getDeviceName();
 
 			bool foundFromConfig = !configuratedPath.empty() ? config->getSortDevicePath() == configuratedPath : configuratedName == config->getDeviceName() && configuratedGuid == config->getDeviceGUIDString();
 			int deviceID = config->getDeviceId();
@@ -407,6 +679,171 @@ GuiControllersSettings::GuiControllersSettings(Window* wnd, int autoSel) : GuiSe
 	});
 }
 
+// battery led mode levels: how many, from which battery level, colour and effect of each, and while charging
+void GuiControllersSettings::openLEDBatteryLevels()
+{
+	struct Level
+	{
+		int from;
+		std::string colour;
+		std::string effect;
+	};
+
+	Window* window = mWindow;
+	auto levels = std::make_shared<std::vector<Level>>();
+	auto charging = std::make_shared<std::string>("PULSE");
+	auto full = std::make_shared<std::string>("BLINK_00FF00");
+
+	for (auto line : ApiSystem::getInstance()->getLEDBatteryProfile())
+	{
+		auto pair = Utils::String::split(line, '=');
+		if (pair.size() != 2)
+			continue;
+
+		if (pair[0] == "charging")
+			*charging = pair[1];
+		else if (pair[0] == "full")
+			*full = pair[1];
+		else if (!pair[0].empty() && isdigit(pair[0][0]))
+		{
+			std::string colour = pair[1];
+			std::string effect;
+			if (Utils::String::startsWith(colour, "BLINK_") || Utils::String::startsWith(colour, "PULSE_"))
+			{
+				effect = colour.substr(0, 5);
+				colour = colour.substr(6);
+			}
+			levels->push_back({ Utils::String::toInteger(pair[0]), colour, effect });
+		}
+	}
+
+	if (levels->empty())
+		levels->push_back({ 0, "00FF00", "" });
+
+	// written to batocera.conf, which the led daemon reads every few seconds
+	auto saveLevels = [levels, charging, full]
+	{
+		auto sorted = *levels;
+		std::stable_sort(sorted.begin(), sorted.end(), [](const Level& a, const Level& b) { return a.from < b.from; });
+
+		std::string value;
+		for (auto level : sorted)
+			value += (value.empty() ? "" : ",") + std::to_string(level.from) + ":" + (level.effect.empty() ? "" : level.effect + "_") + level.colour;
+
+		SystemConf::getInstance()->set("led.battery.levels", value);
+		SystemConf::getInstance()->set("led.battery.charging", *charging);
+		SystemConf::getInstance()->set("led.battery.full", *full);
+		SystemConf::getInstance()->saveSystemConf();
+	};
+
+	auto s = new GuiSettings(window, _("BATTERY LEVELS"));
+
+	auto count = std::make_shared<OptionListComponent<int>>(window, _("NUMBER OF LEVELS"), false);
+	for (int i = 1; i <= 8; i++)
+		count->add(std::to_string(i), i, i == (int)levels->size());
+	if (!count->hasSelection())
+		count->selectFirstItem();
+	s->addWithLabel(_("NUMBER OF LEVELS"), count);
+
+	// the menu is rebuilt with the new number of levels
+	count->setSelectedChangedCallback([this, window, s, levels, saveLevels](const int& n)
+	{
+		while ((int)levels->size() < n)
+			levels->push_back({ std::min(levels->back().from + 10, 100), "00FF00", "" });
+		levels->resize(n);
+		saveLevels();
+
+		window->postToUiThread([this, s]
+		{
+			s->setSave(false);
+			delete s;
+			openLEDBatteryLevels();
+		});
+	});
+
+	for (size_t i = 0; i < levels->size(); i++)
+	{
+		auto& level = levels->at(i);
+		s->addGroup(Utils::String::format(_("LEVEL %i").c_str(), (int)i + 1));
+
+		if (i == 0)
+			level.from = 0;
+		else
+		{
+			auto from = std::make_shared<SliderComponent>(window, 1.f, 100.f, 1.f, "%");
+			from->setValue(level.from);
+			from->setOnValueChanged([levels, i](const float& value) { levels->at(i).from = (int)value; });
+			s->addWithLabel(_("FROM BATTERY LEVEL"), from);
+		}
+
+		auto colour = std::make_shared<OptionListComponent<std::string>>(window, _("COLOR"), false);
+		for (auto preset : ledColourPresets())
+			colour->add(preset.first, preset.second, preset.second == level.colour);
+		if (!colour->hasSelection())
+			colour->add("#" + level.colour, level.colour, true);
+		colour->setSelectedChangedCallback([levels, i](const std::string& value) { levels->at(i).colour = value; });
+		s->addWithLabel(_("COLOR"), colour);
+
+		auto effect = std::make_shared<OptionListComponent<std::string>>(window, _("EFFECT"), false);
+		effect->addRange({ { _("FIXED"), "" }, { _("BLINK"), "BLINK" }, { _("PULSE"), "PULSE" } }, level.effect);
+		effect->setSelectedChangedCallback([levels, i](const std::string& value) { levels->at(i).effect = value; });
+		s->addWithLabel(_("EFFECT"), effect);
+	}
+
+	s->addGroup(_("CHARGER PLUGGED IN"));
+
+	std::vector<std::pair<std::string, std::string>> plugged = {
+		{ _("PULSE LEVEL COLOR"), "PULSE" },
+		{ _("LEVEL COLOR"), "LEVEL" },
+		{ _("GREEN"), "00FF00" },
+		{ _("BLINKING GREEN"), "BLINK_00FF00" },
+		{ _("PULSING GREEN"), "PULSE_00FF00" }
+	};
+
+	auto addPlugged = [s, window, plugged](const std::string& label, std::shared_ptr<std::string> value)
+	{
+		auto list = std::make_shared<OptionListComponent<std::string>>(window, label, false);
+		for (auto option : plugged)
+			list->add(option.first, option.second, option.second == *value);
+		if (!list->hasSelection())
+			list->add(*value, *value, true);
+		list->setSelectedChangedCallback([value](const std::string& selected) { *value = selected; });
+		s->addWithLabel(label, list);
+	};
+	addPlugged(_("WHILE CHARGING"), charging);
+	addPlugged(_("WHEN FULL"), full);
+
+	s->addEntry(_("RESET TO DEFAULT"), false, [this, window, s]
+	{
+		SystemConf::getInstance()->set("led.battery.levels", "");
+		SystemConf::getInstance()->set("led.battery.charging", "");
+		SystemConf::getInstance()->set("led.battery.full", "");
+		SystemConf::getInstance()->saveSystemConf();
+
+		window->postToUiThread([this, s]
+		{
+			s->setSave(false);
+			delete s;
+			openLEDBatteryLevels();
+		});
+	});
+
+	s->addSaveFunc(saveLevels);
+
+	// back in the led menu, redraw the bar
+	s->onFinalize([this, window]
+	{
+		window->postToUiThread([this, window]
+		{
+			save();
+			delete this;
+			openControllersSettings(window, 3);
+		});
+	});
+
+	window->pushGui(s);
+}
+
 void GuiControllersSettings::openControllersHotkeys()
 {
 	GuiSettings* s = new GuiSettings(mWindow, _("JOYSTICKS HOTKEYS"));
@@ -435,7 +872,11 @@ void GuiControllersSettings::openControllersHotkeys()
 	{
 		{ "bezels",           _("OVERLAYS") },
 		{ "brightness-cycle", _("BRIGHTNESS CYCLE") },
+#ifdef HIPPOS
+		{ "controlcenter",    _("QUICK MENU") },
+#else
 		{ "controlcenter",    _("CONTROL CENTER") },
+#endif
 		{ "exit",             _("EXIT") },
 		{ "pause",            _("PAUSE") },
 		{ "menu",             _("MENU") },
@@ -542,6 +983,14 @@ void GuiControllersSettings::openGlobalHotkeys()
 	mWindow->pushGui(s);
 }
 
+void GuiControllersSettings::openTrackballSpinners()
+{
+	GuiSettings* s = new GuiSettings(mWindow, _("TRACKBALLS AND SPINNERS"));
+	initializeTrackballSpinners(mWindow, s);
+
+	mWindow->pushGui(s);
+}
+
 void GuiControllersSettings::openPad2key()
 {
 	GuiSettings* s = new GuiSettings(mWindow, _("PAD2KEY"), true);
@@ -568,7 +1017,11 @@ void GuiControllersSettings::initializeGlobalHotkeys(Window* window, GuiSettings
 	{
 		{ "bezels",           _("OVERLAYS") },
 		{ "brightness-cycle", _("BRIGHTNESS CYCLE") },
+#ifdef HIPPOS
+		{ "controlcenter",    _("QUICK MENU") },
+#else
 		{ "controlcenter",    _("CONTROL CENTER") },
+#endif
 		{ "exit",             _("EXIT") },
 		{ "pause",            _("PAUSE") },
 		{ "menu",             _("MENU") },
@@ -667,6 +1120,81 @@ void GuiControllersSettings::declareGlobalHotkey(Window* window, GuiSettings* s)
 				else if (ret > 1)
 					window->pushGui(new GuiMsgBox(window, _("MORE THAN ONE GLOBAL HOTKEY DETECTED")));				
 			}
+		}));
+}
+
+void GuiControllersSettings::initializeTrackballSpinners(Window* window, GuiSettings* s)
+{
+	std::vector<TrackballSpinner> trackballspinners = ApiSystem::getInstance()->getTrackballSpinners();
+
+	s->clear();
+	s->addEntry(_("DECLARE A NEW TRACKBALL"), false, [this, window, s] { declareTrackballSpinners(window, s, "trackball"); });
+	s->addEntry(_("DECLARE A NEW SPINNER"), false, [this, window, s] { declareTrackballSpinners(window, s, "spinner"); });
+
+	// trackballs
+	bool group_trackball_set = false;
+	for (unsigned int i = 0; i < trackballspinners.size(); i++) 
+	{
+	  if(trackballspinners[i].type == "trackball") {
+	    if(group_trackball_set == false) {
+	      group_trackball_set = true;
+	      s->addGroup(_("TRACKBALLS"));
+	    }
+	    std::string key = trackballspinners[i].key;
+	    std::string name;
+
+	    if(trackballspinners[i].source == "user") {
+	      name = trackballspinners[i].name + " - " + _("USER DEFINED");
+	      s->addEntry(name, false, [this, window, s, key] { window->pushGui(new GuiMsgBox(window,
+											      _("DO YOU WANT TO REMOVE THIS TRACKBALL"),
+											      _("NO"), []{},
+											      _("YES"), [this, window, s, key] {
+												ApiSystem::getInstance()->removeTrackballSpinners(key);
+												initializeTrackballSpinners(window, s);
+											      })); });
+	    } else {
+	      name = trackballspinners[i].name;
+	      s->addEntry(name, false);
+	    }
+	  }
+	}
+
+	// spinners
+	bool group_spinner_set = false;
+	for (unsigned int i = 0; i < trackballspinners.size(); i++) 
+	{
+	  if(trackballspinners[i].type == "spinner") {
+	    if(group_spinner_set == false) {
+	      group_spinner_set = true;
+	      s->addGroup(_("SPINNERS"));
+	    }
+	    std::string key = trackballspinners[i].key;
+	    std::string name;
+
+	    if(trackballspinners[i].source == "user") {
+	      name = trackballspinners[i].name + " - " + _("USER DEFINED");
+	      s->addEntry(name, false, [this, window, s, key] { window->pushGui(new GuiMsgBox(window,
+											      _("DO YOU WANT TO REMOVE THIS SPINNER"),
+											      _("NO"), []{},
+											      _("YES"), [this, window, s, key] {
+												ApiSystem::getInstance()->removeTrackballSpinners(key);
+												initializeTrackballSpinners(window, s);
+											      })); });
+	    } else {
+	      name = trackballspinners[i].name;
+	      s->addEntry(name, false);
+	    }
+	  }
+	}
+}
+
+void GuiControllersSettings::declareTrackballSpinners(Window* window, GuiSettings* s, const std::string& type)
+{
+  window->pushGui(new GuiLoading<bool>(window, _("YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"), [this, window, type, s](auto gui)
+		{
+		  ApiSystem::getInstance()->detectTrackballSpinners(type);
+		  initializeTrackballSpinners(window, s);
+		  return true;
 		}));
 }
 

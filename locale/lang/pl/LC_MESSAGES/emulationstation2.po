@@ -103,7 +103,7 @@ msgid "Loading gamelists"
 msgstr "Wczytywanie list gier"
 
 msgid "Loading..."
-msgstr "Wczytywanie..."
+msgstr "Wczytywanie…"
 
 msgid "MENU"
 msgstr "MENU"
@@ -217,7 +217,7 @@ msgstr "PRZEJDŹ"
 msgid "BACK"
 msgstr "WSTECZ"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "ZAPISANE STANY GRY (PRZYTRZYMAJ)"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -232,7 +232,7 @@ msgstr "OPCJE GRY"
 msgid "FAVORITE"
 msgstr "ULUBIONE"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "ZAPISANE STANY GRY"
 
 #, c-format
@@ -299,7 +299,7 @@ msgstr "ZAPISAĆ ZMIANY?"
 msgid "ARE YOU SURE?"
 msgstr "CZY NA PEWNO?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr "USTAWIENIA RETROOSIĄGNIĘĆ"
 
 msgid "SETTINGS"
@@ -365,8 +365,8 @@ msgstr "NIEOFICJALNE OSIĄGNIĘCIA"
 msgid "Enable unlocking of unofficial achievements."
 msgstr "Włącz możliwość nieoficjalnych osiągnięć."
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
-msgstr "DŹWIĘK ODBLOKOWANIA RETROACHIEVEMENT"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
+msgstr "DŹWIĘK ODBLOKOWANIA RETROACHIEVEMENTS"
 
 msgid "none"
 msgstr "brak"
@@ -377,9 +377,9 @@ msgstr "DŹWIĘK ODBLOKOWANIA"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "POKAŻ WPIS RETROOSIĄGNIĘĆ W MENU GŁÓWNYM"
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr ""
-"Zobacz swoje statystyki \"RetroAchievement\" bezpośrednio z menu głównego!"
+"Zobacz swoje statystyki \"RetroAchievements\" bezpośrednio z menu głównego!"
 
 msgid "GAME INDEXES"
 msgstr "INDEKSY GIER"
@@ -481,13 +481,13 @@ msgid "VOLUME MUTE"
 msgstr "WYCISZ GŁOŚNOŚĆ"
 
 msgid "START RECORDING"
-msgstr ""
+msgstr "ROZPOCZNIJ NAGRYWANIE"
 
 msgid "STOP RECORDING"
-msgstr ""
+msgstr "ZATRZYMAJ NAGRYWANIE"
 
 msgid "KEYBOARD TOGGLE"
-msgstr ""
+msgstr "PRZEŁĄCZNIK KLAWIATURY"
 
 msgid "KEY ASSIGNED TWICE"
 msgstr "PRZYCISK PRZYPISANY DWUKROTNIE"
@@ -592,16 +592,6 @@ msgstr "UWZGLĘDNIONE SYSTEMY"
 msgid "START"
 msgstr "URUCHOM"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "AKTUALIZUJĘ %s"
-
-msgid "UPDATE IS READY"
-msgstr "AKTUALIZACJA JEST GOTOWA"
-
-msgid "REBOOT TO APPLY"
-msgstr "ZRESTARTUJ ABY ZASTOSOWAĆ"
-
 msgid "REALLY UPDATE?"
 msgstr "ZAKTUALIZOWAĆ?"
 
@@ -628,6 +618,16 @@ msgstr "WYMAGA POŁĄCZENIA Z INTERNETEM"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "BRAK NOWYCH AKTUALIZACJI"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "AKTUALIZUJĘ %s"
+
+msgid "UPDATE IS READY"
+msgstr "AKTUALIZACJA JEST GOTOWA"
+
+msgid "REBOOT TO APPLY"
+msgstr "ZRESTARTUJ ABY ZASTOSOWAĆ"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "POŁĄCZ Z NETPLAY"
@@ -891,7 +891,7 @@ msgid "VIEWER PASSWORD"
 msgstr "HASŁO WIDZA"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "ZNAJDŹ PODOBNE GRY..."
+msgstr "ZNAJDŹ PODOBNE GRY…"
 
 msgid "DELETE ITEM"
 msgstr "USUŃ ELEMENT"
@@ -926,7 +926,7 @@ msgid "WRITE"
 msgstr "ZAPISZ"
 
 msgid "PLACE A TAG ON THE WRITER..."
-msgstr "UMIEŚĆ TAG NA URZĄDZENIU DO ZAPISU..."
+msgstr "UMIEŚĆ TAG NA URZĄDZENIU DO ZAPISU…"
 
 msgid "THE TAG WAS WRITTEN SUCCESSFULLY"
 msgstr "TAG ZOSTAŁ POPRAWNIE ZAPISANY"
@@ -943,7 +943,7 @@ msgid "FAVORITES"
 msgstr "ULUBIONE"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "DODAJ DO KOLEKCJI NIESTANDARDOWEJ..."
+msgstr "DODAJ DO KOLEKCJI NIESTANDARDOWEJ…"
 
 msgid "SCRAPE"
 msgstr "SCRAPE'UJ"
@@ -1097,6 +1097,33 @@ msgstr "KONTROLER #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "KONTROLER P%i"
 
+msgid "RED"
+msgstr "CZERWONY"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "ZIELONY"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "NIEBIESKI"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "BIAŁY"
+
 msgid "CONTROLLER MAPPING"
 msgstr "MAPOWANIE KONTROLERA"
 
@@ -1149,7 +1176,7 @@ msgid "SHOW CONTROLLER BATTERY LEVEL"
 msgstr "POKAŻ POZIOM BATERII KONTROLERA"
 
 msgid "SHOW GUN NOTIFICATIONS"
-msgstr ""
+msgstr "POKAŻ POWIADOMIENIA BRONI"
 
 msgid "DRAW GUN CROSSHAIR"
 msgstr "RYSUJ CELOWNIK BRONI"
@@ -1166,11 +1193,99 @@ msgstr "OGRANICZ HOTKEY JOYSTICKÓW DO WYJŚCIA"
 msgid "GLOBAL HOTKEYS"
 msgstr "HOTKEY GLOBALNE"
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "TWORZYWO DIODY"
+
+msgid "ENABLE LED"
+msgstr "WŁĄCZ LED"
+
+msgid "LED MODE"
+msgstr "TRYB LED"
+
+msgid "STATIC"
+msgstr "STATYCZNE"
+
+msgid "RAINBOW"
+msgstr "TĘCZA"
+
+msgid "CHROMA"
+msgstr "CHROMA"
+
+msgid "PULSE"
+msgstr "PULS"
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "WŁASNY"
+
+msgid "LED BRIGHTNESS"
+msgstr "JASNOŚĆ DIODY"
+
 msgid "default"
 msgstr "domyślnie"
 
 msgid "NOT CONNECTED"
 msgstr "NIE POŁĄCZONO"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr "POŁUDNIE"
@@ -1220,8 +1335,8 @@ msgstr "HOTKEY"
 msgid "DEFAULT"
 msgstr "DOMYŚLNY"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
-msgstr "NIE ZNALEZIONO URZĄDZENIA (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
+msgstr "NIE ZNALEZIONO URZĄDZENIA (JAMMASD, IPAC…)"
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
 msgstr "STWÓRZ NOWY GLOBALNY HOTKEY"
@@ -1234,6 +1349,30 @@ msgstr "NIE WYKRYTO GLOBALNEGO HOTKEY"
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
 msgstr "WYKRYTO WIĘCEJ NIŻ JEDEN GLOBALNY HOTKEY"
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
+msgstr ""
 
 msgid "BORDER SIZE"
 msgstr "ROZMIAR OBRAMOWANIA"
@@ -1264,18 +1403,6 @@ msgstr "UKRYTE"
 
 msgid "BORDER COLOR"
 msgstr "KOLOR OBRAMOWANIA"
-
-msgid "WHITE"
-msgstr "BIAŁY"
-
-msgid "RED"
-msgstr "CZERWONY"
-
-msgid "GREEN"
-msgstr "ZIELONY"
-
-msgid "BLUE"
-msgstr "NIEBIESKI"
 
 msgid "BORDER RATIO"
 msgstr "PROPORCJE OBRAMOWANIA"
@@ -1383,13 +1510,19 @@ msgid "INPUT"
 msgstr "WEJŚCIE"
 
 msgid "INPUT MANUALLY"
-msgstr "WPROWADŹ RĘCZNE"
+msgstr "WPROWADŹ RĘCZNIE"
 
 msgid "NO WI-FI NETWORKS FOUND"
-msgstr "NIE ZNALEZIONO SIECI WIFI"
+msgstr "NIE ZNALEZIONO SIECI WI-FI"
+
+msgid "CONNECTED"
+msgstr "POŁĄCZONO"
+
+msgid "ALREADY CONNECTED"
+msgstr "JUŻ POŁĄCZONO"
 
 msgid "SEARCHING WI-FI NETWORKS"
-msgstr "WYSZUKIWANIE SIECI WIFI"
+msgstr "WYSZUKIWANIE SIECI WI-FI"
 
 msgid "PARIS"
 msgstr "PARYŻ"
@@ -1444,9 +1577,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAN PAULO"
-
-msgid "CUSTOM"
-msgstr "WŁASNY"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "WŁASNY SERWER POŚREDNICZĄCY"
@@ -2012,13 +2142,19 @@ msgid "VRAM LIMIT"
 msgstr "LIMIT VRAM"
 
 msgid "SHOW FRAMERATE"
-msgstr "POKAŻ FPS"
+msgstr "POKAŻ KL/S"
 
 msgid "Also turns on the emulator's native FPS counter, if available."
-msgstr "Włącza również natywny licznik FPS emulatora, jeśli jest dostępny."
+msgstr "Włącza również natywny licznik KL/S emulatora, jeśli jest dostępny."
 
 msgid "VSYNC"
 msgstr "VSYNC"
+
+msgid "ANTI-ALIASING (MSAA)"
+msgstr "ANTYALIASING (MSAA)"
+
+msgid "FPS LIMIT"
+msgstr "LIMIT KL/S"
 
 msgid "OVERSCAN"
 msgstr "PRZESKALOWANIE"
@@ -2187,6 +2323,13 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "STERUJ EMULATIONSTATION TYLKO Z PIERWSZEGO JOYSTICKA"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr "PRAWY DRĄŻEK ANALOGOWY REGULUJE GŁOŚNOŚĆ"
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+"Przesuń prawy drążek w górę lub w dół, aby zwiększyć lub zmniejszyć głośność."
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "TOLERANCJA RUCHU PISTOLETU"
 
@@ -2224,6 +2367,19 @@ msgstr ""
 "Zmniejsza opóźnienia podczas przewijania w pełni scrape'owanej listy gier, "
 "wydłuża czas uruchamiania"
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr "GŁĘBOKOŚĆ INDEKSOWANIA KATALOGÓW"
+
+msgid "UNLIMITED"
+msgstr "NIEOGRANICZONE"
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+"Maksymalna głębokość skanowania w obrębie każdego folderu ROM, aby pominąć "
+"podfoldery zawierające zbyt wiele plików."
+
 msgid "THREADED LOADING"
 msgstr "WCZYTYWANIE WĄTKOWE"
 
@@ -2237,7 +2393,7 @@ msgid "OPTIMIZE VIDEO VRAM USAGE"
 msgstr "OPTYMALIZUJ WIDEO DLA VRAM"
 
 msgid "USE FILESYSTEM CACHE"
-msgstr ""
+msgstr "UŻYJ PAMIĘCI PODRĘCZNEJ SYSTEMU PLIKÓW"
 
 msgid "REBOOT REQUIRED TO APPLY THE NEW CONFIGURATION"
 msgstr ""
@@ -2258,6 +2414,9 @@ msgstr "SPRAWDŹ AKTUALIZACJE"
 msgid "UPDATE TYPE"
 msgstr "TYP AKTUALIZACJI"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr "AKTUALIZACJA ARCHITEKTURY"
+
 msgid "APPLY UPDATE"
 msgstr "ZASTOSUJ AKTUALIZACJĘ"
 
@@ -2266,6 +2425,33 @@ msgstr "ROZPOCZNIJ AKTUALIZACJĘ"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "AKTUALIZACJA ZOSTAŁA JUŻ URUCHOMIONA"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr "ROZPOCZNIJ AKTUALIZACJĘ Z MEDIÓW LOKALNYCH"
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr "NAPRAWDĘ AKTUALIZOWAĆ Z MEDIÓW LOKALNYCH?"
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr "AKTUALIZACJE OPROGRAMOWANIA PRZEZ TORRENT"
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr "UDOSTĘPNIAJ AKTUALIZACJE PRZEZ TORRENT"
+
+msgid "Torrent update service started"
+msgstr "Uruchomiono usługę aktualizacji torrentów"
+
+msgid "Torrent update service stopped"
+msgstr "Usługa aktualizacji torrentów zatrzymana"
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr "ROZPOCZNIJ AKTUALIZACJĘ Z PLIKU TORRENT"
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr "NAPRAWDĘ AKTUALIZOWAĆ Z PLIKU TORRENT?"
+
+msgid "DOWNLOAD STATUS"
+msgstr "STAN POBIERANIA"
 
 msgid "LANGUAGE"
 msgstr "JĘZYK"
@@ -2357,6 +2543,22 @@ msgid "Available options can change depending on current audio output."
 msgstr ""
 "Dostępne opcje mogą się zmieniać w zależności od bieżącego wyjścia audio."
 
+msgid "HDR"
+msgstr "HDR"
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+"Umożliwia wyświetlanie treści HDR, takich jak transmisje Moonlight HDR."
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "ZMIENNA CZĘSTOTLIWOŚĆ ODŚWIEŻANIA"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+"Sprawia, że częstotliwość odświeżania ekranu dostosowuje się do liczby "
+"klatek na sekundę. Wyłącz tę opcję, jeśli ekran migocze."
+
 msgid "BOOT SPLASH"
 msgstr "EKRAN STARTOWY"
 
@@ -2423,15 +2625,6 @@ msgstr "wł."
 msgid "OVERCLOCK"
 msgstr "PRZETAKTOWANIE"
 
-msgid "LED HARDWARE"
-msgstr "TWORZYWO DIODY"
-
-msgid "ENABLE LED"
-msgstr "WŁĄCZ LED"
-
-msgid "LED BRIGHTNESS"
-msgstr "JASNOŚĆ DIODY"
-
 msgid "STORAGE"
 msgstr "PRZECHOWYWANIE DANYCH"
 
@@ -2458,6 +2651,17 @@ msgstr "Wymagaj hasła dostępu do udziału sieciowego."
 
 msgid "ROOT PASSWORD"
 msgstr "HASŁO ADMINISTRATORA"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr "ZABEZPIECZENIA BEZPIECZEŃSTWA PROCESORA"
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
+"Wyłączenie zabezpieczeń może poprawić wydajność niektórych systemów, ale "
+"kosztem zmniejszenia ochrony przed pewnymi lukami w zabezpieczeniach "
+"procesora."
 
 msgid "LATENCY REDUCTION"
 msgstr "REDUKCJA OPÓŹNIEŃ"
@@ -2490,9 +2694,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "ZMIENNA CZĘSTOTLIWOŚĆ ODŚWIEŻANIA (G-SYNC, FREESYNC)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "ZMIENNA CZĘSTOTLIWOŚĆ ODŚWIEŻANIA"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr "Nie odbiegaj od żądanego czasu. G-Sync, FreeSync, HDMI 2.1 VRR."
@@ -2506,13 +2707,10 @@ msgstr "Aktualne ustawienie"
 msgid "BIOS SETTINGS"
 msgstr "USTAWIENIA BIOSU"
 
-msgid "SAVESTATES"
-msgstr "ZAPISANE STANY GRY"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "AUTOMATYCZNE ZAPISYWANIE/WCZYTYWANIE"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
 "Wczytaj najnowszy stan zapisu przy uruchamianiu gry i zapisz stan przy "
 "wychodzeniu z gry."
@@ -2845,11 +3043,34 @@ msgstr "WŁĄCZ DŹWIĘKI NAWIGACJI"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "WŁĄCZ DŹWIĘK WIDEO"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr "NIE MOŻNA POŁĄCZYĆ SIĘ Z '%s'"
+
+msgid "WI-FI NETWORKS"
+msgstr "SIECI WI-FI"
+
+msgid "ADD A WI-FI NETWORK"
+msgstr "DODAJ SIEĆ WI-FI"
+
+msgid "WI-FI SSID"
+msgstr "WI-FI SSID"
+
+msgid "WI-FI KEY"
+msgstr "HASŁO WI-FI"
+
+msgid "USE"
+msgstr "UŻYJ"
+
+msgid "FORGET"
+msgstr "ZAPOMNIJ"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "CZY NA PEWNO ZAPOMNIEĆ '%s'?"
+
 msgid "IP ADDRESS"
 msgstr "ADRES IP"
-
-msgid "CONNECTED"
-msgstr "POŁĄCZONO"
 
 msgid "INTERNET STATUS"
 msgstr "STATUS INTERNETU"
@@ -2857,26 +3078,20 @@ msgstr "STATUS INTERNETU"
 msgid "HOSTNAME"
 msgstr "NAZWA HOSTA"
 
-msgid "ENABLE WIFI"
-msgstr "WŁĄCZ WIFI"
+msgid "ENABLE WI-FI"
+msgstr "WŁĄCZ WI-FI"
 
-msgid "WIFI SSID"
-msgstr "WIFI SSID"
-
-msgid "WIFI KEY"
-msgstr "HASŁO WIFI"
-
-msgid "WIFI COUNTRY"
+msgid "WI-FI COUNTRY"
 msgstr "KRAJ WI-FI"
 
 msgid "N/A"
 msgstr "Nd"
 
-msgid "WIFI ENABLED"
-msgstr "WIFI WŁĄCZONE"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI WŁĄCZONE"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "BŁĄD KONFIGURACJI WIFI"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "BŁĄD KONFIGURACJI WI-FI"
 
 msgid "QUICK ACCESS"
 msgstr "SZYBKI DOSTĘP"
@@ -2940,11 +3155,6 @@ msgstr "RZECZYWIŚCIE WYJŚĆ?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "AUTOMATYCZNY ZAPIS/ODCZYT"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
-"Wczytaj najnowszy stan zapisu przy uruchamianiu gry i zapisz stan przy "
-"wychodzeniu z gry."
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "POKAŻ NAKŁADKI KONTROLERA"
@@ -3013,7 +3223,7 @@ msgid "NO DRIVE SELECTED"
 msgstr "BRAK WYBRANEGO NAPĘDU"
 
 msgid "Ejecting..."
-msgstr "Wysuwanie..."
+msgstr "Wysuwanie…"
 
 msgid "EDIT METADATA"
 msgstr "EDYTUJ META DANE"
@@ -3048,13 +3258,6 @@ msgstr "ROZŁĄCZ"
 
 msgid "CONNECT"
 msgstr "POŁĄCZ"
-
-msgid "FORGET"
-msgstr "ZAPOMNIJ"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "CZY NA PEWNO ZAPOMNIEĆ '%s'?"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3410,13 +3613,13 @@ msgid "Screenscraper Game ID"
 msgstr "Identyfikator gry Screenscraper"
 
 msgid "MultiDisk"
-msgstr ""
+msgstr "MultiDisk"
 
 msgid "Loading system config..."
-msgstr "Wczytywanie konfiguracji systemowej..."
+msgstr "Wczytywanie konfiguracji systemowej…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "ZAPISYWANIE METADANYCH. CZEKAJ..."
+msgstr "ZAPISYWANIE METADANYCH. CZEKAJ…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "CHCESZ PRZEŁĄCZYĆ EKRAN?"
@@ -3439,7 +3642,7 @@ msgstr "4 graczy"
 msgid "never played"
 msgstr "nidgy nie grane"
 
-msgid "retroachievements"
+msgid "RetroAchievements"
 msgstr "retroosiągnięcia"
 
 msgid "arcade"
@@ -3536,11 +3739,14 @@ msgstr "BRAK JĄDRA EMULATORA"
 msgid "UKNOWN ERROR"
 msgstr "NIEZNANY BŁĄD"
 
+msgid "Checking for latest upgrade script..."
+msgstr "Sprawdzanie najnowszego skryptu aktualizacji…"
+
 msgid "Collections"
 msgstr "Kolekcje"
 
 msgid "Searching for devices..."
-msgstr "Wyszukiwanie urządzeń..."
+msgstr "Wyszukiwanie urządzeń…"
 
 msgid "FORMATTING DEVICE"
 msgstr "FORMATOWANIE URZĄDZENIA"
@@ -3626,11 +3832,8 @@ msgstr "WYŁĄCZONY CZYTNIK EKRANU"
 msgid "ENABLED"
 msgstr "WŁĄCZONE"
 
-msgid "up/down"
-msgstr "góra/dół"
-
 msgid "WORKING..."
-msgstr "PRACUJĘ..."
+msgstr "PRACUJĘ…"
 
 msgid "accept"
 msgstr "zaakceptuj"
@@ -3861,7 +4064,7 @@ msgstr ""
 "Strzelanie do celów w celu kalibracji"
 
 msgid "Reloaded the games list..."
-msgstr "Ponownie załadowano listę gier..."
+msgstr "Ponownie załadowano listę gier…"
 
 msgid "GAME DRIVE DETECTED"
 msgstr "WYKRYTO NAPĘD GIER"
@@ -3900,10 +4103,10 @@ msgid "NO, IGNORE FOREVER"
 msgstr "NIE, ZAWSZE IGNORUJ"
 
 msgid "Adding drive to ignore list..."
-msgstr "Dodaję dysk do listy ignorowanych..."
+msgstr "Dodaję dysk do listy ignorowanych…"
 
 msgid "YES, MERGE DRIVE"
-msgstr ""
+msgstr "TAK, SCAL DYSKI"
 
 msgid "NEW DRIVE DETECTED"
 msgstr "WYKRYTO NOWY DYSK"
@@ -3915,7 +4118,7 @@ msgid "(ALL EXISTING DATA WILL BE ERASED)"
 msgstr "(WSZYSTKIE DANE ZOSTANĄ USUNIĘTE)"
 
 msgid "Starting format process..."
-msgstr "Rozpoczęcie procesu formatowania..."
+msgstr "Rozpoczęcie procesu formatowania…"
 
 msgid "FORMAT FAILED"
 msgstr "FORMAT NIEUDANY"
@@ -3977,6 +4180,18 @@ msgstr[0] "%d sekundę temu"
 msgstr[1] "%d sekundy temu"
 msgstr[2] "%d sekund temu"
 
+#~ msgid "up/down"
+#~ msgstr "góra/dół"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "Wczytaj najnowszy stan zapisu przy uruchamianiu gry i zapisz stan przy "
+#~ "wychodzeniu z gry."
+
+#~ msgid "FANART"
+#~ msgstr "FAN ART"
+
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "STWÓRZ PAMIĘĆ PODRĘCZNĄ OBRAZÓW"
 
@@ -3996,7 +4211,7 @@ msgstr[2] "%d sekund temu"
 #~ msgstr "Scalanie napędu. Proszę czekać."
 
 #~ msgid "New drive content will be available after games list is refreshed..."
-#~ msgstr "Nowa zawartość napędu będzie dostępna po odświeżeniu listy gier..."
+#~ msgstr "Nowa zawartość napędu będzie dostępna po odświeżeniu listy gier…"
 
 #~ msgid "BY HARDWARE TYPE"
 #~ msgstr "WEDŁUG SPRZĘTU"
@@ -4041,7 +4256,7 @@ msgstr[2] "%d sekund temu"
 #~ msgstr "Resetuje wartości metadanych GameTime, PlayCount i LastPlayed."
 
 #~ msgid "SAVING METADATAS. PLEASE WAIT..."
-#~ msgstr "ZAPISYWANIE METADANYCH. CZEKAJ..."
+#~ msgstr "ZAPISYWANIE METADANYCH. CZEKAJ…"
 
 #~ msgid "FORGET A BLUETOOTH DEVICE"
 #~ msgstr "USUŃ URZĄDZENIE BLUETOOTH"

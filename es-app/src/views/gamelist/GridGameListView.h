@@ -14,6 +14,9 @@ class VideoComponent;
 class GridGameListView : public ISimpleGameListView, public ILongMouseClickEvent
 {
 public:
+	void refreshDetails(const std::string& changedFile = "") override;
+	void refreshEntry(FileData* entry, const std::string& changedFile = "") override;
+
 	GridGameListView(Window* window, FolderData* root, const std::shared_ptr<ThemeData>& theme, std::string customThemeName = "", Vector2f gridSize = Vector2f(0,0));
 
 	virtual void onThemeChanged(const std::shared_ptr<ThemeData>& theme) override;
@@ -37,6 +40,7 @@ public:
 	}
 
 	virtual void launch(FileData* game) override;
+	virtual Vector3f getLaunchTarget(Vector2f* size) override;
 	virtual void onFileChanged(FileData* file, FileChangeType change);
 
 	virtual void setThemeName(std::string name);

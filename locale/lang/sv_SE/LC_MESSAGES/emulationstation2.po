@@ -1,14 +1,10 @@
-# Swedish translations for batocera-l package.
-# Copyright (C) 2026 THE batocera-l'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the batocera-l package.
-# Automatically generated, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: batocera-l 10n\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2026-04-19 08:40+0200\n"
+"PO-Revision-Date: 2026-09-11 06:00+0000\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish\n"
 "Language: sv\n"
@@ -109,7 +105,7 @@ msgid "Loading gamelists"
 msgstr "Laddar spellistor"
 
 msgid "Loading..."
-msgstr "Laddar..."
+msgstr "Laddar…"
 
 msgid "MENU"
 msgstr "MENY"
@@ -150,19 +146,19 @@ msgstr "Okänd"
 msgid "CONFIGURATION"
 msgstr "KONFIGURATION"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%i COLLECTION"
 msgid_plural "%i COLLECTIONS"
-msgstr[0] "%i Insamling"
-msgstr[1] "%i Insamling"
+msgstr[0] "%i SAMLING"
+msgstr[1] "%i SAMLINGAR"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%i ITEM"
 msgid_plural "%i ITEMS"
 msgstr[0] "%i OBJEKT"
 msgstr[1] "%i OBJEKT"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%i GAME"
 msgid_plural "%i GAMES"
 msgstr[0] "%i SPEL"
@@ -198,11 +194,11 @@ msgstr "Speltid"
 msgid "Favorite"
 msgstr "Favorit"
 
-#, fuzzy, c-format
+#, c-format
 msgid "This folder contains %i game, including: %s"
 msgid_plural "This folder contains %i games, including: %s"
-msgstr[0] "Den här mappen innehåller %i spel, inklusive: %s"
-msgstr[1] "Den här mappen innehåller %i spel, inklusive: %s"
+msgstr[0] "Den här mappen innehåller %i spel, bland annat: %s"
+msgstr[1] "Den här mappen innehåller %i spel, bland annat: %s"
 
 msgid "FILTER GAMES BY TEXT"
 msgstr "FILTRERA SPEL EFTER TEXT"
@@ -219,7 +215,7 @@ msgstr "VÄLJ"
 msgid "BACK"
 msgstr "TILLBAKA"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "SPARA TILLSTÅND (HÅLL)"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -234,7 +230,7 @@ msgstr "SPELOPTIONER"
 msgid "FAVORITE"
 msgstr "FAVORIT"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "RÄDDA STATEN"
 
 #, c-format
@@ -301,8 +297,8 @@ msgstr "SPARA ÄNDRINGAR?"
 msgid "ARE YOU SURE?"
 msgstr "ÄR DU SÄKER?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
-msgstr "INSTÄLLNINGAR FÖR RETROACHIEVEMENT"
+msgid "RETROACHIEVEMENTS SETTINGS"
+msgstr "INSTÄLLNINGAR FÖR RETROACHIEVEMENTS"
 
 msgid "SETTINGS"
 msgstr "INSTÄLLNINGAR"
@@ -366,8 +362,8 @@ msgstr "INOFFICIELLA PRESTATIONER"
 msgid "Enable unlocking of unofficial achievements."
 msgstr "Möjliggör upplåsning av inofficiella prestationer."
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
-msgstr "LÅS UPP LJUD FÖR RETROACHIEVEMENT"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
+msgstr "LÅS UPP LJUD FÖR RETROACHIEVEMENTS"
 
 msgid "none"
 msgstr "ingen"
@@ -378,8 +374,8 @@ msgstr "LÅS UPP LJUDET"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "VISA RETROACHIEVEMENTS-POST I HUVUDMENYN"
 
-msgid "View your RetroAchievement stats right from the main menu!"
-msgstr "Se din RetroAchievement-statistik direkt från huvudmenyn!"
+msgid "View your RetroAchievements stats right from the main menu!"
+msgstr "Se din RetroAchievements-statistik direkt från huvudmenyn!"
 
 msgid "GAME INDEXES"
 msgstr "INDEX FÖR SPEL"
@@ -397,7 +393,7 @@ msgid "KEYBOARDTOPADS"
 msgstr "TANGENTBORDDATORER"
 
 msgid "HOTKEYS"
-msgstr "snabbtangentS"
+msgstr "SNABBTANGENTER"
 
 msgid "KEYS DEFINED BUT JOYSTICK NOT NAMED"
 msgstr "TANGENTER DEFINIERADE MEN JOYSTICK INTE NAMNGIVEN"
@@ -418,7 +414,7 @@ msgid "PRESS A KEY OR WAIT 4 SECONDS TO CLEAR"
 msgstr "TRYCK PÅ EN TANGENT ELLER VÄNTA 4 SEKUNDER FÖR ATT RENSA"
 
 msgid "OVERLAYS"
-msgstr "överläggS"
+msgstr "ÖVERLÄGG"
 
 msgid "BRIGHTNESS CYCLE"
 msgstr "LJUSHETSCYKEL"
@@ -481,13 +477,13 @@ msgid "VOLUME MUTE"
 msgstr "VOLYM MUTE"
 
 msgid "START RECORDING"
-msgstr ""
+msgstr "STARTA INSPELNING"
 
 msgid "STOP RECORDING"
-msgstr ""
+msgstr "STOPPA INSPELNING"
 
 msgid "KEYBOARD TOGGLE"
-msgstr ""
+msgstr "VÄXLA TANGENTBORD"
 
 msgid "KEY ASSIGNED TWICE"
 msgstr "TANGENT TILLDELAD TVÅ GÅNGER"
@@ -592,16 +588,6 @@ msgstr "SYSTEM INGÅR"
 msgid "START"
 msgstr "STARTA"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "UPPDATERING %s"
-
-msgid "UPDATE IS READY"
-msgstr "UPPDATERINGEN ÄR KLAR"
-
-msgid "REBOOT TO APPLY"
-msgstr "STARTA OM FÖR ATT TILLÄMPA"
-
 msgid "REALLY UPDATE?"
 msgstr "VERKLIGEN UPPDATERING?"
 
@@ -628,6 +614,16 @@ msgstr "NÄTVERKSANSLUTNING BEHÖVS"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "INGEN UPPDATERING TILLGÄNGLIG"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "UPPDATERING %s"
+
+msgid "UPDATE IS READY"
+msgstr "UPPDATERINGEN ÄR KLAR"
+
+msgid "REBOOT TO APPLY"
+msgstr "STARTA OM FÖR ATT TILLÄMPA"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "ANSLUT TILL NETPLAY"
@@ -891,7 +887,7 @@ msgid "VIEWER PASSWORD"
 msgstr "LÖSENORD FÖR TITTARE"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "HITTA LIKNANDE SPEL..."
+msgstr "HITTA LIKNANDE SPEL…"
 
 msgid "DELETE ITEM"
 msgstr "RADERA ITEM"
@@ -902,7 +898,9 @@ msgstr "RADERA SPEL"
 msgid ""
 "THIS WILL DELETE THE ACTUAL GAME FILE(S)!\n"
 "ARE YOU SURE?"
-msgstr "DETTA KOMMER ATT RADERA DEN RIKTIGA SPELFILEN!\\ÄR DU SÄKER?"
+msgstr ""
+"DETTA KOMMER ATT RADERA DEN AKTUELLA SPELFILEN/SPELFILERNA!\n"
+"ÄR DU SÄKER?"
 
 msgid "NFC"
 msgstr "NFC"
@@ -924,7 +922,7 @@ msgid "WRITE"
 msgstr "SKRIVA"
 
 msgid "PLACE A TAG ON THE WRITER..."
-msgstr "PLACERA EN TAGG PÅ SKRIBENTEN..."
+msgstr "PLACERA EN TAGG PÅ SKRIBENTEN…"
 
 msgid "THE TAG WAS WRITTEN SUCCESSFULLY"
 msgstr "TAGGEN SKREVS FRAMGÅNGSRIKT"
@@ -941,7 +939,7 @@ msgid "FAVORITES"
 msgstr "FAVORITER"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "LÄGG TILL I ANPASSAD SAMLING..."
+msgstr "LÄGG TILL I ANPASSAD SAMLING…"
 
 msgid "SCRAPE"
 msgstr "SKRAPA"
@@ -1089,11 +1087,38 @@ msgstr "SPELARNAS UPPGIFTER"
 
 #, c-format
 msgid "CONTROLLER #%i"
-msgstr "handkontroll #%i"
+msgstr "HANDKONTROLL #%i"
 
 #, c-format
 msgid "P%i'S CONTROLLER"
 msgstr "P%i'S handkontroll"
+
+msgid "RED"
+msgstr "RÖD"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "GRÖN"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "BLÅ"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "VIT"
 
 msgid "CONTROLLER MAPPING"
 msgstr "MAPPNING AV STYRENHET"
@@ -1146,7 +1171,7 @@ msgid "SHOW CONTROLLER BATTERY LEVEL"
 msgstr "VISA STYRENHETENS BATTERINIVÅ"
 
 msgid "SHOW GUN NOTIFICATIONS"
-msgstr ""
+msgstr "VISA VAPENNOTISER"
 
 msgid "DRAW GUN CROSSHAIR"
 msgstr "DRA PISTOL HÅRKORS"
@@ -1163,11 +1188,99 @@ msgstr "BEGRÄNSA JOYSTICKS SNABBTANGENTER FÖR ATT AVSLUTA"
 msgid "GLOBAL HOTKEYS"
 msgstr "GLOBALA snabbtangentS"
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "LED-HÅRDVARA"
+
+msgid "ENABLE LED"
+msgstr "LED FÖR AKTIVERING"
+
+msgid "LED MODE"
+msgstr "LED-LÄGE"
+
+msgid "STATIC"
+msgstr "STATISK"
+
+msgid "RAINBOW"
+msgstr "REGNBÅGE"
+
+msgid "CHROMA"
+msgstr "CHROMA"
+
+msgid "PULSE"
+msgstr "PULSERANDE"
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "ANPASSAD"
+
+msgid "LED BRIGHTNESS"
+msgstr "LED-LJUSSTYRKA"
+
 msgid "default"
 msgstr "standard"
 
 msgid "NOT CONNECTED"
 msgstr "INTE ANSLUTEN"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr "SÖD"
@@ -1212,13 +1325,13 @@ msgid "RIGHT STICK PRESS"
 msgstr "TRYCK PÅ HÖGER SPAK"
 
 msgid "HOTKEY"
-msgstr "snabbtangent"
+msgstr "SNABBTANGENT"
 
 msgid "DEFAULT"
 msgstr "STANDARD"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
-msgstr "INGEN ENHET HITTADES (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
+msgstr "INGEN ENHET HITTADES (JAMMASD, IPAC…)"
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
 msgstr "ANGE EN NY GLOBAL SNABBTANGENT"
@@ -1233,6 +1346,30 @@ msgstr "INGEN GLOBAL SNABBTANGENT UPPTÄCKT"
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
 msgstr "MER ÄN EN GLOBAL SNABBTANGENT UPPTÄCKT"
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
+msgstr ""
 
 msgid "BORDER SIZE"
 msgstr "BORDER STORLEK"
@@ -1263,18 +1400,6 @@ msgstr "DOLD"
 
 msgid "BORDER COLOR"
 msgstr "BORDER FÄRG"
-
-msgid "WHITE"
-msgstr "VIT"
-
-msgid "RED"
-msgstr "RÖD"
-
-msgid "GREEN"
-msgstr "GRÖN"
-
-msgid "BLUE"
-msgstr "BLÅ"
 
 msgid "BORDER RATIO"
 msgstr "GRÄNSRATIO"
@@ -1387,6 +1512,12 @@ msgstr "INPUT MANUELLT"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "INGA WI-FI-NÄTVERK HITTADES"
 
+msgid "CONNECTED"
+msgstr "ANSLUTEN"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "SÖKNING AV WI-FI-NÄTVERK"
 
@@ -1443,9 +1574,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAO PAULO"
-
-msgid "CUSTOM"
-msgstr "ANPASSAD"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "ANPASSAD RELÄSERVER"
@@ -1833,35 +1961,35 @@ msgstr "Säker start"
 
 msgctxt "game_options"
 msgid "SHARP-BILINEAR-SIMPLE"
-msgstr ""
+msgstr "SHARP-BILINEAR-SIMPLE"
 
 msgctxt "game_options"
 msgid "SCANLINES"
-msgstr ""
+msgstr "SKANNINGSLINJER"
 
 msgctxt "game_options"
 msgid "RETRO"
-msgstr ""
+msgstr "RETRO"
 
 msgctxt "game_options"
 msgid "ENHANCED"
-msgstr ""
+msgstr "FÖRBÄTTRAD"
 
 msgctxt "game_options"
 msgid "CURVATURE"
-msgstr ""
+msgstr "KRÖKNING"
 
 msgctxt "game_options"
 msgid "ZFAST"
-msgstr ""
+msgstr "ZFAST"
 
 msgctxt "game_options"
 msgid "FLATTEN-GLOW"
-msgstr ""
+msgstr "FLATTEN-GLOW"
 
 msgctxt "game_options"
 msgid "RGA SCALING"
-msgstr ""
+msgstr "RGA-SKALNING"
 
 msgid "VENDOR"
 msgstr "ANBUDSGIVARE"
@@ -1870,7 +1998,7 @@ msgid "RENDERER"
 msgstr "RENDERING"
 
 msgid "SHADERS"
-msgstr "shaderS"
+msgstr "SHADERS"
 
 msgid "INTERNAL"
 msgstr "INTERN"
@@ -1906,7 +2034,7 @@ msgid "CONFIGURE INPUT"
 msgstr "KONFIGURERA INGÅNG"
 
 msgid "EMULATOR SETTINGS"
-msgstr "emulatorINSTÄLLNINGAR"
+msgstr "EMULATORINSTÄLLNINGAR"
 
 msgid "UPDATES & DOWNLOADS"
 msgstr "UPPDATERINGAR & NEDLADDNINGAR"
@@ -1954,7 +2082,7 @@ msgid "BRIGHTNESS"
 msgstr "LJUSSTYRKA"
 
 msgid "DMDSERVER stopped"
-msgstr "DMDSERVER stophandkontroll"
+msgstr "DMDSERVER stoppad"
 
 msgid "DMDSERVER restarted"
 msgstr "DMDSERVER omstartad"
@@ -2018,6 +2146,12 @@ msgstr "Aktiverar även emulatorns inbyggda FPS-räknare, om sådan finns."
 
 msgid "VSYNC"
 msgstr "VSYNC"
+
+msgid "ANTI-ALIASING (MSAA)"
+msgstr "KANTUTJÄMNING (MSAA)"
+
+msgid "FPS LIMIT"
+msgstr "FPS-GRÄNS"
 
 msgid "OVERSCAN"
 msgstr "ÖVERSKANNING"
@@ -2185,6 +2319,13 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "STYR EMULERINGSSTATION MED ENDAST FÖRSTA JOYSTICKEN"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr "HÖGER ANALOGSPAK ÄNDRAR VOLYMEN"
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+"Flytta den högra spaken uppåt eller nedåt för att höja eller sänka volymen."
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "PISTOL FLYTTA TOLERENCE"
 
@@ -2222,6 +2363,19 @@ msgstr ""
 "Minskar fördröjningen när du bläddrar igenom en helt ny spellista, ökar "
 "starttiden"
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr "KATALOGDJUP FÖR INDEXERING"
+
+msgid "UNLIMITED"
+msgstr "OBEGRÄNSAT"
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+"Största djup som genomsöks i varje ROM-mapp för att ignorera undermappar med "
+"många filer."
+
 msgid "THREADED LOADING"
 msgstr "GÄNGAD LASTNING"
 
@@ -2235,7 +2389,7 @@ msgid "OPTIMIZE VIDEO VRAM USAGE"
 msgstr "OPTIMERA ANVÄNDNINGEN AV VIDEO-VRAM"
 
 msgid "USE FILESYSTEM CACHE"
-msgstr ""
+msgstr "ANVÄND FILSYSTEMSCACHEN"
 
 msgid "REBOOT REQUIRED TO APPLY THE NEW CONFIGURATION"
 msgstr "OMSTART KRÄVS FÖR ATT TILLÄMPA DEN NYA KONFIGURATIONEN"
@@ -2253,16 +2407,46 @@ msgid "CHECK FOR UPDATES"
 msgstr "KONTROLLERA FÖR UPPDATERINGAR"
 
 msgid "UPDATE TYPE"
-msgstr "UPDATE TYP"
+msgstr "UPPDATERINGSTYP"
+
+msgid "ARCHITECTURE UPDATE"
+msgstr "ARKITEKTURUPPDATERING"
 
 msgid "APPLY UPDATE"
-msgstr "ANSÖK UPDATE"
+msgstr "TILLÄMPA UPPDATERING"
 
 msgid "START UPDATE"
 msgstr "STARTA UPPDATERING"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "UPPDATERINGSPROGRAMMET ÄR REDAN IGÅNG"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr "STARTA UPPDATERING FRÅN LOKALT MEDIA"
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr "VILL DU VERKLIGEN UPPDATERA FRÅN LOKALT MEDIA?"
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr "PROGRAMUPPDATERINGAR VIA TORRENT"
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr "DELA UPPDATERINGAR VIA TORRENT"
+
+msgid "Torrent update service started"
+msgstr "Torrents uppdateringstjänst har startats"
+
+msgid "Torrent update service stopped"
+msgstr "Torrents uppdateringstjänst har stoppats"
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr "STARTA UPPDATERING FRÅN TORRENTFIL"
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr "VILL DU VERKLIGEN UPPDATERA FRÅN TORRENTFIL?"
+
+msgid "DOWNLOAD STATUS"
+msgstr "NEDLADDNINGSSTATUS"
 
 msgid "LANGUAGE"
 msgstr "SPRÅKET"
@@ -2351,6 +2535,20 @@ msgstr "LJUDPROFIL"
 msgid "Available options can change depending on current audio output."
 msgstr "Tillgängliga alternativ kan ändras beroende på aktuell ljudutgång."
 
+msgid "HDR"
+msgstr "HDR"
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+"Gör det möjligt att visa HDR-innehåll, såsom HDR-strömmar från Moonlight."
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "VARIABEL UPPDATERINGSFREKVENS"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "SKOSNÖRE SPLASH"
 
@@ -2417,15 +2615,6 @@ msgstr "på"
 msgid "OVERCLOCK"
 msgstr "ÖVERKLOCKNING"
 
-msgid "LED HARDWARE"
-msgstr "LED-HÅRDVARA"
-
-msgid "ENABLE LED"
-msgstr "LED FÖR AKTIVERING"
-
-msgid "LED BRIGHTNESS"
-msgstr "LED-LJUSSTYRKA"
-
 msgid "STORAGE"
 msgstr "FÖRVARING"
 
@@ -2452,6 +2641,16 @@ msgstr "Kräv ett lösenord för åtkomst till nätverksdelningen."
 
 msgid "ROOT PASSWORD"
 msgstr "ROOT-LÖSENORD"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr "SÄKERHETSÅTGÄRDER FÖR CPU"
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
+"Att inaktivera säkerhetsåtgärder kan förbättra prestandan på vissa system, "
+"men minskar skyddet mot vissa CPU-sårbarheter."
 
 msgid "LATENCY REDUCTION"
 msgstr "MINSKAD LATENSTID"
@@ -2484,9 +2683,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "VARIABEL UPPDATERINGSFREKVENS (G-SYNC, FREESYNC)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "VARIABEL UPPDATERINGSFREKVENS"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2501,15 +2697,12 @@ msgstr "Aktuell inställning"
 msgid "BIOS SETTINGS"
 msgstr "BIOS-INSTÄLLNINGAR"
 
-msgid "SAVESTATES"
-msgstr "SPARADE TILLSTÅND"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "LÄS IN/SPARA AUTOMATISKT"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
-"Ladda senaste savestate vid spelstart och savestate när du avslutar spelet."
+"Ladda senaste sparläget vid spelstart och spara läget när du avslutar spelet."
 
 msgid "INCREMENTAL SAVESTATES"
 msgstr "INKREMENTELLA SAVESTATES"
@@ -2569,7 +2762,7 @@ msgid "INTEGER SCALING (PIXEL PERFECT)"
 msgstr "HELTALSSKALNING (PIXEL PERFEKT)"
 
 msgid "SHADER SET"
-msgstr "shader SET"
+msgstr "SHADERUPPSÄTTNING"
 
 msgid "VIDEO FILTER"
 msgstr "VIDEOFILTER"
@@ -2639,7 +2832,7 @@ msgid "PER SYSTEM ADVANCED CONFIGURATION"
 msgstr "PER SYSTEM AVANCERAD KONFIGURATION"
 
 msgid "SCRAPER IS RUNNING. DO YOU WANT TO STOP IT?"
-msgstr "scraper ÄR IGÅNG. VILL DU STOPPA DEN?"
+msgstr "SKRAPNING PÅGÅR. VILL DU STOPPA DEN?"
 
 msgid "GAME HASHING IS RUNNING. DO YOU WANT TO STOP IT?"
 msgstr "SPEL HASHING ÄR IGÅNG. VILL DU STOPPA DET?"
@@ -2839,11 +3032,34 @@ msgstr "AKTIVERA NAVIGATIONSLJUD"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "AKTIVERA FÖRHANDSGRANSKNING AV VIDEO LJUD"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr "KUNDE INTE ANSLUTA TILL '%s'"
+
+msgid "WI-FI NETWORKS"
+msgstr "WI-FI-NÄTVERK"
+
+msgid "ADD A WI-FI NETWORK"
+msgstr "LÄGG TILL ETT WI-FI-NÄTVERK"
+
+msgid "WI-FI SSID"
+msgstr "WI-FI SSID"
+
+msgid "WI-FI KEY"
+msgstr "WI-FI-NYCKEL"
+
+msgid "USE"
+msgstr "ANVÄND"
+
+msgid "FORGET"
+msgstr "FÖRGLÖM"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "ÄR DU SÄKER PÅ ATT DU VILL GLÖMMA \\\"%s\\\"?"
+
 msgid "IP ADDRESS"
 msgstr "IP-ADRESS"
-
-msgid "CONNECTED"
-msgstr "ANSLUTEN"
 
 msgid "INTERNET STATUS"
 msgstr "INTERNETSTATUS"
@@ -2851,26 +3067,20 @@ msgstr "INTERNETSTATUS"
 msgid "HOSTNAME"
 msgstr "VÄRDNAMN"
 
-msgid "ENABLE WIFI"
-msgstr "AKTIVERA WIFI"
+msgid "ENABLE WI-FI"
+msgstr "AKTIVERA WI-FI"
 
-msgid "WIFI SSID"
-msgstr "WIFI SSID"
-
-msgid "WIFI KEY"
-msgstr "WIFI-NYCKEL"
-
-msgid "WIFI COUNTRY"
-msgstr "WIFI LAND"
+msgid "WI-FI COUNTRY"
+msgstr "WI-FI LAND"
 
 msgid "N/A"
 msgstr "-"
 
-msgid "WIFI ENABLED"
-msgstr "WIFI TILLGÄNGLIG"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI TILLGÄNGLIG"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "FEL I WIFI-KONFIGURATIONEN"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "FEL I WI-FI-KONFIGURATIONEN"
 
 msgid "QUICK ACCESS"
 msgstr "SNABB ÅTKOMST"
@@ -2935,10 +3145,6 @@ msgstr "SLUTADE DU VERKLIGEN?"
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "SPARA/LADDA AUTOMATISKT VID SPELSTART"
 
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
-"Ladda senaste sparläget vid spelstart och spara läget när du avslutar spelet."
-
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "VISA ÖVERLAPPNINGAR FÖR STYRENHET"
 
@@ -2946,7 +3152,7 @@ msgid "CUSTOM .PNG IMAGE"
 msgstr "ANPASSAD .PNG-BILD"
 
 msgid "OVERLAY CORNER"
-msgstr "överlägg HÖRN"
+msgstr "ÖVERLÄGGSHÖRN"
 
 msgid "COLORIZATION"
 msgstr "FÄRGSÄTTNING"
@@ -3006,7 +3212,7 @@ msgid "NO DRIVE SELECTED"
 msgstr "INGEN ENHET VALD"
 
 msgid "Ejecting..."
-msgstr "Utskjutning..."
+msgstr "Utskjutning…"
 
 msgid "EDIT METADATA"
 msgstr "REDIGERA METADATA"
@@ -3021,8 +3227,8 @@ msgid ""
 "SOME FILES YOU LINKED ARE LOCATED OUTSIDE THE GAMELIST PATH.\n"
 "DO YOU WANT TO USE A COPY OF THESE FILES RELATIVE TO THE GAMELIST ?"
 msgstr ""
-"VISSA FILER SOM DU LÄNKAT TILL FINNS UTANFÖR GAMELISTANS PATH.\n"
-"Vill du använda en kopia av dessa filer som är relaterade till GAMELISTAN ?"
+"VISSA FILER SOM DU LÄNKAT TILL FINNS UTANFÖR GAMELISTANS SÖKVÄG.\n"
+"VILL DU ANVÄNDA EN KOPIA AV DESSA FILER RELATIVT TILL GAMELISTAN?"
 
 msgid "FILE BROWSER"
 msgstr "FILBROWSER"
@@ -3041,13 +3247,6 @@ msgstr "FRÅNKOPPLING"
 
 msgid "CONNECT"
 msgstr "ANSLUTA"
-
-msgid "FORGET"
-msgstr "FÖRGLÖM"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "ÄR DU SÄKER PÅ ATT DU VILL GLÖMMA \\\"%s\\\"?"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3403,13 +3602,13 @@ msgid "Screenscraper Game ID"
 msgstr "Screenscraper Spel-ID"
 
 msgid "MultiDisk"
-msgstr ""
+msgstr "Flera diskar"
 
 msgid "Loading system config..."
-msgstr "Läser in systemkonfiguration..."
+msgstr "Läser in systemkonfiguration…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "SPARA METADATA. VÄNTA..."
+msgstr "SPARA METADATA. VÄNTA…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "VILL DU BYTA SKÄRM?"
@@ -3432,8 +3631,8 @@ msgstr "4 spelare"
 msgid "never played"
 msgstr "aldrig spelat"
 
-msgid "retroachievements"
-msgstr "retroachievements"
+msgid "RetroAchievements"
+msgstr "RetroAchievements"
 
 msgid "arcade"
 msgstr "arkad"
@@ -3474,11 +3673,11 @@ msgstr "Ingen"
 msgid "Various"
 msgstr "Olika"
 
-#, fuzzy, c-format
+#, c-format
 msgid "This collection contains %i game: %s"
 msgid_plural "This collection contains %i games, including: %s"
-msgstr[0] "Den här samlingen innehåller %i game: %s"
-msgstr[1] "Den här samlingen innehåller %i game: %s"
+msgstr[0] "Den här samlingen innehåller %i spel: %s"
+msgstr[1] "Den här samlingen innehåller %i spel, bland annat: %s"
 
 msgid "INVALID CONTENT"
 msgstr "OGILTIGT INNEHÅLL"
@@ -3488,7 +3687,7 @@ msgid ""
 "retroachievements.org"
 msgstr ""
 "Ett giltigt konto krävs. Registrera ett konto på https://"
-"RetroAchievements.org"
+"retroachievements.org"
 
 msgid "SLOW"
 msgstr "LÅNGSAM"
@@ -3529,11 +3728,14 @@ msgstr "KÄRNAN SAKNAS"
 msgid "UKNOWN ERROR"
 msgstr "OKÄNT FEL"
 
+msgid "Checking for latest upgrade script..."
+msgstr "Söker efter det senaste uppgraderingsskriptet…"
+
 msgid "Collections"
 msgstr "Samlingar"
 
 msgid "Searching for devices..."
-msgstr "Söker efter enheter..."
+msgstr "Söker efter enheter…"
 
 msgid "FORMATTING DEVICE"
 msgstr "FORMATERINGSENHET"
@@ -3619,11 +3821,8 @@ msgstr "SKÄRMLÄSARE FUNKTIONSHINDRAD"
 msgid "ENABLED"
 msgstr "AKTIVERAD"
 
-msgid "up/down"
-msgstr "upp/ned"
-
 msgid "WORKING..."
-msgstr "ARBETAR..."
+msgstr "ARBETAR…"
 
 msgid "accept"
 msgstr "acceptera"
@@ -3640,11 +3839,11 @@ msgstr "VÄLJ INGEN"
 msgid "select none"
 msgstr "välj ingen"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%i SELECTED"
 msgid_plural "%i SELECTED"
-msgstr[0] "%i vald"
-msgstr[1] "%i vald"
+msgstr[0] "%i VALD"
+msgstr[1] "%i VALDA"
 
 msgid "CHANGE"
 msgstr "FÖRÄNDRING"
@@ -3681,11 +3880,11 @@ msgstr "KASSERA ÄNDRINGAR"
 msgid "WELCOME"
 msgstr "VÄLKOMMEN"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%i GAMEPAD DETECTED"
 msgid_plural "%i GAMEPADS DETECTED"
-msgstr[0] "%i GAMEPAD UPPTÄCKTES"
-msgstr[1] "%i GAMEPAD UPPTÄCKTES"
+msgstr[0] "%i HANDKONTROLL UPPTÄCKTES"
+msgstr[1] "%i HANDKONTROLLER UPPTÄCKTES"
 
 msgid "NO GAMEPADS DETECTED"
 msgstr "INGA GAMEhandkontrollS UPPTÄCKTA"
@@ -3701,103 +3900,103 @@ msgstr "TRYCK PÅ ESC ELLER EN SNABBTANGENT FÖR ATT AVBRYTA."
 
 msgctxt "joystick"
 msgid "NORTH"
-msgstr ""
+msgstr "NORD"
 
 msgctxt "joystick"
 msgid "SOUTH"
-msgstr ""
+msgstr "SÖDER"
 
 msgctxt "joystick"
 msgid "EAST"
-msgstr ""
+msgstr "ÖST"
 
 msgctxt "joystick"
 msgid "WEST"
-msgstr ""
+msgstr "VÄST"
 
 msgctxt "joystick"
 msgid "START"
-msgstr ""
+msgstr "START"
 
 msgctxt "joystick"
 msgid "SELECT"
-msgstr ""
+msgstr "VÄLJ"
 
 msgctxt "joystick"
 msgid "D-PAD UP"
-msgstr ""
+msgstr "STYRKORS UPP"
 
 msgctxt "joystick"
 msgid "D-PAD DOWN"
-msgstr ""
+msgstr "STYRKORS NED"
 
 msgctxt "joystick"
 msgid "D-PAD LEFT"
-msgstr ""
+msgstr "STYRKORS VÄNSTER"
 
 msgctxt "joystick"
 msgid "D-PAD RIGHT"
-msgstr ""
+msgstr "STYRKORS HÖGER"
 
 msgctxt "joystick"
 msgid "LEFT ANALOG UP"
-msgstr ""
+msgstr "VÄNSTER ANALOGSPAK UPP"
 
 msgctxt "joystick"
 msgid "LEFT ANALOG DOWN"
-msgstr ""
+msgstr "VÄNSTER ANALOGSPAK NED"
 
 msgctxt "joystick"
 msgid "LEFT ANALOG LEFT"
-msgstr ""
+msgstr "VÄNSTER ANALOGSPAK VÄNSTER"
 
 msgctxt "joystick"
 msgid "LEFT ANALOG RIGHT"
-msgstr ""
+msgstr "VÄNSTER ANALOGSPAK HÖGER"
 
 msgctxt "joystick"
 msgid "RIGHT ANALOG UP"
-msgstr ""
+msgstr "HÖGER ANALOGSPAK UPP"
 
 msgctxt "joystick"
 msgid "RIGHT ANALOG DOWN"
-msgstr ""
+msgstr "HÖGER ANALOGSPAK NED"
 
 msgctxt "joystick"
 msgid "RIGHT ANALOG LEFT"
-msgstr ""
+msgstr "HÖGER ANALOGSPAK VÄNSTER"
 
 msgctxt "joystick"
 msgid "RIGHT ANALOG RIGHT"
-msgstr ""
+msgstr "HÖGER ANALOGSPAK HÖGER"
 
 msgctxt "joystick"
 msgid "LEFT SHOULDER"
-msgstr ""
+msgstr "VÄNSTER AXELKNAPP"
 
 msgctxt "joystick"
 msgid "RIGHT SHOULDER"
-msgstr ""
+msgstr "HÖGER AXELKNAPP"
 
 msgctxt "joystick"
 msgid "LEFT TRIGGER"
-msgstr ""
+msgstr "VÄNSTER AVTRYCKARE"
 
 msgctxt "joystick"
 msgid "RIGHT TRIGGER"
-msgstr ""
+msgstr "HÖGER AVTRYCKARE"
 
 msgctxt "joystick"
 msgid "LEFT STICK PRESS"
-msgstr ""
+msgstr "TRYCK PÅ VÄNSTER SPAK"
 
 msgctxt "joystick"
 msgid "RIGHT STICK PRESS"
-msgstr ""
+msgstr "TRYCK PÅ HÖGER SPAK"
 
 msgctxt "joystick"
 msgid "HOTKEY"
-msgstr ""
+msgstr "SNABBTANGENT"
 
 msgid "CONFIGURING"
 msgstr "KONFIGURERING"
@@ -3831,11 +4030,11 @@ msgstr "STÄLLA IN SELECT SOM SNABBTANGENT"
 msgid "DO NOT ASSIGN HOTKEY"
 msgstr "TILLDELA INTE SNABBTANGENT"
 
-#, fuzzy, c-format
+#, c-format
 msgid "HOLD FOR %iS TO SKIP"
 msgid_plural "HOLD FOR %iS TO SKIP"
-msgstr[0] "HÅLL %iS FÖR ATT HOPPA ÖVER"
-msgstr[1] "HÅLL %iS FÖR ATT HOPPA ÖVER"
+msgstr[0] "HÅLL INTRYCKT I %i S FÖR ATT HOPPA ÖVER"
+msgstr[1] "HÅLL INTRYCKT I %i S FÖR ATT HOPPA ÖVER"
 
 msgid "PRESS ANYTHING"
 msgstr "TRYCK PÅ NÅGOT"
@@ -3851,7 +4050,7 @@ msgstr ""
 "Skjut på mål för att kalibrera"
 
 msgid "Reloaded the games list..."
-msgstr "Läste om spellistan..."
+msgstr "Läste om spellistan…"
 
 msgid "GAME DRIVE DETECTED"
 msgstr "GAME DRIVE UPPTÄCKT"
@@ -3875,7 +4074,7 @@ msgid "(This will also apply on future boots)"
 msgstr "(Detta kommer även att gälla framtida uppstarter)"
 
 msgid "Merge requested... Please wait."
-msgstr "Sammanslagning begärd... Vänta."
+msgstr "Sammanslagning begärd… Vänta."
 
 msgid "MERGE FAILED"
 msgstr "SAMMANFOGNING MISSLYCKAD"
@@ -3890,10 +4089,10 @@ msgid "NO, IGNORE FOREVER"
 msgstr "NEJ, IGNORERA FÖR ALLTID"
 
 msgid "Adding drive to ignore list..."
-msgstr "Lägger till drive till ignoreringslistan..."
+msgstr "Lägger till drive till ignoreringslistan…"
 
 msgid "YES, MERGE DRIVE"
-msgstr ""
+msgstr "JA, SLÅ SAMMAN ENHETEN"
 
 msgid "NEW DRIVE DETECTED"
 msgstr "NY ENHET UPPTÄCKT"
@@ -3905,7 +4104,7 @@ msgid "(ALL EXISTING DATA WILL BE ERASED)"
 msgstr "(ALLA BEFINTLIGA DATA KOMMER ATT RADERAS)"
 
 msgid "Starting format process..."
-msgstr "Startar formatprocessen..."
+msgstr "Startar formatprocessen…"
 
 msgid "FORMAT FAILED"
 msgstr "FORMAT MISSLYCKAD"
@@ -3932,56 +4131,44 @@ msgstr "%d m"
 msgid "%d sec"
 msgstr "%d sekunder"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%d year ago"
 msgid_plural "%d years ago"
 msgstr[0] "%d år sedan"
 msgstr[1] "%d år sedan"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%d day ago"
 msgid_plural "%d days ago"
 msgstr[0] "%d dag sedan"
-msgstr[1] "%d dag sedan"
+msgstr[1] "%d dagar sedan"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%d hour ago"
 msgid_plural "%d hours ago"
 msgstr[0] "%d timme sedan"
-msgstr[1] "%d timme sedan"
+msgstr[1] "%d timmar sedan"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%d minute ago"
 msgid_plural "%d minutes ago"
 msgstr[0] "%d minut sedan"
-msgstr[1] "%d minut sedan"
+msgstr[1] "%d minuter sedan"
 
-#, fuzzy, c-format
+#, c-format
 msgid "%d second ago"
 msgid_plural "%d seconds ago"
 msgstr[0] "%d sekund sedan"
-msgstr[1] "%d sekund sedan"
+msgstr[1] "%d sekunder sedan"
 
-#~ msgid "SHARP-BILINEAR-SIMPLE"
-#~ msgstr "SKARP-BILINJÄR-ENKEL"
+#~ msgid "up/down"
+#~ msgstr "upp/ned"
 
-#~ msgid "SCANLINES"
-#~ msgstr "scanlinjer"
-
-#~ msgid "RETRO"
-#~ msgstr "RETRO"
-
-#~ msgid "CURVATURE"
-#~ msgstr "KURVATUR"
-
-#~ msgid "ZFAST"
-#~ msgstr "ZFAST"
-
-#~ msgid "FLATTEN-GLOW"
-#~ msgstr "FLATTEN-GLOW"
-
-#~ msgid "RGA SCALING"
-#~ msgstr "RGA-SKALNING"
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "Ladda senaste savestate vid spelstart och savestate när du avslutar "
+#~ "spelet."
 
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "BYGGA UPP EN BILDCACHE"
@@ -3989,8 +4176,14 @@ msgstr[1] "%d sekund sedan"
 #~ msgid "Building image cache"
 #~ msgstr "Uppbyggnad av bildcache"
 
-#~ msgid "LEFT ANALOG UP"
-#~ msgstr "VÄNSTER ANALOG UP"
+#~ msgid "CURVATURE"
+#~ msgstr "KURVATUR"
+
+#~ msgid "FANART"
+#~ msgstr "FANART"
+
+#~ msgid "FLATTEN-GLOW"
+#~ msgstr "FLATTEN-GLOW"
 
 #~ msgid "LEFT ANALOG DOWN"
 #~ msgstr "VÄNSTER ANALOG NED"
@@ -4001,8 +4194,14 @@ msgstr[1] "%d sekund sedan"
 #~ msgid "LEFT ANALOG RIGHT"
 #~ msgstr "VÄNSTER ANALOG HÖGER"
 
-#~ msgid "RIGHT ANALOG UP"
-#~ msgstr "HÖGER ANALOG UPP"
+#~ msgid "LEFT ANALOG UP"
+#~ msgstr "VÄNSTER ANALOG UP"
+
+#~ msgid "RETRO"
+#~ msgstr "RETRO"
+
+#~ msgid "RGA SCALING"
+#~ msgstr "RGA-SKALNING"
 
 #~ msgid "RIGHT ANALOG DOWN"
 #~ msgstr "HÖGER ANALOG NED"
@@ -4012,3 +4211,15 @@ msgstr[1] "%d sekund sedan"
 
 #~ msgid "RIGHT ANALOG RIGHT"
 #~ msgstr "HÖGER ANALOG HÖGER"
+
+#~ msgid "RIGHT ANALOG UP"
+#~ msgstr "HÖGER ANALOG UPP"
+
+#~ msgid "SCANLINES"
+#~ msgstr "scanlinjer"
+
+#~ msgid "SHARP-BILINEAR-SIMPLE"
+#~ msgstr "SKARP-BILINJÄR-ENKEL"
+
+#~ msgid "ZFAST"
+#~ msgstr "ZFAST"

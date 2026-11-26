@@ -144,6 +144,9 @@ public:
 	virtual std::vector<HelpPrompt> getHelpPrompts() { return std::vector<HelpPrompt>(); };
 	void updateHelpPrompts();
 	virtual HelpStyle getHelpStyle();
+#ifdef HIPPOS
+	virtual bool sortsHelpPrompts() { return true; }
+#endif
 
 
 	virtual ThemeData::ThemeElement::Property getProperty(const std::string name);

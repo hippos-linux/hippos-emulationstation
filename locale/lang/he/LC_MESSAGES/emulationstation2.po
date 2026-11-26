@@ -99,7 +99,7 @@ msgid "Loading gamelists"
 msgstr "טוען רשימת משחקים"
 
 msgid "Loading..."
-msgstr "טוען..."
+msgstr "טוען…"
 
 msgid "MENU"
 msgstr "תפריט"
@@ -217,7 +217,7 @@ msgstr "בחירה"
 msgid "BACK"
 msgstr "הקודם"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr ""
 
 msgid "GAME OPTIONS (HOLD)"
@@ -232,7 +232,7 @@ msgstr ""
 msgid "FAVORITE"
 msgstr "מועדף"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "שמור סטטיסטיקות"
 
 #, c-format
@@ -299,7 +299,7 @@ msgstr "שמירת שינויים ?"
 msgid "ARE YOU SURE?"
 msgstr "האם אתה בטוח?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr ""
 
 msgid "SETTINGS"
@@ -361,7 +361,7 @@ msgstr ""
 msgid "Enable unlocking of unofficial achievements."
 msgstr ""
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr ""
 
 msgid "none"
@@ -373,7 +373,7 @@ msgstr "ביטול נעילת שמע"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr ""
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr ""
 
 msgid "GAME INDEXES"
@@ -587,16 +587,6 @@ msgstr ""
 msgid "START"
 msgstr "התחלה"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "מעדכן %s"
-
-msgid "UPDATE IS READY"
-msgstr "עדכון מוכן להתקנה"
-
-msgid "REBOOT TO APPLY"
-msgstr "הפעל מחדש בכדי להחיל הגדרות"
-
 msgid "REALLY UPDATE?"
 msgstr "באמת לעדכן ?"
 
@@ -618,6 +608,16 @@ msgstr "נדרש חיבור לרשת"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "אין עדכון זמין"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "מעדכן %s"
+
+msgid "UPDATE IS READY"
+msgstr "עדכון מוכן להתקנה"
+
+msgid "REBOOT TO APPLY"
+msgstr "הפעל מחדש בכדי להחיל הגדרות"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "התחברות לרשת NETPLAY"
@@ -881,7 +881,7 @@ msgid "VIEWER PASSWORD"
 msgstr ""
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "מציאת משחקים דומים..."
+msgstr "מציאת משחקים דומים…"
 
 msgid "DELETE ITEM"
 msgstr "מחיקת פריט"
@@ -928,7 +928,7 @@ msgid "FAVORITES"
 msgstr "מועדפים"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "הוסף לאוסף מותאם אישית..."
+msgstr "הוסף לאוסף מותאם אישית…"
 
 msgid "SCRAPE"
 msgstr "SCRAPE"
@@ -1082,6 +1082,33 @@ msgstr "#%i שלט "
 msgid "P%i'S CONTROLLER"
 msgstr "שלטי P%i' "
 
+msgid "RED"
+msgstr ""
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr ""
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr ""
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr ""
+
 msgid "CONTROLLER MAPPING"
 msgstr "מיפוי תצורת שלט"
 
@@ -1146,11 +1173,99 @@ msgstr ""
 msgid "GLOBAL HOTKEYS"
 msgstr ""
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr ""
+
+msgid "ENABLE LED"
+msgstr ""
+
+msgid "LED MODE"
+msgstr ""
+
+msgid "STATIC"
+msgstr ""
+
+msgid "RAINBOW"
+msgstr ""
+
+msgid "CHROMA"
+msgstr ""
+
+msgid "PULSE"
+msgstr ""
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr ""
+
+msgid "LED BRIGHTNESS"
+msgstr ""
+
 msgid "default"
 msgstr "ברירת מחדל"
 
 msgid "NOT CONNECTED"
 msgstr "לא מחובר"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr ""
@@ -1200,7 +1315,7 @@ msgstr ""
 msgid "DEFAULT"
 msgstr "ברירת מחדל"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
 msgstr ""
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
@@ -1213,6 +1328,30 @@ msgid "NO GLOBAL HOTKEY DETECTED"
 msgstr ""
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
+msgstr ""
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
 msgstr ""
 
 msgid "BORDER SIZE"
@@ -1243,18 +1382,6 @@ msgid "HIDDEN"
 msgstr "מוסתר"
 
 msgid "BORDER COLOR"
-msgstr ""
-
-msgid "WHITE"
-msgstr ""
-
-msgid "RED"
-msgstr ""
-
-msgid "GREEN"
-msgstr ""
-
-msgid "BLUE"
 msgstr ""
 
 msgid "BORDER RATIO"
@@ -1368,6 +1495,12 @@ msgstr "הזן ידנית"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "לא נמצאו רשתות אלחוטיות"
 
+msgid "CONNECTED"
+msgstr "מחובר"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "סורק רשתות אלחוטיות"
 
@@ -1423,9 +1556,6 @@ msgid "MONTREAL"
 msgstr ""
 
 msgid "SAO PAULO"
-msgstr ""
-
-msgid "CUSTOM"
 msgstr ""
 
 msgid "CUSTOM RELAY SERVER"
@@ -1648,7 +1778,7 @@ msgid "SCREENSAVER SETTINGS"
 msgstr "הגדרות שומר מסך"
 
 msgid "START SCREENSAVER AFTER"
-msgstr "התחל שומר מסך לאחר..."
+msgstr "התחל שומר מסך לאחר…"
 
 msgid "SCREENSAVER TYPE"
 msgstr "סוג שומר המסך"
@@ -1997,6 +2127,12 @@ msgstr ""
 msgid "VSYNC"
 msgstr "VSYNC"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr ""
+
+msgid "FPS LIMIT"
+msgstr ""
+
 msgid "OVERSCAN"
 msgstr "OVERSCAN"
 
@@ -2153,6 +2289,12 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr ""
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr ""
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+
 msgid "GUN MOVE TOLERENCE"
 msgstr ""
 
@@ -2184,6 +2326,17 @@ msgstr ""
 msgid ""
 "Reduces lag when scrolling through a fully scraped gamelist, increases boot "
 "time"
+msgstr ""
+
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
 msgstr ""
 
 msgid "THREADED LOADING"
@@ -2219,6 +2372,9 @@ msgstr "חיפוש עידכוני תוכנה חדשים"
 msgid "UPDATE TYPE"
 msgstr "סוג עידכון"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr ""
+
 msgid "APPLY UPDATE"
 msgstr "החל עידכון"
 
@@ -2226,6 +2382,33 @@ msgid "START UPDATE"
 msgstr "התחל עידכון"
 
 msgid "UPDATER IS ALREADY RUNNING"
+msgstr ""
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr ""
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "Torrent update service started"
+msgstr ""
+
+msgid "Torrent update service stopped"
+msgstr ""
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr ""
+
+msgid "DOWNLOAD STATUS"
 msgstr ""
 
 msgid "LANGUAGE"
@@ -2308,6 +2491,19 @@ msgstr "פרופיל שמע"
 msgid "Available options can change depending on current audio output."
 msgstr ""
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr ""
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "אנימציית פתיח"
 
@@ -2374,15 +2570,6 @@ msgstr "פעיל"
 msgid "OVERCLOCK"
 msgstr "המהרה OVERCLOCK"
 
-msgid "LED HARDWARE"
-msgstr ""
-
-msgid "ENABLE LED"
-msgstr ""
-
-msgid "LED BRIGHTNESS"
-msgstr ""
-
 msgid "STORAGE"
 msgstr "איחסון"
 
@@ -2409,6 +2596,14 @@ msgstr ""
 
 msgid "ROOT PASSWORD"
 msgstr "סיסמת שורש ROOT PASSWORD"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr ""
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
 
 msgid "LATENCY REDUCTION"
 msgstr "הפחתת השהייה"
@@ -2439,9 +2634,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr ""
 
-msgid "VARIABLE REFRESH RATE"
-msgstr ""
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2455,13 +2647,10 @@ msgstr "הגדרות נוכחיות"
 msgid "BIOS SETTINGS"
 msgstr "הגדרות BIOS"
 
-msgid "SAVESTATES"
-msgstr ""
-
 msgid "AUTO SAVE/LOAD"
 msgstr "שמירה/טעינה אוטומטית"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
 
 msgid "INCREMENTAL SAVESTATES"
@@ -2789,11 +2978,34 @@ msgstr "הוך צלילי ניווט לפעילים"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr ""
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "שם רשת (WI-FI SSID)"
+
+msgid "WI-FI KEY"
+msgstr "סיסמה (WI-FI KEY)"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr ""
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr ""
+
 msgid "IP ADDRESS"
 msgstr "כתובת IP"
-
-msgid "CONNECTED"
-msgstr "מחובר"
 
 msgid "INTERNET STATUS"
 msgstr "מצב אינטרנט"
@@ -2801,26 +3013,20 @@ msgstr "מצב אינטרנט"
 msgid "HOSTNAME"
 msgstr "שם מארח"
 
-msgid "ENABLE WIFI"
-msgstr "הפוך WIFI לזמין"
+msgid "ENABLE WI-FI"
+msgstr "הפוך WI-FI לזמין"
 
-msgid "WIFI SSID"
-msgstr "שם רשת (WIFI SSID)"
-
-msgid "WIFI KEY"
-msgstr "סיסמה (WIFI KEY)"
-
-msgid "WIFI COUNTRY"
+msgid "WI-FI COUNTRY"
 msgstr ""
 
 msgid "N/A"
 msgstr ""
 
-msgid "WIFI ENABLED"
-msgstr "WIFI זמין"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI זמין"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "שגיאה בתצורת WIFI"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "שגיאה בתצורת WI-FI"
 
 msgid "QUICK ACCESS"
 msgstr "גישה מהירה "
@@ -2883,9 +3089,6 @@ msgid "REALLY QUIT?"
 msgstr "לצאת, בטוח?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
-msgstr ""
-
-msgid "Load latest save state on game launch and save state when exiting game."
 msgstr ""
 
 msgid "SHOW CONTROLLER OVERLAYS"
@@ -2987,13 +3190,6 @@ msgid "DISCONNECT"
 msgstr ""
 
 msgid "CONNECT"
-msgstr ""
-
-msgid "FORGET"
-msgstr ""
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
 msgstr ""
 
 #, c-format
@@ -3379,7 +3575,7 @@ msgstr "4 שחקנים"
 msgid "never played"
 msgstr "לא שוחק"
 
-msgid "retroachievements"
+msgid "RetroAchievements"
 msgstr "הישגי RETRO"
 
 msgid "arcade"
@@ -3476,6 +3672,9 @@ msgstr ""
 msgid "UKNOWN ERROR"
 msgstr ""
 
+msgid "Checking for latest upgrade script..."
+msgstr ""
+
 msgid "Collections"
 msgstr ""
 
@@ -3565,9 +3764,6 @@ msgstr ""
 
 msgid "ENABLED"
 msgstr "מופעל"
-
-msgid "up/down"
-msgstr ""
 
 msgid "WORKING..."
 msgstr ""
@@ -4246,12 +4442,6 @@ msgstr[3] ""
 #~ msgid "SILENT SPLASH"
 #~ msgstr "אנימציה שקטה"
 
-#~ msgid "RETROACHIEVEMENTS SETTINGS"
-#~ msgstr "הגדרות RETROACHIEVEMENTS"
-
-#~ msgid "RETROACHIEVEMENTS UNLOCK SOUND"
-#~ msgstr "פתיחת נעילת צליל RETROACHIEVEMENTS"
-
 #~ msgid "SHOW IN MAIN MENU"
 #~ msgstr "הצגה בתפריט ראשי"
 
@@ -4298,7 +4488,7 @@ msgstr[3] ""
 #~ msgstr "מראה"
 
 #~ msgid "Searching controllers..."
-#~ msgstr "מחפש בקרים..."
+#~ msgstr "מחפש בקרים…"
 
 #~ msgid "BLUETOOTH SCANNING IS ALREADY RUNNING."
 #~ msgstr "סריקת בלו-טות' מתבצעת."
@@ -4311,12 +4501,6 @@ msgstr[3] ""
 
 #~ msgid "ARE YOU SURE YOU WANT TO DELETE THIS ITEM ?"
 #~ msgstr "האם אתם בטוחים שברצונכם למחוק את הקובץ?"
-
-#~ msgid "NO WIFI NETWORKS FOUND"
-#~ msgstr "לא נמצאו רשתות אלחוטיות"
-
-#~ msgid "SEARCHING WIFI NETWORKS"
-#~ msgstr "חיפוש רשתות אלחוטיות מתבצע"
 
 #~ msgid "There are no items in this view"
 #~ msgstr "אין פריטים לתצוגה זו"

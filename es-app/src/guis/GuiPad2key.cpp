@@ -236,7 +236,11 @@ void GuiPad2key::loadHotkeysPage(const std::string& device_path)
 	std::vector<hotkeyTargetDefinition> targets_labels = {
 		{ "bezels",           _("OVERLAYS") },
 		{ "brightness-cycle", _("BRIGHTNESS CYCLE") },
+#ifdef HIPPOS
+		{ "controlcenter",    _("QUICK MENU") },
+#else
 		{ "controlcenter",    _("CONTROL CENTER") },
+#endif
 		{ "exit",             _("EXIT") },
 		{ "pause",            _("PAUSE") },
 		{ "menu",             _("MENU") },

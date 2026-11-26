@@ -3,6 +3,7 @@
 #include "GuiComponent.h"
 #include "components/MenuComponent.h"
 #include "components/BusyComponent.h"
+#include "components/AsyncNotificationComponent.h"
 
 #include <thread>
 
@@ -51,3 +52,4 @@ private:
     void onNoUpdateAvailable();
     void onPingError();
 };
+

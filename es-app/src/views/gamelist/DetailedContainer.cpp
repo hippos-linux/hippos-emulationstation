@@ -1,4 +1,5 @@
 #include "DetailedContainer.h"
+#include "romm/RommMediaCache.h"
 
 #include "animations/LambdaAnimation.h"
 #include "views/ViewController.h"
@@ -18,6 +19,9 @@
 #include "components/VideoPlayerComponent.h"
 #endif
 #include "components/VideoVlcComponent.h"
+#include "components/ImageComponent.h"
+#include "components/VideoComponent.h"
+#include "utils/FileSystemUtil.h"
 
 DetailedContainer::DetailedContainer(ISimpleGameListView* parent, GuiComponent* list, Window* window, DetailedContainerType viewType) :
 	mParent(parent), mList(list), mWindow(window), mViewType(viewType),
@@ -536,16 +540,67 @@ void DetailedContainer::onThemeChanged(const std::shared_ptr<ThemeData>& theme)
 	mParent->sortChildren();
 }
 
-Vector3f DetailedContainer::getLaunchTarget()
+static GuiComponent* findGameMedia(GuiComponent* comp)
+{
+	if (!comp->isVisible())
+		return nullptr;
+
+	auto bindings = comp->getBindingExpressions();
+	auto path = bindings.find("path");
+	if (path != bindings.cend() && path->second.find("{game:") != std::string::npos)
+	{
+		auto image = dynamic_cast<ImageComponent*>(comp);
+		auto video = dynamic_cast<VideoComponent*>(comp);
+		if ((image != nullptr && image->hasImage()) || (video != nullptr && !video->getVideoPath().empty()))
+			return comp;
+	}
+
+	for (unsigned int i = 0; i < comp->getChildCount(); i++)
+		if (auto media = findGameMedia(comp->getChild(i)))
+			return media;
+
+	return nullptr;
+}
+
+Vector3f DetailedContainer::getLaunchTarget(Vector2f* size)
 {
 	Vector3f target(Renderer::getScreenWidth() / 2.0f, Renderer::getScreenHeight() / 2.0f, 0);
+	GuiComponent* media = nullptr;
 
-	if (mVideo != nullptr)
-		target = Vector3f(mVideo->getCenter().x(), mVideo->getCenter().y(), 0);
-	else if (mImage != nullptr && mImage->hasImage())
-		target = Vector3f(mImage->getCenter().x(), mImage->getCenter().y(), 0);
-	else if (mThumbnail != nullptr && mThumbnail->hasImage())
-		target = Vector3f(mThumbnail->getCenter().x(), mThumbnail->getCenter().y(), 0);
+	if (mVideo != nullptr && mVideo->isVisible())
+		media = mVideo;
+	else if (mImage != nullptr && mImage->isVisible() && mImage->hasImage())
+		media = mImage;
+	else if (mThumbnail != nullptr && mThumbnail->isVisible() && mThumbnail->hasImage())
+		media = mThumbnail;
+
+	if (media != nullptr)
+	{
+		auto center = VideoComponent::getShownMedia(media)->getCenter();
+		target = Vector3f(center.x(), center.y(), 0);
+	}
+	else
+	{
+		// themes that hide the md_ elements show the game media through extras
+		std::vector<GuiComponent*> extras = mThemeExtras;
+		extras.insert(extras.end(), mParent->getThemeExtras().cbegin(), mParent->getThemeExtras().cend());
+
+		for (auto extra : extras)
+		{
+			if ((media = findGameMedia(extra)) != nullptr)
+			{
+				auto center = VideoComponent::getShownMedia(media)->getCenter();
+				for (auto parent = media->getParent(); parent != nullptr && parent != mParent; parent = parent->getParent())
+					center += parent->getPosition().v2() - parent->getSize() * parent->getOrigin();
+
+				target = Vector3f(center.x(), center.y(), 0);
+				break;
+			}
+		}
+	}
+
+	if (size != nullptr && media != nullptr)
+		*size = VideoComponent::getShownMedia(media)->getSize();
 
 	return target;
 }
@@ -785,12 +840,16 @@ void DetailedContainer::loadThemedExtras(FileData* file)
 		resetThemedExtras();
 }
 
-void DetailedContainer::updateControls(FileData* file, bool isClearing, int moveBy, bool isDeactivating)
+void DetailedContainer::updateControls(FileData* file, bool isClearing, int moveBy, bool isDeactivating, bool mediaOnly)
 {
+	// RomM: the game the list settled on (media fetched when missing, remembered as viewed)
+	if (file != NULL && !isClearing && !isDeactivating && !mediaOnly)
+		Romm::onGameShown(file);
+
 	bool state = (file != NULL);
 	if (state)
 	{
-		if (!isClearing && !isDeactivating)
+		if (!isClearing && !isDeactivating && !mediaOnly)
 			loadThemedExtras(file);
 
 		if (mFolderView)
@@ -1051,7 +1110,7 @@ void DetailedContainer::updateControls(FileData* file, bool isClearing, int move
 			BindingManager::updateBindings(extra, file);
 	}
 
-	if (state && file != nullptr && !isClearing)
+	if (state && file != nullptr && !isClearing && !mediaOnly)
 	{
 		for (auto comp : getComponents())
 			handleStoryBoard(comp, true, moveBy);
@@ -1374,9 +1433,45 @@ void DetailedContainerHost::update(int deltaTime)
 	}
 }
 
-Vector3f DetailedContainerHost::getLaunchTarget()
+Vector3f DetailedContainerHost::getLaunchTarget(Vector2f* size)
 {
-	return mContainer->getLaunchTarget();
+	return mContainer->getLaunchTarget(size);
+}
+
+// Images showing path: forgotten, so that setting the same path again loads the file (an image
+// component ignores the path it already has, even if the file did not exist then)
+static void forgetImage(GuiComponent* comp, const std::string& canonicalPath)
+{
+	if (comp == nullptr)
+		return;
+
+	ImageComponent* image = dynamic_cast<ImageComponent*>(comp);
+	if (image != nullptr && image->getImagePath() == canonicalPath)
+		image->setImage("");
+
+	// A video's still image (the snapshot shown before or instead of the video): the same rule
+	VideoComponent* video = dynamic_cast<VideoComponent*>(comp);
+	if (video != nullptr && !video->getImagePath().empty() && Utils::FileSystem::getCanonicalPath(video->getImagePath()) == canonicalPath)
+		video->setImage("");
+
+	for (int i = 0; i < comp->getChildCount(); i++)
+		forgetImage(comp->getChild(i), canonicalPath);
+}
+
+void DetailedContainerHost::refreshMedia(FileData* file, const std::string& changedFile)
+{
+	if (file == nullptr || mContainer == nullptr)
+		return;
+
+	if (!changedFile.empty())
+	{
+		std::string canonicalPath = Utils::FileSystem::getCanonicalPath(changedFile);
+		for (auto comp : mContainer->getComponents())
+			forgetImage(comp, canonicalPath);
+	}
+
+	// Set again in the same frame: nothing is drawn in between
+	mContainer->updateControls(file, false, 0, false, true);
 }
 
 void DetailedContainerHost::updateControls(FileData* file, bool isClearing, int moveBy)

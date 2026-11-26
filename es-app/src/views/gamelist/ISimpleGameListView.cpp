@@ -2,6 +2,8 @@
 
 #include "views/UIModeController.h"
 #include "views/ViewController.h"
+#include "guis/GuiRommSaves.h"
+#include "romm/RommSaves.h"
 #include "CollectionSystemManager.h"
 #include "Settings.h"
 #include "Sound.h"
@@ -39,7 +41,7 @@ ISimpleGameListView::ISimpleGameListView(Window* window, FolderData* root, bool 
 	mHeaderText.setPosition(0, 0);
 	mHeaderText.setHorizontalAlignment(ALIGN_CENTER);
 	mHeaderText.setDefaultZIndex(50);
-	
+
 	mHeaderImage.setResize(0, mSize.y() * 0.185f);
 	mHeaderImage.setOrigin(0.5f, 0.0f);
 	mHeaderImage.setPosition(mSize.x() / 2, 0);
@@ -111,7 +113,7 @@ void ISimpleGameListView::onFileChanged(FileData* /*file*/, FileChangeType /*cha
 	// we could be tricky here to be efficient;
 	// but this shouldn't happen very often so we'll just always repopulate
 	FileData* cursor = getCursor();
-	if (!cursor->isPlaceHolder()) 
+	if (!cursor->isPlaceHolder())
 	{
 		populateList(cursor->getParent()->getChildrenListToDisplay());
 		setCursor(cursor);
@@ -130,13 +132,13 @@ void ISimpleGameListView::moveToFolder(FolderData* folder)
 {
 	if (folder == nullptr || folder->getChildren().size() == 0)
 		return;
-	
+
 	mCursorStack.push(folder);
 	populateList(folder->getChildrenListToDisplay());
-	
+
 	FileData* cursor = getCursor();
 	if (cursor != nullptr)
-		setCursor(cursor);	
+		setCursor(cursor);
 }
 
 void ISimpleGameListView::toggleFavoritesFilter()
@@ -211,7 +213,7 @@ void ISimpleGameListView::update(const int deltaTime)
 		moveToRandomGame();
 		return;
 	}
-	
+
 	if (mXButton.isLongPressed(deltaTime))
 	{
 		if (UIModeController::getInstance()->isUIModeKid() && cursorHasSaveStatesEnabled())
@@ -248,7 +250,7 @@ void ISimpleGameListView::goBack()
 	{
 		ViewController::get()->setActiveView(mPopupParentView);
 		mPopupParentView->updateHelpPrompts();
-		closePopupContext();	
+		closePopupContext();
 	}
 	else
 	{
@@ -261,7 +263,7 @@ void ISimpleGameListView::goBack()
 			systemToView = CollectionSystemManager::get()->getSystemToView(systemToView);
 
 		ViewController::get()->goToSystemView(systemToView);
-	}	
+	}
 }
 
 bool ISimpleGameListView::input(InputConfig* config, Input input)
@@ -286,7 +288,7 @@ bool ISimpleGameListView::input(InputConfig* config, Input input)
 			showSelectedGameSaveSnapshots();
 
 		return true;
-	}	
+	}
 
 	if (!UIModeController::getInstance()->isUIModeKid() && mSelectButton.isShortPressed(config, input))
 	{
@@ -305,7 +307,7 @@ bool ISimpleGameListView::input(InputConfig* config, Input input)
 		showSelectedGameSaveSnapshots();
 		return true;
 	}
-		
+
 	if (config->isMappedTo(BUTTON_BACK, input))
 	{
 		goBack();
@@ -355,7 +357,7 @@ void ISimpleGameListView::showGamelistOptions()
 		return;
 
 	Sound::getFromTheme(mTheme, getName(), "menuOpen")->play();
-	mWindow->pushGui(new GuiGamelistOptions(mWindow, this, this->mRoot->getSystem()));	
+	mWindow->pushGui(new GuiGamelistOptions(mWindow, this, this->mRoot->getSystem()));
 }
 
 
@@ -395,6 +397,10 @@ void ISimpleGameListView::showSelectedGameSaveSnapshots()
 
 	if (SaveStateRepository::isEnabled(cursor))
 	{
+		// RomM: sync first
+		if (GuiRommSaves::syncBeforeChoice(mWindow, cursor, [this] { showSelectedGameSaveSnapshots(); }))
+			return;
+
 		Sound::getFromTheme(mTheme, getName(), "menuOpen")->play();
 
 		mWindow->pushGui(new GuiSaveState(mWindow, cursor, [this, cursor](SaveState* state)
@@ -435,9 +441,13 @@ void ISimpleGameListView::launchSelectedGame()
 	{
 		if (cursor->getType() == GAME)
 		{
+			// RomM: sync first
+			if (GuiRommSaves::syncBeforeChoice(mWindow, cursor, [this] { launchSelectedGame(); }))
+				return;
+
 			bool hasChildren = !cursor->getSourceFileData()->getChildGames().empty();
 
-			if (!hasChildren && SaveStateRepository::isEnabled(cursor) &&
+			if (!hasChildren && SaveStateRepository::isEnabled(cursor) && !Romm::RommSaves::isHardcoreSession(cursor) &&
 				(cursor->getCurrentGameSetting("savestates") == "1" || (cursor->getCurrentGameSetting("savestates") == "2" && cursor->getSourceFileData()->getSystem()->getSaveStateRepository()->hasSaveStates(cursor))))
 			{
 				mWindow->pushGui(new GuiSaveState(mWindow, cursor, [this, cursor](SaveState* state)
@@ -600,7 +610,7 @@ void ISimpleGameListView::moveToPreviousLetter()
 }
 
 std::vector<std::string> ISimpleGameListView::getEntriesLetters()
-{	
+{
 	std::set<std::string> setOfLetters;
 
 	for (auto file : getFileDataEntries())
@@ -652,7 +662,7 @@ void ISimpleGameListView::updateFolderPath()
 		auto top = mCursorStack.top();
 		mFolderPath.setText(top->getBreadCrumbPath());
 	}
-	else 
+	else
 		mFolderPath.setText("");
 }
 
@@ -671,14 +681,14 @@ void ISimpleGameListView::repopulate()
 }
 
 void ISimpleGameListView::setPopupContext(std::shared_ptr<IGameListView> pThis, std::shared_ptr<GuiComponent> parentView, const std::string label, const std::function<void()>& onExitTemporary)
-{ 
+{
 	mPopupSelfReference = pThis;
 	mPopupParentView = parentView;
 	mOnExitPopup = onExitTemporary;
 
 	if (mHeaderImage.hasImage())
 	{
-		mHeaderText.setText(_("Games similar to") + " " + label); // 
+		mHeaderText.setText(_("Games similar to") + " " + label); //
 
 		mHeaderImage.setImage("");
 		addChild(&mHeaderText);
@@ -693,7 +703,7 @@ void ISimpleGameListView::closePopupContext()
 
 	auto exitPopup = mOnExitPopup;
 
-	mPopupParentView.reset();	
+	mPopupParentView.reset();
 	mPopupSelfReference.reset();
 
 	if (exitPopup != nullptr)
@@ -717,8 +727,8 @@ std::vector<HelpPrompt> ISimpleGameListView::getHelpPrompts()
 	prompts.push_back(HelpPrompt(BUTTON_BACK, _("BACK"), [&] { goBack(); }));
 
 	if (invertNorthButton)
-		prompts.push_back(HelpPrompt(BUTTON_OK, _("SAVE STATES (HOLD)"), [&] { showSelectedGameSaveSnapshots(); }));
-	else 
+		prompts.push_back(HelpPrompt(BUTTON_OK, _("SAVESTATES (HOLD)"), [&] { showSelectedGameSaveSnapshots(); }));
+	else
 		prompts.push_back(HelpPrompt(BUTTON_OK, _("GAME OPTIONS (HOLD)"), [&] { showSelectedGameOptions(); }));
 
 	if (!UIModeController::getInstance()->isUIModeKid())
@@ -736,9 +746,9 @@ std::vector<HelpPrompt> ISimpleGameListView::getHelpPrompts()
 		else
 		{
 			if (UIModeController::getInstance()->isUIModeKid())
-				prompts.push_back(HelpPrompt("x", _("SAVE STATES"), [&] { showSelectedGameSaveSnapshots(); }));
+				prompts.push_back(HelpPrompt("x", _("SAVESTATES"), [&] { showSelectedGameSaveSnapshots(); }));
 			else
-				prompts.push_back(HelpPrompt("x", _("SAVE STATES") + std::string("/") + _("FAVORITE"), [&] { showSelectedGameSaveSnapshots(); }));
+				prompts.push_back(HelpPrompt("x", _("SAVESTATES") + std::string("/") + _("FAVORITE"), [&] { showSelectedGameSaveSnapshots(); }));
 		}
 	}
 	else if (!UIModeController::getInstance()->isUIModeKid())
@@ -804,13 +814,13 @@ bool ISimpleGameListView::onAction(const std::string& action)
 		toggleFavoritesFilter();
 		return true;
 	}
-	
+
 	if (action == "random")
 	{
 		moveToRandomGame();
 		return true;
 	}
-	
+
 	if (action == "video")
 	{
 		FileData* game = getCursor();
@@ -873,7 +883,7 @@ bool ISimpleGameListView::onAction(const std::string& action)
 		return true;
 	}
 
-	
+
 	return false;
 }
 
@@ -891,7 +901,7 @@ FolderData* ISimpleGameListView::createParentFolderData()
 		tempStack.pop();
 
 		FileData* top = tempStack.top();
-		
+
 		dest = top->getName();
 		folder->setMetadata(MetaDataId::Image, top->getMetadata(MetaDataId::Image));
 		folder->setMetadata(MetaDataId::Thumbnail, top->getMetadata(MetaDataId::Thumbnail));

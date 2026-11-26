@@ -231,8 +231,25 @@ bool ApiSystem::setOverclock(std::string mode)
 	return executeScript("hippos-overclock set " + mode);
 }
 
+#ifdef HIPPOS
+bool ApiSystem::areCpuMitigationsEnabled()
+{
+	auto result = executeScript("hippos-mitigations status", nullptr);
+
+	if (result.second != 0)
+		return true;
+
+	return Utils::String::trim(result.first) != "0";
+}
+
+bool ApiSystem::setCpuMitigationsEnabled(bool enabled)
+{
+	return executeScript(std::string("hippos-mitigations ") + (enabled ? "on" : "off"));
+}
+#endif
+
 // BusyComponent* ui
-std::pair<std::string, int> ApiSystem::updateSystem(const std::function<void(const std::string)>& func)
+std::pair<std::string, int> ApiSystem::updateSystem(const std::function<void(const std::string)>& func, bool fromlocalmedia)
 {
 	LOG(LogDebug) << "ApiSystem::updateSystem";
 
@@ -240,7 +257,9 @@ std::pair<std::string, int> ApiSystem::updateSystem(const std::function<void(con
 
 	FILE *pipe = popen(updatecommand.c_str(), "r");
 	if (pipe == nullptr)
+	{
 		return std::pair<std::string, int>(std::string("Cannot call update command"), -1);
+	}
 	
 	char line[1024] = "";
 	FILE *flog = fopen(Utils::FileSystem::combine(Paths::getLogPath(), "hippos-upgrade.log").c_str(), "w");
@@ -525,6 +544,11 @@ std::pair<std::string, int> ApiSystem::scrape(BusyComponent* ui)
 	return std::pair<std::string, int>(std::string(line), exitCode);
 }
 
+void ApiSystem::launchControlcenter()
+{
+	executeScript("/usr/lib/hippos/hippos-quickmenu &");
+}
+
 bool ApiSystem::ping()
 {
     // Use HTTP rather than ICMP — ICMP is often blocked by routers/firewalls.
@@ -638,10 +662,14 @@ bool ApiSystem::launchFileManager(Window *window)
 }
 
 #if !WIN32
-bool ApiSystem::enableWifi(std::string ssid, std::string key, std::string country) 
+bool ApiSystem::enableWifi(std::string ssid, std::string key, std::string country)
 {
-	return executeScriptLoggedAs("hippos-wifi enable \"" + ssid + "\" \"" + key + "\" \"" + country + "\"",
-		"hippos-wifi enable \"" + ssid + "\" <key> \"" + country + "\"");
+	ssid = Utils::String::replace(ssid, "'", "'\\''");
+	key = Utils::String::replace(key, "'", "'\\''");
+	country = Utils::String::replace(country, "'", "'\\''");
+
+	return executeScriptLoggedAs("hippos-wifi enable '" + ssid + "' '" + key + "' '" + country + "'",
+		"hippos-wifi enable '" + ssid + "' <key> '" + country + "'");
 }
 #else
 bool ApiSystem::enableWifi(std::string ssid, std::string key) 
@@ -655,6 +683,17 @@ bool ApiSystem::enableWifi(std::string ssid, std::string key)
 bool ApiSystem::isVrrSupported()
 {
 	return executeScript("hippos-resolution supportVrr", nullptr).second == 0;
+}
+
+bool ApiSystem::configureWifi()
+{
+	return executeScript("hippos-wifi configure");
+}
+
+bool ApiSystem::connectWifi(const std::string& ssid)
+{
+	const std::string escapedSSID = Utils::String::replace(ssid, "'", "'\\''");
+	return executeScript("hippos-wifi connect '" + escapedSSID + "'");
 }
 
 bool ApiSystem::disableWifi() 
@@ -743,6 +782,13 @@ std::vector<std::string> ApiSystem::getVideoModes(const std::string output)
     return executeEnumerationScript("hippos-resolution --screen \"" + output + "\" listModes");
   }
 }
+
+#ifdef HIPPOS
+bool ApiSystem::isHdrSupported()
+{
+	return executeScript("hippos-resolution supportHdr", nullptr).second == 0;
+}
+#endif
 
 std::vector<std::string> ApiSystem::getCustomRunners() 
 {
@@ -975,6 +1021,33 @@ bool ApiSystem::setButtonColorGameForce(std::string selected)
 bool ApiSystem::setPowerLedGameForce(std::string selected)
 {
 	return executeScript("hippos-gameforce powerLed " + selected);
+}
+
+bool ApiSystem::setButtonColorR36Ultra(const std::string& selected)
+{
+	static const std::map<std::string, std::string> r36UltraModeMap = {
+		{"off", "0 0 0"},
+		{"red", "255 0 0"},
+		{"yellow", "255 255 0"},
+		{"green", "0 255 0"},
+		{"cyan", "0 255 255"},
+		{"blue", "0 0 255"},
+		{"purple", "255 0 255"},
+		{"white", "255 255 255"}
+	};
+	SystemConf::getInstance()->set("led.colour", r36UltraModeMap.at(selected));
+	SystemConf::getInstance()->saveSystemConf();
+	return executeScript("hippos-led set_color_force_dec " + r36UltraModeMap.at(selected));
+}
+
+bool ApiSystem::setPowerLedR36(const std::string& selected)
+{
+	if(selected == "off") {
+		Utils::FileSystem::writeAllText("/sys/class/leds/blue:power/brightness", "0");
+		return true;
+	}
+	Utils::FileSystem::writeAllText("/sys/class/leds/blue:power/brightness", "1");
+	return true;
 }
 
 bool ApiSystem::forgetBluetoothControllers() 
@@ -1779,13 +1852,59 @@ bool ApiSystem::getLED(int& red, int& green, int& blue)
 	if (mSystemLedType != LED_TYPE_NONE)
 		return true;
 
+	// the battery led mode has no colour sliders, let the daemon keep drawing the level
+	auto blockColourChanges = [this] { if (SystemConf::getInstance()->get("led.mode") != "battery") executeScript("hippos-led block_color_changes"); };
+
+	// Anbernic RG 55G1: the stick LEDs sit behind the joypad MCU driver, not the LED class
+	if (Utils::FileSystem::exists("/sys/devices/platform/singleadc-joypad/led_set"))
+	{
+		LED_COLOUR_NAME = "rg55g1";
+		mSystemLedType = LED_TYPE_UNIFIED;
+		LOG(LogInfo) << "ApiSystem::getLED > Found Anbernic RG 55G1 joystick LEDs";
+	}
+
 	auto entries = Utils::FileSystem::getDirContent("/sys/class/leds");
 	bool found_addressable = false;
 
 	for (const auto& entry : entries)
 	{
-		if (entry.find("multicolor") != std::string::npos ||
-			entry.find(":rgb:joystick_rings") != std::string::npos ||
+		if (mSystemLedType != LED_TYPE_NONE)
+			break;
+
+		if (entry.find("joystick-left") != std::string::npos)
+		{
+			LED_COLOUR_NAME = "rg_vita_pro";
+			mSystemLedType = LED_TYPE_UNIFIED;
+			LOG(LogInfo) << "ApiSystem::getLED > Found Anbernic RG Vita Pro LED at " << entry;
+			break;
+		}
+
+		if (entry.find("rgb:kbd_backlight") != std::string::npos)
+		{
+			LED_COLOUR_NAME = "cubexx";
+			mSystemLedType = LED_TYPE_UNIFIED;
+			LOG(LogInfo) << "ApiSystem::getLED > Found Anbernic CubeXX LED at " << entry;
+			break;
+		}
+
+		if (entry.find("go_s:rgb:joystick_rings") != std::string::npos)
+		{
+			LED_COLOUR_NAME = "legiongos";
+			mSystemLedType = LED_TYPE_UNIFIED;
+			LOG(LogInfo) << "ApiSystem::getLED > Found Lenovo Legion Go S LED at " << entry;
+			break;
+		}
+
+		if (entry.find("go:rgb:joystick_rings") != std::string::npos)
+		{
+			LED_COLOUR_NAME = "legiongo";
+			mSystemLedType = LED_TYPE_UNIFIED;
+			LOG(LogInfo) << "ApiSystem::getLED > Found Lenovo Legion Go/Go 2 LED at " << entry;
+			break;
+		}
+
+		if (entry.find("multicolor") != std::string::npos || 
+			entry.find(":rgb:joystick_rings") != std::string::npos || 
 			entry.find("rgb:l1") != std::string::npos)
 		{
 			std::string ledColourPath = entry + "/multi_intensity";				
@@ -1797,6 +1916,24 @@ bool ApiSystem::getLED(int& red, int& green, int& blue)
 				break;
 			}
 		}
+
+		// Fallback check for the Ayn Odin monochrome LEDs
+		if (entry.find("left_joystick") != std::string::npos)
+		{
+			LED_COLOUR_NAME = "monochrome";
+			mSystemLedType = LED_TYPE_UNIFIED;
+			LOG(LogInfo) << "ApiSystem::getLED > Found MONOCHROME LED at " << entry;
+
+			std::vector<std::string> mono_nodes = { "left_joystick", "right_joystick", "left_side", "right_side" };
+			for (const auto& node : mono_nodes) {
+				std::string trigger_path = "/sys/class/leds/" + node + "/trigger";
+				if (Utils::FileSystem::exists(trigger_path)) {
+					Utils::FileSystem::writeAllText(trigger_path, "none\n");
+				}
+			}
+			break;
+		}
+
 		if (entry.find("l:b1") != std::string::npos)
 		{
 			found_addressable = true;
@@ -1813,43 +1950,50 @@ bool ApiSystem::getLED(int& red, int& green, int& blue)
 		return false;
 	}
 
-    if (mSystemLedType == LED_TYPE_UNIFIED && Utils::FileSystem::exists(LED_COLOUR_NAME)) {
-        std::string colourValue = Utils::FileSystem::readAllText(LED_COLOUR_NAME);
-        std::stringstream ss(colourValue);
-        std::string token;
+	if (mSystemLedType == LED_TYPE_UNIFIED) 
+	{
+		if (LED_COLOUR_NAME == "monochrome") 
+		{
+			red = 255;
+			green = 255;
+			blue = 255;
+			blockColourChanges();
+			return true;
+		}
+		else if (LED_COLOUR_NAME == "cubexx" || LED_COLOUR_NAME == "rg_vita_pro" || LED_COLOUR_NAME == "legiongos" || LED_COLOUR_NAME == "legiongo" || LED_COLOUR_NAME == "rg55g1") 
+		{
+			getLEDColours(red, green, blue);
+			blockColourChanges();
+			return true;
+		}
+		else if (Utils::FileSystem::exists(LED_COLOUR_NAME)) 
+		{
+			std::string colourValue = Utils::FileSystem::readAllText(LED_COLOUR_NAME);
+			std::stringstream ss(colourValue);
+			std::string token;
 
-        if (LED_COLOUR_NAME.find("rgb:l") != std::string::npos) {
-            // Extract blue value
-            std::getline(ss, token, ' ');
-            blue = std::stoi(token);
+			// Extract red value
+			std::getline(ss, token, ' ');
+			red = std::stoi(token);
 
-            // Extract green value
-            std::getline(ss, token, ' ');
-            green = std::stoi(token);
+			// Extract green value
+			std::getline(ss, token, ' ');
+			green = std::stoi(token);
 
-            // Extract red value
-            std::getline(ss, token);
-            red = std::stoi(token);
-        } else {
-            // Extract red value
-            std::getline(ss, token, ' ');
-            red = std::stoi(token);
+			// Extract blue value
+			std::getline(ss, token);
+			blue = std::stoi(token);
 
-            // Extract green value
-            std::getline(ss, token, ' ');
-            green = std::stoi(token);
+			blockColourChanges(); // temporarily prevent changes from external daemon
+			LOG(LogInfo) << "ApiSystem::getLED > LED colours are:" << red << " " << green << " " << blue;
 
-            // Extract blue value
-            std::getline(ss, token);
-            blue = std::stoi(token);
-        }
-
-        LOG(LogInfo) << "ApiSystem::getLED > LED colours are:" << red << " " << green << " " << blue;
-
-        return true;
-    }
-	else if (mSystemLedType == LED_TYPE_ADDRESSABLE) {
+			return true;
+		}
+	}
+	else if (mSystemLedType == LED_TYPE_ADDRESSABLE) 
+	{
 		getLEDColours(red, green, blue);
+		blockColourChanges();
 		return true;
 	}
 
@@ -1880,14 +2024,41 @@ void ApiSystem::getLEDColours(int& red, int& green, int& blue)
 	LOG(LogInfo) << "ApiSystem::getLEDColours > LED colours are: " << red << " " << green << " " << blue;
 }
 
+// multi_intensity follows the channel order of multi_index, which is not always "red green blue"
+// (the Retroid Pocket 5 lists "blue green red")
+static std::string ledMultiIntensity(const std::string& ledPath, int red, int green, int blue)
+{
+	std::string content;
+	for (const auto& channel : Utils::String::split(Utils::String::trim(Utils::FileSystem::readAllText(ledPath + "/multi_index")), ' ', true))
+	{
+		int value = channel == "red" ? red : channel == "green" ? green : channel == "blue" ? blue : 0;
+		content += (content.empty() ? "" : " ") + std::to_string(value);
+	}
+
+	if (content.empty())
+		content = std::to_string(red) + " " + std::to_string(green) + " " + std::to_string(blue);
+
+	return content;
+}
+
 void ApiSystem::setLEDColours(int red, int green, int blue)
 {
 #if WIN32    
     return;
-#endif 
+#endif
 
 	if (mSystemLedType == LED_TYPE_NONE)
 		return;
+
+	// We allow this check to be bypassed ONLY if we are turning the LEDs OFF (red=0, green=0, blue=0).
+	if (red != 0 || green != 0 || blue != 0)
+	{
+		std::string currentMode = SystemConf::getInstance()->get("led.mode");
+		if (currentMode == "rainbow" || currentMode == "chroma" || currentMode == "pulse" || currentMode == "battery")
+		{
+			return; 
+		}
+	}
 
     // Ensure RGB values are within valid range
 	if (red < 0) red = 0;
@@ -1901,13 +2072,36 @@ void ApiSystem::setLEDColours(int red, int green, int blue)
 	{
 		if (LED_COLOUR_NAME.empty() || LED_COLOUR_NAME == "notfound") return;
 
-		if (LED_COLOUR_NAME.find("rgb:l") != std::string::npos) {
-			std::string content = std::to_string(blue) + " " + std::to_string(green) + " " + std::to_string(red);
-			for (int i = 1; i <= 7; i++) {
-				Utils::FileSystem::writeAllText("/sys/class/leds/rgb:l" + std::to_string(i) + "/multi_intensity", content);
-				Utils::FileSystem::writeAllText("/sys/class/leds/rgb:r" + std::to_string(i) + "/multi_intensity", content);
+		if (LED_COLOUR_NAME == "cubexx" || LED_COLOUR_NAME == "rg_vita_pro" || LED_COLOUR_NAME == "legiongos" || LED_COLOUR_NAME == "legiongo" || LED_COLOUR_NAME == "rg55g1") {
+			executeScript("hippos-led set_color_force_dec " + 
+                          std::to_string(red) + " " + 
+                          std::to_string(green) + " " + 
+                          std::to_string(blue));
+		}
+		// Handle monochrome power state mappings (1 = ON, 0 = OFF)
+		else if (LED_COLOUR_NAME == "monochrome") {
+			int brightnessValue = (red > 0 || green > 0 || blue > 0) ? 1 : 0;
+			std::vector<std::string> mono_nodes = { "left_joystick", "right_joystick", "left_side", "right_side" };
+			for (const auto& node : mono_nodes) {
+				std::string path = "/sys/class/leds/" + node + "/brightness";
+				if (Utils::FileSystem::exists(path)) {
+					Utils::FileSystem::writeAllText(path, std::to_string(brightnessValue) + "\n");
+				}
 			}
-		} else {
+		}
+		else if (LED_COLOUR_NAME.find("rgb:l") != std::string::npos) {
+			auto allLeds = Utils::FileSystem::getDirContent("/sys/class/leds");
+			for (const auto& ledPath : allLeds) {
+				if (ledPath.find("/rgb:l") != std::string::npos || 
+					ledPath.find("/rgb:r") != std::string::npos) {
+					std::string intensityPath = ledPath + "/multi_intensity";
+					if (Utils::FileSystem::exists(intensityPath)) {
+						Utils::FileSystem::writeAllText(intensityPath, ledMultiIntensity(ledPath, red, green, blue));
+					}
+				}
+			}
+		}
+		else {
 			std::string content = std::to_string(red) + " " + std::to_string(green) + " " + std::to_string(blue);
 			Utils::FileSystem::writeAllText(LED_COLOUR_NAME, content);
 		}
@@ -1924,6 +2118,17 @@ void ApiSystem::setLEDColours(int red, int green, int blue)
 			}
 		}
 
+		// the raw channels have no group brightness, so apply it to the colour
+		std::string brightnessStr = SystemConf::getInstance()->get("led.brightness");
+		int brightness = brightnessStr.empty() ? 100 : Utils::String::toInteger(brightnessStr);
+		if (brightness < 0) brightness = 0;
+		if (brightness > 100) brightness = 100;
+
+		float factor = brightness / 100.0f;
+		red = static_cast<int>(red * factor + 0.5f);
+		green = static_cast<int>(green * factor + 0.5f);
+		blue = static_cast<int>(blue * factor + 0.5f);
+
 		for(const auto& file : r_files) Utils::FileSystem::writeAllText(file, std::to_string(red));
 		for(const auto& file : g_files) Utils::FileSystem::writeAllText(file, std::to_string(green));
 		for(const auto& file : b_files) Utils::FileSystem::writeAllText(file, std::to_string(blue));
@@ -1937,7 +2142,7 @@ bool ApiSystem::getLEDBrightness(int& value)
 #endif
 
     // Handle software-controlled brightness platforms directly from configuration
-    if (LED_COLOUR_NAME == "cubexx" || LED_COLOUR_NAME == "rg_vita_pro" || LED_COLOUR_NAME == "legiongos" || LED_COLOUR_NAME == "legiongo")
+    if (LED_COLOUR_NAME == "cubexx" || LED_COLOUR_NAME == "rg_vita_pro" || LED_COLOUR_NAME == "legiongos" || LED_COLOUR_NAME == "legiongo" || LED_COLOUR_NAME == "rg55g1")
     {
         mSystemLedType = LED_TYPE_UNIFIED;
         std::string valStr = SystemConf::getInstance()->get("led.brightness");
@@ -1958,7 +2163,11 @@ bool ApiSystem::getLEDBrightness(int& value)
             if (directory.find("multicolor") != std::string::npos || 
                 directory.find(":rgb:joystick_rings") != std::string::npos ||
                 directory.find("rgb:l1") != std::string::npos ||
-                directory.find("l:r1") != std::string::npos) 
+                // raw l:r1 channels are busy when they belong to an rgb:l* group (Retroid Pocket 5)
+                (directory.find("l:r1") != std::string::npos && !Utils::FileSystem::exists("/sys/class/leds/rgb:l1")) ||
+                directory.find("left_joystick") != std::string::npos ||
+                directory.find("rgb:kbd_backlight") != std::string::npos ||
+                directory.find("joystick-left") != std::string::npos)
             {
                 std::string ledBrightnessPath = directory + "/brightness";
                 std::string ledMaxBrightnessPath = directory + "/max_brightness";
@@ -1968,8 +2177,9 @@ bool ApiSystem::getLEDBrightness(int& value)
                     LED_BRIGHTNESS_VALUE = ledBrightnessPath;
                     LED_MAX_BRIGHTNESS_VALUE = ledMaxBrightnessPath;
 
-                    // FORCE ENABLE: If we found a valid path, we MUST be in Unified mode
-                    mSystemLedType = LED_TYPE_UNIFIED;
+                    // FORCE ENABLE: a valid path means Unified mode, unless the LEDs are raw addressable channels
+                    if (mSystemLedType != LED_TYPE_ADDRESSABLE)
+                        mSystemLedType = LED_TYPE_UNIFIED;
 
                     LOG(LogInfo) << "ApiSystem::getLEDBrightness > LED brightness path resolved to " << directory;
                     break;
@@ -1978,11 +2188,19 @@ bool ApiSystem::getLEDBrightness(int& value)
         }
     }
 
-    if (mSystemLedType != LED_TYPE_UNIFIED)
+    if (mSystemLedType != LED_TYPE_UNIFIED && mSystemLedType != LED_TYPE_ADDRESSABLE)
         return false;
 
     if (LED_BRIGHTNESS_VALUE == "notfound" || LED_BRIGHTNESS_VALUE.empty())
         return false;
+
+    // a raw channel holds one colour component, not the brightness
+    if (mSystemLedType == LED_TYPE_ADDRESSABLE)
+    {
+        std::string valStr = SystemConf::getInstance()->get("led.brightness");
+        value = valStr.empty() ? 100 : Utils::String::toInteger(valStr);
+        return true;
+    }
 
     value = 0;
 
@@ -2006,11 +2224,27 @@ void ApiSystem::setLEDBrightness(int value)
     int dummy;
     if (LED_BRIGHTNESS_VALUE.empty()) getLEDBrightness(dummy);
 
-    if (mSystemLedType != LED_TYPE_UNIFIED || LED_BRIGHTNESS_VALUE == "notfound")
+    if ((mSystemLedType != LED_TYPE_UNIFIED && mSystemLedType != LED_TYPE_ADDRESSABLE) || LED_BRIGHTNESS_VALUE == "notfound")
         return;
 
     if (value < 0) value = 0;
     if (value > 100) value = 100;
+
+	if (LED_COLOUR_NAME == "rg55g1") {
+		SystemConf::getInstance()->set("led.brightness", std::to_string(value));
+		SystemConf::getInstance()->saveSystemConf();
+		executeScript("hippos-led set_brightness " + std::to_string(value));
+		return;
+	}
+
+	if (LED_COLOUR_NAME == "cubexx" || LED_COLOUR_NAME == "rg_vita_pro" || LED_COLOUR_NAME == "legiongos" || LED_COLOUR_NAME == "legiongo") {
+		SystemConf::getInstance()->set("led.brightness", std::to_string(value));
+		SystemConf::getInstance()->saveSystemConf();
+		int r, g, b;
+		getLEDColours(r, g, b);
+		setLEDColours(r, g, b);
+		return;
+	}
 
     std::string colorStr = SystemConf::getInstance()->get("led.colour");
     if (colorStr.empty()) colorStr = "255 255 255"; // Default to white if not set
@@ -2040,14 +2274,18 @@ void ApiSystem::setLEDBrightness(int value)
     {
         int max = Utils::String::toInteger(Utils::FileSystem::readAllText(LED_MAX_BRIGHTNESS_VALUE));
         int brightnessValue = static_cast<int>(factor * max + 0.5f);
-        for (int i = 1; i <= 7; i++) {
-            Utils::FileSystem::writeAllText("/sys/class/leds/rgb:l" + std::to_string(i) + "/brightness", std::to_string(brightnessValue) + "\n");
-            Utils::FileSystem::writeAllText("/sys/class/leds/rgb:r" + std::to_string(i) + "/brightness", std::to_string(brightnessValue) + "\n");
+        for (const auto& ledPath : Utils::FileSystem::getDirContent("/sys/class/leds")) {
+            if (ledPath.find("/rgb:l") == std::string::npos && ledPath.find("/rgb:r") == std::string::npos)
+                continue;
+
+            std::string brightPath = ledPath + "/brightness";
+            if (Utils::FileSystem::exists(brightPath))
+                Utils::FileSystem::writeAllText(brightPath, std::to_string(brightnessValue) + "\n");
         }
     }
     // Check if we are on an addressable device (Retroid/Ayn style)
     // These paths typically look like /sys/class/leds/l:r1
-    else if (LED_BRIGHTNESS_VALUE.find("/l:") != std::string::npos ||
+    else if (LED_BRIGHTNESS_VALUE.find("/l:") != std::string::npos || 
         LED_BRIGHTNESS_VALUE.find("/r:") != std::string::npos) 
     {
         // Batch update all addressable LED channels
@@ -2079,6 +2317,16 @@ void ApiSystem::setLEDBrightness(int value)
     }
 }
 
+bool ApiSystem::isLEDMonochrome()
+{
+#if WIN32
+    return false;
+#else
+    return (LED_COLOUR_NAME == "monochrome");
+#endif
+}
+
+
 bool ApiSystem::isLEDEnabled()
 {
 #if WIN32
@@ -2087,6 +2335,38 @@ bool ApiSystem::isLEDEnabled()
 	// Check batocera.conf for "led.enabled" setting, default to "1" (true) if not found
 	return SystemConf::getInstance()->get("led.enabled") != "0";
 #endif
+}
+
+void ApiSystem::setLEDMode(const std::string& mode)
+{
+#if WIN32
+    return;
+#else
+    SystemConf::getInstance()->set("led.mode", mode);
+    SystemConf::getInstance()->saveSystemConf();
+
+    executeScript("hippos-led unblock_color_changes");
+
+    // the effects run for seconds, don't hold the UI while they play
+    if (mode == "rainbow") {
+        executeScript("hippos-led rainbow &");
+    } else if (mode == "chroma") {
+        executeScript("hippos-led chroma &");
+    } else if (mode == "pulse") {
+        executeScript("hippos-led pulse &");
+    } else if (mode != "battery") {
+        // Fall back to the user's customized static colors
+        int r, g, b;
+        getLEDColours(r, g, b);
+        setLEDColours(r, g, b);
+    }
+#endif
+}
+
+// battery led mode levels, as level=color lines, then charging= and full=
+std::vector<std::string> ApiSystem::getLEDBatteryProfile()
+{
+	return executeEnumerationScript("hippos-led battery_profile");
 }
 
 void ApiSystem::setLEDEnabled(bool enabled)
@@ -2102,15 +2382,20 @@ void ApiSystem::setLEDEnabled(bool enabled)
 	}
 	else
 	{
-		std::string lastColorStr = SystemConf::getInstance()->get("led.colour");
-		if (lastColorStr.empty())
-			lastColorStr = "255 0 165";
+		std::string mode = SystemConf::getInstance()->get("led.mode");
+		if (mode == "rainbow" || mode == "chroma" || mode == "pulse" || mode == "battery") {
+			setLEDMode(mode);
+		} else {
+			std::string lastColorStr = SystemConf::getInstance()->get("led.colour");
+			if (lastColorStr.empty())
+				lastColorStr = "255 0 165";
 
-		std::stringstream ss(lastColorStr);
-		int r, g, b;
-		ss >> r >> g >> b;
+			std::stringstream ss(lastColorStr);
+			int r, g, b;
+			ss >> r >> g >> b;
 
-		setLEDColours(r, g, b);
+			setLEDColours(r, g, b);
+		}
 	}
 
 	SystemConf::getInstance()->saveSystemConf();
@@ -2145,6 +2430,12 @@ void ApiSystem::restoreLEDs()
 std::vector<std::string> ApiSystem::getWifiNetworks(bool scan)
 {
 	return executeEnumerationScript(scan ? "hippos-wifi scanlist" : "hippos-wifi list");
+}
+
+std::string ApiSystem::getConnectedWifiSsid()
+{
+	std::vector<std::string> result = executeEnumerationScript("hippos-wifi connected");
+	return result.empty() ? "" : result[0];
 }
 
 std::vector<std::string> ApiSystem::executeEnumerationScript(const std::string command)
@@ -3080,6 +3371,71 @@ std::vector<GlobalHotkey> ApiSystem::getGlobalHotkeys() {
     }
 
   return hotkeys;
+}
+
+void ApiSystem::detectTrackballSpinners(const std::string& type) {
+  LOG(LogDebug) << "ApiSystem::detectTrackballSpinners";
+  if(type == "trackball") {
+    executeScript("hippos-trackballs-spinners --detect-trackball --save-detection");
+  } else if(type == "spinner") {
+    executeScript("hippos-trackballs-spinners --detect-spinner --save-detection");
+  }
+}
+
+std::vector<TrackballSpinner> ApiSystem::getTrackballSpinners() {
+  std::vector<TrackballSpinner> trackballspinners;
+
+  LOG(LogDebug) << "ApiSystem::getTrackballSpinners";
+
+  auto res = executeEnumerationScript("hippos-trackballs-spinners --list --xml");
+
+  std::string data = Utils::String::join(res, "\n");
+  if (data.empty())
+    {
+      LOG(LogError) << "List is empty";
+      return trackballspinners;
+    }
+
+  pugi::xml_document doc;
+  pugi::xml_parse_result result = doc.load_string(data.c_str());
+  if (!result)
+    {
+      LOG(LogError) << "Unable to parse trackballspinners";
+      return trackballspinners;
+    }
+
+  pugi::xml_node root = doc.child("trackballspinners");
+  if (!root)
+    {
+      LOG(LogError) << "Could not find <trackballspinners> node";
+      return trackballspinners;
+    }
+
+  for (pugi::xml_node device = root.child("trackballspinner"); device; device = device.next_sibling("trackballspinner"))
+    {
+	  TrackballSpinner ts;
+
+	  if (device.attribute("name"))
+	  	ts.name = device.attribute("name").as_string();
+
+	  if (device.attribute("type"))
+	  	ts.type = device.attribute("type").as_string();
+
+	  if (device.attribute("source"))
+	  	ts.source = device.attribute("source").as_string();
+
+	  if (device.attribute("key"))
+	  	ts.key = device.attribute("key").as_string();
+
+	  trackballspinners.push_back(ts);
+    }
+
+  return trackballspinners;
+}
+
+void ApiSystem::removeTrackballSpinners(const std::string& key) {
+  LOG(LogDebug) << "ApiSystem::removeTrackballSpinners";
+  executeScript("hippos-trackballs-spinners --unregister " + key);
 }
 
 std::vector<Pad2key> ApiSystem::getPad2keys() {

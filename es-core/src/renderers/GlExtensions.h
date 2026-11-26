@@ -2,7 +2,9 @@
 
 #include <SDL.h>
 
-#if USE_OPENGLES_20
+#if defined(USE_OPENGLES_30)
+#include <GLES3/gl3.h>
+#elif defined(USE_OPENGLES_20)
 #include <SDL_opengles2.h>
 #else
 #include <SDL_opengl.h>
@@ -48,6 +50,8 @@ namespace glext
 	extern PFNGLDELETEFRAMEBUFFERSPROC glDeleteFramebuffers;		
 
 	extern PFNGLGETACTIVEUNIFORMPROC glGetActiveUniform;
+
+	extern PFNGLBLENDFUNCSEPARATEPROC glBlendFuncSeparate;
 };
 
 using namespace glext;
@@ -58,3 +62,29 @@ using namespace glext;
 
 #define GL_CHECK_ERROR(Function) (Function, _GLCheckError(#Function))
 bool _GLCheckError(const char* _funcName);
+
+#if defined(USE_OPENGLES_30)
+
+namespace Renderer
+{
+	struct GLCapabilities
+	{
+		int  majorVersion = 3;
+		int  minorVersion = 0;
+
+		// Core in ES 3.2, otherwise GL_KHR_debug.
+		bool debugOutput = false;
+
+		bool isAtLeast(const int major, const int minor) const
+		{
+			return majorVersion > major || (majorVersion == major && minorVersion >= minor);
+		}
+	};
+
+	const GLCapabilities& getGLCapabilities();
+
+	// Must be called after the context is current, before any capability is queried.
+	void detectGLCapabilities();
+}
+
+#endif // USE_OPENGLES_30

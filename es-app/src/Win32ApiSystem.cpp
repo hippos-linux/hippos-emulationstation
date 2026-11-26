@@ -29,7 +29,7 @@
 #define VERSIONURL "https://github.com/fabricecaruso/batocera-emulationstation/releases/download/continuous-stable/version.info"
 #define UPDATEURL  "https://github.com/fabricecaruso/batocera-emulationstation/releases/download/continuous-stable/EmulationStation-Win32.zip"
 
-#define LAUNCHERURL "https://github.com/fabricecaruso/hippos-ports/releases/download/continuous/hippos-ports.zip"
+#define LAUNCHERURL "https://github.com/fabricecaruso/batocera-ports/releases/download/continuous/batocera-ports.zip"
 
 Win32ApiSystem::Win32ApiSystem()
 {
@@ -92,7 +92,7 @@ bool Win32ApiSystem::isScriptingSupported(ScriptId script)
 		return canSuspend();
 	
 	case ApiSystem::WIFI:
-		executables.push_back("hippos-wifi");
+		executables.push_back("batocera-wifi");
 		break;
 	case ApiSystem::RETROACHIVEMENTS:
 #ifdef CHEEVOS_DEV_LOGIN
@@ -100,16 +100,16 @@ bool Win32ApiSystem::isScriptingSupported(ScriptId script)
 #endif
 		break;
 	case ApiSystem::BLUETOOTH:
-		executables.push_back("hippos-bluetooth");
+		executables.push_back("batocera-bluetooth");
 		break;
 
 	case ApiSystem::RESOLUTION:
 #if _DEBUG
-		executables.push_back("hippos-resolution");
+		executables.push_back("batocera-resolution");
 #endif
 		break;
 	case ApiSystem::BIOSINFORMATION:
-		executables.push_back("hippos-systems");
+		executables.push_back("batocera-systems");
 		break;
 	case ApiSystem::NETPLAY:
 	case ApiSystem::GAMESETTINGS:
@@ -121,8 +121,8 @@ bool Win32ApiSystem::isScriptingSupported(ScriptId script)
 		executables.push_back("pdftoppm");
 		executables.push_back("pdfinfo");		
 		break;
-	case ApiSystem::HIPPOSSTORE:
-		executables.push_back("hippos-store");
+	case ApiSystem::BATOCERASTORE:
+		executables.push_back("batocera-store");
 		break;
 	case ApiSystem::EVMAPY:
 		executables.push_back("emulatorLauncher");
@@ -137,14 +137,14 @@ bool Win32ApiSystem::isScriptingSupported(ScriptId script)
 				return true;
 			}
 			else
-				executables.push_back("hippos-padsinfo");
+				executables.push_back("batocera-padsinfo");
 		}
 		break;
 	case ApiSystem::UPGRADE:
 		return true;
 
 	case ApiSystem::SERVICES:
-		executables.push_back("hippos-services");
+		executables.push_back("batocera-services");
 		break;
 	 case ApiSystem::READPLANEMODE:
 		return true;	 
@@ -160,9 +160,9 @@ bool Win32ApiSystem::isScriptingSupported(ScriptId script)
 			return false;
 	}
 
-	if (script == ApiSystem::HIPPOSSTORE)
+	if (script == ApiSystem::BATOCERASTORE)
 	{
-		std::string path = Paths::findEmulationStationFile("hippos-store.cfg");
+		std::string path = Paths::findEmulationStationFile("batocera-store.cfg");
 		if (path.empty() || !Utils::FileSystem::exists(path))
 			return false;
 	}
@@ -225,7 +225,7 @@ int Win32ApiSystem::executeCMD(const char* lpCommandLine, std::string& output, c
 			//spawn the child process
 			std::wstring commandLineW = Utils::String::convertToWideString(lpCommandLine);
 			std::wstring directory = lpCurrentDirectory == NULL ? L"" : Utils::String::convertToWideString(lpCurrentDirectory);
-			if (CreateProcessW(NULL, (LPWSTR)commandLineW.c_str(), NULL, NULL, TRUE, CREATE_NEW_CONSOLE, NULL, lpCurrentDirectory == NULL ? NULL : (LPWSTR)directory.c_str(), &si, &pi))
+			if (CreateProcessW(NULL, (LPWSTR)commandLineW.c_str(), NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, lpCurrentDirectory == NULL ? NULL : (LPWSTR)directory.c_str(), &si, &pi))
 			{
 				if (m_hJob != nullptr)
 					AssignProcessToJobObject(m_hJob, pi.hProcess);
@@ -753,7 +753,7 @@ void Win32ApiSystem::installEmulationStationZip(const std::string& zipFile)
 	Utils::FileSystem::deleteDirectoryFiles(path);
 }
 
-std::pair<std::string, int> Win32ApiSystem::updateSystem(const std::function<void(const std::string)>& func)
+std::pair<std::string, int> Win32ApiSystem::updateSystem(const std::function<void(const std::string)>& func, bool fromlocalmedia)
 {
 	std::string esUpdateScript = getScriptPath("es-update");
 	if (!esUpdateScript.empty())
@@ -844,10 +844,10 @@ void Win32ApiSystem::updateEmulatorLauncher(const std::function<void(const std::
 
 	std::string zipFile = path + "/" + fileName;
 
-	if (downloadFile(url, zipFile, "hippos-ports", func))
+	if (downloadFile(url, zipFile, "batocera-ports", func))
 	{
 		if (func != nullptr)
-			func(std::string("Extracting hippos-ports"));
+			func(std::string("Extracting batocera-ports"));
 
 		unzipFile(zipFile, path);
 		Utils::FileSystem::removeFile(zipFile);
@@ -933,7 +933,7 @@ bool Win32ApiSystem::canUpdate(std::vector<std::string>& output)
 	return false;
 }
 
-bool Win32ApiSystem::launchMediaCenter(Window *window)
+bool Win32ApiSystem::launchKodi(Window *window)
 {
 	std::string command = Paths::getKodiPath();
 	if (!Utils::FileSystem::exists(command))
@@ -976,44 +976,131 @@ bool Win32ApiSystem::isReadyFlagSet()
 	return Utils::FileSystem::exists(Paths::getUserEmulationStationPath() + "/tmp/emulationstation.ready");
 }
 
+static std::string getWindowsDisplayDeviceName(int monitorId)
+{
+	if (monitorId < 0 || monitorId >= SDL_GetNumVideoDisplays())
+		return "";
+
+	SDL_Rect bounds;
+	if (SDL_GetDisplayBounds(monitorId, &bounds) != 0)
+		return "";
+
+	POINT point = { bounds.x + bounds.w / 2, bounds.y + bounds.h / 2 };
+	HMONITOR monitor = MonitorFromPoint(point, MONITOR_DEFAULTTONULL);
+	if (monitor == nullptr)
+		return "";
+
+	MONITORINFOEXA monitorInfo = {};
+	monitorInfo.cbSize = sizeof(monitorInfo);
+	if (!GetMonitorInfoA(monitor, &monitorInfo))
+		return "";
+
+	return monitorInfo.szDevice;
+}
+
+static std::string resolveWindowsDisplayDevice(const std::string& output)
+{
+	if (output.empty() || output == "auto" || output == "none")
+		return getWindowsDisplayDeviceName(Settings::getInstance()->getInt("MonitorID"));
+
+	if (Utils::String::startsWith(output, "\\\\.\\DISPLAY"))
+		return output;
+
+	if (output.find_first_not_of("0123456789") == std::string::npos)
+		return getWindowsDisplayDeviceName(atoi(output.c_str()));
+
+	for (DWORD i = 0; ; i++)
+	{
+		DISPLAY_DEVICEA adapter = {};
+		adapter.cb = sizeof(adapter);
+
+		if (!EnumDisplayDevicesA(nullptr, i, &adapter, 0))
+			break;
+
+		if ((adapter.StateFlags & DISPLAY_DEVICE_ATTACHED_TO_DESKTOP) == 0)
+			continue;
+
+		if (output == adapter.DeviceName || output == adapter.DeviceString)
+			return adapter.DeviceName;
+
+		DISPLAY_DEVICEA screen = {};
+		screen.cb = sizeof(screen);
+
+		if (EnumDisplayDevicesA(adapter.DeviceName, 0, &screen, 0))
+			if (output == screen.DeviceString || output == screen.DeviceID)
+				return adapter.DeviceName;
+	}
+
+	return "";
+}
+
+static void enumerateWindowsVideoModes(const std::string& device, std::vector<std::string>& ret)
+{
+	const char* deviceName = device.empty() ? nullptr : device.c_str();
+
+	int i = 0;
+	while (true)
+	{
+		DEVMODEA vDevMode = {};
+		vDevMode.dmSize = sizeof(vDevMode);
+
+		if (!EnumDisplaySettingsA(deviceName, i, &vDevMode))
+			break;
+
+		i++;
+
+		if (vDevMode.dmDisplayFixedOutput != 0)
+			continue;
+
+		std::string interlaced = (vDevMode.dmDisplayFlags & 2) == 2 ? "i" : "";
+		std::string ifoInterlaced = (vDevMode.dmDisplayFlags & 2) == 2 ? " (" + _("Interlaced") + ")" : "";
+		int displayedFreq = (vDevMode.dmDisplayFlags & 2) == 2 ? vDevMode.dmDisplayFrequency * 2 : vDevMode.dmDisplayFrequency;
+
+		std::string mode;
+
+		if (vDevMode.dmBitsPerPel == 32)
+			mode =
+			std::to_string(vDevMode.dmPelsWidth) + "x" +
+			std::to_string(vDevMode.dmPelsHeight) + "x" +
+			std::to_string(vDevMode.dmBitsPerPel) + "x" +
+			std::to_string(vDevMode.dmDisplayFrequency) + interlaced + ":" +
+			std::to_string(vDevMode.dmPelsWidth) + "x" +
+			std::to_string(vDevMode.dmPelsHeight) + " " +
+			std::to_string(displayedFreq) + "Hz" + ifoInterlaced;
+		else
+			mode =
+			std::to_string(vDevMode.dmPelsWidth) + "x" +
+			std::to_string(vDevMode.dmPelsHeight) + "x" +
+			std::to_string(vDevMode.dmBitsPerPel) + "x" +
+			std::to_string(vDevMode.dmDisplayFrequency) + interlaced + ":" +
+			std::to_string(vDevMode.dmPelsWidth) + "x" +
+			std::to_string(vDevMode.dmPelsHeight) + "x" +
+			std::to_string(vDevMode.dmBitsPerPel) + " " +
+			std::to_string(displayedFreq) + "Hz" + ifoInterlaced;
+
+		if (std::find(ret.cbegin(), ret.cend(), mode) == ret.cend())
+			ret.push_back(mode);
+	}
+}
+
 std::vector<std::string> Win32ApiSystem::getVideoModes(const std::string output)
 {
 	std::vector<std::string> ret;
 
-	DEVMODE vDevMode;
+	std::string device = resolveWindowsDisplayDevice(output);
 
-	int i = 0;
-	while (EnumDisplaySettings(nullptr, i, &vDevMode))
+	LOG(LogDebug) << "getVideoModes : enumerating modes for "
+		<< (device.empty() ? "primary display" : device)
+		<< " (requested output: '" << output << "')";
+
+	enumerateWindowsVideoModes(device, ret);
+
+	if (ret.empty() && !device.empty())
 	{
-		if (vDevMode.dmDisplayFixedOutput == 0)
-		{			
-			std::string interlaced = (vDevMode.dmDisplayFlags & 2) == 2 ? "i": "";
-			std::string ifoInterlaced = (vDevMode.dmDisplayFlags & 2) == 2 ? " (" + _("Interlaced") + ")": "";
+		LOG(LogWarning) << "getVideoModes : no mode returned for " << device
+			<< ", falling back to primary display";
 
-			if (vDevMode.dmBitsPerPel == 32)
-				ret.push_back(
-					std::to_string(vDevMode.dmPelsWidth)+"x" +
-					std::to_string(vDevMode.dmPelsHeight)+"x" +
-					std::to_string(vDevMode.dmBitsPerPel)+"x" +
-					std::to_string(vDevMode.dmDisplayFrequency) + interlaced + ":" +
-					std::to_string(vDevMode.dmPelsWidth) + "x" +
-					std::to_string(vDevMode.dmPelsHeight) + " " +
-					std::to_string((vDevMode.dmDisplayFlags & 2) == 2 ? vDevMode.dmDisplayFrequency * 2 : vDevMode.dmDisplayFrequency) + "Hz" + ifoInterlaced);
-			else
-			{
-				ret.push_back(
-					std::to_string(vDevMode.dmPelsWidth) + "x" +
-					std::to_string(vDevMode.dmPelsHeight) + "x" +
-					std::to_string(vDevMode.dmBitsPerPel) + "x" +
-					std::to_string(vDevMode.dmDisplayFrequency) + interlaced + ":" +
-					std::to_string(vDevMode.dmPelsWidth) + "x" +
-					std::to_string(vDevMode.dmPelsHeight) + "x" +
-					std::to_string(vDevMode.dmBitsPerPel) + " " +
-					std::to_string((vDevMode.dmDisplayFlags & 2) == 2 ? vDevMode.dmDisplayFrequency * 2 : vDevMode.dmDisplayFrequency) + "Hz" + ifoInterlaced);
-			}				
-		}
-
-		i++;
+		enumerateWindowsVideoModes("", ret);
 	}
 
 	return ret;
@@ -1166,7 +1253,7 @@ bool Win32ApiSystem::setPlaneMode(bool enable)
 
 bool Win32ApiSystem::forgetBluetoothControllers()
 {
-	return executeScript("hippos-bluetooth forgetBT");
+	return executeScript("batocera-bluetooth forgetBT");
 }
 
 #endif

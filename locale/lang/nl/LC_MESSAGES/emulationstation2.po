@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: emulationstation\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-12-15 23:48+0100\n"
-"PO-Revision-Date: 2026-02-20 12:04+0000\n"
+"PO-Revision-Date: 2026-09-19 11:58+0000\n"
 "Last-Translator: THa MuSHeR\n"
 "Language-Team: Dutch (Netherlands)\n"
 "Language: nl-NL\n"
@@ -106,7 +106,7 @@ msgid "Loading gamelists"
 msgstr "Spellijsten worden geladen"
 
 msgid "Loading..."
-msgstr "Laden..."
+msgstr "Laden…"
 
 msgid "MENU"
 msgstr "MENU"
@@ -216,7 +216,7 @@ msgstr "KIES"
 msgid "BACK"
 msgstr "TERUG"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "SAVESTATES (INGEDRUKT HOUDEN)"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -231,7 +231,7 @@ msgstr "SPELOPTIES"
 msgid "FAVORITE"
 msgstr "FAVORIET"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "SAVESTATES"
 
 #, c-format
@@ -298,7 +298,7 @@ msgstr "VERANDERINGEN OPSLAAN?"
 msgid "ARE YOU SURE?"
 msgstr "WEET U HET ZEKER?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr "INSTELLINGEN RETROPRESTATIE"
 
 msgid "SETTINGS"
@@ -366,7 +366,7 @@ msgstr "ONOFFICIËLE PRESTATIES"
 msgid "Enable unlocking of unofficial achievements."
 msgstr "Maak het ontgrendelen van onofficiële prestaties mogelijk."
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr "RETROPRESTATIE GELUID ONTGRENDELEN"
 
 msgid "none"
@@ -378,7 +378,7 @@ msgstr "ONTGRENDEL GELUID"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "TOON RETROPRESTATIES IN HOOFDMENU"
 
-msgid "View your RetroAchievement stats right from the main menu!"
+msgid "View your RetroAchievements stats right from the main menu!"
 msgstr "Bekijk je Retroprestaties statistieken direct vanuit het hoofdmenu!"
 
 msgid "GAME INDEXES"
@@ -483,13 +483,13 @@ msgid "VOLUME MUTE"
 msgstr "VOLUME MUTE"
 
 msgid "START RECORDING"
-msgstr ""
+msgstr "BEGIN MET OPNEMEN"
 
 msgid "STOP RECORDING"
-msgstr ""
+msgstr "STOP MET OPNEMEN"
 
 msgid "KEYBOARD TOGGLE"
-msgstr ""
+msgstr "TOETSENBORDSCHAKELING"
 
 msgid "KEY ASSIGNED TWICE"
 msgstr "TOETS TWEE KEER TOEGEWEZEN"
@@ -594,16 +594,6 @@ msgstr "INBEGREPEN SYSTEMEN"
 msgid "START"
 msgstr "START"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "UPDATEN %s"
-
-msgid "UPDATE IS READY"
-msgstr "DE UPDATE IS KLAAR"
-
-msgid "REBOOT TO APPLY"
-msgstr "OPNIEUW OPSTARTEN OM DIT TOE TE PASSEN"
-
 msgid "REALLY UPDATE?"
 msgstr "WILT U ECHT UPDATEN?"
 
@@ -630,6 +620,16 @@ msgstr "NETWERK VERBINDING BENODIGD"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "ER IS GEEN UPDATE BESCHIKBAAR"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "UPDATEN %s"
+
+msgid "UPDATE IS READY"
+msgstr "DE UPDATE IS KLAAR"
+
+msgid "REBOOT TO APPLY"
+msgstr "OPNIEUW OPSTARTEN OM DIT TOE TE PASSEN"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "VERBIND MET NETPLAY"
@@ -706,7 +706,7 @@ msgid "CURRENTLY IN DOWNLOAD QUEUE"
 msgstr "MOMENTEEL IN DOWNLOAD WACHTRIJ"
 
 msgid "PAIR A BLUETOOTH DEVICE"
-msgstr "EEN BLUETOOTH APPARAAT KOPPELEN"
+msgstr "KOPPEL EEN BLUETOOTH APPARAAT"
 
 msgid "SCANNING BLUETOOTH"
 msgstr "BLUETOOTH WORDT GESCAND"
@@ -893,7 +893,7 @@ msgid "VIEWER PASSWORD"
 msgstr "TOESCHOUWER WACHTWOORD"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "VIND SOORTGELIJKE SPELLEN..."
+msgstr "VIND SOORTGELIJKE SPELLEN…"
 
 msgid "DELETE ITEM"
 msgstr "VERWIJDER ITEM"
@@ -926,7 +926,7 @@ msgid "WRITE"
 msgstr "SCHRIJF"
 
 msgid "PLACE A TAG ON THE WRITER..."
-msgstr "PLAATS EEN TAG OP DE SCHRIJVER..."
+msgstr "PLAATS EEN TAG OP DE SCHRIJVER…"
 
 msgid "THE TAG WAS WRITTEN SUCCESSFULLY"
 msgstr "DE TAG IS SUCCESVOL GESCHREVEN"
@@ -943,7 +943,7 @@ msgid "FAVORITES"
 msgstr "FAVORIETEN"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "AAN AANGEPASTE COLLECTIE TOEVOEGEN..."
+msgstr "AAN AANGEPASTE COLLECTIE TOEVOEGEN…"
 
 msgid "SCRAPE"
 msgstr "SCRAPEN"
@@ -1097,6 +1097,33 @@ msgstr "CONTROLLER #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "P%i'S CONTROLLER"
 
+msgid "RED"
+msgstr "ROOD"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "GROEN"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "BLAUW"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "WIT"
+
 msgid "CONTROLLER MAPPING"
 msgstr "CONTROLLER MAPPING"
 
@@ -1149,7 +1176,7 @@ msgid "SHOW CONTROLLER BATTERY LEVEL"
 msgstr "TOON BATTERIJNIVEAU CONTROLLER"
 
 msgid "SHOW GUN NOTIFICATIONS"
-msgstr ""
+msgstr "TOON GUN-MELDINGEN"
 
 msgid "DRAW GUN CROSSHAIR"
 msgstr "TEKEN PISTOOL KRUIS"
@@ -1166,11 +1193,99 @@ msgstr "BEPERK JOYSTICKS SNELTOETSEN OM AF TE SLUITEN"
 msgid "GLOBAL HOTKEYS"
 msgstr "GLOBALE SNELTOETSEN"
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "LED HARDWARE"
+
+msgid "ENABLE LED"
+msgstr "LED INSCHAKELEN"
+
+msgid "LED MODE"
+msgstr "LED MODUS"
+
+msgid "STATIC"
+msgstr "STATISCH"
+
+msgid "RAINBOW"
+msgstr "REGENBOOG"
+
+msgid "CHROMA"
+msgstr "CHROMA"
+
+msgid "PULSE"
+msgstr "PULS"
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "AANGEPAST"
+
+msgid "LED BRIGHTNESS"
+msgstr "LED HELDERHEID"
+
 msgid "default"
 msgstr "standaard"
 
 msgid "NOT CONNECTED"
 msgstr "NIET VERBONDEN"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr "ZUID"
@@ -1220,8 +1335,8 @@ msgstr "SNELTOETS"
 msgid "DEFAULT"
 msgstr "STANDAARD"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
-msgstr "GEEN APPARAAT GEVONDEN (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
+msgstr "GEEN APPARAAT GEVONDEN (JAMMASD, IPAC…)"
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
 msgstr "WIJS EEN NIEUWE GLOBALE SNELTOETS AAN"
@@ -1234,6 +1349,30 @@ msgstr "GEEN GLOBALE SNELTOETS GEDETECTEERD"
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
 msgstr "MEER DAN ÉÉN GLOBALE SNELTOETS GEDETECTEERD"
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
+msgstr ""
 
 msgid "BORDER SIZE"
 msgstr "RAND MAAT"
@@ -1264,18 +1403,6 @@ msgstr "VERBORGEN"
 
 msgid "BORDER COLOR"
 msgstr "RAND KLEUR"
-
-msgid "WHITE"
-msgstr "WIT"
-
-msgid "RED"
-msgstr "ROOD"
-
-msgid "GREEN"
-msgstr "GROEN"
-
-msgid "BLUE"
-msgstr "BLAUW"
 
 msgid "BORDER RATIO"
 msgstr "RAND VERHOUDING"
@@ -1388,6 +1515,12 @@ msgstr "HANDMATIG INVOEREN"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "GEEN WI-FI NETWERKEN GEVONDEN"
 
+msgid "CONNECTED"
+msgstr "VERBONDEN"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "WI-FI NETWERKEN ZOEKEN"
 
@@ -1444,9 +1577,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAO PAULO"
-
-msgid "CUSTOM"
-msgstr "AANGEPAST"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "AANGEPASTE RELAY SERVER"
@@ -2021,6 +2151,12 @@ msgstr ""
 msgid "VSYNC"
 msgstr "V-SYNC"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr "Anti-aliasing (MSAA)"
+
+msgid "FPS LIMIT"
+msgstr "FPS LIMIET"
+
 msgid "OVERSCAN"
 msgstr "OVERSCAN"
 
@@ -2193,6 +2329,14 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "BESTUUR EMULATIONSTATION ALLEEN MET DE EERSTE JOYSTICK"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr "Rechter-analoge stick wijzigt het volume"
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+"Beweeg de rechterstick omhoog of omlaag om het audiovolume te verhogen of te "
+"verlagen."
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "GUN BEWEGING TOLERANTIE"
 
@@ -2230,6 +2374,17 @@ msgstr ""
 "Vermindert lag bij het scrollen door volledig gescrapete spellijsten, "
 "vermeerdert opstarttijd"
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+
 msgid "THREADED LOADING"
 msgstr "THREADED LADEN"
 
@@ -2243,7 +2398,7 @@ msgid "OPTIMIZE VIDEO VRAM USAGE"
 msgstr "OPTIMALISEER GEBRUIK VIDEO VRAM"
 
 msgid "USE FILESYSTEM CACHE"
-msgstr ""
+msgstr "GEBRUIK BESTANDSSYSTEEM CACHE"
 
 msgid "REBOOT REQUIRED TO APPLY THE NEW CONFIGURATION"
 msgstr "OPNIEUW OPSTARTEN IS BENODIGD OM DE NIEUWE CONFIGURATIE TOE TE PASSEN"
@@ -2263,6 +2418,9 @@ msgstr "CONTROLEER OP UPDATES"
 msgid "UPDATE TYPE"
 msgstr "UPDATE TYPE"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr "Architectuur update"
+
 msgid "APPLY UPDATE"
 msgstr "UPDATE TOEPASSEN"
 
@@ -2271,6 +2429,33 @@ msgstr "UPDATE STARTEN"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "DE UPDATER IS AL BEZIG"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr "START UPDATE VANAF LOKALE MEDIA"
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr "WILT U ECHT UPDATEN VANAF LOKALE MEDIA?"
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr "Software-updates via torrent"
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr "Deel updates via torrent"
+
+msgid "Torrent update service started"
+msgstr "Torrent update-service gestart"
+
+msgid "Torrent update service stopped"
+msgstr "Torrent update-service gestopt"
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr "Update starten vanaf torrent-bestand"
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr "Wilt u echt vanaf het torrent-bestand bijwerken?"
+
+msgid "DOWNLOAD STATUS"
+msgstr "DOWNLOAD STATUS"
 
 msgid "LANGUAGE"
 msgstr "TAAL"
@@ -2364,6 +2549,19 @@ msgstr ""
 "Beschikbare opties kunnen veranderen afhankelijk van de huidige audio-"
 "uitvoer."
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "VARIABELE REFRESH RATE"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "OPSTART SPLASH"
 
@@ -2430,15 +2628,6 @@ msgstr "aan"
 msgid "OVERCLOCK"
 msgstr "OVERCLOCK"
 
-msgid "LED HARDWARE"
-msgstr "LED HARDWARE"
-
-msgid "ENABLE LED"
-msgstr "LED INSCHAKELEN"
-
-msgid "LED BRIGHTNESS"
-msgstr "LED HELDERHEID"
-
 msgid "STORAGE"
 msgstr "OPSLAG"
 
@@ -2465,6 +2654,17 @@ msgstr "Een wachtwoord vereisen voor toegang tot de netwerk share."
 
 msgid "ROOT PASSWORD"
 msgstr "ROOT WACHTWOORD"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr "Beveiligingsmaatregelen voor de CPU"
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
+"Het uitschakelen van mitigaties kan op sommige systemen de prestaties "
+"verbeteren, ten koste van een verminderde bescherming tegen bepaalde CPU-"
+"kwetsbaarheden."
 
 msgid "LATENCY REDUCTION"
 msgstr "LATENCY REDUCTIE"
@@ -2497,9 +2697,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "VARIABELE REFRESH RATE (G-SYNC, FREESYNC)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "VARIABELE REFRESH RATE"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2515,13 +2712,10 @@ msgstr "Huidige instelling"
 msgid "BIOS SETTINGS"
 msgstr "INSTELLINGEN BIOS"
 
-msgid "SAVESTATES"
-msgstr "SAVESTATES"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "AUTOMATISCH OPSLAAN/LADEN"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
 "Laad de nieuwste savestate bij het starten van het spel en de savestate bij "
 "het afsluiten van het spel."
@@ -2855,11 +3049,34 @@ msgstr "NAVIGATIEGELUIDEN INSCHAKELEN"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "VIDEO PREVIEW AUDIO INSCHAKELEN"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "WI-FI SSID"
+
+msgid "WI-FI KEY"
+msgstr "WI-FI KEY"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr "VERGEET"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "WEET U ZEKER DAT U '%s' WILT VERGETEN?"
+
 msgid "IP ADDRESS"
 msgstr "IP ADRES"
-
-msgid "CONNECTED"
-msgstr "VERBONDEN"
 
 msgid "INTERNET STATUS"
 msgstr "INTERNET STATUS"
@@ -2867,26 +3084,20 @@ msgstr "INTERNET STATUS"
 msgid "HOSTNAME"
 msgstr "HOSTNAAM"
 
-msgid "ENABLE WIFI"
-msgstr "WIFI INSCHAKELEN"
+msgid "ENABLE WI-FI"
+msgstr "WI-FI INSCHAKELEN"
 
-msgid "WIFI SSID"
-msgstr "WIFI SSID"
-
-msgid "WIFI KEY"
-msgstr "WIFI KEY"
-
-msgid "WIFI COUNTRY"
-msgstr "WIFI LAND"
+msgid "WI-FI COUNTRY"
+msgstr "WI-FI LAND"
 
 msgid "N/A"
 msgstr "N/A"
 
-msgid "WIFI ENABLED"
-msgstr "WIFI IS INGESCHAKELD"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI IS INGESCHAKELD"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "WIFI CONFIGURATIEFOUT"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "WI-FI CONFIGURATIEFOUT"
 
 msgid "QUICK ACCESS"
 msgstr "SNELLE TOEGANG"
@@ -2950,11 +3161,6 @@ msgstr "WILT U ECHT STOPPEN?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "AUTOMATISCH OPSLAAN/LADEN BIJ STARTEN VAN EEN SPEL"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
-"Laad de nieuwste savestate bij het starten van het spel en de savestate bij "
-"het afsluiten van het spel."
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "TOON OVERLAYS CONTROLLER"
@@ -3023,7 +3229,7 @@ msgid "NO DRIVE SELECTED"
 msgstr "GEEN SCHIJF GESELECTEERD"
 
 msgid "Ejecting..."
-msgstr "Uitwerpen..."
+msgstr "Uitwerpen…"
 
 msgid "EDIT METADATA"
 msgstr "BEWERK METADATA"
@@ -3058,13 +3264,6 @@ msgstr "VERBREEK"
 
 msgid "CONNECT"
 msgstr "VERBIND"
-
-msgid "FORGET"
-msgstr "VERGEET"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "WEET U ZEKER DAT U '%s' WILT VERGETEN?"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3420,13 +3619,13 @@ msgid "Screenscraper Game ID"
 msgstr "Screenscraper Spel ID"
 
 msgid "MultiDisk"
-msgstr ""
+msgstr "MultiDisk"
 
 msgid "Loading system config..."
-msgstr "Systeemconfiguratie wordt geladen..."
+msgstr "Systeemconfiguratie wordt geladen…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "METADATA OPSLAAN. EVEN WACHTEN..."
+msgstr "METADATA OPSLAAN. EVEN WACHTEN…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "WILT U VAN SCHERM VERANDEREN?"
@@ -3449,7 +3648,7 @@ msgstr "4 spelers"
 msgid "never played"
 msgstr "nooit gespeeld"
 
-msgid "retroachievements"
+msgid "RetroAchievements"
 msgstr "retroprestaties"
 
 msgid "arcade"
@@ -3494,8 +3693,8 @@ msgstr "Diverse"
 #, c-format
 msgid "This collection contains %i game: %s"
 msgid_plural "This collection contains %i games, including: %s"
-msgstr[0] "Deze collectie heeft %i spel:%s"
-msgstr[1] "Deze collectie heeft %i spellen, inclusief:%s"
+msgstr[0] "Deze collectie heeft %i spel: %s"
+msgstr[1] "Deze collectie heeft %i spellen, inclusief: %s"
 
 msgid "INVALID CONTENT"
 msgstr "ONGELDIGE INHOUD"
@@ -3546,11 +3745,14 @@ msgstr "CORE ONTBREEKT"
 msgid "UKNOWN ERROR"
 msgstr "ONBEKENDE FOUT"
 
+msgid "Checking for latest upgrade script..."
+msgstr "Controleren op het nieuwste upgradescript..."
+
 msgid "Collections"
 msgstr "Collecties"
 
 msgid "Searching for devices..."
-msgstr "Zoeken naar apparaten..."
+msgstr "Zoeken naar apparaten…"
 
 msgid "FORMATTING DEVICE"
 msgstr "APPARAAT FORMATTEREN"
@@ -3636,11 +3838,8 @@ msgstr "SCHERMLEZER UITGESCHAKELD"
 msgid "ENABLED"
 msgstr "INGESCHAKELD"
 
-msgid "up/down"
-msgstr "omhoog/omlaag"
-
 msgid "WORKING..."
-msgstr "BEZIG..."
+msgstr "BEZIG…"
 
 msgid "accept"
 msgstr "accepteer"
@@ -3868,7 +4067,7 @@ msgstr ""
 "Vuur op doelen om te kalibreren"
 
 msgid "Reloaded the games list..."
-msgstr "De spellijst is opnieuw geladen..."
+msgstr "De spellijst is opnieuw geladen…"
 
 msgid "GAME DRIVE DETECTED"
 msgstr "SPEL SCHIJF GEDETECTEERD"
@@ -3892,7 +4091,7 @@ msgid "(This will also apply on future boots)"
 msgstr "(Dit geldt ook voor toekomstige boots)"
 
 msgid "Merge requested... Please wait."
-msgstr "Samenvoeging aangevraagd... Even geduld alstublieft."
+msgstr "Samenvoeging aangevraagd… Even geduld alstublieft."
 
 msgid "MERGE FAILED"
 msgstr "SAMENVOEGING MISLUKT"
@@ -3907,10 +4106,10 @@ msgid "NO, IGNORE FOREVER"
 msgstr "NEE, NEGEER ALTIJD"
 
 msgid "Adding drive to ignore list..."
-msgstr "Schijf toevoegen aan de negeerlijst..."
+msgstr "Schijf toevoegen aan de negeerlijst…"
 
 msgid "YES, MERGE DRIVE"
-msgstr ""
+msgstr "JA, DRIVE SAMENVOEGEN"
 
 msgid "NEW DRIVE DETECTED"
 msgstr "NIEUWE SCHIJF GEDETECTEERD"
@@ -3922,7 +4121,7 @@ msgid "(ALL EXISTING DATA WILL BE ERASED)"
 msgstr "(ALLE BESTAANDE DATA ZAL WORDEN VERWIJDERD)"
 
 msgid "Starting format process..."
-msgstr "Het formatteringsproces wordt gestart..."
+msgstr "Het formatteringsproces wordt gestart…"
 
 msgid "FORMAT FAILED"
 msgstr "FORMATTEREN MISLUKT"
@@ -3979,8 +4178,11 @@ msgid_plural "%d seconds ago"
 msgstr[0] "%d seconden geleden"
 msgstr[1] "%d secondes geleden"
 
-#~ msgid "BUILD IMAGE CACHE"
-#~ msgstr "IMAGE CACHE OPBOUWEN"
+#~ msgid "up/down"
+#~ msgstr "omhoog/omlaag"
 
-#~ msgid "Building image cache"
-#~ msgstr "Image cache aan het opbouwen"
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "Laad de nieuwste savestate bij het starten van het spel en de savestate "
+#~ "bij het afsluiten van het spel."

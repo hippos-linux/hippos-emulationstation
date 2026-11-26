@@ -75,8 +75,8 @@ msgid ""
 "FORMAT.\n"
 "DO YOU WANT TO LAUNCH IT ANYWAY?"
 msgstr ""
-"BUSET: EMULATOR/CORE YANG DIPAKAI TIDAK SUPPORT GAME MU, NIH.\n"
-"TETAP INGIN COBA?"
+"PERINGATAN: EMULATOR/CORE YANG DIPAKAI TIDAK SUPPORT FORMAT FILE GAME INI.\n"
+"APAKAH ANDA INGIN TETAP MENJALANKAN - NYA?"
 
 msgid "YES"
 msgstr "YA"
@@ -89,9 +89,9 @@ msgid ""
 "CORRECTLY.\n"
 "DO YOU WANT TO LAUNCH IT ANYWAY?"
 msgstr ""
-"BUSET: FILE BIOS DI SISTEMNYA HILANG, NIH. KAYAKNYA INI GAME BAKAL JALAN "
-"GABENER.\n"
-"TETAP INGIN COBA?"
+"PERINGATAN: FILE SISTEM MEMILIKI FILE BIOS YANG HILANG, DAN MUNGKIN GAME "
+"TIDAK AKAN BERJALAN GABENER.\n"
+"APAKAH TETAP INGIN COBA JALANKAN?"
 
 msgid "Preloading UI"
 msgstr "Pramuat UI"
@@ -103,7 +103,7 @@ msgid "Loading gamelists"
 msgstr "Memuat listgame"
 
 msgid "Loading..."
-msgstr "Memuat..."
+msgstr "Memuat…"
 
 msgid "MENU"
 msgstr "MENU"
@@ -209,7 +209,7 @@ msgstr "PILIH"
 msgid "BACK"
 msgstr "KEMBALI"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "SIMPAN STATUS (HOLD)"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -224,7 +224,7 @@ msgstr "PILIHAN GAME"
 msgid "FAVORITE"
 msgstr "FAVORIT"
 
-msgid "SAVE STATES"
+msgid "SAVESTATES"
 msgstr "SIMPAN STATUS"
 
 #, c-format
@@ -291,7 +291,7 @@ msgstr "SIMPAN PERUBAHAN?"
 msgid "ARE YOU SURE?"
 msgstr "YAKIN?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
+msgid "RETROACHIEVEMENTS SETTINGS"
 msgstr "PENGATURAN RETROACHIEVEMENTS"
 
 msgid "SETTINGS"
@@ -311,7 +311,8 @@ msgstr "MODE HARDCORE"
 
 msgid "Disable loading states, rewind and cheats for more points."
 msgstr ""
-"Matikan status pemuatan, mundur, dan curang untuk mendapatkan poin lebih."
+"Matikan status pemuatan, mundur, dan curang /cheat untuk mendapatkan poin "
+"lebih."
 
 msgid "LEADERBOARDS"
 msgstr "PAPAN PERINGKAT"
@@ -355,7 +356,7 @@ msgstr "PENCAPAIAN TIDAK RESMI"
 msgid "Enable unlocking of unofficial achievements."
 msgstr "Aktifkan pembukaan pencapaian tidak resmi."
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
 msgstr "MEMBUKA PERINGKAT SUARA RETRO"
 
 msgid "none"
@@ -367,8 +368,8 @@ msgstr "MEMBUKA SUARA"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "TAMPILKAN PENCAPAIAN RETRO DI MENU UTAMA"
 
-msgid "View your RetroAchievement stats right from the main menu!"
-msgstr "Lihat statistik RetroAchievement Anda langsung dari menu utama!"
+msgid "View your RetroAchievements stats right from the main menu!"
+msgstr "Lihat statistik RetroAchievements Anda langsung dari menu utama!"
 
 msgid "GAME INDEXES"
 msgstr "INDEKS GAME"
@@ -440,7 +441,7 @@ msgid "RESET"
 msgstr "MENGATUR ULANG"
 
 msgid "SAVE STATE"
-msgstr ""
+msgstr "SIMPAN PROGRES / SIMPAN DATA GAME"
 
 msgid "RESTORE STATE"
 msgstr "MUAT STATE (RESTORE)"
@@ -470,13 +471,13 @@ msgid "VOLUME MUTE"
 msgstr "BISUKAN VOLUME"
 
 msgid "START RECORDING"
-msgstr ""
+msgstr "MULAI REKAM"
 
 msgid "STOP RECORDING"
-msgstr ""
+msgstr "HENTIKAN REKAMAN"
 
 msgid "KEYBOARD TOGGLE"
-msgstr ""
+msgstr "TOMBOL KEYBOARD / AKTIFKAN KEYBOARD"
 
 msgid "KEY ASSIGNED TWICE"
 msgstr "TOMBOL DITETAPKAN DUA KALI"
@@ -581,16 +582,6 @@ msgstr "SISTEM TERMASUK"
 msgid "START"
 msgstr "MULAI"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "MEMPERBARUI %s"
-
-msgid "UPDATE IS READY"
-msgstr "PEMBARUAN SUDAH SIAP"
-
-msgid "REBOOT TO APPLY"
-msgstr "MULAI ULANG UNTUK MENERAPKAN"
-
 msgid "REALLY UPDATE?"
 msgstr "YAKIN MEMPERBARUI?"
 
@@ -617,6 +608,16 @@ msgstr "KONEKSI JARINGAN DIPERLUKAN"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "TIDAK ADA PEMBARUAN YANG TERSEDIA"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "MEMPERBARUI %s"
+
+msgid "UPDATE IS READY"
+msgstr "PEMBARUAN SUDAH SIAP"
+
+msgid "REBOOT TO APPLY"
+msgstr "MULAI ULANG UNTUK MENERAPKAN"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "HUBUNGKAN KE NETPLAY"
@@ -880,7 +881,7 @@ msgid "VIEWER PASSWORD"
 msgstr "PASSWOR PENONTON"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "TEMUKAN GAME SERUPA..."
+msgstr "TEMUKAN GAME SERUPA…"
 
 msgid "DELETE ITEM"
 msgstr "HAPUS ITEM"
@@ -915,7 +916,7 @@ msgid "WRITE"
 msgstr "TULIS"
 
 msgid "PLACE A TAG ON THE WRITER..."
-msgstr "TEMPATKAN LABEL PADA ALAT PENULIS..."
+msgstr "TEMPATKAN LABEL PADA ALAT PENULIS…"
 
 msgid "THE TAG WAS WRITTEN SUCCESSFULLY"
 msgstr "LABEL BERHASIL DITULIS"
@@ -932,7 +933,7 @@ msgid "FAVORITES"
 msgstr "FAVORIT"
 
 msgid "ADD TO CUSTOM COLLECTION..."
-msgstr "TAMBAHKAN KE KOLEKSI KUSTOM..."
+msgstr "TAMBAHKAN KE KOLEKSI KUSTOM…"
 
 msgid "SCRAPE"
 msgstr "SCRAPE"
@@ -1086,6 +1087,33 @@ msgstr "KONTROLER #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "KONTROLER P%i"
 
+msgid "RED"
+msgstr "MERAH"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "HIJAU"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "BIRU"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "PUTIH"
+
 msgid "CONTROLLER MAPPING"
 msgstr "PEMETAAN KONTROLER"
 
@@ -1137,7 +1165,7 @@ msgid "SHOW CONTROLLER BATTERY LEVEL"
 msgstr "TAMPILKAN TINGKAT BATERAI KONTROLER"
 
 msgid "SHOW GUN NOTIFICATIONS"
-msgstr ""
+msgstr "TAMPILKAN NOTIFIKASI SENJATA"
 
 msgid "DRAW GUN CROSSHAIR"
 msgstr "GAMBARKAN CROSHAIR GUN"
@@ -1154,11 +1182,99 @@ msgstr "BATASI TOMBOL PINTAS JOYSTICK HANYA UNTUK KELUAR"
 msgid "GLOBAL HOTKEYS"
 msgstr "TOMBOL PINTAS GLOBAL"
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "PERANGKAT LED"
+
+msgid "ENABLE LED"
+msgstr "AKTIFKAN LED"
+
+msgid "LED MODE"
+msgstr "MODE LED"
+
+msgid "STATIC"
+msgstr "STATIS"
+
+msgid "RAINBOW"
+msgstr "PELANGI"
+
+msgid "CHROMA"
+msgstr "CHROMA"
+
+msgid "PULSE"
+msgstr "DENYUT (PULSE)"
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "KUSTOM"
+
+msgid "LED BRIGHTNESS"
+msgstr "KECERAHAN LED"
+
 msgid "default"
 msgstr "standar"
 
 msgid "NOT CONNECTED"
 msgstr "TIDAK TERHUBUNG"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr "SELATAN (BAWAH)"
@@ -1208,8 +1324,8 @@ msgstr "TOMBOL PINTAS"
 msgid "DEFAULT"
 msgstr "BAWAAN"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
-msgstr "PERANGKAT TIDAK DITEMUKAN (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
+msgstr "PERANGKAT TIDAK DITEMUKAN (JAMMASD, IPAC…)"
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
 msgstr "TETAPKAN TOMBOL PINTAS GLOBAL BARU"
@@ -1222,6 +1338,30 @@ msgstr "TIDAK ADA TOMBOL PINTAS GLOBAL TERDETEKSI"
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
 msgstr "LEBIH DARI SATU TOMBOL PINTAS GLOBAL TERDETEKSI"
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
+msgstr ""
 
 msgid "BORDER SIZE"
 msgstr "UKURAN"
@@ -1252,18 +1392,6 @@ msgstr "TERSEMBUNYI"
 
 msgid "BORDER COLOR"
 msgstr "WARNA BORDER"
-
-msgid "WHITE"
-msgstr "PUTIH"
-
-msgid "RED"
-msgstr "MERAH"
-
-msgid "GREEN"
-msgstr "HIJAU"
-
-msgid "BLUE"
-msgstr "BIRU"
 
 msgid "BORDER RATIO"
 msgstr "RASIO TEPI"
@@ -1376,6 +1504,12 @@ msgstr "INPUT MANUAL"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "TIDAK DITEMUKAN JARINGAN WI-FI"
 
+msgid "CONNECTED"
+msgstr "TERHUBUNG"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "MENCARI JARINGAN WI-FI"
 
@@ -1401,7 +1535,7 @@ msgid "PORT"
 msgstr "PORT"
 
 msgid "AUTOMATICALLY CREATE LOBBY"
-msgstr ""
+msgstr "BUAT LOBBY OTOMATIS"
 
 msgid "Automatically creates a Netplay lobby when starting a game."
 msgstr "Otomatis membuat lobby Netplay saat memulai permainan."
@@ -1433,9 +1567,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAO PAULO"
-
-msgid "CUSTOM"
-msgstr "KUSTOM"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "KUSTOM SERVER RELAY"
@@ -2009,6 +2140,12 @@ msgstr "Aktifkan juga penghitung FPS asli emulator, jika tersedia."
 msgid "VSYNC"
 msgstr "VSYNC"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr "ANTI-ALIASING (MSAA)"
+
+msgid "FPS LIMIT"
+msgstr "BATAS FPS"
+
 msgid "OVERSCAN"
 msgstr "OVERSCAN"
 
@@ -2168,11 +2305,19 @@ msgid ""
 "Switches to short-press North for Savestates & long-press South button for "
 "Game Options"
 msgstr ""
-"Tekan Sebentar â–³ ( Segitiga ) untuk Penyimpanandan tekan lama Ã— untuk "
-"pengaturan game"
+"Tekan Sebentar Ã¢â€“Â³ ( Segitiga ) untuk Penyimpanandan tekan lama Ãƒâ€” "
+"untuk pengaturan game"
 
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "KONTROL EMULATIONSTATION DENGAN JOYSTICK PERTAMA"
+
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr "STIK ANALOG KANAN UNTUK MENGUBAH VOLUME"
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+"Gerakkan stik kanan ke atas/bawah untuk menaikkan atau menurunkan volume "
+"audio."
 
 msgid "GUN MOVE TOLERENCE"
 msgstr "TOLERANSI GUN MOVE"
@@ -2211,6 +2356,17 @@ msgstr ""
 "Mengurangi lag saat menggulir sepenuhnya daftar game yang yang terhimpu "
 "meningkatkan waktu boot"
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+
 msgid "THREADED LOADING"
 msgstr "MEMUAT THREAD"
 
@@ -2224,7 +2380,7 @@ msgid "OPTIMIZE VIDEO VRAM USAGE"
 msgstr "OPTIMALKAN VIDEO UNTUK VRAM"
 
 msgid "USE FILESYSTEM CACHE"
-msgstr ""
+msgstr "USE FILESYSTEM CACHE"
 
 msgid "REBOOT REQUIRED TO APPLY THE NEW CONFIGURATION"
 msgstr "REBOOT DIPERLUKAN UNTUK MENERAPKAN KONFIGURASI BARU"
@@ -2244,6 +2400,9 @@ msgstr "PERIKSA PEMBARUAN"
 msgid "UPDATE TYPE"
 msgstr "TIPE PEMBARUAN"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr "UPDATE ARSITEKTUR ( ARCHITECTURE )"
+
 msgid "APPLY UPDATE"
 msgstr "TERAPKAN PEMBARUAN"
 
@@ -2252,6 +2411,33 @@ msgstr "MULAI PEMBARUAN"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "PEMBARUAN SEDANG BERLANGSUNG"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr "MULAI PEMBAHARUAN LOCAL MEDIA"
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr "SUNGGUH INGIN PEMBAHARUAN LOCAL MEDIA"
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr "PEMBARUAN PERANGKAT LUNAK VIA TORRENT"
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr "BAGIKAN PEMBARUAN VIA TORRENT"
+
+msgid "Torrent update service started"
+msgstr "Layanan pembaruan Torrent telah dimulai"
+
+msgid "Torrent update service stopped"
+msgstr "Layanan pembaruan Torrent telah dihentikan"
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr "MULAI PEMBARUAN DARI FILE TORRENT"
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr "YAKIN INGIN MEMPERBARUI DARI FILE TORRENT?"
+
+msgid "DOWNLOAD STATUS"
+msgstr "STATUS PENGUNDUHAN"
 
 msgid "LANGUAGE"
 msgstr "BAHASA"
@@ -2340,6 +2526,19 @@ msgid "Available options can change depending on current audio output."
 msgstr ""
 "Pilihan yang tersedia dapat berubah tergantung pada output audio saat ini."
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "TINGKAT VARIABEL REFRESH"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "SPLASH BOOT"
 
@@ -2406,15 +2605,6 @@ msgstr "on"
 msgid "OVERCLOCK"
 msgstr "OVERCLOCK"
 
-msgid "LED HARDWARE"
-msgstr "PERANGKAT LED"
-
-msgid "ENABLE LED"
-msgstr "AKTIFKAN LED"
-
-msgid "LED BRIGHTNESS"
-msgstr "KECERAHAN LED"
-
 msgid "STORAGE"
 msgstr "PENYIMPANAN"
 
@@ -2441,6 +2631,16 @@ msgstr "Memerlukan sandi untuk mengakses jaringan share."
 
 msgid "ROOT PASSWORD"
 msgstr "SANDI ROOT"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr "MITIGASI KEAMANAN CPU"
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
+"Mematikan mitigasi dapat meningkatkan kinerja pada beberapa sistem,namun "
+"mengurangi perlindungan terhadap kerentanan CPU tertentu."
 
 msgid "LATENCY REDUCTION"
 msgstr "KURANGI LATENSI"
@@ -2473,9 +2673,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "TINGKAT VARIABEL REFRESH (G-SYNC, FREESYNC)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "TINGKAT VARIABEL REFRESH"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2491,14 +2688,11 @@ msgstr "Pengaturan saat ini"
 msgid "BIOS SETTINGS"
 msgstr "PENGATURAN BIOS"
 
-msgid "SAVESTATES"
-msgstr "SIMPAN STATUS"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "SAVE/LOAD OTOMATIS"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
-msgstr "Muat kondisi terbaru ketika mulai dan simpan status ketika keluar."
+msgid "Load latest savestate on game launch and save state when exiting game."
+msgstr "Muat status terbaru di awal game dan simpan status di akhir game."
 
 msgid "INCREMENTAL SAVESTATES"
 msgstr "SIMPAN STATUS SECARA BERTAHAP"
@@ -2826,11 +3020,34 @@ msgstr "AKTIFKAN SUARA NAVIGASI"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "AKTIFKAN AUDIO PREVIEW VIDEO"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "NAMA WI-FI"
+
+msgid "WI-FI KEY"
+msgstr "PASSWORD WI-FI"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr "LUPAKAN"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "ANDA YAKIN INGIN MELUPAKAN '%s' ?"
+
 msgid "IP ADDRESS"
 msgstr "ALAMAT IP"
-
-msgid "CONNECTED"
-msgstr "TERHUBUNG"
 
 msgid "INTERNET STATUS"
 msgstr "STATUS INTERNET"
@@ -2838,26 +3055,20 @@ msgstr "STATUS INTERNET"
 msgid "HOSTNAME"
 msgstr "NAMA HOST"
 
-msgid "ENABLE WIFI"
-msgstr "AKTIFKAN WIFI"
+msgid "ENABLE WI-FI"
+msgstr "AKTIFKAN WI-FI"
 
-msgid "WIFI SSID"
-msgstr "NAMA WIFI"
-
-msgid "WIFI KEY"
-msgstr "PASSWORD WIFI"
-
-msgid "WIFI COUNTRY"
-msgstr "NEGARA WIFI"
+msgid "WI-FI COUNTRY"
+msgstr "NEGARA WI-FI"
 
 msgid "N/A"
 msgstr "N/A"
 
-msgid "WIFI ENABLED"
-msgstr "WIFI AKTIF"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI AKTIF"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "KESALAHAN KONFIGURASI WIFI"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "KESALAHAN KONFIGURASI WI-FI"
 
 msgid "QUICK ACCESS"
 msgstr "AKSES CEPAT"
@@ -2921,9 +3132,6 @@ msgstr "YAKIN KELUAR?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "SAVE/LOAD OTOMATIS SAAT PELUNCURAN GAME"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr "Muat status terbaru di awal game dan simpan status di akhir game."
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "TAMPILKAN KONTROLER MENYELURUH"
@@ -2992,7 +3200,7 @@ msgid "NO DRIVE SELECTED"
 msgstr "TIDAK ADA DRIVE YANG DIPILIH"
 
 msgid "Ejecting..."
-msgstr "Mengeluarkan..."
+msgstr "Mengeluarkan…"
 
 msgid "EDIT METADATA"
 msgstr "UBAH METADATA"
@@ -3027,13 +3235,6 @@ msgstr "PUTUSKAN"
 
 msgid "CONNECT"
 msgstr "SAMBUNGKAN"
-
-msgid "FORGET"
-msgstr "LUPAKAN"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "ANDA YAKIN INGIN MELUPAKAN '%s' ?"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3389,13 +3590,13 @@ msgid "Screenscraper Game ID"
 msgstr "ID Game Screenscraper"
 
 msgid "MultiDisk"
-msgstr ""
+msgstr "BANYAK KASET / MULTI DISK"
 
 msgid "Loading system config..."
-msgstr "Memuat konfigurasi sistem..."
+msgstr "Memuat konfigurasi sistem…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "MENYIMPAN METADATA, TUNGGU..."
+msgstr "MENYIMPAN METADATA, TUNGGU…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "APAKAH INGIN BERALIH LAYAR?"
@@ -3418,8 +3619,8 @@ msgstr "4 pemain"
 msgid "never played"
 msgstr "tidak pernah dimainkan"
 
-msgid "retroachievements"
-msgstr "retroachievements"
+msgid "RetroAchievements"
+msgstr "RetroAchievements"
 
 msgid "arcade"
 msgstr "arkade"
@@ -3516,11 +3717,14 @@ msgstr "CORE HILANG"
 msgid "UKNOWN ERROR"
 msgstr "ERROR TAK DIKETAHUI"
 
+msgid "Checking for latest upgrade script..."
+msgstr "Memeriksa skrip peningkatan terbaru…"
+
 msgid "Collections"
 msgstr "Koleksi"
 
 msgid "Searching for devices..."
-msgstr "Mencari perangkat..."
+msgstr "Mencari perangkat…"
 
 msgid "FORMATTING DEVICE"
 msgstr "FORMAT PERANGKAT"
@@ -3606,11 +3810,8 @@ msgstr "PEMBACA LAYAR DIMATIKAN"
 msgid "ENABLED"
 msgstr "AKTIFKAN"
 
-msgid "up/down"
-msgstr "atas/bawah"
-
 msgid "WORKING..."
-msgstr "MEMPROSES..."
+msgstr "MEMPROSES…"
 
 msgid "accept"
 msgstr "terima"
@@ -3835,7 +4036,7 @@ msgstr ""
 "Sesuaikan Target untuk Melakukan Kalibrasi"
 
 msgid "Reloaded the games list..."
-msgstr "Memuat ulang daftar game..."
+msgstr "Memuat ulang daftar game…"
 
 msgid "GAME DRIVE DETECTED"
 msgstr "DRIVE GAME TERDETEKSI"
@@ -3859,7 +4060,7 @@ msgid "(This will also apply on future boots)"
 msgstr "(Ini juga akan diterapkan pada proses booting mendatang)"
 
 msgid "Merge requested... Please wait."
-msgstr "Penggabungan diminta... Mohon tunggu."
+msgstr "Penggabungan diminta… Mohon tunggu."
 
 msgid "MERGE FAILED"
 msgstr "PENGGABUNGAN GAGAL"
@@ -3874,10 +4075,10 @@ msgid "NO, IGNORE FOREVER"
 msgstr "TIDAK, ABAIKAN SELAMANYA"
 
 msgid "Adding drive to ignore list..."
-msgstr "Menambahkan drive ke daftar abaikan..."
+msgstr "Menambahkan drive ke daftar abaikan…"
 
 msgid "YES, MERGE DRIVE"
-msgstr ""
+msgstr "YA, GABUNGKAN PENYIMPANAN (DRIVE)"
 
 msgid "NEW DRIVE DETECTED"
 msgstr "DRIVE BARU TERDETEKSI"
@@ -3889,7 +4090,7 @@ msgid "(ALL EXISTING DATA WILL BE ERASED)"
 msgstr "(SEMUA DATA YANG ADA AKAN DIHAPUS)"
 
 msgid "Starting format process..."
-msgstr "Memulai proses format..."
+msgstr "Memulai proses format…"
 
 msgid "FORMAT FAILED"
 msgstr "FORMAT GAGAL"
@@ -3941,6 +4142,16 @@ msgid "%d second ago"
 msgid_plural "%d seconds ago"
 msgstr[0] "%d detik lalu"
 
+#~ msgid "up/down"
+#~ msgstr "atas/bawah"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr "Muat kondisi terbaru ketika mulai dan simpan status ketika keluar."
+
+#~ msgid "FANART"
+#~ msgstr "SENI"
+
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "BUAT CACHE IMAGE"
 
@@ -3987,7 +4198,7 @@ msgstr[0] "%d detik lalu"
 #~ msgstr "urutan rgb dmd"
 
 #~ msgid "SAVING METADATAS. PLEASE WAIT..."
-#~ msgstr "MENYIMPAN METADATA. HARAP TUNGGU..."
+#~ msgstr "MENYIMPAN METADATA. HARAP TUNGGU…"
 
 #~ msgid "FORGET A BLUETOOTH DEVICE"
 #~ msgstr "LUPAKAN PERANGKAT BLUETOOTH"

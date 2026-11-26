@@ -25,6 +25,7 @@
 #define SPINNER 		_U("\uF10C")
 
 #define RATINGSTAR _U("\uF005")
+#define REMOTEICON _U("\uF0C2") // cloud : RomM game not downloaded yet
 #define SEPARATOR_BEFORE "["
 #define SEPARATOR_AFTER "] "
 
@@ -239,6 +240,8 @@ std::string GameNameFormatter::getDisplayName(FileData* fd, bool showFolderIcon,
 
 	if (mShowMergedDriveIcon && fd->getType() == GAME && fd->getSourceFileData()->isOnMergedDrive())
 		after.push_back(MERGEDDRIVE);
+	if (fd->getType() == GAME && fd->isRemote())
+		after.push_back(REMOTEICON);
 
 	if (mShowFlags == 2)
 		after.push_back(getLangFlag(LangInfo::getFlag(fd->getMetadata(MetaDataId::Language), fd->getMetadata(MetaDataId::Region))));

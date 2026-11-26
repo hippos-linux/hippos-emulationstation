@@ -106,7 +106,7 @@ msgid "Loading gamelists"
 msgstr "Oppdaterer spillliste"
 
 msgid "Loading..."
-msgstr "Laster..."
+msgstr "Laster…"
 
 msgid "MENU"
 msgstr "MENY"
@@ -216,7 +216,7 @@ msgstr "VELG"
 msgid "BACK"
 msgstr "TILBAKE"
 
-msgid "SAVE STATES (HOLD)"
+msgid "SAVESTATES (HOLD)"
 msgstr "LAGRINGSTILSTAND (HOLD)"
 
 msgid "GAME OPTIONS (HOLD)"
@@ -231,8 +231,8 @@ msgstr "SPILLVALG"
 msgid "FAVORITE"
 msgstr "FAVORITT"
 
-msgid "SAVE STATES"
-msgstr "LAGRE TILSTAND"
+msgid "SAVESTATES"
+msgstr "LAGRINGSTILSTAND"
 
 #, c-format
 msgid "Back to %s"
@@ -298,8 +298,8 @@ msgstr "LAGRE ENDRINGER?"
 msgid "ARE YOU SURE?"
 msgstr "ER DU SIKKER?"
 
-msgid "RETROACHIEVEMENT SETTINGS"
-msgstr "RETROACHIEVEMENT INNSTILLINGER"
+msgid "RETROACHIEVEMENTS SETTINGS"
+msgstr "RETROACHIEVEMENTS INNSTILLINGER"
 
 msgid "SETTINGS"
 msgstr "INNSTILLINGER"
@@ -361,8 +361,8 @@ msgstr ""
 msgid "Enable unlocking of unofficial achievements."
 msgstr ""
 
-msgid "RETROACHIEVEMENT UNLOCK SOUND"
-msgstr "RETROACHIEVEMENT LÅS-OPP-LYD"
+msgid "RETROACHIEVEMENTS UNLOCK SOUND"
+msgstr "RETROACHIEVEMENTS LÅS-OPP-LYD"
 
 msgid "none"
 msgstr "ingen"
@@ -373,8 +373,8 @@ msgstr "LÅS OPP LYD"
 msgid "SHOW RETROACHIEVEMENTS ENTRY IN MAIN MENU"
 msgstr "VIS RETROACHIEVEMENTS INNLEGG I HOVEDMENY"
 
-msgid "View your RetroAchievement stats right from the main menu!"
-msgstr "Se RetroAchievement-statistikken din rett fra hovedmenyen!"
+msgid "View your RetroAchievements stats right from the main menu!"
+msgstr "Se RetroAchievements-statistikken din rett fra hovedmenyen!"
 
 msgid "GAME INDEXES"
 msgstr "SPILL INDEKSER"
@@ -587,16 +587,6 @@ msgstr "SYSTEMER INKLUDERT"
 msgid "START"
 msgstr "START"
 
-#, c-format
-msgid "UPDATING %s"
-msgstr "OPPDATERER %s"
-
-msgid "UPDATE IS READY"
-msgstr "OPPDATERING ER KLAR"
-
-msgid "REBOOT TO APPLY"
-msgstr "OMSTART FOR Å BRUKE"
-
 msgid "REALLY UPDATE?"
 msgstr "VIL DU VIRKELIG OPPDATERE?"
 
@@ -623,6 +613,16 @@ msgstr "NETTVERKSTILKOBLING PÅKREVET"
 
 msgid "NO UPDATE AVAILABLE"
 msgstr "SYSTEMET ER OPPDATERT"
+
+#, c-format
+msgid "UPDATING %s"
+msgstr "OPPDATERER %s"
+
+msgid "UPDATE IS READY"
+msgstr "OPPDATERING ER KLAR"
+
+msgid "REBOOT TO APPLY"
+msgstr "OMSTART FOR Å BRUKE"
 
 msgid "CONNECT TO NETPLAY"
 msgstr "KOBLE TIL NETPLAY"
@@ -886,7 +886,7 @@ msgid "VIEWER PASSWORD"
 msgstr "SEERPASSORD"
 
 msgid "FIND SIMILAR GAMES..."
-msgstr "FINN LIGNENDE SPILL..."
+msgstr "FINN LIGNENDE SPILL…"
 
 msgid "DELETE ITEM"
 msgstr "SLETT ELEMENT"
@@ -1089,6 +1089,33 @@ msgstr "KONTROLLER #%i"
 msgid "P%i'S CONTROLLER"
 msgstr "P%i'S KONTROLLER"
 
+msgid "RED"
+msgstr "RØD"
+
+msgid "ORANGE"
+msgstr ""
+
+msgid "YELLOW"
+msgstr ""
+
+msgid "GREEN"
+msgstr "GRØNN"
+
+msgid "CYAN"
+msgstr ""
+
+msgid "BLUE"
+msgstr "BLÅ"
+
+msgid "PURPLE"
+msgstr ""
+
+msgid "PINK"
+msgstr ""
+
+msgid "WHITE"
+msgstr "HVIT"
+
 msgid "CONTROLLER MAPPING"
 msgstr "KONTROLLKARTLEGGING"
 
@@ -1157,11 +1184,99 @@ msgstr ""
 msgid "GLOBAL HOTKEYS"
 msgstr ""
 
+msgid "TRACKBALLS AND SPINNERS"
+msgstr ""
+
+msgid "LED HARDWARE"
+msgstr "LED MASKINVARE"
+
+msgid "ENABLE LED"
+msgstr ""
+
+msgid "LED MODE"
+msgstr ""
+
+msgid "STATIC"
+msgstr ""
+
+msgid "RAINBOW"
+msgstr ""
+
+msgid "CHROMA"
+msgstr ""
+
+msgid "PULSE"
+msgstr ""
+
+msgid "BATTERY"
+msgstr ""
+
+msgid "BATTERY LEVELS"
+msgstr ""
+
+msgid "EDIT BATTERY LEVELS"
+msgstr ""
+
+msgid "COLOR PRESET"
+msgstr ""
+
+msgid "CUSTOM"
+msgstr "EGENDEFINERT"
+
+msgid "LED BRIGHTNESS"
+msgstr "LED LYSSTYRKE"
+
 msgid "default"
 msgstr "standard"
 
 msgid "NOT CONNECTED"
 msgstr "FRAKOBLET"
+
+msgid "NUMBER OF LEVELS"
+msgstr ""
+
+#, c-format
+msgid "LEVEL %i"
+msgstr ""
+
+msgid "FROM BATTERY LEVEL"
+msgstr ""
+
+msgid "COLOR"
+msgstr ""
+
+msgid "EFFECT"
+msgstr ""
+
+msgid "FIXED"
+msgstr ""
+
+msgid "BLINK"
+msgstr ""
+
+msgid "CHARGER PLUGGED IN"
+msgstr ""
+
+msgid "PULSE LEVEL COLOR"
+msgstr ""
+
+msgid "LEVEL COLOR"
+msgstr ""
+
+msgid "BLINKING GREEN"
+msgstr ""
+
+msgid "PULSING GREEN"
+msgstr ""
+
+msgid "WHILE CHARGING"
+msgstr ""
+
+msgid "WHEN FULL"
+msgstr ""
+
+msgid "RESET TO DEFAULT"
+msgstr ""
 
 msgid "SOUTH"
 msgstr ""
@@ -1211,7 +1326,7 @@ msgstr ""
 msgid "DEFAULT"
 msgstr "STANDARD"
 
-msgid "NO DEVICE FOUND (JAMMASD, IPAC, ...)"
+msgid "NO DEVICE FOUND (JAMMASD, IPAC...)"
 msgstr ""
 
 msgid "DECLARE A NEW GLOBAL HOTKEY"
@@ -1224,6 +1339,30 @@ msgid "NO GLOBAL HOTKEY DETECTED"
 msgstr ""
 
 msgid "MORE THAN ONE GLOBAL HOTKEY DETECTED"
+msgstr ""
+
+msgid "DECLARE A NEW TRACKBALL"
+msgstr ""
+
+msgid "DECLARE A NEW SPINNER"
+msgstr ""
+
+msgid "TRACKBALLS"
+msgstr ""
+
+msgid "USER DEFINED"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS TRACKBALL"
+msgstr ""
+
+msgid "SPINNERS"
+msgstr ""
+
+msgid "DO YOU WANT TO REMOVE THIS SPINNER"
+msgstr ""
+
+msgid "YOU'VE 8 SECONDS TO MOVE THE DEVICE AS MUCH AS POSSIBLE"
 msgstr ""
 
 msgid "BORDER SIZE"
@@ -1255,18 +1394,6 @@ msgstr "SKJULT"
 
 msgid "BORDER COLOR"
 msgstr "RAMME FARGE"
-
-msgid "WHITE"
-msgstr "HVIT"
-
-msgid "RED"
-msgstr "RØD"
-
-msgid "GREEN"
-msgstr "GRØNN"
-
-msgid "BLUE"
-msgstr "BLÅ"
 
 msgid "BORDER RATIO"
 msgstr "KANTFORHOLD"
@@ -1379,6 +1506,12 @@ msgstr "MANUELL INNTASTING"
 msgid "NO WI-FI NETWORKS FOUND"
 msgstr "INGEN WI-FI-NETTVERK FUNNET"
 
+msgid "CONNECTED"
+msgstr "TILKOBLET"
+
+msgid "ALREADY CONNECTED"
+msgstr ""
+
 msgid "SEARCHING WI-FI NETWORKS"
 msgstr "SØKER WI-FI-NETTVERK"
 
@@ -1435,9 +1568,6 @@ msgstr "MONTREAL"
 
 msgid "SAO PAULO"
 msgstr "SAO PAULO"
-
-msgid "CUSTOM"
-msgstr "EGENDEFINERT"
 
 msgid "CUSTOM RELAY SERVER"
 msgstr "EGENDEFINERT RELAY SERVER"
@@ -2011,6 +2141,12 @@ msgstr "Slår også på emulatorens innebygde FPS-teller, hvis tilgjengelig."
 msgid "VSYNC"
 msgstr "VSYNC"
 
+msgid "ANTI-ALIASING (MSAA)"
+msgstr ""
+
+msgid "FPS LIMIT"
+msgstr ""
+
 msgid "OVERSCAN"
 msgstr "OVERSKANN"
 
@@ -2172,6 +2308,12 @@ msgstr ""
 msgid "CONTROL EMULATIONSTATION WITH FIRST JOYSTICK ONLY"
 msgstr "KONTROLLER EMULATIONSTATION KUN MED FØRSTE JOYSTICK"
 
+msgid "RIGHT ANALOG STICK CHANGES VOLUME"
+msgstr ""
+
+msgid "Move the right stick up/down to raise or lower the audio volume."
+msgstr ""
+
 msgid "GUN MOVE TOLERENCE"
 msgstr "VÅPEN BEVEGELSE TOLERANSE"
 
@@ -2209,6 +2351,17 @@ msgstr ""
 "Reduserer etterslep når du blar gjennom en fullstendig skrapet spillliste, "
 "øker oppstartstiden"
 
+msgid "DIRECTORY DEPTH TO INDEX"
+msgstr ""
+
+msgid "UNLIMITED"
+msgstr ""
+
+msgid ""
+"Maximum depth scanned inside each ROM folder, to ignore subfolders with many "
+"files."
+msgstr ""
+
 msgid "THREADED LOADING"
 msgstr "TRÅD LASTER"
 
@@ -2242,6 +2395,9 @@ msgstr "SE ETTER OPPDATERINGER"
 msgid "UPDATE TYPE"
 msgstr "OPPDATERINGSTYPE"
 
+msgid "ARCHITECTURE UPDATE"
+msgstr ""
+
 msgid "APPLY UPDATE"
 msgstr "BRUK OPPDATERING"
 
@@ -2250,6 +2406,33 @@ msgstr "START OPPDATERING"
 
 msgid "UPDATER IS ALREADY RUNNING"
 msgstr "OPPDATERER KJØRER ALLEREDE"
+
+msgid "START LOCAL MEDIA UPDATE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM LOCAL MEDIA?"
+msgstr ""
+
+msgid "SOFTWARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "SHARE UPDATES VIA TORRENT"
+msgstr ""
+
+msgid "Torrent update service started"
+msgstr ""
+
+msgid "Torrent update service stopped"
+msgstr ""
+
+msgid "START UPDATE FROM TORRENT FILE"
+msgstr ""
+
+msgid "REALLY UPDATE FROM TORRENT FILE ?"
+msgstr ""
+
+msgid "DOWNLOAD STATUS"
+msgstr ""
 
 msgid "LANGUAGE"
 msgstr "SPRÅK"
@@ -2336,6 +2519,19 @@ msgstr "LYDPROFIL"
 msgid "Available options can change depending on current audio output."
 msgstr "Tilgjengelige valg kan endres avhengig av gjeldende lydutgang."
 
+msgid "HDR"
+msgstr ""
+
+msgid "Allows HDR content such as Moonlight HDR streams to the display."
+msgstr ""
+
+msgid "VARIABLE REFRESH RATE"
+msgstr "VARIABEL OPPDATERINGSFREKVENS"
+
+msgid ""
+"Lets the display follow the frame rate. Turn off if the screen flickers."
+msgstr ""
+
 msgid "BOOT SPLASH"
 msgstr "OPPSTART SPLASH"
 
@@ -2402,15 +2598,6 @@ msgstr "på"
 msgid "OVERCLOCK"
 msgstr "OVERKLOKKING"
 
-msgid "LED HARDWARE"
-msgstr "LED MASKINVARE"
-
-msgid "ENABLE LED"
-msgstr ""
-
-msgid "LED BRIGHTNESS"
-msgstr "LED LYSSTYRKE"
-
 msgid "STORAGE"
 msgstr "LAGRING"
 
@@ -2437,6 +2624,14 @@ msgstr "Krev et passord for å få tilgang til nettverksdelingen."
 
 msgid "ROOT PASSWORD"
 msgstr "ROOT PASSORD"
+
+msgid "CPU SECURITY MITIGATIONS"
+msgstr ""
+
+msgid ""
+"Disabling mitigations may improve performance on some systems at the cost of "
+"reduced protection against certain CPU vulnerabilities."
+msgstr ""
 
 msgid "LATENCY REDUCTION"
 msgstr "LATENCY REDUKSJON"
@@ -2469,9 +2664,6 @@ msgstr ""
 msgid "VARIABLE REFRESH RATE (G-SYNC, FREESYNC)"
 msgstr "VARIABEL OPPDATERINGSFREKVENS (G-SYNC, FREESYNC)"
 
-msgid "VARIABLE REFRESH RATE"
-msgstr "VARIABEL OPPDATERINGSFREKVENS"
-
 msgid ""
 "Don't deviate from core requested timing. G-Sync, FreeSync, HDMI 2.1 VRR."
 msgstr ""
@@ -2486,13 +2678,10 @@ msgstr "Nåværende innstilling"
 msgid "BIOS SETTINGS"
 msgstr "BIOS INNSTILLINGER"
 
-msgid "SAVESTATES"
-msgstr "LAGRINGSTILSTAND"
-
 msgid "AUTO SAVE/LOAD"
 msgstr "AUTO LAGRE/LAST"
 
-msgid "Load latest savestate on game launch and savestate when exiting game."
+msgid "Load latest savestate on game launch and save state when exiting game."
 msgstr ""
 "Last inn siste lagringstilstand ved spillstart og lagringstilstand når du "
 "avslutter spillet."
@@ -2825,11 +3014,34 @@ msgstr "AKTIVER NAVIGASJONSLYDER"
 msgid "ENABLE VIDEO PREVIEW AUDIO"
 msgstr "AKTIVER VIDEO FORHÅNDSVISNING LYD"
 
+#, c-format
+msgid "UNABLE TO CONNECT TO '%s'"
+msgstr ""
+
+msgid "WI-FI NETWORKS"
+msgstr ""
+
+msgid "ADD A WI-FI NETWORK"
+msgstr ""
+
+msgid "WI-FI SSID"
+msgstr "NETTVERKSNAVN"
+
+msgid "WI-FI KEY"
+msgstr "NETTVERKSPASSORD"
+
+msgid "USE"
+msgstr ""
+
+msgid "FORGET"
+msgstr "GLEM"
+
+#, c-format
+msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
+msgstr "ER DU SIKKER PÅ AT DU VIL GLEMME '%s' ?"
+
 msgid "IP ADDRESS"
 msgstr "IP ADRESSE"
-
-msgid "CONNECTED"
-msgstr "TILKOBLET"
 
 msgid "INTERNET STATUS"
 msgstr "INTERNETT STATUS"
@@ -2837,26 +3049,20 @@ msgstr "INTERNETT STATUS"
 msgid "HOSTNAME"
 msgstr "ENHETSNAVN"
 
-msgid "ENABLE WIFI"
-msgstr "AKTIVER WIFI"
+msgid "ENABLE WI-FI"
+msgstr "AKTIVER WI-FI"
 
-msgid "WIFI SSID"
-msgstr "NETTVERKSNAVN"
-
-msgid "WIFI KEY"
-msgstr "NETTVERKSPASSORD"
-
-msgid "WIFI COUNTRY"
+msgid "WI-FI COUNTRY"
 msgstr ""
 
 msgid "N/A"
 msgstr ""
 
-msgid "WIFI ENABLED"
-msgstr "WIFI AKTIVERT"
+msgid "WI-FI ENABLED"
+msgstr "WI-FI AKTIVERT"
 
-msgid "WIFI CONFIGURATION ERROR"
-msgstr "WIFI KONFIGURASJONSFEIL"
+msgid "WI-FI CONFIGURATION ERROR"
+msgstr "WI-FI KONFIGURASJONSFEIL"
 
 msgid "QUICK ACCESS"
 msgstr "RASK TILGANG"
@@ -2920,11 +3126,6 @@ msgstr "VIRKELIG AVSLUTTE?"
 
 msgid "AUTO SAVE/LOAD ON GAME LAUNCH"
 msgstr "AUTO LAGRE/LASTE"
-
-msgid "Load latest save state on game launch and save state when exiting game."
-msgstr ""
-"Last inn siste lagringstilstand ved spillstart og lagringstilstand når du "
-"avslutter spillet."
 
 msgid "SHOW CONTROLLER OVERLAYS"
 msgstr "VIS KONTROLLOVERLEGG"
@@ -3028,13 +3229,6 @@ msgstr "FRAKOBLE"
 
 msgid "CONNECT"
 msgstr "TILKOBLE"
-
-msgid "FORGET"
-msgstr "GLEM"
-
-#, c-format
-msgid "ARE YOU SURE YOU WANT TO FORGET '%s' ?"
-msgstr "ER DU SIKKER PÅ AT DU VIL GLEMME '%s' ?"
 
 #, c-format
 msgid "ARE YOU SURE YOU WANT TO CONNECT TO '%s' ?"
@@ -3393,10 +3587,10 @@ msgid "MultiDisk"
 msgstr ""
 
 msgid "Loading system config..."
-msgstr "Laster systemkonfigurasjon..."
+msgstr "Laster systemkonfigurasjon…"
 
 msgid "SAVING METADATA. PLEASE WAIT..."
-msgstr "LAGRER METADATA. VENNLIGST VENT..."
+msgstr "LAGRER METADATA. VENNLIGST VENT…"
 
 msgid "DO YOU WANT TO SWITCH THE SCREEN ?"
 msgstr "VIL DU BYTTE SKJERM?"
@@ -3419,8 +3613,8 @@ msgstr "4 spillere"
 msgid "never played"
 msgstr "aldri spilt"
 
-msgid "retroachievements"
-msgstr "retroachievements"
+msgid "RetroAchievements"
+msgstr "RetroAchievements"
 
 msgid "arcade"
 msgstr "arkade"
@@ -3516,11 +3710,14 @@ msgstr "KJERNE MANGLER"
 msgid "UKNOWN ERROR"
 msgstr "Ukjent feil"
 
+msgid "Checking for latest upgrade script..."
+msgstr ""
+
 msgid "Collections"
 msgstr "Samlinger"
 
 msgid "Searching for devices..."
-msgstr "Søker etter enheter..."
+msgstr "Søker etter enheter…"
 
 msgid "FORMATTING DEVICE"
 msgstr "FORMATERER ENHET"
@@ -3606,11 +3803,8 @@ msgstr "SKJERMLESER DEAKTIVERT"
 msgid "ENABLED"
 msgstr "AKTIVERT"
 
-msgid "up/down"
-msgstr "opp/ned"
-
 msgid "WORKING..."
-msgstr "ARBEIDER..."
+msgstr "ARBEIDER…"
 
 msgid "accept"
 msgstr "aksepter"
@@ -3948,6 +4142,18 @@ msgid "%d second ago"
 msgid_plural "%d seconds ago"
 msgstr[0] "%d sekund siden"
 msgstr[1] "%d sekunder siden"
+
+#~ msgid "up/down"
+#~ msgstr "opp/ned"
+
+#~ msgid ""
+#~ "Load latest savestate on game launch and savestate when exiting game."
+#~ msgstr ""
+#~ "Last inn siste lagringstilstand ved spillstart og lagringstilstand når du "
+#~ "avslutter spillet."
+
+#~ msgid "FANART"
+#~ msgstr "FAN KUNST"
 
 #~ msgid "BUILD IMAGE CACHE"
 #~ msgstr "BYGG BILDELAGER"

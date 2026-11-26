@@ -917,7 +917,11 @@ void GuiComponent::updateHelpPrompts()
 	if (mWindow->peekGui() == this && getTag() != "GuiLoading")
 	{
 		std::vector<HelpPrompt> prompts = getHelpPrompts();
+#ifdef HIPPOS
+		mWindow->setHelpPrompts(prompts, getHelpStyle(), sortsHelpPrompts());
+#else
 		mWindow->setHelpPrompts(prompts, getHelpStyle());
+#endif
 	}
 }
 

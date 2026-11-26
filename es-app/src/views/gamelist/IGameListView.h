@@ -36,6 +36,7 @@ public:
 
 	virtual const char* getName() const = 0;
 	virtual void launch(FileData* game) = 0;
+	virtual Vector3f getLaunchTarget(Vector2f* size) { return Vector3f(Renderer::getScreenWidth() / 2.0f, Renderer::getScreenHeight() / 2.0f, 0); }
 
 	virtual HelpStyle getHelpStyle() override;
 
@@ -47,6 +48,15 @@ public:
 	bool hasFileDataEntry(FileData* file);
 
 	virtual void repopulate() = 0;
+
+	// Redraws what is shown for the selected entry (its media changed meanwhile), without moving the
+	// cursor or repopulating the list. Views without details: nothing to do. changedFile: the media
+	// file that appeared, reloaded even where its path was already set (it did not exist then).
+	virtual void refreshDetails(const std::string& /*changedFile*/ = "") {}
+
+	// Redraws this entry (its media changed meanwhile), selected or not: a grid tile. Views that show
+	// no media per entry: nothing to do.
+	virtual void refreshEntry(FileData* /*entry*/, const std::string& /*changedFile*/ = "") {}
 
 protected:
 	FolderData* mRoot;
