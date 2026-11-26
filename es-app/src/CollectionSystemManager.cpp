@@ -932,7 +932,11 @@ SystemData* CollectionSystemManager::createNewCollectionEntry(const std::string&
 	SystemMetadata md;
 	md.name = name;
 	// Custom collections keep the capitalization their owner typed.
+#ifdef HIPPOS
+	md.fullName = sysDecl.isCustom && sysDecl.name != myCollectionsName ? sysDecl.longName : Utils::String::capitalizeWords(sysDecl.longName);
+#else
 	md.fullName = sysDecl.isCustom ? sysDecl.longName : Utils::String::capitalizeWords(sysDecl.longName);
+#endif
 	md.themeFolder = sysDecl.themeFolder;
 	md.manufacturer = "Collections";
 	md.hardwareType = sysDecl.isCustom ? "custom collection" : "auto collection";
