@@ -214,6 +214,12 @@ void GuiMsgBox::deleteMeAndCall(const std::function<void()>& func)
 
 }
 
+void GuiMsgBox::setBackButton(int index)
+{
+	if (index >= 0 && index < (int)mButtons.size())
+		mAcceleratorFunc = mButtons[index]->getPressedFunc();
+}
+
 std::vector<HelpPrompt> GuiMsgBox::getHelpPrompts()
 {
 	return mGrid.getHelpPrompts();

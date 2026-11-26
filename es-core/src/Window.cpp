@@ -1547,6 +1547,7 @@ void Window::processStorageRequest(std::string line)
 				},
 				_("YES, MERGE DRIVE"), mergeLambda
 			);
+			msg->setBackButton(0);
 			pushGui(msg);
 		}
 		else
@@ -1555,6 +1556,7 @@ void Window::processStorageRequest(std::string line)
 				_("YES"), mergeLambda, 
 				_("NO"), [processNext] { processNext(); }
 			);
+			msg->setBackButton(0);
 			pushGui(msg);
 		}
 	}
@@ -1592,7 +1594,7 @@ void Window::processStorageRequest(std::string line)
 			}).detach();
 		};
 
-		pushGui(new GuiMsgBox(this, message,
+		auto* msg = new GuiMsgBox(this, message,
 			_("NO, IGNORE THIS TIME"), [processNext] { processNext(); },
 			_("NO, IGNORE FOREVER"), [this, uri, processNext] {
 				this->displayNotificationMessage(_("Adding share to ignore list..."));
@@ -1601,7 +1603,9 @@ void Window::processStorageRequest(std::string line)
 					this->postToUiThread([processNext] { processNext(); });
 				}).detach();
 			},
-			_("YES, MERGE SHARE"), mergeLambda));
+			_("YES, MERGE SHARE"), mergeLambda);
+		msg->setBackButton(0);
+		pushGui(msg);
 	}
 	else if (type == "REQUEST_FORMAT" && parts.size() >= 2)
 	{
@@ -1654,6 +1658,7 @@ void Window::processStorageRequest(std::string line)
 				},
 				_("YES, FORMAT & MERGE"), confirmLambda
 			);
+			msg->setBackButton(0);
 			pushGui(msg);
 		}
 		else
@@ -1662,6 +1667,7 @@ void Window::processStorageRequest(std::string line)
 				_("NO, IGNORE"), [processNext] { processNext(); },
 				_("YES, FORMAT & MERGE"), confirmLambda
 			);
+			msg->setBackButton(0);
 			pushGui(msg);
 		}
 	}
