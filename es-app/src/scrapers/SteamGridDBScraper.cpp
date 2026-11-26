@@ -88,7 +88,8 @@ void SteamGridDBScraper::generateRequests(const ScraperSearchParams& params,
 
 bool SteamGridDBScraper::isSupportedPlatform(SystemData* system)
 {
-	return system && pcSystems.count(system->getName()) > 0;
+	return system && (pcSystems.count(system->getName()) > 0
+		|| system->hasPlatformId(PlatformIds::PC) || system->hasPlatformId(PlatformIds::MOONLIGHT));
 }
 
 const std::set<Scraper::ScraperMediaSource>& SteamGridDBScraper::getSupportedMedias()
