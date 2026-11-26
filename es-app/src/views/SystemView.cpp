@@ -378,15 +378,9 @@ SystemData* SystemView::getSelected()
 
 bool SystemView::input(InputConfig* config, Input input)
 {
-	if (mYButton.isShortPressed(config, input))
+	if (mYButton.isShortPressed(config, input) && SystemData::getSystem("all") != nullptr)
 	{
-		// Quick search needs the "all games" collection : when the user disabled it, fall back
-		// to a random system instead of silently doing nothing.
-		if (SystemData::getSystem("all") != nullptr)
-			showQuickSearch();
-		else
-			mCarousel.setCursor(SystemData::getRandomSystem());
-
+		showQuickSearch();
 		return true;
 	}
 
@@ -979,8 +973,6 @@ std::vector<HelpPrompt> SystemView::getHelpPrompts()
 		prompts.push_back(HelpPrompt("x", _("RANDOM")));
 		if (SystemData::getSystem("all") != nullptr)
 			prompts.push_back(HelpPrompt("y", _("SEARCH") + std::string("/") + _("RANDOM"), [&] { showQuickSearch(); })); // QUICK 
-		else
-			prompts.push_back(HelpPrompt("y", _("RANDOM"), [&] { mCarousel.setCursor(SystemData::getRandomSystem()); }));
 	}
 
 	if (SystemData::IsManufacturerSupported)
