@@ -6,6 +6,8 @@
 #include "romm/RommMediaCache.h"
 #ifdef HIPPOS
 #include "controlcenter/ControlCenterApp.h"
+#include <set>
+#include <utility>
 #endif
 #include "services/HttpServerThread.h"
 #include "guis/GuiDetectDevice.h"
@@ -67,6 +69,55 @@ static bool gControlCenter = false;
 static bool gControlCenterHidden = false;
 static std::string gControlCenterXml;
 static std::string gControlCenterScreen;
+static std::set<SDL_JoystickID> gHotkeyHeld;
+static std::set<std::pair<SDL_JoystickID, Uint8>> gHotkeyComboButtons;
+
+static bool takeHotkeyComboButton(const SDL_JoyButtonEvent& button, Window* window)
+{
+	InputConfig* config = InputManager::getInstance()->getInputConfigByDevice(button.which);
+	if (config == nullptr)
+		return false;
+
+	Input input(button.which, TYPE_BUTTON, button.button, button.state == SDL_PRESSED, false);
+	if (config->isMappedTo("hotkey", input))
+	{
+		if (input.value != 0)
+			gHotkeyHeld.insert(button.which);
+		else
+			gHotkeyHeld.erase(button.which);
+		return false;
+	}
+
+	auto comboButton = std::make_pair(button.which, button.button);
+	if (input.value == 0)
+		return gHotkeyComboButtons.erase(comboButton) != 0;
+
+	if (gHotkeyHeld.count(button.which) == 0)
+		return false;
+
+	gHotkeyComboButtons.insert(comboButton);
+	if (config->isMappedTo(Settings::getInstance()->getString("HOTKEY_CONTROLCENTER"), input) && !toggleControlCenterInProcess(window))
+		ApiSystem::getInstance()->launchControlcenter();
+	return true;
+}
+
+static bool takeHotkeyComboEvent(const SDL_Event& event, Window* window)
+{
+	switch (event.type)
+	{
+	case SDL_JOYBUTTONDOWN:
+	case SDL_JOYBUTTONUP:
+		return takeHotkeyComboButton(event.jbutton, window);
+	case SDL_JOYHATMOTION:
+		return gHotkeyHeld.count(event.jhat.which) != 0;
+	case SDL_JOYAXISMOTION:
+		return gHotkeyHeld.count(event.jaxis.which) != 0;
+	case SDL_JOYDEVICEREMOVED:
+		gHotkeyHeld.erase(event.jdevice.which);
+		return false;
+	}
+	return false;
+}
 #endif
 
 bool parseArgs(int argc, char* argv[])
@@ -763,10 +814,6 @@ int main(int argc, char* argv[])
 
 	bool running = true;
 
-#ifdef HIPPOS
-	bool hotkeyPressed = false;
-#endif
-
 	while(running)
 	{
 		SDL_Event event;
@@ -797,42 +844,8 @@ int main(int argc, char* argv[])
 			do
 			{
 #ifdef HIPPOS
-			  // global hotkeys
-			  bool eventTaken = false;
-			  if(event.type == SDL_JOYBUTTONDOWN || event.type == SDL_JOYBUTTONUP)
-			    {
-			      InputConfig* config = InputManager::getInstance()->getInputConfigByDevice(event.jbutton.which);
-			      if(config)
-				{
-				  // Find first player controller info
-				  auto playerDevices = InputManager::getInstance()->lastKnownPlayersDeviceIndexes();
-				  auto playerDevice = playerDevices.find(0);
-				  if (playerDevice != playerDevices.cend())
-				    {
-				      if (config->getDeviceIndex() == playerDevice->second.index)
-					{
-					  Input input = Input(event.jbutton.which, TYPE_BUTTON, event.jbutton.button, event.jbutton.state == SDL_PRESSED, false);
-					  if (config->isMappedTo("hotkey", input))
-					    hotkeyPressed = input.value != 0;
-
-					  if(hotkeyPressed && input.value != 0)
-					    {
-					      std::string hotkey_controlcenter = Settings::getInstance()->getString("HOTKEY_CONTROLCENTER");
-					      if (config->isMappedTo(hotkey_controlcenter, input))
-						{
-						  hotkeyPressed = false;
-						  if (!toggleControlCenterInProcess(&window))
-							  ApiSystem::getInstance()->launchControlcenter();
-						  eventTaken = true;
-						}
-					    }
-					}
-				    }
-				}
-			    }
-			  //
-			  if(eventTaken)
-			    continue;
+				if (takeHotkeyComboEvent(event, &window))
+					continue;
 #endif
 
 				TRYCATCH("InputManager::parseEvent", InputManager::getInstance()->parseEvent(event, &window));
