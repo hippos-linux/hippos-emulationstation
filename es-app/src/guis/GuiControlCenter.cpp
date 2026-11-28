@@ -2256,17 +2256,8 @@ void GuiControlCenter::update(int deltaTime)
 		if (!b->idRef.empty() || b->inflight || !CcShell::hasCommands(b->tmpl))
 			continue;
 
-#ifdef HIPPOS
-		if (mClosed)
-		{
-			if (!b->resolved)
-				request(b);
-			continue;
-		}
-#else
 		if (mClosed)
 			continue;
-#endif
 
 		if (b->tab != -1 && b->tab != mTab)
 			continue;

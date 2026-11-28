@@ -234,9 +234,38 @@ std::string CcShell::resolve(const std::string& cmd, int ttlMs)
 	return value;
 }
 
+#ifdef HIPPOS
+static const std::string FIELD_SEPARATOR = " :: ";
+
+static std::string sharedCommand(const std::string& c)
+{
+	return c.substr(0, c.find(FIELD_SEPARATOR));
+}
+
+static std::string outputField(const std::string& output, const std::string& field)
+{
+	for (auto& line : Utils::String::split(output, '\n'))
+		if (Utils::String::startsWith(line, field + "\t"))
+			return line.substr(field.size() + 1);
+
+	return "";
+}
+#endif
+
 std::string CcShell::expandNow(const std::string& tmpl, int ttlMs)
 {
+#ifdef HIPPOS
+	return expandWith(tmpl, [this, ttlMs](const std::string& c)
+	{
+		size_t separator = c.find(FIELD_SEPARATOR);
+		if (separator == std::string::npos)
+			return resolve(c, ttlMs);
+
+		return outputField(resolve(c.substr(0, separator), ttlMs), Utils::String::trim(c.substr(separator + FIELD_SEPARATOR.size())));
+	});
+#else
 	return expandWith(tmpl, [this, ttlMs](const std::string& c) { return resolve(c, ttlMs); });
+#endif
 }
 
 void CcShell::expand(const std::string& tmpl, int ttlMs, const std::function<void(const std::string&)>& onResult)
@@ -325,5 +354,9 @@ void CcShell::invalidate(const std::string& tmpl)
 {
 	std::unique_lock<std::mutex> lock(mCacheLock);
 	for (auto& cmd : extractCommands(tmpl))
+#ifdef HIPPOS
+		mCache.erase(sharedCommand(cmd));
+#else
 		mCache.erase(cmd);
+#endif
 }
