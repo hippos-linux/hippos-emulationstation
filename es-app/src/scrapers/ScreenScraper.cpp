@@ -333,9 +333,8 @@ void ScreenScraperScraper::generateRequests(const ScraperSearchParams& params,
 
 	for (auto platform = p_ids.cbegin(); platform != p_ids.cend(); platform++)
 	{
-		path += "&systemeid=";
-		path += HttpReq::urlEncode(std::to_string(*platform));
-		requests.push(std::unique_ptr<ScraperRequest>(new ScreenScraperRequest(requests, results, path, params.game->getFileName())));
+		std::string platformPath = path + "&systemeid=" + HttpReq::urlEncode(std::to_string(*platform));
+		requests.push(std::unique_ptr<ScraperRequest>(new ScreenScraperRequest(requests, results, platformPath, params.game->getFileName())));
 	}
 }
 
