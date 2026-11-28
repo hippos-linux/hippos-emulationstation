@@ -227,6 +227,9 @@ void GuiKeyPicker::render(const Transform4x4f& parentTrans)
 		}
 		drawText(mFontKey, label, x + (w - size.x()) / 2, y + (h - size.y()) / 2, focused ? mColorSelected : mColorText, trans);
 	}
+
+	if (mWindow->peekGui() == this)
+		mWindow->renderHelpPromptsEarly(parentTrans);
 }
 
 void GuiKeyPicker::measure(float& unit, float& left, float& top) const

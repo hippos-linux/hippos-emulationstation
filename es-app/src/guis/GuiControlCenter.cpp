@@ -3408,6 +3408,11 @@ void GuiControlCenter::render(const Transform4x4f& parentTrans)
 
 	if (mSheetItem)
 		renderSheet(card);
+
+#ifdef HIPPOS
+	if (mWindow->peekGui() == this)
+		mWindow->renderHelpPromptsEarly(parentTrans);
+#endif
 }
 
 

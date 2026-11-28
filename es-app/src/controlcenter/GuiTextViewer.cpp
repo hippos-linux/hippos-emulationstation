@@ -187,6 +187,9 @@ void GuiTextViewer::render(const Transform4x4f& parentTrans)
 		Renderer::setMatrix(trans);
 		Renderer::drawRect(mSize.x() - 0.6f * mPad, barY, 0.3f * mPad, barH, (menuTheme->Text.color & 0xFFFFFF00) | 0x80);
 	}
+
+	if (mWindow->peekGui() == this)
+		mWindow->renderHelpPromptsEarly(parentTrans);
 }
 
 bool GuiTextViewer::hitTest(int x, int y, Transform4x4f& parentTransform, std::vector<GuiComponent*>* pResult)
